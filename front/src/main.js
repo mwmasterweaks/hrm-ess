@@ -1,0 +1,53 @@
+import Vue from "vue";
+import App from "./App.vue";
+import Router from "./routes.js";
+import VueResource from "vue-resource";
+import VeeValidate from "vee-validate";
+import VueRangedatePicker from "vue-rangedate-picker";
+import Auth from "./packages/auth/Auth.js";
+import Global from "./packages/local/Global.js";
+import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
+import VueSidebarMenu from "vue-sidebar-menu";
+import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
+
+//import excel from "vue-excel-export";
+
+//import DateRangePicker from "vue2-daterange-picker";
+
+Vue.use(VueSidebarMenu);
+Vue.use(VueRangedatePicker);
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
+Vue.use(VueResource);
+Vue.use(Auth);
+Vue.use(Global);
+Vue.use(VeeValidate, {
+  fieldsBagName: "veeFields"
+});
+
+Vue.http.options.root = "http://localhost:8000";
+Vue.http.headers.common["Authorization"] = "Bearer " + Vue.auth.getToken();
+
+Router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.forVisitors)) {
+    if (Vue.auth.isAuthenticated()) {
+      next({
+        path: "/home"
+      });
+    } else next();
+  } else if (to.matched.some(record => record.meta.forAuth)) {
+    if (!Vue.auth.isAuthenticated()) {
+      next({
+        path: "/login"
+      });
+    } else next();
+  } else next();
+});
+
+new Vue({
+  el: "#app",
+  render: h => h(App),
+  router: Router
+});

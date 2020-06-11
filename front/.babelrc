@@ -1,0 +1,17 @@
+{
+  // "plugins": [],
+  // "presets": ["es2015", "stage-0"]
+  //"presets": [["env", { "modules": false }], "stage-3"]
+
+  "presets": [
+    [
+      "env",
+      {
+        "modules": false
+      }
+    ],
+    "stage-3"
+  ]
+  //"plugins": ["transform-object-rest-spread"]
+  //"plugins": ["@babel/plugin-transform-regenerator"]
+}
