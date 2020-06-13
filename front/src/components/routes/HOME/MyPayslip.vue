@@ -2,7 +2,7 @@
   <div class="mx-auto col-md-12">
     <div class="elBG panel">
       <div class="panel-heading">
-        <p class="elClr panel-title">View Branch</p>
+        <p class="elClr panel-title">Payslip</p>
       </div>
 
       <div class="elClr panel-body">
@@ -67,54 +67,6 @@
           </div>
         </div>
       </div>
-
-      <!-- modalEdit ---------------------------------------------------------------------------------------->
-      <b-modal
-        id="modalEdit"
-        :header-bg-variant="' elBG'"
-        :header-text-variant="' elClr'"
-        :body-bg-variant="' elBG'"
-        :body-text-variant="' elClr'"
-        :footer-bg-variant="' elBG'"
-        :footer-text-variant="' elClr'"
-        size="xl"
-        title="Manage Branch"
-        @ok="handleOk"
-      >
-        <!-- form -->
-        <div class="rowFields mx-auto row">
-          <div class="col-lg-3">
-            <p class="textLabel">Name:</p>
-          </div>
-          <div class="col-lg-9">
-            <input
-              type="text"
-              name="name"
-              ref="name"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Input the name of the branch"
-              placeholder="Name of the branch"
-              v-validate="'required'"
-              v-model.trim="branch.name"
-              autocomplete="off"
-              autofocus="on"
-            />
-            <small class="text-danger pull-left" v-show="errors.has('name')">Name is required.</small>
-          </div>
-        </div>
-        <!-- /form -->
-        <template slot="modal-footer" slot-scope="{  }">
-          <b-button size="sm" variant="success" @click="btnUpdate()">Update</b-button>
-          <b-button
-            size="sm"
-            variant="danger"
-            v-if="roles.delete_branch"
-            @click="btnDelete()"
-          >Delete</b-button>
-        </template>
-      </b-modal>
-      <!-- End modalEdit -->
     </div>
   </div>
 </template>
@@ -151,22 +103,11 @@ export default {
   },
   created() {
     this.roles = this.$global.getRoles();
-    this.items = this.$global.getBranch();
   },
-  mounted() {
-    this.load();
-    this.totalRows = this.items.length;
-  },
+  mounted() {},
   updated() {},
   methods: {
-    load() {
-      this.$nextTick(function() {
-        setTimeout(function() {
-          document.getElementById("componentMenu").className =
-            "customeDropDown dropdown-menu";
-        }, 100);
-      });
-    },
+    load() {},
     tblRowClass(item, type) {
       if (!item) return;
       else if (this.roles.update_branch) {

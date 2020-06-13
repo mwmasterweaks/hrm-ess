@@ -121,7 +121,8 @@ export default {
 </script>
 <style scope>
 .mainnav {
-  background: linear-gradient(#076c2d, #1fa753, #076c2d);
+  /* background: linear-gradient(#076c2d, #1fa753, #076c2d); */
+  background: green;
 }
 .systemName {
   color: white;

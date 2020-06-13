@@ -93,11 +93,11 @@ export default {
   border: 1px solid black;
 }
 body {
-  background-color: #edebeb;
-  color: white;
+  background-color: #ffffff;
+  color: #0a4677;
 }
 .textColor {
-  color: aliceblue;
+  color: rgb(0, 0, 0);
 }
 .ml-auto .dropdown-menu {
   left: auto !important;
@@ -126,11 +126,7 @@ body {
   position: relative;
   padding: 15px;
   height: auto;
-  border-radius: 8px 8px 0px 0px;
-  border-bottom: 1px solid #eeeeee;
-
-  box-shadow: 0px 3px 7px rgba(0, 0, 0, 0), inset 0 1px rgb(255, 255, 255, 1),
-    inset 0 0px 6px rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 128, 0, 0.829);
 }
 .panel-body {
   position: relative;
@@ -138,8 +134,6 @@ body {
   padding-top: 20px;
   padding-bottom: 20px;
 
-  box-shadow: 0px 3px 7px rgba(0, 0, 0, 0), inset 0 1px rgba(255, 255, 255, 1),
-    inset 0 0px 6px rgba(0, 0, 0, 0.25);
   /* background: linear-gradient(#eeefef, #ffffff 50%); */
 }
 .panel-footer {
@@ -149,18 +143,18 @@ body {
   border-bottom-left-radius: 6px;
   border-top: 1px solid #eeeeee;
 
-  box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.3), inset 0 1px rgba(255, 255, 255, 1),
-    inset 0 0px 6px rgba(0, 0, 0, 0.25);
   /* background: linear-gradient(#eeefef, #ffffff 80%); */
 }
 .panel-title {
   position: relative;
   font-size: 17px;
+  color: rgba(255, 255, 255, 1);
 }
 
 .panel > .panel-heading {
   padding-top: 20px;
   padding-bottom: 20px;
+  color: royalblue;
 }
 .panel > .panel-heading > .panel-title {
   margin-top: 2px;
@@ -327,7 +321,7 @@ body {
   padding-top: 75px;
 }
 .v-sidebar-menu {
-  background: linear-gradient(45deg, #0e0e0e, #3f3f3f, #0e0e0e, #353535);
+  background: #0e0e0e;
 }
 
 .my-td {

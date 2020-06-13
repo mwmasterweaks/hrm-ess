@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-12">
+      <div class="panel-body">
         <Fullcalendar
           @eventClick="showEvent"
           :plugins="calendarPlugins"
@@ -157,37 +157,6 @@ export default {
           });
           console.log(response.body);
         });
-
-      // this.tickets.forEach(ticket => {
-      //   if (
-      //     ticket.ticket_status.name == "Urgent" ||
-      //     ticket.ticket_status.name == "For Tech Visit"
-      //   ) {
-      //     var temp = {
-      //       id: ticket.id,
-      //       title: "E-ticket: " + ticket.ticket_status.name,
-      //       start: ticket.target_date,
-      //       end: ticket.target_date,
-      //       data: ticket
-      //     };
-      //     this.events.push(temp);
-      //   }
-      // });
-
-      // this.schedules.forEach(schedule => {
-      //   if (schedule.status == "done") {
-      //     var temp = {
-      //       id: schedule.client_id,
-      //       backgroundColor: "green",
-      //       borderColor: "green",
-      //       title: "Inst: " + schedule.client1.name,
-      //       start: schedule.target_date,
-      //       end: schedule.target_date,
-      //       data: schedule
-      //     };
-      //     this.events.push(temp);
-      //   }
-      // });
     },
     formatDate(date) {
       var d = new Date(date),
@@ -212,6 +181,9 @@ export default {
 <style lang="css">
 @import "~@fullcalendar/core/main.css";
 @import "~@fullcalendar/daygrid/main.css";
+.fc-unthemed td.fc-today {
+  background: #e3fce8;
+}
 
 .fc-title {
   color: #fff;

@@ -1,9 +1,10 @@
 <template>
-  <div class="mx-auto col-md-12 modified-continer" style="height: 100%;">
-    <div>
-      <div class="mx-auto row">
-        <full-calendar></full-calendar>
+  <div class="mx-auto col-md-12 modified-continer">
+    <div class="elBG panel">
+      <div class="panel-heading">
+        <p class="elClr panel-title">My Calendar</p>
       </div>
+      <full-calendar></full-calendar>
     </div>
   </div>
 </template>
@@ -28,6 +29,8 @@ export default {
   methods: {}
 };
 </script>
+
+
 <style scoped>
 .textLabel {
   margin-top: 9px;

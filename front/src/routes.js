@@ -53,7 +53,7 @@ const router = new VueRouter({
     },
     {
       path: "/home",
-      component: Dashboard,
+      component: MyCalendar,
       meta: {
         forAuth: true
       }

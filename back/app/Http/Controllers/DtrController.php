@@ -253,11 +253,13 @@ class DtrController extends Controller
                                 ]
                             );
                         } else {
-                            DB::table('dtrs')
-                                ->where("employee_id", $emp->employee_id)
-                                ->where("pay_period_id", $sched->pay_period_id)
-                                ->where("work_date", $sched->work_date)
-                                ->update(['shift_sched_in' => $sched->shift_sched_in, 'shift_sched_out' => $item->shift_sched_out, 'is_rest_day' => $item->is_rest_day]);
+                            //why item->???
+                            // DB::table('dtrs')
+                            //     ->where("employee_id", $emp->employee_id)
+                            //     ->where("pay_period_id", $sched->pay_period_id)
+                            //     ->where("work_date", $sched->work_date)
+                            //     ->update(['shift_sched_in' => $sched->shift_sched_in, 'shift_sched_out' => $item->shift_sched_out, 'is_rest_day' => $item->is_rest_day]);
+
                         }
                     }
                 }

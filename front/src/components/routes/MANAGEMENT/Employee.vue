@@ -79,41 +79,37 @@
 
             <template v-slot:cell(actions)="row">
               <button
-                class="btn btn-success disabled"
+                class="btn btn-success btn-labeled"
                 title="Manage Leave Balance"
                 @click="openModalLeave(row.item)"
                 v-if="roles.manage_leave"
               >
-                Manage Leave Balance
-                <!-- <i class="fas fa-plane-departure"></i> -->
+                <i class="fas fa-plane-departure"></i>
               </button>
               <button
-                class="btn btn-success disabled"
+                class="btn btn-success btn-labeled"
                 title="Manage Schedule"
                 @click="openModalSched(row.item)"
                 v-if="roles.view_dtr"
               >
-                Manage Schedule(DTR)
-                <!-- <i class="fas fa-calendar-alt"></i> -->
+                <i class="fas fa-calendar-alt"></i>
               </button>
               <button
-                class="btn btn-success disabled"
+                class="btn btn-success btn-labeled"
                 title="Manage Approver"
                 @click="openModalApprover(row.item)"
                 v-if="roles.view_approver"
               >
-                Manage Approver
-                <!-- <i class="fas fa-user-check"></i> -->
+                <i class="fas fa-user-check"></i>
               </button>
 
               <button
-                class="btn btn-success disabled"
+                class="btn btn-success btn-labeled"
                 title="Manage Payslip"
                 @click="openModalManagePayslip(row.item)"
                 v-if="roles.view_payslip"
               >
-                Manage Payslip
-                <!-- <i class="fas fa-money-check"></i> -->
+                <i class="fas fa-money-check"></i>
               </button>
             </template>
             <template v-slot:cell(chkbox)="row">
@@ -130,7 +126,11 @@
               </div>
             </template>
           </b-table>
-          <div>
+          <div
+            v-if="
+              roles.create_leave || roles.create_dtr || roles.create_payslip
+            "
+          >
             <div class="row">
               <div class="col-md-1">
                 <img src="/src/img/arrow_ltr.png" style="padding-left:14px" />
@@ -150,22 +150,25 @@
               <div class="col-md-5" v-if="item_selected.length > 0">
                 <div style="margin-left:-50px">
                   <button
-                    class="btn btn-success disabled"
+                    class="btn btn-success "
                     title="Add Leave Balance to all selected employee"
                     v-b-modal="'ModalAddLeave'"
+                    v-if="roles.create_leave"
                   >
                     <i class="fas fa-plane-departure"></i>
                   </button>
                   <button
-                    class="btn btn-success disabled"
+                    class="btn btn-success "
                     v-b-modal="'ModalAddSched'"
                     title="Add Schedule to all selected employee"
+                    v-if="roles.create_dtr"
                   >
                     <i class="fas fa-calendar-alt"></i>
                   </button>
                   <button
-                    class="btn btn-success disabled"
+                    class="btn btn-success "
                     title="Add Payslip to all selected employee"
+                    v-if="roles.create_payslip"
                   >
                     <i class="fas fa-money-check"></i>
                   </button>
@@ -1317,12 +1320,9 @@
                   <b-spinner class="align-middle"></b-spinner>
                   <strong>Loading...</strong>
                 </div>
-
-                <span
-                  slot="shift_sched"
-                  slot-scope="data"
-                  v-html="data.value"
-                ></span>
+                <template v-slot:cell(shift_sched)="data">
+                  <span v-html="data.value"></span>
+                </template>
               </b-table>
             </div>
           </div>
