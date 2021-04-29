@@ -35,12 +35,7 @@
             </b-card-body>
             <div slot="footer">
               <b-button
-                class="pull-right"
-                size="sm"
-                variant="success"
-                @click="btnSubmit()"
-                :disabled="addsuggest.title == '' ||
-                addsuggest.message == ''"
+                class="pull-right" size="sm" variant="success" @click="btnSubmit()" :disabled="addsuggest.title == '' || addsuggest.message == ''"
               >Submit</b-button>
             </div>
           </b-card>
@@ -138,13 +133,11 @@
               type="text"
               name="titleedit"
               class="form-control"
-              v-b-tooltip.hover
-              title="Input the title of your suggestion/issue"
+              v-b-tooltip.hover title="Input the title of your suggestion/issue"
               placeholder="Title"
               v-validate="'required'"
               v-model.trim="editSuggest.title"
-              autocomplete="off"
-            />
+              autocomplete="off"  />
           </div>
           <b-card-body>
             <textarea
@@ -157,6 +150,28 @@
               v-model.trim="editSuggest.message"
             ></textarea>
           </b-card-body>
+          <b-list-group flush style="margin-top:30px;">
+            <textarea
+              style="outline: none;  resize: none; overflow: auto;"
+              class="form-control"
+              rows="3"
+              v-b-tooltip.hover
+              title="Input Comment "
+              placeholder="Write a comment...."
+              v-model.trim="comment"
+            ></textarea>
+            <b-button size="sm" variant="success" @click="submitComment">submit comment</b-button>
+          </b-list-group>
+          <b-list-group flush>
+            <b-list-group-item v-for="comment in comments" :key="comment.id">
+              <p style="color:#72b8dc">
+                <b>{{comment.user.email}} :</b>
+
+             </p>
+             &nbsp;&nbsp;{{comment.comment}}
+             
+            </b-list-group-item>
+          </b-list-group>
         </b-card>
       </b-card-group>
 
@@ -183,16 +198,17 @@ export default {
     return {
       sortBy: "created_at",
       sortDesc: true,
+      
       addsuggest: {
         title: "",
         message: ""
+       
       },
+
       tblisBusy: true,
       fields: [
-        { key: "title", sortable: true },
-        {
-          key: "message",
-          label: "Message",
+        { key: "title", label:"TTLE", sortable: true },
+        { key: "message", label: "Message",
           formatter: value => {
             var temp = "";
             if (value.length > 50) temp = "...";
@@ -200,15 +216,23 @@ export default {
           }
         },
         { key: "created_at", label: "submitted at", sortable: true },
-        { key: "user.name", label: "submitted  by", sortable: true }
+        
+        { key: "user.employee.first_name", label: "submitted by", sortable: true }
       ],
       editSuggest: {
         id: "",
         user_id: "",
         title: "",
-        message: ""
+        message: "",
+        user: {
+
+          id: "",
+          name: ""
+        }
       },
+      comment: "",
       items: [],
+      comments: [],
       tblFilter: null,
       totalRows: 1,
       currentPage: 2,
@@ -222,6 +246,7 @@ export default {
     this.$global.loadJS();
   },
   created() {
+    
     this.user = this.$global.getUser();
     this.load();
   },
@@ -250,10 +275,17 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
+
     tblRowClicked(item, index, event) {
+     // console.log('kefetyyyyyy');
       this.$bvModal.show("modalEdit");
       this.editSuggest = item;
+      this.comments = [];
+      this.$http.put("api/getComments/" + item.id).then(function(response) {
+        this.comments = response.body;
+      });
     },
+  
     btnSubmit() {
       // console.log()
       this.addsuggest.user_id = this.user.id;
@@ -262,7 +294,7 @@ export default {
         text: "Do you really want to submit this?",
         icon: "info",
         buttons: ["No", "Yes"]
-      }).then(yes => {
+          }).then(yes => {
         if (yes) {
           this.tblisBusy = true;
           this.$http
@@ -270,7 +302,7 @@ export default {
             .then(response => {
               swal("Submited!", "submited successfully", "success").then(
                 value => {
-                  this.items = Object.values(response.body)[1];
+                  this.items = response.body;
                   this.totalRows = this.items.length;
                   this.tblisBusy = false;
                 }
@@ -296,15 +328,52 @@ export default {
         text: "You realy want to update it?",
         icon: "warning",
         buttons: true,
-        dangerMode: true
+        dangerMode: true,
       }).then(update => {
         if (update) {
           this.$http
-            .put("api/Suggestion/" + this.editSuggest.id, this.editSuggest)
+            .put("api/Suggestions/" + this.editSuggest.id, this.editSuggest)
             .then(response => {
-              this.items = Object.values(response.body)[1];
+              this.items = response.body;
               swal("Update!", "Update successfully", "success");
               this.$bvModal.hide("modalEdit");
+            })
+            .catch(response => {
+              swal({
+                title: "Error",
+                text: response.body.error,
+                icon: "error",
+                dangerMode: true
+              }).then(value => {
+                if (value) {
+                    }
+              });
+            });
+        }
+      });
+    },
+
+
+submitComment() {
+      swal({
+        title: "Confirmation",
+        text: "Do you really want to submit this?",
+        icon: "info",
+        buttons: ["No", "Yes"]
+      }).then(yes => {
+        if (yes) {
+          var temp = {
+            suggestion_id: this.editSuggest.id,
+            user_id: this.user.id,
+            comment: this.comment,
+            status: "new"
+          };
+          this.$http
+            .post("api/SuggestionComment", temp)
+            .then(response => {
+              swal("Submited!", "submited successfully", "success");
+              this.comment = "";
+              this.comments = response.body;
             })
             .catch(response => {
               swal({
@@ -322,7 +391,13 @@ export default {
     }
   }
 };
+
 </script>
+ 
+
+
+
+
 <style scoped>
 .textLabel {
   margin-top: 9px;

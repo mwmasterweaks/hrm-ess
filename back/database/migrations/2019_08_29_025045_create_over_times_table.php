@@ -17,7 +17,7 @@ class CreateOverTimesTable extends Migration
             $table->increments('id');
             $table->integer('employee_id');
             $table->string('reference_no');
-            $table->string('work_date');
+            $table->date('work_date');
             $table->string('shift');
             $table->datetime('time_in');
             $table->datetime('time_out');
@@ -28,6 +28,7 @@ class CreateOverTimesTable extends Migration
             $table->string('attachment')->default('noattachment.png');
             $table->date('date_filed');
             $table->string('status')->default('Pending');
+            $table->string('status_paid')->default('no');
             $table->string('remarks')->nullable();
             $table->integer('approve_level');
             $table->timestamps();

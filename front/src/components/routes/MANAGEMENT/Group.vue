@@ -235,7 +235,7 @@ export default {
       ],
       items: [],
       tblFilter: null,
-      totalRows: 1,
+      totalRows: 0,
       currentPage: 2,
       perPage: 10,
       pageOptions: [10, 25, 50, 100],
@@ -255,19 +255,15 @@ export default {
   },
   created() {
     this.roles = this.$global.getRoles();
-    this.load_items("Group");
+    this.items = this.$global.getGroup();
+    this.tblisBusy = false;
+    this.totalRows = this.items.length;
   },
   mounted() {
     this.load();
   },
   updated() {},
   methods: {
-    load_items(model) {
-      this.$http.get("api/" + model).then(function(response) {
-        this.items = response.body;
-        this.tblisBusy = false;
-      });
-    },
     load() {
       this.$nextTick(function() {
         setTimeout(function() {}, 100);
@@ -310,6 +306,7 @@ export default {
                 .put("api/Group/" + this.item_edit.id, this.item_edit)
                 .then(response => {
                   this.items = response.body;
+                  this.$global.setGroup(response.body);
                   this.totalRows = this.items.length;
                   swal("Update!", "Update successfully", "success");
                   this.$bvModal.hide("modalEdit");
@@ -338,6 +335,7 @@ export default {
             .post("api/Group", this.item_add)
             .then(response => {
               swal("Notification", "Added successfully", "success");
+              this.$global.setGroup(response.body);
               this.items = response.body;
               this.totalRows = this.items.length;
               this.item_add = {
@@ -379,6 +377,7 @@ export default {
               this.$bvModal.hide("modalEdit");
               swal("Deleted!", "Item has been deleted", "success").then(
                 value => {
+                  this.$global.setGroup(response.body);
                   this.items = response.body;
                   this.totalRows = this.items.length;
                   this.tblisBusy = false;

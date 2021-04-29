@@ -100,48 +100,6 @@ export default {
               title: "My Daily Time Record"
             }
           ]
-        },
-        {
-          title: "MANAGEMENT",
-          icon: "fas fa-user-cog",
-          child: [
-            {
-              href: "/ManageEmployee",
-              title: "Employee"
-            },
-            {
-              href: "/ManageGroup",
-              title: "Group"
-            },
-            {
-              href: "/ManagePosition",
-              title: "Position"
-            },
-            {
-              href: "/ManageDepartment",
-              title: "Department"
-            },
-            {
-              href: "/ManagePayPeriod",
-              title: "Pay Period"
-            },
-            {
-              href: "/ManageRates",
-              title: "Rates"
-            },
-            {
-              href: "/ManageBranch",
-              title: "Branch"
-            },
-            {
-              href: "/ManageLeaveType",
-              title: "Leave type"
-            },
-            {
-              href: "/ManageCalendar",
-              title: "Calendar"
-            }
-          ]
         }
       ],
       user: {},
@@ -149,6 +107,7 @@ export default {
     };
   },
   created() {
+    this.roles = this.$global.getRoles();
     this.user = this.$global.getUser();
     this.load();
   },
@@ -172,6 +131,60 @@ export default {
         //this.items = response.body;
         //this.tblisBusy = false;
       });
+
+      if (this.roles.hr) {
+        this.menu[4] = {
+          title: "MANAGEMENT",
+          icon: "fas fa-user-cog",
+          child: [
+            {
+              href: "/ManageEmployee",
+              title: "Employee"
+            },
+            {
+              href: "/ShiftSchedule",
+              title: "Shift Schedule"
+            },
+            {
+              href: "/ManageGroup",
+              title: "Group"
+            },
+            {
+              href: "/ManagePosition",
+              title: "Position"
+            },
+            {
+              href: "/ManageDepartment",
+              title: "Department"
+            },
+            {
+              href: "/ManagePayPeriod",
+              title: "Pay Period"
+            }
+          ]
+        };
+
+        if (this.roles.create_rate)
+          this.menu[4].child.push({
+            href: "/ManageRates",
+            title: "Rates"
+          });
+        if (this.roles.create_branch)
+          this.menu[4].child.push({
+            href: "/ManageBranch",
+            title: "Branch"
+          });
+        if (this.roles.create_leave)
+          this.menu[4].child.push({
+            href: "/ManageLeaveType",
+            title: "Leave type"
+          });
+        if (this.roles.create_calendar)
+          this.menu[4].child.push({
+            href: "/ManageCalendar",
+            title: "Calendar"
+          });
+      }
     }
   }
 };

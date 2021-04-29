@@ -8,6 +8,7 @@
             v-b-modal="'ModelAdd'"
             type="button"
             class="btn btn-success btn-labeled pull-right margin-right-10"
+            v-if="roles.create_pay_period"
           >Add</b-button>
         </p>
       </div>
@@ -308,8 +309,18 @@
 
         <!-- /form -->
         <template slot="modal-footer" slot-scope="{  }">
-          <b-button size="sm" variant="success" @click="btnUpdate()">Update</b-button>
-          <b-button size="sm" variant="danger" @click="btnDelete()">Delete</b-button>
+          <b-button
+            size="sm"
+            variant="success"
+            v-if="roles.update_pay_period"
+            @click="btnUpdate()"
+          >Update</b-button>
+          <b-button
+            size="sm"
+            variant="danger"
+            v-if="roles.delete_pay_period"
+            @click="btnDelete()"
+          >Delete</b-button>
         </template>
       </b-modal>
       <!-- End modalEdit -->
@@ -405,7 +416,7 @@ export default {
     this.$global.loadJS();
   },
   created() {
-    //this.roles = this.$global.getRoles();
+    this.roles = this.$global.getRoles();
     this.get_group();
     this.load_items("PayPeriod");
   },

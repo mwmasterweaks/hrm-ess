@@ -81,7 +81,7 @@ return [
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_EXT_HOST', 'localhost'),
+            'host' => env('DB_EXT_HOST', '192.168.0.22\SQLEXPRESS'),
             'port' => env('DB_EXT_PORT', '1433'),
             'database' => env('DB_EXT_DATABASE', 'forge'),
             'username' => env('DB_EXT_USERNAME', 'forge'),

@@ -9,7 +9,7 @@ class CalendarEventController extends Controller
 {
     public function index()
     {
-        $tbl = calendar_event::all();
+        $tbl = calendar_event::with(['branch'])->get();
 
         return response()->json($tbl);
     }

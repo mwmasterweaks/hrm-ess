@@ -17,13 +17,9 @@ class CreateRatesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->decimal('daily_rate');
-            $table->decimal('regular_ot_rate');
-            $table->decimal('holiday_ot_rate');
-            $table->decimal('regular_holiday_rate');
-            $table->decimal('special_holiday_rate');
-            $table->decimal('night_differencial');
-            $table->decimal('undertime_rate');
-            $table->decimal('late_rate');
+            $table->decimal('sss_deduction');
+            $table->decimal('phic_deduction');
+            $table->decimal('hdmf__deduction');
             $table->timestamps();
         });
     }

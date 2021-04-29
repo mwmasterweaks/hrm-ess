@@ -468,6 +468,8 @@ class ApproverController extends Controller
             }
         } else if ($request->description ==  'Change rest day') {
             //ok nana
+            $from = new Carbon($request->from);
+            $to = new Carbon($request->to);
             if ($level <= $request->approve_level) {
                 DB::table('change_rest_days')
                     ->where('reference_no', $request->reference_no)
@@ -567,6 +569,7 @@ class ApproverController extends Controller
         try {
             //leaves
             $lv =  Leave::with(['leave_type', 'leave_days', 'employee'])
+                ->where("employee_id", $id)
                 ->get();
             //Leave::with(['leave_type'])->where("employee_id", $id)->get();
             $ret_val = [];

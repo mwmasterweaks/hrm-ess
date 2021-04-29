@@ -1,9 +1,12 @@
 <template>
   <div class>
     <nav class="navbar navbar-expand-lg mainnav" style="background-color: #076c2d; z-index:1001;">
-      <router-link class="navbar-brand" to="/home">
-        <a class="navbar-brand" href="javascript:void(0);" alt="Dashboard">
-          <span class="textColor systemName">HRM-Employee Self Service</span>
+      <router-link class to="/home">
+        <a class href="javascript:void(0);" alt="Dashboard" style="margin-left: 10px;">
+          <!-- <span class="textColor systemName">HRM-Employee Self Service</span> -->
+          <img src="../img/logo1.png" style="width:350px;" />
+          <!-- <img src="../img/logo1.png" style="width:225px;" /> -->
+          <!-- <span class="textColor systemName">EMPLOYEE SELF SERVICE</span> -->
         </a>
       </router-link>
 
@@ -30,10 +33,10 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <span
-                class="textColor"
-                style="color: black;"
-              >{{ authenticatedUser.employee.first_name }} {{ authenticatedUser.employee.last_name }}</span>
+              <span class="textColor" style="color: black;">
+                {{ authenticatedUser.employee.first_name }}
+                {{ authenticatedUser.employee.last_name }}
+              </span>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <router-link class="dropdown-item" tag="a" to="/Profile">
@@ -55,7 +58,8 @@
                 Help
               </router-link>
               <a class="dropdown-item" href="javascript:void(0);" @click="logout">
-                <img class="iconSize" src="../img/logout.png" style="font-size:18px" /> Log Out
+                <img class="iconSize" src="../img/logout.png" style="font-size:18px" />
+                Log Out
               </a>
             </div>
           </li>

@@ -8,6 +8,7 @@
             v-b-modal="'ModelAdd'"
             type="button"
             class="btn btn-success btn-labeled pull-right margin-right-10"
+            v-if="roles.create_calendar"
           >Add</b-button>
         </p>
       </div>
@@ -86,7 +87,6 @@
         :footer-text-variant="' elClr'"
         size="xl"
         title="Add Calendar Event"
-        @ok="handleOk"
       >
         <!-- form -->
         <div class="rowFields mx-auto row">
@@ -173,6 +173,24 @@
               class="text-danger pull-left"
               v-show="errors.has('Frequency')"
             >Frequency is required.</small>
+          </div>
+        </div>
+
+        <div class="rowFields mx-auto row">
+          <div class="col-lg-3">
+            <p class="textLabel">Branch:</p>
+          </div>
+          <div class="col-lg-9">
+            <model-list-select
+              :list="branch_list"
+              v-model="item_add.branch_id"
+              option-value="id"
+              option-text="name"
+              placeholder="Select Branch"
+              name="Branch"
+              v-validate="'required'"
+            ></model-list-select>
+            <small class="text-danger pull-left" v-show="errors.has('Branch')">Branch is required.</small>
           </div>
         </div>
 
@@ -308,6 +326,24 @@
 
         <div class="rowFields mx-auto row">
           <div class="col-lg-3">
+            <p class="textLabel">Branch:</p>
+          </div>
+          <div class="col-lg-9">
+            <model-list-select
+              :list="branch_list"
+              v-model="item_edit.branch_id"
+              option-value="id"
+              option-text="name"
+              placeholder="Select Branch"
+              name="Branch"
+              v-validate="'required'"
+            ></model-list-select>
+            <small class="text-danger pull-left" v-show="errors.has('Branch')">Branch is required.</small>
+          </div>
+        </div>
+
+        <div class="rowFields mx-auto row">
+          <div class="col-lg-3">
             <p class="textLabel">Date from:</p>
           </div>
           <div class="col-lg-9">
@@ -329,8 +365,18 @@
         </div>
         <!-- /form -->
         <template slot="modal-footer" slot-scope="{  }">
-          <b-button size="sm" variant="success" @click="btnUpdate()">Update</b-button>
-          <b-button size="sm" variant="danger" @click="btnDelete()">Delete</b-button>
+          <b-button
+            size="sm"
+            variant="success"
+            v-if="roles.update_calendar"
+            @click="btnUpdate()"
+          >Update</b-button>
+          <b-button
+            size="sm"
+            variant="danger"
+            v-if="roles.delete_calendar"
+            @click="btnDelete()"
+          >Delete</b-button>
         </template>
       </b-modal>
       <!-- End modalEdit -->
@@ -354,9 +400,25 @@ export default {
       tblisBusy: true,
       fields: [
         { key: "name", sortable: true },
-        { key: "description", sortable: true },
+        {
+          key: "description",
+          formatter: value => {
+            if (value.length > 40) return value.slice(0, 40) + "...";
+            else return value;
+          },
+          sortable: true
+        },
         { key: "type", sortable: true },
         { key: "frequency", sortable: true },
+        {
+          key: "branch",
+          label: "Branch",
+          formatter: value => {
+            if (value == null) return "All Branches";
+            else return value.name;
+          },
+          sortable: true
+        },
         { key: "from", sortable: true },
         { key: "to", sortable: true },
         { key: "created_at", sortable: true }
@@ -395,6 +457,7 @@ export default {
           name: "This year only"
         }
       ],
+      branch_list: {},
       roles: []
     };
   },
@@ -402,9 +465,16 @@ export default {
     this.$global.loadJS();
   },
   created() {
-    //this.roles = this.$global.getRoles();
+    this.roles = this.$global.getRoles();
+    this.branch_list = this.$global.getBranch();
     this.get_group();
     this.load_items("Calendar");
+
+    var temp = {
+      id: 0,
+      name: "All Branches"
+    };
+    this.branch_list.unshift(temp);
   },
   mounted() {
     this.load();
@@ -415,6 +485,7 @@ export default {
       this.$http.get("api/" + model).then(function(response) {
         this.items = response.body;
         this.tblisBusy = false;
+        console.log(this.items);
       });
     },
     get_group() {

@@ -5,9 +5,10 @@
         <p class="elClr panel-title">
           Manage Rates
           <b-button
-            v-b-modal="'ModelAdd'"
+            @click="openModalAdd"
             type="button"
             class="btn btn-success btn-labeled pull-right margin-right-10"
+            v-if="roles.create_rate"
           >Add</b-button>
         </p>
       </div>
@@ -75,9 +76,9 @@
         </div>
       </div>
 
-      <!-- ModelAdd ---------------------------------------------------------------------------------------->
+      <!-- modalAdd ---------------------------------------------------------------------------------------->
       <b-modal
-        id="ModelAdd"
+        id="modalAdd"
         :header-bg-variant="' elBG'"
         :header-text-variant="' elClr'"
         :body-bg-variant="' elBG'"
@@ -85,9 +86,11 @@
         :footer-bg-variant="' elBG'"
         :footer-text-variant="' elClr'"
         size="xl"
-        title="Add Rates"
-        @ok="handleOk"
       >
+        <template #modal-title>
+          <span v-if="item.state == 'create'">Rate Form</span>
+          <span v-else>Manage Rate</span>
+        </template>
         <!-- form -->
         <div class="rowFields mx-auto row">
           <div class="col-lg-3">
@@ -103,7 +106,7 @@
               title="Name of rate"
               placeholder="Rate name"
               v-validate="'required'"
-              v-model.trim="item_add.name"
+              v-model.trim="item.name"
               autocomplete="off"
               autofocus="on"
             />
@@ -123,7 +126,7 @@
               v-b-tooltip.hover
               title="Daily Rate"
               placeholder="Daily Rate"
-              v-model.trim="item_add.daily_rate"
+              v-model.trim="item.daily_rate"
               v-validate="'required'"
               autocomplete="off"
             />
@@ -136,398 +139,82 @@
 
         <div class="rowFields mx-auto row">
           <div class="col-lg-3">
-            <p class="textLabel">Regular Over Time Rate:</p>
+            <p class="textLabel">SSS Deduction:</p>
           </div>
           <div class="col-lg-9">
             <input
               type="number"
-              name="regular_ot_rate"
+              name="sss_deduction"
               class="form-control"
               v-b-tooltip.hover
-              title="Regular Over Time Rate (per 30 min)"
-              placeholder="Regular Over Time Rate (per 30 min)"
-              v-model.trim="item_add.regular_ot_rate"
+              title="Input SSS Deduction every payroll"
+              placeholder="SSS Deduction"
+              v-model.trim="item.sss_deduction"
               v-validate="'required'"
               autocomplete="off"
             />
             <small
               class="text-danger pull-left"
-              v-show="errors.has('regular_ot_rate')"
-            >Regular Over Time rate is required.</small>
+              v-show="errors.has('sss_deduction')"
+            >SSS Deductions is required.</small>
           </div>
         </div>
 
         <div class="rowFields mx-auto row">
           <div class="col-lg-3">
-            <p class="textLabel">Holiday Over Time Rate:</p>
+            <p class="textLabel">PHIC Deduction:</p>
           </div>
           <div class="col-lg-9">
             <input
               type="number"
-              name="holiday_ot_rate"
+              name="phic_deduction"
               class="form-control"
               v-b-tooltip.hover
-              title="Holiday Over Time Rate (per 30 min)"
-              placeholder="Holiday Over Time Rate (per 30 min)"
-              v-model.trim="item_add.holiday_ot_rate"
+              title="Input PHIC Deduction every payroll"
+              placeholder="PHIC Deduction"
+              v-model.trim="item.phic_deduction"
               v-validate="'required'"
               autocomplete="off"
             />
             <small
               class="text-danger pull-left"
-              v-show="errors.has('holiday_ot_rate')"
-            >Holiday Over Time rate is required.</small>
+              v-show="errors.has('phic_deduction')"
+            >PHIC Deduction is required.</small>
           </div>
         </div>
 
         <div class="rowFields mx-auto row">
           <div class="col-lg-3">
-            <p class="textLabel">Regular Holiday Rate:</p>
+            <p class="textLabel">HDMF Deduction:</p>
           </div>
           <div class="col-lg-9">
             <input
               type="number"
-              name="regular_holiday_rate"
+              name="hdmf_deduction"
               class="form-control"
               v-b-tooltip.hover
-              title="Regular Holiday Rate (per day)"
-              placeholder="Regular Holiday Rate (per day)"
-              v-model.trim="item_add.regular_holiday_rate"
+              title="Input HDMF Deduction every payroll"
+              placeholder="HDMF Deduction"
+              v-model.trim="item.hdmf_deduction"
               v-validate="'required'"
               autocomplete="off"
             />
             <small
               class="text-danger pull-left"
-              v-show="errors.has('regular_holiday_rate')"
-            >Regular Holiday rate is required.</small>
-          </div>
-        </div>
-
-        <div class="rowFields mx-auto row">
-          <div class="col-lg-3">
-            <p class="textLabel">Special Holiday Rate:</p>
-          </div>
-          <div class="col-lg-9">
-            <input
-              type="number"
-              name="special_holiday_rate"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Special Holiday Rate (per day)"
-              placeholder="Special Holiday Rate (per day)"
-              v-model.trim="item_add.special_holiday_rate"
-              v-validate="'required'"
-              autocomplete="off"
-            />
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('special_holiday_rate')"
-            >Special Holiday rate is required.</small>
-          </div>
-        </div>
-
-        <div class="rowFields mx-auto row">
-          <div class="col-lg-3">
-            <p class="textLabel">Night Differencial:</p>
-          </div>
-          <div class="col-lg-9">
-            <input
-              type="number"
-              name="night_differencial"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Night Differencial (per 30 min)"
-              placeholder="Night Differencial (per 30 min)"
-              v-model.trim="item_add.night_differencial"
-              v-validate="'required'"
-              autocomplete="off"
-            />
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('night_differencial')"
-            >Night Differencial is required.</small>
-          </div>
-        </div>
-
-        <div class="rowFields mx-auto row">
-          <div class="col-lg-3">
-            <p class="textLabel">Undertime Rate:</p>
-          </div>
-          <div class="col-lg-9">
-            <input
-              type="number"
-              name="undertime_rate"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Undertime Rate(per minute)"
-              placeholder="Undertime Rate(per minute)"
-              v-model.trim="item_add.undertime_rate"
-              v-validate="'required'"
-              autocomplete="off"
-            />
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('undertime_rate')"
-            >Undertime rate is required.</small>
-          </div>
-        </div>
-
-        <div class="rowFields mx-auto row">
-          <div class="col-lg-3">
-            <p class="textLabel">Late Rate:</p>
-          </div>
-          <div class="col-lg-9">
-            <input
-              type="number"
-              name="late_rate"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Late Rate(per minute)"
-              placeholder="Late Rate(per minute)"
-              v-model.trim="item_add.late_rate"
-              v-validate="'required'"
-              autocomplete="off"
-            />
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('late_rate')"
-            >Late rate is required.</small>
-          </div>
-        </div>
-
-        <!-- /form -->
-        <template slot="modal-footer" slot-scope="{  }">
-          <b-button size="sm" variant="success" @click="btnAdd()">Add</b-button>
-        </template>
-      </b-modal>
-      <!-- End ModelAdd -->
-
-      <!-- modalEdit ---------------------------------------------------------------------------------------->
-      <b-modal
-        id="modalEdit"
-        :header-bg-variant="' elBG'"
-        :header-text-variant="' elClr'"
-        :body-bg-variant="' elBG'"
-        :body-text-variant="' elClr'"
-        :footer-bg-variant="' elBG'"
-        :footer-text-variant="' elClr'"
-        size="xl"
-        title="Update Rates"
-        @ok="handleOk"
-      >
-        <!-- form -->
-        <div class="rowFields mx-auto row">
-          <div class="col-lg-3">
-            <p class="textLabel">Rate Name:</p>
-          </div>
-          <div class="col-lg-9">
-            <input
-              type="text"
-              name="name"
-              ref="name"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Name of rate"
-              placeholder="Rate name"
-              v-validate="'required'"
-              v-model.trim="item_edit.name"
-              autocomplete="off"
-              autofocus="on"
-            />
-            <small class="text-danger pull-left" v-show="errors.has('name')">Rate name is required.</small>
-          </div>
-        </div>
-
-        <div class="rowFields mx-auto row">
-          <div class="col-lg-3">
-            <p class="textLabel">Daily Rate:</p>
-          </div>
-          <div class="col-lg-9">
-            <input
-              type="number"
-              name="daily_rate"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Daily Rate"
-              placeholder="Daily Rate"
-              v-model.trim="item_edit.daily_rate"
-              v-validate="'required'"
-              autocomplete="off"
-            />
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('daily_rate')"
-            >Daily rate is required.</small>
-          </div>
-        </div>
-
-        <div class="rowFields mx-auto row">
-          <div class="col-lg-3">
-            <p class="textLabel">Regular Over Time Rate:</p>
-          </div>
-          <div class="col-lg-9">
-            <input
-              type="number"
-              name="regular_ot_rate"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Regular Over Time Rate"
-              placeholder="Regular Over Time Rate"
-              v-model.trim="item_edit.regular_ot_rate"
-              v-validate="'required'"
-              autocomplete="off"
-            />
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('regular_ot_rate')"
-            >Regular Over Time rate is required.</small>
-          </div>
-        </div>
-
-        <div class="rowFields mx-auto row">
-          <div class="col-lg-3">
-            <p class="textLabel">Holiday Over Time Rate:</p>
-          </div>
-          <div class="col-lg-9">
-            <input
-              type="number"
-              name="holiday_ot_rate"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Holiday Over Time Rate"
-              placeholder="Holiday Over Time Rate"
-              v-model.trim="item_edit.holiday_ot_rate"
-              v-validate="'required'"
-              autocomplete="off"
-            />
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('holiday_ot_rate')"
-            >Holiday Over Time rate is required.</small>
-          </div>
-        </div>
-
-        <div class="rowFields mx-auto row">
-          <div class="col-lg-3">
-            <p class="textLabel">Regular Holiday Rate:</p>
-          </div>
-          <div class="col-lg-9">
-            <input
-              type="number"
-              name="regular_holiday_rate"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Regular Holiday Rate"
-              placeholder="Regular Holiday Rate"
-              v-model.trim="item_edit.regular_holiday_rate"
-              v-validate="'required'"
-              autocomplete="off"
-            />
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('regular_holiday_rate')"
-            >Regular Holiday rate is required.</small>
-          </div>
-        </div>
-
-        <div class="rowFields mx-auto row">
-          <div class="col-lg-3">
-            <p class="textLabel">Special Holiday Rate:</p>
-          </div>
-          <div class="col-lg-9">
-            <input
-              type="number"
-              name="special_holiday_rate"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Special Holiday Rate"
-              placeholder="Special Holiday Rate"
-              v-model.trim="item_edit.special_holiday_rate"
-              v-validate="'required'"
-              autocomplete="off"
-            />
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('special_holiday_rate')"
-            >Special Holiday rate is required.</small>
-          </div>
-        </div>
-
-        <div class="rowFields mx-auto row">
-          <div class="col-lg-3">
-            <p class="textLabel">Night Differencial:</p>
-          </div>
-          <div class="col-lg-9">
-            <input
-              type="number"
-              name="night_differencial"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Night Differencial"
-              placeholder="Night Differencial"
-              v-model.trim="item_edit.night_differencial"
-              v-validate="'required'"
-              autocomplete="off"
-            />
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('night_differencial')"
-            >Night Differencial is required.</small>
-          </div>
-        </div>
-
-        <div class="rowFields mx-auto row">
-          <div class="col-lg-3">
-            <p class="textLabel">Undertime Rate:</p>
-          </div>
-          <div class="col-lg-9">
-            <input
-              type="number"
-              name="undertime_rate"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Undertime Rate"
-              placeholder="Undertime Rate"
-              v-model.trim="item_edit.undertime_rate"
-              v-validate="'required'"
-              autocomplete="off"
-            />
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('undertime_rate')"
-            >Undertime rate is required.</small>
-          </div>
-        </div>
-
-        <div class="rowFields mx-auto row">
-          <div class="col-lg-3">
-            <p class="textLabel">Late Rate:</p>
-          </div>
-          <div class="col-lg-9">
-            <input
-              type="number"
-              name="late_rate"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Late Rate"
-              placeholder="Late Rate"
-              v-model.trim="item_edit.late_rate"
-              v-validate="'required'"
-              autocomplete="off"
-            />
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('late_rate')"
-            >Late rate is required.</small>
+              v-show="errors.has('hdmf_deduction')"
+            >HDMF Deduction is required.</small>
           </div>
         </div>
         <!-- /form -->
         <template slot="modal-footer" slot-scope="{  }">
-          <b-button size="sm" variant="success" @click="btnUpdate()">Update</b-button>
-          <b-button size="sm" variant="danger" @click="btnDelete()">Delete</b-button>
+          <b-button size="sm" variant="success" @click="btnAdd()" v-if="item.state == 'create'">Add</b-button>
+          <span v-else>
+            <b-button size="sm" variant="success" @click="btnUpdate()">Update</b-button>
+            <b-button size="sm" variant="danger" @click="btnDelete()">Delete</b-button>
+          </span>
         </template>
       </b-modal>
-      <!-- End modalEdit -->
+      <!-- End modalAdd -->
     </div>
   </div>
 </template>
@@ -545,11 +232,9 @@ export default {
       fields: [
         { key: "name", sortable: true },
         { key: "daily_rate", sortable: true },
-        { key: "regular_ot_rate", sortable: true },
-        { key: "special_holiday_rate", sortable: true },
-        { key: "night_differencial", sortable: true },
-        { key: "created_at", sortable: true },
-        { key: "updated_at", sortable: true }
+        { key: "sss_deduction", sortable: true },
+        { key: "phic_deduction", sortable: true },
+        { key: "hdmf_deduction", sortable: true }
       ],
       items: [],
       tblFilter: null,
@@ -557,27 +242,13 @@ export default {
       currentPage: 2,
       perPage: 10,
       pageOptions: [10, 25, 50, 100],
-      item_add: {
+      item: {
         name: "",
         daily_rate: "",
-        regular_ot_rate: "",
-        holiday_ot_rate: "",
-        regular_holiday_rate: "",
-        special_holiday_rate: "",
-        night_differencial: "",
-        undertime_rate: "",
-        late_rate: ""
-      },
-      item_edit: {
-        name: "",
-        daily_rate: "",
-        regular_ot_rate: "",
-        holiday_ot_rate: "",
-        regular_holiday_rate: "",
-        special_holiday_rate: "",
-        night_differencial: "",
-        undertime_rate: "",
-        late_rate: ""
+        sss_deduction: "",
+        phic_deduction: "",
+        hdmf_deduction: "",
+        state: "create"
       },
       roles: []
     };
@@ -586,7 +257,7 @@ export default {
     this.$global.loadJS();
   },
   created() {
-    //this.roles = this.$global.getRoles();
+    this.roles = this.$global.getRoles();
     this.load_items("Rate");
   },
   mounted() {
@@ -620,11 +291,13 @@ export default {
       this.currentPage = 1;
     },
     tblRowClicked(item, index, event) {
-      this.$bvModal.show("modalEdit");
-      this.item_edit = item;
+      this.item = item;
+      this.item.state = "update";
+      this.$bvModal.show("modalAdd");
     },
-    handleOk(bvModalEvt) {
-      bvModalEvt.preventDefault();
+    openModalAdd() {
+      this.clearData();
+      this.$bvModal.show("modalAdd");
     },
     btnUpdate() {
       this.$validator.validateAll().then(result => {
@@ -639,12 +312,13 @@ export default {
           }).then(update => {
             if (update) {
               this.$http
-                .put("api/Rate/" + this.item_edit.id, this.item_edit)
+                .put("api/Rate/" + this.item.id, this.item)
                 .then(response => {
                   this.items = response.body;
                   this.totalRows = this.items.length;
                   swal("Update!", "Update successfully", "success");
-                  this.$bvModal.hide("modalEdit");
+                  this.clearData();
+                  this.$bvModal.hide("modalAdd");
                   this.tblisBusy = false;
                 })
                 .catch(response => {
@@ -653,10 +327,8 @@ export default {
                     text: response.body.error,
                     icon: "error",
                     dangerMode: true
-                  }).then(value => {
-                    if (value) {
-                    }
                   });
+                  this.tblisBusy = false;
                 });
             }
           });
@@ -667,24 +339,14 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.$http
-            .post("api/Rate", this.item_add)
+            .post("api/Rate", this.item)
             .then(response => {
               swal("Notification", "Added successfully", "success");
               this.items = response.body;
               this.totalRows = this.items.length;
-              this.item_add = {
-                name: "",
-                daily_rate: "",
-                regular_ot_rate: "",
-                holiday_ot_rate: "",
-                regular_holiday_rate: "",
-                special_holiday_rate: "",
-                night_differencial: "",
-                undertime_rate: "",
-                late_rate: ""
-              };
+              this.clearData();
 
-              this.$bvModal.hide("ModelAdd");
+              this.$bvModal.hide("modalAdd");
             })
             .catch(response => {
               swal({
@@ -692,14 +354,21 @@ export default {
                 text: response.body.error,
                 icon: "error",
                 dangerMode: true
-              }).then(value => {
-                if (value) {
-                  this.$refs.name.focus();
-                }
               });
+              this.tblisBusy = false;
             });
         }
       });
+    },
+    clearData() {
+      this.item = {
+        name: "",
+        daily_rate: "",
+        sss_deduction: "",
+        phic_deduction: "",
+        hdmf_deduction: "",
+        state: "create"
+      };
     },
     btnDelete() {
       swal({
@@ -710,12 +379,11 @@ export default {
         dangerMode: true
       }).then(willDelete => {
         if (willDelete) {
-          this.items = [];
           this.tblisBusy = true;
           this.$http
-            .delete("api/Rate/" + this.item_edit.id)
+            .delete("api/Rate/" + this.item.id)
             .then(response => {
-              this.$bvModal.hide("modalEdit");
+              this.$bvModal.hide("modalAdd");
               swal("Deleted!", "Item has been deleted", "success").then(
                 value => {
                   this.items = response.body;
@@ -730,10 +398,8 @@ export default {
                 text: response.body.error,
                 icon: "error",
                 dangerMode: true
-              }).then(value => {
-                if (value) {
-                }
               });
+              this.tblisBusy = false;
             });
         }
       });

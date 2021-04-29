@@ -49,13 +49,18 @@ class RALogController extends Controller
     {
         try {
             $RALog = RALog::max('id');
-            //156000
+            //select max(id) from r_a_logs
+            //430000
 
-            $tbl = DB::connection('sqlsrv')->select("select [UID] as employeeID, [Date] as datetime
-               from [FASSQL].[dbo].[RALog] where [RN] > " . $RALog);
+            $tbl = DB::connection('sqlsrv')->select("select [RN] as rn, [UID] as employeeID, [Date] as datetime
+                from [FASSQL].[dbo].[RALog] where [RN] > " . $RALog);
+
+            // $tbl = DB::connection('sqlsrv')->select("select [RN] as rn, [UID] as employeeID, [Date] as datetime
+            //    from [FASSQL].[dbo].[RALog] where [RN] > 410000 and [RN] < 430000");
             $temp = [];
             foreach ($tbl as $i => $d) {
                 $temp[$i] = [
+                    'id' => $d->rn,
                     'employeeID' => $d->employeeID,
                     'datetime' => $d->datetime
                 ];

@@ -21,6 +21,41 @@ export default function(Vue) {
       return JSON.parse(localStorage.getItem("_email"));
     },
     //--------------------------------------------------------------
+    setGroup(param1) {
+      localStorage.setItem("_Group", JSON.stringify(param1));
+    },
+    getGroup() {
+      return JSON.parse(localStorage.getItem("_Group"));
+    },
+    //--------------------------------------------------------------
+    setPosition(param1) {
+      localStorage.setItem("_Position", JSON.stringify(param1));
+    },
+    getPosition() {
+      return JSON.parse(localStorage.getItem("_Position"));
+    },
+    //--------------------------------------------------------------
+    setBranch(param1) {
+      localStorage.setItem("_Branch", JSON.stringify(param1));
+    },
+    getBranch() {
+      return JSON.parse(localStorage.getItem("_Branch"));
+    },
+    //--------------------------------------------------------------
+    setDepartment(param1) {
+      localStorage.setItem("_Department", JSON.stringify(param1));
+    },
+    getDepartment() {
+      return JSON.parse(localStorage.getItem("_Department"));
+    },
+    //--------------------------------------------------------------
+    setLeaveType(param1) {
+      localStorage.setItem("_LeaveType", JSON.stringify(param1));
+    },
+    getLeaveType() {
+      return JSON.parse(localStorage.getItem("_LeaveType"));
+    },
+    //--------------------------------------------------------------
     set(param1) {
       localStorage.setItem("_", JSON.stringify(param1));
     },
@@ -29,21 +64,14 @@ export default function(Vue) {
     },
     //--------------------------------------------------------------
     destroyGlobal() {
-      localStorage.removeItem("_packages");
-      localStorage.removeItem("_modems");
-      localStorage.removeItem("_PackageTypes");
-      localStorage.removeItem("_Clients");
-      localStorage.removeItem("_Sales");
       localStorage.removeItem("_Roles");
-      localStorage.removeItem("_Engineer");
-      localStorage.removeItem("_Branch");
       localStorage.removeItem("_User");
       localStorage.removeItem("_email");
-      localStorage.removeItem("_Schedule");
-      localStorage.removeItem("_TicketStatus");
-      localStorage.removeItem("_Ticket");
-      localStorage.removeItem("_OLT");
-      localStorage.removeItem("_PON");
+      localStorage.removeItem("_Group");
+      localStorage.removeItem("_Position");
+      localStorage.removeItem("_Branch");
+      localStorage.removeItem("_Department");
+      localStorage.removeItem("_LeaveType");
       localStorage.removeItem("_");
     },
 

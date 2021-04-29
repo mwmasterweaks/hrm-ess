@@ -10,42 +10,16 @@
           <div class="col-lg-3">
             <p class="textLabel">Name:</p>
           </div>
-          <div class="col-lg-9">
-            <input
-              type="text"
-              name="name"
-              ref="name"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Input the name of the user"
-              placeholder="Name of the user"
-              v-validate="'required'"
-              v-model.trim="user.name"
-              autocomplete="off"
-              autofocus="on"
-            />
-            <small class="text-danger pull-left" v-show="errors.has('name')">Name is required.</small>
-          </div>
+          <div
+            class="col-lg-9"
+          >{{user.employee.first_name}} {{user.employee.middle_name}} {{user.employee.last_name}}</div>
         </div>
 
         <div class="rowFields mx-auto row">
           <div class="col-lg-3">
-            <p class="textLabel">Email:</p>
+            <p class="textLabel">User ID:</p>
           </div>
-          <div class="col-lg-9">
-            <input
-              type="text"
-              name="email"
-              class="form-control"
-              v-b-tooltip.hover
-              title="Input the Email address of the user"
-              placeholder="Email Address"
-              v-validate="{ required: true, email: true }"
-              v-model.trim="user.email"
-              autocomplete="off"
-            />
-            <small class="text-danger pull-left" v-show="errors.has('email')">Email is required.</small>
-          </div>
+          <div class="col-lg-9">{{user.email}}</div>
         </div>
 
         <div class="rowFields mx-auto row">
@@ -114,7 +88,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('password')"
-            >{{ errors.first('password') }}</small>
+            >{{ errors.first("password") }}</small>
           </div>
         </div>
         <div class="rowFields mx-auto row">
@@ -153,6 +127,7 @@
 </template>
 <script>
 import swal from "sweetalert";
+
 export default {
   data() {
     return {
@@ -169,6 +144,7 @@ export default {
   },
   created() {
     this.user = this.$global.getUser();
+    console.log(this.user);
   },
   mounted() {
     this.load();
@@ -188,7 +164,7 @@ export default {
           }).then(update => {
             if (update) {
               this.$http
-                .put("api/user/" + this.user.id, this.user)
+                .put("api/User/" + this.user.id, this.user)
                 .then(response => {
                   this.$global.setUser(this.user);
 
@@ -200,12 +176,9 @@ export default {
                 .catch(response => {
                   swal({
                     title: "Error",
-                    text: response.body,
+                    text: response.body.error,
                     icon: "error",
                     dangerMode: true
-                  }).then(value => {
-                    if (value) {
-                    }
                   });
                 });
             }

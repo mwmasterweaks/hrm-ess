@@ -38,10 +38,22 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('Department', 'DepartmentController');
     Route::resource('RALog', 'RALogController');
     Route::resource('User', 'UserController');
+    Route::resource('ShiftSchedule', 'ShiftScheduleController');
+    Route::resource('Suggestion', 'SuggestionController');
+    Route::resource('SuggestionComment', 'SuggestionCommentController');
+    Route::resource('Deduction', 'DeductionController');
+    Route::resource('DeductionType', 'DeductionTypeController');
+    Route::resource('Earning', 'EarningController');
+    Route::resource('EarningType', 'EarningTypeController');
+    Route::resource('Payslip', 'PayslipController');
 
 
-    Route::post('user/updateRoles', 'UserController@updateRoles');
-     Route::get('user/getRole/{id}', 'UserController@getRole');
+
+
+    Route::post('user/updateRoles', 'EmployeeController@updateRoles');
+    Route::post('user/multipleFilter', 'EmployeeController@multipleFilter');
+
+    Route::get('user/getRole/{id}', 'UserController@getRole');
     Route::post('user/ResetPassword', 'UserController@ResetPassword');
 
     Route::get('user/getUser/{email}', 'UserController@getUser');
@@ -54,6 +66,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('getDTRinRange/{from}/{to}/{emp_id}', 'DtrController@getDTRinRange');
 
     Route::put('getDTR_add/{emp_id}', 'DtrController@getDTR_add');
+    Route::put('HRSummaryReport/{period_id}', 'DtrController@HRSummaryReport');
 
 
     Route::get('getBalance/{emp_id}/{leave_type_id}', 'LeaveBalanceController@getBalance');
@@ -63,8 +76,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('getMyApp/{id}', 'ApproverController@getMyApp');
     Route::put('approveRequest', 'ApproverController@approveRequest');
     Route::put('disapproveRequest', 'ApproverController@disapproveRequest');
+    Route::put('getComments/{s_id}', 'SuggestionCommentController@getComments');
 
     Route::post('generatePayPeriod', 'PayPeriodController@generatePayPeriod');
+    Route::post('PayPeriod/getYear', 'PayPeriodController@getYear');
+    Route::get('PayPeriod/getMonth/{year}', 'PayPeriodController@getMonth');
+    Route::get('PayPeriod/getDay/{yearMonth}', 'PayPeriodController@getDay');
 
     Route::post('Leave/cancelApp', 'LeaveController@cancelApp');
     Route::post('OverTime/cancelApp', 'OverTimeController@cancelApp');
@@ -75,4 +92,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('ManualAttendance/cancelApp', 'ManualAttendanceController@cancelApp');
 
     Route::post('updateRALog', 'RALogController@updateLog');
+
+    Route::post('Deduction/destroyItem', 'DeductionController@destroyItem');
+    Route::post('Earning/destroyItem', 'EarningController@destroyItem');
+    Route::post('Payslip/generatePayslip', 'PayslipController@generatePayslip');
 });

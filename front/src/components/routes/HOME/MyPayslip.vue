@@ -68,21 +68,37 @@
         </div>
       </div>
     </div>
+
+    <b-modal
+      id="ModalMyPayslip"
+      :header-bg-variant="' elBG'"
+      :header-text-variant="' elClr'"
+      :body-bg-variant="' elBG'"
+      :body-text-variant="' elClr'"
+      :footer-bg-variant="' elBG'"
+      :footer-text-variant="' elClr'"
+      size="xl"
+      title="My Payslip"
+    >
+      <payslip_table v-bind:payslip="payslip"></payslip_table>
+    </b-modal>
   </div>
 </template>
 <script>
 import { ModelListSelect } from "vue-search-select";
 import swal from "sweetalert";
+import payslip_table from "../../others/payslip_table.vue";
 
 export default {
   components: {
+    payslip_table,
     "model-list-select": ModelListSelect
   },
   data() {
     return {
       tblisBusy: false,
       fields: [
-        { key: "name", sortable: true },
+        { key: "pay_period.period", label: "Pay Period", sortable: true },
         { key: "created_at", sortable: true },
         { key: "updated_at", sortable: true }
       ],
@@ -95,6 +111,8 @@ export default {
       branch: {
         name: ""
       },
+      payslip: {},
+      user: {},
       roles: []
     };
   },
@@ -102,12 +120,25 @@ export default {
     this.$global.loadJS();
   },
   created() {
+    this.user = this.$global.getUser();
     this.roles = this.$global.getRoles();
+    console.log(this.user);
+    this.load();
   },
   mounted() {},
   updated() {},
   methods: {
-    load() {},
+    load() {
+      this.tblisBusy = true;
+      this.$http
+        .get("api/Payslip/" + this.user.employee_id)
+        .then(function(response) {
+          console.log(response.body);
+          this.items = response.body;
+          this.tblisBusy = false;
+          this.totalRows = this.items.length;
+        });
+    },
     tblRowClass(item, type) {
       if (!item) return;
       else if (this.roles.update_branch) {
@@ -125,97 +156,9 @@ export default {
       this.currentPage = 1;
     },
     tblRowClicked(item, index, event) {
-      if (this.roles.update_branch) {
-        this.$bvModal.show("modalEdit");
-        this.branch.id = item.id;
-        this.branch.name = item.name;
-      }
-    },
-    handleOk(bvModalEvt) {
-      bvModalEvt.preventDefault();
-    },
-    btnUpdate() {
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          swal({
-            title: "Are you sure?",
-            text: "Do you want to Update this branch?",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true
-          }).then(update => {
-            if (update) {
-              this.$http
-                .put("api/Branch/" + this.branch.id, this.branch)
-                .then(response => {
-                  this.items = Object.values(response.body)[1];
-                  this.$global.setBranch(Object.values(response.body)[1]);
-                  swal("Update!", "Update successfully", "success");
-                  this.$bvModal.hide("modalEdit");
-                })
-                .catch(response => {
-                  swal({
-                    title: "Error",
-                    text: response.body.error,
-                    icon: "error",
-                    dangerMode: true
-                  }).then(value => {
-                    if (value) {
-                    }
-                  });
-                });
-            }
-          });
-        }
-      });
-    },
-    btnDelete() {
-      if (this.roles.delete_branch) {
-        swal({
-          title: "Are you sure?",
-          text: "Do you really want to delete this branch permanently",
-          icon: "warning",
-          buttons: true,
-          dangerMode: true
-        }).then(willDelete => {
-          if (willDelete) {
-            this.items = [];
-            this.tblisBusy = true;
-            this.$http
-              .delete("api/Branch/" + this.branch.id)
-              .then(response => {
-                this.$bvModal.hide("modalEdit");
-                this.$global.setBranch(Object.values(response.body)[1]);
-                swal("Deleted!", "Branch has been deleted", "success").then(
-                  value => {
-                    this.items = Object.values(response.body)[1];
-                    this.totalRows = this.items.length;
-                    this.tblisBusy = false;
-                  }
-                );
-              })
-              .catch(response => {
-                swal({
-                  title: "Error",
-                  text: response.body.error,
-                  icon: "error",
-                  dangerMode: true
-                }).then(value => {
-                  if (value) {
-                  }
-                });
-              });
-          }
-        });
-      } else {
-        swal({
-          title: "Opss.",
-          text: "You are not allow to delete a Branch",
-          icon: "warning",
-          buttons: true,
-          dangerMode: true
-        });
-      }
+      console.log(item);
+      this.payslip = item;
+      this.$bvModal.show("ModalMyPayslip");
     }
   }
 };

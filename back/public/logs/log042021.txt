@@ -1,0 +1,24 @@
+2021-04-16 16:38:06	--	1	--	20180926719	--	UserController	--	update	--	message	--	update client id 1
+From: {"employee_id":719,"email":"20180926719","elClr":"black","elBG":"white"}
+To: 1
+
+2021-04-20 13:25:39	--	1	--	20180926719	--	EmployeeController	--	store	--	message	--	Create new User: 1
+Employee: {"id":123,"group_id":1,"rate_id":2,"position_id":1,"branch_id":1,"department_id":1,"employment_status":"Trainee","first_name":"asd","middle_name":"a","last_name":"asd","gender":"Male","date_hired":"2021-04-06","permanent_address":null,"tel_no":null,"mobile_no":null,"email1":null,"email2":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"updated_at":"2021-04-20 13:25:39","created_at":"2021-04-20 13:25:39"}
+
+2021-04-20 13:53:16	--	1	--	20180926719	--	EmployeeController	--	update	--	message	--	update Employee id 123
+From: {"group_id":1,"rate_id":2,"position_id":1,"branch_id":1,"department_id":1,"employment_status":"Trainee","first_name":"ddd","middle_name":"asdasd","last_name":"dd","gender":"Male","date_hired":"2021-04-06","img":null,"permanent_address":null,"tel_no":null,"mobile_no":null,"email1":null,"email2":null,"provincial_address":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"pag_ibig":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null}
+To: {"id":123,"group_id":1,"rate_id":2,"position_id":1,"branch_id":1,"department_id":1,"employment_status":"Trainee","first_name":"ddd","middle_name":"ddddaassd","last_name":"dd","gender":"Male","date_hired":"2021-04-06","img":null,"permanent_address":null,"tel_no":null,"mobile_no":null,"email1":null,"email2":null,"provincial_address":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"pag_ibig":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"created_at":"2021-04-20 13:25:39","updated_at":"2021-04-20 13:53:16"}
+
+2021-04-20 13:57:02	--		--		--	EmployeeController	--	destroy	--	message	--	delete Employee id 123
+Old Employee: {"id":123,"group_id":1,"rate_id":2,"position_id":1,"branch_id":1,"department_id":1,"employment_status":"Trainee","first_name":"ddd","middle_name":"ddddaassd","last_name":"dd","gender":"Male","date_hired":"2021-04-06","img":null,"permanent_address":null,"tel_no":null,"mobile_no":null,"email1":null,"email2":null,"provincial_address":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"pag_ibig":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"created_at":"2021-04-20 13:25:39","updated_at":"2021-04-20 13:53:16"}
+Old User: {"id":17,"employee_id":123,"email":"20210406123","change_pass":1,"elClr":"black","elBG":"white","created_at":"2021-04-20 13:25:39","updated_at":"2021-04-20 13:25:39"}
+
+2021-04-22 13:09:26	--	1	--	20180926719	--	EmployeeController	--	updateRoles	--	Message	--	Update Role User ID: 10
+
+2021-04-22 13:11:27	--	1	--	20180926719	--	EmployeeController	--	updateRoles	--	Message	--	Update Role User ID: 10
+
+2021-04-22 13:15:16	--	1	--	20180926719	--	EmployeeController	--	updateRoles	--	Message	--	Update Role User ID: 10
+
+2021-04-24 13:43:31	--	1	--	20180926719	--	EmployeeController	--	store	--	message	--	Create new User: 1
+Employee: {"id":11,"group_id":1,"rate_id":1,"position_id":1,"branch_id":1,"department_id":1,"employment_status":"Trainee","first_name":"asd","middle_name":"asd","last_name":"asd","gender":"Male","date_hired":"2021-04-05","permanent_address":null,"tel_no":null,"mobile_no":null,"email1":null,"email2":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"updated_at":"2021-04-24 13:43:31","created_at":"2021-04-24 13:43:31"}
+

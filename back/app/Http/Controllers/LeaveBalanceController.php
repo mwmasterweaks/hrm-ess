@@ -28,21 +28,16 @@ class LeaveBalanceController extends Controller
             if ($request->multiple == 1) {
 
                 foreach ($request->employees as $item) {
-
                     $item = (object) $item;
+                    $lb = new leave_balance;
+                    $lb->employee_id = $item->id;
+                    $lb->leave_type_id = $request->leave_type_id;
+                    $lb->enroll_year = $request->enroll_year;
+                    $lb->balance = $request->balance;
+                    $lb->availed = $request->availed;
+                    $lb->accrued = $request->accrued;
 
-                    if ($item->chk) {
-                        $lb = new leave_balance;
-
-                        $lb->employee_id = $item->id;
-                        $lb->leave_type_id = $request->leave_type_id;
-                        $lb->enroll_year = $request->enroll_year;
-                        $lb->balance = $request->balance;
-                        $lb->availed = $request->availed;
-                        $lb->accrued = $request->accrued;
-
-                        $lb->save();
-                    }
+                    $lb->save();
                 }
                 return 0;
             } else {
@@ -54,21 +49,16 @@ class LeaveBalanceController extends Controller
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
-
-
     public function show($id)
     {
         $tbl = leave_balance::with(['leave_type'])->where("employee_id", $id)->get();
 
         return response()->json($tbl);
     }
-
-
     public function edit(leave_balance $leave_balance)
     {
         //
     }
-
     public function update(Request $request, $id)
     {
         try {
@@ -89,7 +79,6 @@ class LeaveBalanceController extends Controller
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
-
     public function destroy($id)
     {
         try {
@@ -100,7 +89,6 @@ class LeaveBalanceController extends Controller
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
-
     public function getBalance($emp_id, $leave_type_id)
     {
         $tbl = DB::table('leave_balances')

@@ -1,8 +1,8 @@
 {
-  "name": "front",
-  "description": "A Vue.js project",
-  "version": "1.0.0",
-  "author": "(PeterBismonte mwmasterweaks@gmail.com)",
+  "name": "hrmess",
+  "description": "DCTECH human resource management - employee self service",
+  "version": "1.3.0",
+  "author": "(Peter Bismonte mwmasterweaks@gmail.com)",
   "license": "MIT",
   "private": true,
   "scripts": {

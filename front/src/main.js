@@ -27,7 +27,12 @@ Vue.use(VeeValidate, {
   fieldsBagName: "veeFields"
 });
 
-Vue.http.options.root = "http://localhost:8000";
+if (window.location.host == "hrmess.dctechmicro.com")
+  Vue.http.options.root = "http://hrmess.dctechmicro.com/hrmessback/";
+else if (window.location.host == "localhost:8088")
+  Vue.http.options.root = "http://localhost:8088/hrmessfront/hrmessback";
+else Vue.http.options.root = "http://localhost:8000";
+
 Vue.http.headers.common["Authorization"] = "Bearer " + Vue.auth.getToken();
 
 Router.beforeEach((to, from, next) => {

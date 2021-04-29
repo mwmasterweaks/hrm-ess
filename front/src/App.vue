@@ -2,7 +2,7 @@
   <div id="app">
     <login v-if="!isAuth"></login>
 
-    <div v-if="isLoad == 2">
+    <div v-if="isLoad == 7">
       <my-navbar></my-navbar>
       <sidebar ref="load"></sidebar>
       <div class="container">
@@ -10,10 +10,13 @@
       </div>
     </div>
     <transition name="bounce">
-      <div class="elBG divLoaderDiv" v-if="isAuth && isLoad != 2">
+      <div class="elBG divLoaderDiv" v-if="isAuth && isLoad != 7">
         <img src="./img/loading.gif" class="imgLoader" />
       </div>
     </transition>
+    <div class="busyPageLoader" v-if="pageBusy">
+      <img src="./img/loading.gif" class="imgLoader" />
+    </div>
   </div>
 </template>
 
@@ -32,6 +35,7 @@ export default {
   },
   data() {
     return {
+      pageBusy: false,
       isAuth: null,
       isLoad: 0,
       user: [],
@@ -48,6 +52,14 @@ export default {
     //   console.log("CALL");
     //   this.load();
     // });
+    this.$root.$on("pageLoading", () => {
+      //console.log("pageLoading");
+      this.pageBusy = true;
+    });
+    this.$root.$on("pageLoaded", () => {
+      //console.log("pageLoaded");
+      this.pageBusy = false;
+    });
   },
   methods: {
     updateCountNotif() {
@@ -61,6 +73,30 @@ export default {
         //   this.$global.setOLT(response.body);
         //   this.isLoad += 1;
         // });
+        this.$http.get("api/Group").then(function(response) {
+          this.$global.setGroup(response.body);
+          this.isLoad += 1; //1
+        });
+
+        this.$http.get("api/Position").then(function(response) {
+          this.$global.setPosition(response.body);
+          this.isLoad += 1; // 2
+        });
+
+        this.$http.get("api/Branch").then(function(response) {
+          this.$global.setBranch(response.body);
+          this.isLoad += 1; // 3
+        });
+
+        this.$http.get("api/Department").then(function(response) {
+          this.$global.setDepartment(response.body);
+          this.isLoad += 1; //4
+        });
+
+        this.$http.get("api/LeaveType").then(function(response) {
+          this.$global.setLeaveType(response.body);
+          this.isLoad += 1; //5
+        });
       }
     },
     getUser() {
@@ -68,7 +104,7 @@ export default {
       this.$http.get("api/user/getUser/" + this.email).then(response => {
         this.$global.setUser(response.body);
         this.user = this.$global.getUser();
-        this.isLoad += 1;
+        this.isLoad += 1; //6
         // console.log(this.user);
         this.getUserRoles();
       });
@@ -76,7 +112,7 @@ export default {
     getUserRoles() {
       this.$http.get("api/user/getRole/" + this.user.id).then(response => {
         this.$global.setRoles(response.body.roles);
-        this.isLoad += 1;
+        this.isLoad += 1; // 7
         this.roles = this.$global.getRoles();
       });
     }
@@ -93,8 +129,30 @@ export default {
   border: 1px solid black;
 }
 body {
-  background-color: #ffffff;
-  color: #0a4677;
+  background-color: #edebeb;
+  color: black;
+  font-size: 14px;
+  line-height: 1;
+}
+.btn {
+  font-size: 14px;
+  padding: 3px;
+}
+.form-control {
+  padding: 3px;
+  height: 2.2em;
+  font-size: 14px;
+}
+input {
+  font-size: 14px;
+  padding: 3px;
+  height: 2.2em;
+}
+.menu-heading {
+  font-size: 14px;
+}
+.dropdown-menu {
+  font-size: 14px;
 }
 .textColor {
   color: rgb(0, 0, 0);
@@ -149,6 +207,17 @@ body {
   position: relative;
   font-size: 17px;
   color: rgba(255, 255, 255, 1);
+}
+.textLabel {
+  margin-top: 9px;
+  font-size: 12px;
+}
+.textLabel1 {
+  font-size: 12px;
+}
+.tbl-display > tbody > tr > td {
+  font-size: 12px;
+  padding: 3px;
 }
 
 .panel > .panel-heading {
@@ -334,5 +403,14 @@ body {
 .my-table {
   border-collapse: collapse;
   width: 100%;
+}
+.busyPageLoader {
+  background-color: rgba(192, 192, 192, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5000;
 }
 </style>

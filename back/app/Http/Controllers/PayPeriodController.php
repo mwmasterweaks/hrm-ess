@@ -106,7 +106,8 @@ class PayPeriodController extends Controller
         $temp = [];
         if ($period == 2) {
             $days = $request->days;
-        } else { }
+        } else {
+        }
 
         if ($freq == "weekly") {
             do {
@@ -134,16 +135,27 @@ class PayPeriodController extends Controller
         }
         if ($freq == "semi") {
 
-            do {
+            $date = $date->subDays(4);
+            while ($year >= $date->year) {
                 $c = collect();
                 $c->put('from', (new Carbon($date))->toDateString());
-                if ($date->day == 1)
-                    $date = $date->addDays(14);
-                else
-                    $date->day =  $date->daysInMonth;
+                //$date = $date->addDays(14);
+                if ($date->day == 28) {
+                    $date = $date->addMonth();
+                    $date->day = 12;
+                    $dtperiod = new Carbon($date);
+                    $dtperiod->day = 15;
+                    if ($year < $date->year)
+                        break;
+                } else {
+                    $date->day = 27;
+                    $dtperiod = new Carbon($date);
+                    $dtperiod->day = $dtperiod->daysInMonth;
+                }
+
 
                 $c->put('to', (new Carbon($date))->toDateString());
-                $dtperiod = new Carbon($date);
+
                 if ($period == 2)
                     $dtperiod = $dtperiod->addDays($days);
 
@@ -156,7 +168,7 @@ class PayPeriodController extends Controller
                 array_push($temp, $newCollection);
 
                 $date = $date->addDay();
-            } while ($year == $date->year);
+            };
         }
         if ($freq == "monthly") {
             do {
@@ -182,5 +194,48 @@ class PayPeriodController extends Controller
             } while ($year == $date->year);
         }
         return $temp;
+    }
+
+    public function getYear()
+    {
+        $tbl = DB::table('pay_periods')
+            ->select("year")
+            ->groupBy("year")
+            ->get();
+
+        return response()->json($tbl);
+    }
+
+    public function getMonth($year)
+    {
+        $tbl = Pay_period::where("period", "like", $year . "%")->get();
+
+        $months = [];
+        foreach ($tbl as $item) {
+            $date = new Carbon($item->period);
+            $c = collect();
+            $c->put('month', $date->month);
+            if (!in_array($c, $months)) {
+                array_push($months, $c);
+            }
+        }
+
+        return response()->json($months);
+    }
+    public function getDay($yearMonth)
+    {
+        $tbl = Pay_period::where("period", "like", $yearMonth . "%")->get();
+        $day = [];
+        foreach ($tbl as $item) {
+            $date = new Carbon($item->period);
+            $item->day =  $date->day;
+            // $c = collect();
+            // $c->put('day', $date->day);
+            // $c->put('id', $item->id);
+            // $c->put('from', $item->from);
+            // $c->put('to', $item->to);
+            array_push($day, $item);
+        }
+        return response()->json($day);
     }
 }

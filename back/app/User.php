@@ -37,4 +37,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Approver::class, 'employee_id', 'employee_id');
     }
+    // public function group()
+    // {
+    //     return $this->hasOne(Group::class, 'id', 'group_id');
+    // }
 }

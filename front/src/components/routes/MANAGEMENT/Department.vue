@@ -266,19 +266,15 @@ export default {
   },
   created() {
     this.roles = this.$global.getRoles();
-    this.load_items("Department");
+    this.items = this.$global.getDepartment();
+    this.tblisBusy = false;
+    this.totalRows = this.items.length;
   },
   mounted() {
     this.load();
   },
   updated() {},
   methods: {
-    load_items(model) {
-      this.$http.get("api/" + model).then(function(response) {
-        this.items = response.body;
-        this.tblisBusy = false;
-      });
-    },
     load() {
       this.$nextTick(function() {
         setTimeout(function() {}, 100);
@@ -320,6 +316,7 @@ export default {
               this.$http
                 .put("api/Department/" + this.item_edit.id, this.item_edit)
                 .then(response => {
+                  this.$global.setDepartment(response.body);
                   this.items = response.body;
                   this.totalRows = this.items.length;
                   swal("Update!", "Update successfully", "success");
@@ -349,6 +346,7 @@ export default {
             .post("api/Department", this.item_add)
             .then(response => {
               swal("Notification", "Added successfully", "success");
+              this.$global.setDepartment(response.body);
               this.items = response.body;
               this.totalRows = this.items.length;
               this.item_add = {
@@ -390,6 +388,7 @@ export default {
               this.$bvModal.hide("modalEdit");
               swal("Deleted!", "Item has been deleted", "success").then(
                 value => {
+                  this.$global.setDepartment(response.body);
                   this.items = response.body;
                   this.totalRows = this.items.length;
                   this.tblisBusy = false;

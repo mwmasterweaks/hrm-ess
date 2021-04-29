@@ -26,12 +26,18 @@ import MyLeaveBalance from "./components/routes/INQUIRY/MyLeaveBalance.vue";
 import Calendar from "./components/routes/MANAGEMENT/Calendar.vue";
 import Employee from "./components/routes/MANAGEMENT/Employee.vue";
 import Group from "./components/routes/MANAGEMENT/Group.vue";
+import ShiftSchedule from "./components/routes/MANAGEMENT/ShiftSchedule.vue";
+
 import Position from "./components/routes/MANAGEMENT/Position.vue";
 import Department from "./components/routes/MANAGEMENT/Department.vue";
 import PayPeriod from "./components/routes/MANAGEMENT/PayPeriod.vue";
 import Branch from "./components/routes/MANAGEMENT/Branch.vue";
 import Rates from "./components/routes/MANAGEMENT/Rates.vue";
 import LeaveType from "./components/routes/MANAGEMENT/LeaveType.vue";
+import Profile from "./components/others/profile.vue";
+import AccountSet from "./components/others/accountSetting.vue";
+import Suggestions from "./components/others/suggestion.vue";
+import Help from "./components/others/Help.vue";
 
 Vue.use(VueRouter);
 
@@ -60,7 +66,7 @@ const router = new VueRouter({
     },
     {
       path: "/",
-      component: Dashboard,
+      component: MyCalendar,
       meta: {
         forAuth: true
       }
@@ -192,6 +198,13 @@ const router = new VueRouter({
       }
     },
     {
+      path: "/ShiftSchedule",
+      component: ShiftSchedule,
+      meta: {
+        forAuth: true
+      }
+    },
+    {
       path: "/ManageLeaveType",
       component: LeaveType,
       meta: {
@@ -229,6 +242,37 @@ const router = new VueRouter({
     {
       path: "/ManageRates",
       component: Rates,
+      meta: {
+        forAuth: true
+      }
+    },
+
+    {
+      path: "/Profile",
+      component: Profile,
+      meta: {
+        forAuth: true
+      }
+    },
+
+    {
+      path: "/AccountSettings",
+      component: AccountSet,
+      meta: {
+        forAuth: true
+      }
+    },
+
+    {
+      path: "/Suggestions",
+      component: Suggestions,
+      meta: {
+        forAuth: true
+      }
+    },
+    {
+      path: "/Help",
+      component: Help,
       meta: {
         forAuth: true
       }

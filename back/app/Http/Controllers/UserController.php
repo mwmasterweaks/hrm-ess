@@ -12,9 +12,10 @@ use Carbon\Carbon;
 
 class UserController extends Controller
 {
+    private $cname = "UserController";
     public function index()
     {
-         $tbl = User::with(['roles'])->get();
+        $tbl = User::with(['roles'])->get();
 
         $users = [];
 
@@ -66,55 +67,101 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $user = User::where('email', '=', $request->email)->first();
+        try {
+            $user = User::where('email', '=', $request->email)->first();
 
-        if (empty($user)) {
-            DB::table('users')->insert([
-                [
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => bcrypt($request->password),
-                    'remember_token' => str_random(10),
-                    'created_at' =>  \Carbon\Carbon::now(),
-                    'updated_at' => \Carbon\Carbon::now()
-                ]
-            ]);
+            if (empty($user)) {
+                $data = DB::table('users')->insert([
+                    [
+                        'name' => $request->name,
+                        'email' => $request->email,
+                        'password' => bcrypt($request->password),
+                        'remember_token' => str_random(10),
+                        'created_at' =>  \Carbon\Carbon::now(),
+                        'updated_at' => \Carbon\Carbon::now()
+                    ]
+                ]);
+                \Logger::instance()->log(
+                    Carbon::now(),
+                    $request->user_id,
+                    $request->user_name,
+                    $this->cname,
+                    "store",
+                    "message",
+                    "Create new Client: " . $data
+                );
+                return response()->json($this->index());
+            } else {
 
-            return response()->json($this->index());
-        } else {
-            return response()->json(['error' => 'Email already exists!'], 500);
+                return response()->json(['error' => 'Email already exists!'], 500);
+            }
+        } catch (Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
+            return response()->json(["error" => $ex->getMessage()], 500);
         }
     }
 
     public function update(Request $request, $id)
     {
+        try {
 
-        if (empty($request->password)) {
-            DB::table('users')
-                ->where('id', $id)
-                ->update([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'updated_at' => \Carbon\Carbon::now()
-                ]);
-        } else {
-            DB::table('users')
-                ->where('id', $id)
-                ->update([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => bcrypt($request->password),
-                    'updated_at' => \Carbon\Carbon::now()
-                ]);
+            $tbl  = User::findOrFail($id);
+            $logFrom = $tbl->replicate();
+
+            if (empty($request->password)) {
+                $logTo = DB::table('users')
+                    ->where('id', $id)
+                    ->update([
+                        'elClr' => $request->elClr,
+                        'elBG' => $request->elBG,
+                        'updated_at' => \Carbon\Carbon::now()
+                    ]);
+            } else {
+                $logTo = DB::table('users')
+                    ->where('id', $id)
+                    ->update([
+                        'elClr' => $request->elClr,
+                        'elBG' => $request->elBG,
+                        'password' => bcrypt($request->password),
+                        'updated_at' => \Carbon\Carbon::now()
+                    ]);
+            }
+
+            if (!empty($request->roles)) {
+                DB::table('role_user')->where('user_id', $id)->delete();
+                $request->roles = (object) $request->roles;
+                $this->setRoles($request->roles, $id);
+            }
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->id,
+                $request->email,
+                $this->cname,
+                "update",
+                "message",
+                "update client id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
+            );
+            return response()->json($this->index());
+        } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->id,
+                $request->email,
+                $this->cname,
+                "update",
+                "Error",
+                $ex->getMessage()
+            );
+            return response()->json(["error" => $ex->getMessage()], 500);
         }
-
-        if (!empty($request->roles)) {
-            DB::table('role_user')->where('user_id', $id)->delete();
-            $request->roles = (object) $request->roles;
-            $this->setRoles($request->roles, $id);
-        }
-
-        return response()->json($this->index());
     }
 
     public function ResetPassword(Request $request)
@@ -140,81 +187,11 @@ class UserController extends Controller
 
     public function getUser($email)
     {
-        $user = User::with(['employee', 'approver'])
+
+
+        $user = User::with(['employee.group', 'employee.rate', 'employee.position', 'employee.branch', 'employee.department', 'approver'])
             ->where('email', '=', $email)->first();
         return response()->json($user);
-    }
-
-     public function updateRoles(Request $request)
-    {
-        try {
-            $id = $request->id;
-            DB::table('role_user')->where('user_id', $id)->delete();
-            $roles = [
-                "create_employee",
-                "update_employee",
-                "delete_employee",
-                "update_RAlog",
-                "view_leave",
-                'create_leave',
-                'update_leave',
-                'delete_leave',
-                'view_dtr',
-                'create_dtr',
-                'update_dtr',
-                'delete_dtr',
-                'view_approver',
-                'create_approver',
-                'update_approver',
-                'delete_approver',
-                'view_payslip',
-                'create_payslip',
-                'update_payslip',
-                'delete_payslip',
-                'create_group',
-                'update_group',
-                'delete_group',
-                'create_position',
-                'update_position',
-                'delete_position',
-                'create_department',
-                'update_department',
-                'delete_department',
-                'create_pay_period',
-                'update_pay_period',
-                'delete_pay_period',
-                'create_rate',
-                'update_rate',
-                'delete_rate',
-                'create_branch',
-                'update_branch',
-                'delete_branch',
-                'create_calendar',
-                'update_calendar',
-                'delete_calendar',
-                'manage_leave',
-                'operator',
-                'hr',
-                'employee',
-                'admin',
-                'rm',
-                'network',
-                'role',
-            ];
-            $x = 0;
-            foreach ($roles as $role) {
-                $x++;
-                if (isset($request->roles[$role])) {
-                    if ($request->roles[$role])
-                        DB::table('role_user')->insert(
-                            ['user_id' => $id, 'role_id' => $x]
-                        );
-                }
-            }
-            return $this->index();
-        } catch (\Exception $ex) {
-            return response()->json(['error' => $ex->getMessage()], 500);
-        }
     }
 
     public function getApplication($type, $approve_id)

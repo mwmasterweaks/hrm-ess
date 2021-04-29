@@ -7,18 +7,25 @@
           <b-button
             @click="openModalEmployee"
             type="button"
+            v-b-tooltip.hover
+            title="Create new Employee"
             class="btn btn-success btn-labeled pull-right margin-right-10"
             v-if="roles.create_employee"
-            >Add</b-button
           >
+            <i class="fas fa-plus-square"></i>
+          </b-button>
 
           <b-button
             @click="updateLog"
             type="button"
+            v-b-tooltip.hover
+            title="Update BIO logs"
             class="btn btn-success btn-labeled pull-right margin-right-10"
             v-if="roles.update_RAlog"
-            >Update RAlog</b-button
           >
+            <i class="fas fa-pen-fancy"></i>
+          </b-button>
+          <hrReport></hrReport>
         </p>
       </div>
 
@@ -28,26 +35,24 @@
             <b-col md="5" class="my-1">
               <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input
-                    v-model="tblFilter"
-                    placeholder="Filter"
-                  ></b-form-input>
+                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
-                      >Clear</b-button
-                    >
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
             </b-col>
-            <b-col md="5 " class="my-1"></b-col>
+            <b-col md="5 " class="my-1">
+              <button
+                v-b-modal="'modalEmployeeFilter'"
+                type="button"
+                class="btn btn-success btn-labeled pull-right margin-left-10"
+              >Multiple Filter</button>
+            </b-col>
 
             <b-col md="2 " class="my-1">
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select
-                  v-model="perPage"
-                  :options="pageOptions"
-                ></b-form-select>
+                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -80,6 +85,7 @@
             <template v-slot:cell(actions)="row">
               <button
                 class="btn btn-success btn-labeled"
+                v-b-tooltip.hover
                 title="Manage Leave Balance"
                 @click="openModalLeave(row.item)"
                 v-if="roles.manage_leave"
@@ -88,6 +94,7 @@
               </button>
               <button
                 class="btn btn-success btn-labeled"
+                v-b-tooltip.hover
                 title="Manage Schedule"
                 @click="openModalSched(row.item)"
                 v-if="roles.view_dtr"
@@ -96,17 +103,38 @@
               </button>
               <button
                 class="btn btn-success btn-labeled"
+                v-b-tooltip.hover
                 title="Manage Approver"
                 @click="openModalApprover(row.item)"
                 v-if="roles.view_approver"
               >
                 <i class="fas fa-user-check"></i>
               </button>
+              <button
+                class="btn btn-success btn-labeled"
+                v-b-tooltip.hover
+                title="Manage Earnings"
+                @click="openModal(row.item, 'modalEarning')"
+                v-if="roles.earnings"
+              >
+                <i class="fas fa-angle-double-up"></i>
+              </button>
 
               <button
                 class="btn btn-success btn-labeled"
+                v-b-tooltip.hover
+                title="Manage Deductions"
+                @click="openModal(row.item, 'modalDeduction')"
+                v-if="roles.deduction"
+              >
+                <i class="fas fa-angle-double-down"></i>
+              </button>
+
+              <button
+                class="btn btn-success btn-labeled"
+                v-b-tooltip.hover
                 title="Manage Payslip"
-                @click="openModalManagePayslip(row.item)"
+                @click="openModal(row.item , 'ModalManagePayslip')"
                 v-if="roles.view_payslip"
               >
                 <i class="fas fa-money-check"></i>
@@ -143,14 +171,15 @@
                     class="p-icon p-curve p-jelly"
                     color="primary"
                   >
-                    <i slot="extra" class="icon fas fa-check"></i> </p-check
-                  >Check all
+                    <i slot="extra" class="icon fas fa-check"></i>
+                  </p-check>Check all
                 </div>
               </div>
               <div class="col-md-5" v-if="item_selected.length > 0">
                 <div style="margin-left:-50px">
                   <button
-                    class="btn btn-success "
+                    class="btn btn-success"
+                    v-b-tooltip.hover
                     title="Add Leave Balance to all selected employee"
                     v-b-modal="'ModalAddLeave'"
                     v-if="roles.create_leave"
@@ -158,20 +187,22 @@
                     <i class="fas fa-plane-departure"></i>
                   </button>
                   <button
-                    class="btn btn-success "
+                    class="btn btn-success"
+                    v-b-tooltip.hover
                     v-b-modal="'ModalAddSched'"
                     title="Add Schedule to all selected employee"
                     v-if="roles.create_dtr"
                   >
                     <i class="fas fa-calendar-alt"></i>
                   </button>
-                  <button
-                    class="btn btn-success "
+                  <!-- <button
+                    class="btn btn-success"
+                    v-b-tooltip.hover
                     title="Add Payslip to all selected employee"
                     v-if="roles.create_payslip"
                   >
                     <i class="fas fa-money-check"></i>
-                  </button>
+                  </button>-->
                 </div>
               </div>
             </div>
@@ -205,14 +236,39 @@
         :footer-bg-variant="' elBG'"
         :footer-text-variant="' elClr'"
         size="xl"
-        @ok="handleOk"
+        ok-only
       >
         <template v-slot:modal-title>
-          <p v-if="item_edit.id == ''">Add Employee</p>
-          <p v-if="item_edit.id != ''">Update Employee</p>
+          <p v-if="item_edit.bioID == ''">Add Employee</p>
+          <p v-if="item_edit.bioID != ''">Update Employee</p>
         </template>
 
         <!-- form -->
+
+        <div class="rowFields mx-auto row" v-if="item_edit.bioID == ''">
+          <div class="col-lg-3">
+            <p class="textLabel">Biometric ID:</p>
+          </div>
+          <div class="col-lg-9">
+            <input
+              type="number"
+              name="bio_id"
+              ref="bio_id"
+              class="form-control"
+              v-b-tooltip.hover
+              title="Biometric ID of the Employee"
+              placeholder="Biometric ID"
+              v-validate="'required'"
+              v-model.trim="item_edit.id"
+              autocomplete="off"
+            />
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('bio_id')"
+            >Biometric ID is required.</small>
+          </div>
+        </div>
+
         <div class="rowFields mx-auto row">
           <div class="col-lg-3">
             <p class="textLabel">First Name:</p>
@@ -231,9 +287,10 @@
               autocomplete="off"
               autofocus="on"
             />
-            <small class="text-danger pull-left" v-show="errors.has('fname')"
-              >First Name is required.</small
-            >
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('fname')"
+            >First Name is required.</small>
           </div>
         </div>
 
@@ -273,9 +330,7 @@
               v-model.trim="item_edit.last_name"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('lname')"
-              >Last Name is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('lname')">Last Name is required.</small>
           </div>
         </div>
 
@@ -293,9 +348,7 @@
               name="genders"
               v-validate="'required'"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('genders')"
-              >Gender is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('genders')">Gender is required.</small>
           </div>
         </div>
 
@@ -319,8 +372,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('date_hired')"
-              >Date Hired is required.</small
-            >
+            >Date Hired is required.</small>
           </div>
         </div>
 
@@ -338,9 +390,7 @@
               name="groups"
               v-validate="'required'"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('groups')"
-              >Group is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('groups')">Group is required.</small>
           </div>
         </div>
 
@@ -358,9 +408,7 @@
               name="rates"
               v-validate="'required'"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('rates')"
-              >Rate is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('rates')">Rate is required.</small>
           </div>
         </div>
 
@@ -381,8 +429,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('positions')"
-              >Position is required.</small
-            >
+            >Position is required.</small>
           </div>
         </div>
 
@@ -400,9 +447,7 @@
               name="branches"
               v-validate="'required'"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('branches')"
-              >Branch is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('branches')">Branch is required.</small>
           </div>
         </div>
 
@@ -423,8 +468,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('departments')"
-              >Department is required.</small
-            >
+            >Department is required.</small>
           </div>
         </div>
 
@@ -445,8 +489,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('employment_statuses')"
-              >Employment Status is required.</small
-            >
+            >Employment Status is required.</small>
           </div>
         </div>
 
@@ -459,14 +502,12 @@
                 href="javascript:void(0);"
                 @click="view_other_details = true"
                 v-if="!view_other_details"
-                >Show Other Details (Optional)</a
-              >
+              >Show Other Details (Optional)</a>
               <a
                 href="javascript:void(0);"
                 @click="view_other_details = false"
                 v-if="view_other_details"
-                >Hide Other Details</a
-              >
+              >Hide Other Details</a>
             </center>
           </div>
         </div>
@@ -802,42 +843,46 @@
           <b-button
             size="sm"
             variant="success"
-            v-if="item_edit.id == '' && roles.create_employee"
+            v-if="item_edit.bioID == '' && roles.create_employee"
             @click="btnAdd()"
-            >Add</b-button
           >
+            <i class="fas fa-plus-square"></i>
+          </b-button>
 
           <b-button
             size="sm"
             variant="warning"
             v-b-modal="'ModalRole'"
-            v-if="item_edit.id != '' && roles.role"
-            >Role</b-button
-          >
+            v-if="item_edit.bioID != '' && roles.role"
+          >Role</b-button>
 
           <b-button
             size="sm"
             variant="warning"
             v-b-modal="'ModalResetPassword'"
-            v-if="item_edit.id != '' && roles.update_employee"
-            >Reset Password</b-button
-          >
+            v-if="item_edit.bioID != '' && roles.update_employee"
+          >Reset Password</b-button>
 
           <b-button
             size="sm"
             variant="success"
-            v-if="item_edit.id != '' && roles.create_approver"
+            v-if="item_edit.bioID != '' && roles.create_approver"
             @click="btnMakeApprover"
-            >Make Approver</b-button
-          >
+          >Make Approver</b-button>
 
           <b-button
             size="sm"
             variant="success"
-            v-if="item_edit.id != '' && roles.update_employee"
+            v-if="item_edit.bioID != '' && roles.update_employee"
             @click="btnUpdate"
-            >Update</b-button
-          >
+          >Update</b-button>
+
+          <b-button
+            size="sm"
+            variant="danger"
+            v-if="item_edit.bioID != '' && roles.delete_employee"
+            @click="btnDelete"
+          >Delete</b-button>
         </template>
       </b-modal>
       <!-- End ModelAddEmployee -->
@@ -853,7 +898,7 @@
         :footer-text-variant="' elClr'"
         size="xl"
         title
-        @ok="handleOk"
+        ok-only
       >
         <!--Form-------->
         <div class="elBG panel">
@@ -864,8 +909,9 @@
                 v-b-modal="'ModalAddLeave'"
                 type="button"
                 class="btn btn-success btn-labeled pull-right margin-right-10"
-                >Add</b-button
               >
+                <i class="fas fa-plus-square"></i>
+              </b-button>
             </p>
           </div>
           <div class="elClr panel-body">
@@ -874,16 +920,9 @@
                 <b-col md="5" class="my-1">
                   <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                     <b-input-group>
-                      <b-form-input
-                        v-model="leave_tblFilter"
-                        placeholder="Filter"
-                      ></b-form-input>
+                      <b-form-input v-model="leave_tblFilter" placeholder="Filter"></b-form-input>
                       <b-input-group-append>
-                        <b-button
-                          :disabled="!leave_tblFilter"
-                          @click="leave_tblFilter = ''"
-                          >Clear</b-button
-                        >
+                        <b-button :disabled="!leave_tblFilter" @click="leave_tblFilter = ''">Clear</b-button>
                       </b-input-group-append>
                     </b-input-group>
                   </b-form-group>
@@ -892,10 +931,7 @@
 
                 <b-col md="2 " class="my-1">
                   <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                    <b-form-select
-                      v-model="leave_perPage"
-                      :options="pageOptions"
-                    ></b-form-select>
+                    <b-form-select v-model="leave_perPage" :options="pageOptions"></b-form-select>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -958,10 +994,12 @@
         :footer-bg-variant="' elBG'"
         :footer-text-variant="' elClr'"
         size="xl"
+        ok-only
       >
-        <template v-slot:modal-title v-if="has_checked_item"
-          >Add Leave Balance to all selected employee</template
-        >
+        <template
+          v-slot:modal-title
+          v-if="item_selected.length > 0"
+        >Add Leave Balance to all selected employee</template>
         <template v-else v-slot:modal-title>
           Add Leave Balance to employee ID :
           {{ item_row_click.user.email }} ({{ item_row_click.last_name }})
@@ -986,8 +1024,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('leave_types')"
-              >Leave type is required.</small
-            >
+            >Leave type is required.</small>
           </div>
         </div>
 
@@ -1007,9 +1044,7 @@
               v-model.trim="leave_add.enroll_year"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('year')"
-              >Input valid year.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('year')">Input valid year.</small>
           </div>
         </div>
 
@@ -1029,9 +1064,7 @@
               v-model.trim="leave_add.balance"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('balance')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('balance')">Input valid number.</small>
           </div>
         </div>
 
@@ -1051,9 +1084,7 @@
               v-model.trim="leave_add.availed"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('availed')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('availed')">Input valid number.</small>
           </div>
         </div>
 
@@ -1073,23 +1104,22 @@
               v-model.trim="leave_add.accrued"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('accrued')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('accrued')">Input valid number.</small>
           </div>
         </div>
         <!-- /form -->
         <template slot="modal-footer" slot-scope="{}">
           <b-button
             size="sm"
-            v-if="has_checked_item"
+            v-if="item_selected.length > 0"
             variant="success"
             @click="btnAddLeaveMultiple()"
-            >Add</b-button
           >
-          <b-button size="sm" v-else variant="success" @click="btnAddLeave()"
-            >Add</b-button
-          >
+            <i class="fas fa-plus-square"></i>
+          </b-button>
+          <b-button size="sm" v-else variant="success" @click="btnAddLeave()">
+            <i class="fas fa-plus-square"></i>
+          </b-button>
         </template>
       </b-modal>
       <!-- End ModalAddLeave -->
@@ -1104,6 +1134,7 @@
         :footer-bg-variant="' elBG'"
         :footer-text-variant="' elClr'"
         size="xl"
+        ok-only
       >
         <template v-slot:modal-title>
           Update Leave Balance to employee ID :
@@ -1138,9 +1169,7 @@
               v-model.trim="leave_edit.enroll_year"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('year')"
-              >Input valid year.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('year')">Input valid year.</small>
           </div>
         </div>
 
@@ -1160,9 +1189,7 @@
               v-model.trim="leave_edit.balance"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('balance')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('balance')">Input valid number.</small>
           </div>
         </div>
 
@@ -1182,9 +1209,7 @@
               v-model.trim="leave_edit.availed"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('availed')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('availed')">Input valid number.</small>
           </div>
         </div>
 
@@ -1204,16 +1229,12 @@
               v-model.trim="leave_edit.accrued"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('accrued')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('accrued')">Input valid number.</small>
           </div>
         </div>
         <!-- /form -->
         <template slot="modal-footer" slot-scope="{}">
-          <b-button size="sm" variant="success" @click="btnEditLeave()"
-            >Update</b-button
-          >
+          <b-button size="sm" variant="success" @click="btnEditLeave()">Update</b-button>
         </template>
       </b-modal>
       <!-- End ModalEditLeave -->
@@ -1228,11 +1249,11 @@
         :footer-bg-variant="' elBG'"
         :footer-text-variant="' elClr'"
         size="xl"
-        @ok="handleOk"
+        ok-only
       >
         <template v-slot:modal-title>
           DTR of employee ID : {{ item_row_click.user.email }} ({{
-            item_row_click.last_name
+          item_row_click.last_name
           }})
         </template>
 
@@ -1241,7 +1262,7 @@
           <div class="panel-heading">
             <div class="rowFields mx-auto row">
               <div class="col-lg-2">
-                <p class="textLabel">Period:</p>
+                <p class="elClr panel-title" style="margin-top:9px;">Period:</p>
               </div>
               <div class="col-lg-6">
                 <model-list-select
@@ -1262,8 +1283,9 @@
                   type="button"
                   class="btn btn-success btn-labeled pull-right margin-right-10"
                   v-if="roles.create_dtr"
-                  >Add</b-button
                 >
+                  <i class="fas fa-plus-square"></i>
+                </b-button>
               </div>
             </div>
           </div>
@@ -1273,16 +1295,9 @@
                 <b-col md="5" class="my-1">
                   <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                     <b-input-group>
-                      <b-form-input
-                        v-model="sched_tblFilter"
-                        placeholder="Filter"
-                      ></b-form-input>
+                      <b-form-input v-model="sched_tblFilter" placeholder="Filter"></b-form-input>
                       <b-input-group-append>
-                        <b-button
-                          :disabled="!sched_tblFilter"
-                          @click="sched_tblFilter = ''"
-                          >Clear</b-button
-                        >
+                        <b-button :disabled="!sched_tblFilter" @click="sched_tblFilter = ''">Clear</b-button>
                       </b-input-group-append>
                     </b-input-group>
                   </b-form-group>
@@ -1291,10 +1306,7 @@
 
                 <b-col md="2 " class="my-1">
                   <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                    <b-form-select
-                      v-model="sched_perPage"
-                      :options="pageOptions"
-                    ></b-form-select>
+                    <b-form-select v-model="sched_perPage" :options="pageOptions"></b-form-select>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -1358,14 +1370,15 @@
         :footer-bg-variant="' elBG'"
         :footer-text-variant="' elClr'"
         size="xl"
-        @ok="handleOk"
+        ok-only
       >
-        <template v-slot:modal-title v-if="has_checked_item"
-          >Add Schedule to all selected employee</template
-        >
+        <template
+          v-slot:modal-title
+          v-if="item_selected.length > 0"
+        >Add Schedule to all selected employee</template>
         <template v-slot:modal-title v-else>
           Add Schedule to employee ID : {{ item_row_click.user.email }} ({{
-            item_row_click.last_name
+          item_row_click.last_name
           }})
         </template>
         <!-- form -->
@@ -1425,9 +1438,7 @@
             :key="sched_item.work_date"
           >
             <div class="col-lg-3">
-              <p class="textLabel">
-                {{ sched_item.work_date }} ({{ sched_item.day }})
-              </p>
+              <p class="textLabel">{{ sched_item.work_date }} ({{ sched_item.day }})</p>
             </div>
             <div class="col-lg-1">
               <p-check
@@ -1469,15 +1480,16 @@
         <template slot="modal-footer" slot-scope="{}">
           <b-button
             size="sm"
-            v-if="has_checked_item"
+            v-if="item_selected.length > 0"
             variant="success"
             @click="btnAddSchedMultiple()"
-            >Add</b-button
           >
+            <i class="fas fa-plus-square"></i>
+          </b-button>
 
-          <b-button size="sm" v-else variant="success" @click="btnAddSched()"
-            >Add</b-button
-          >
+          <b-button size="sm" v-else variant="success" @click="btnAddSched()">
+            <i class="fas fa-plus-square"></i>
+          </b-button>
         </template>
       </b-modal>
       <!-- End ModalAddSched -->
@@ -1493,7 +1505,7 @@
         :footer-text-variant="' elClr'"
         size="xl"
         title
-        @ok="handleOk"
+        ok-only
       >
         <!--Form-------->
         <div class="elBG panel">
@@ -1505,8 +1517,7 @@
                 type="button"
                 class="btn btn-success btn-labeled pull-right margin-right-10"
                 v-if="roles.create_approver"
-                >Add Approver</b-button
-              >
+              >Add Approver</b-button>
             </p>
           </div>
           <div class="elClr panel-body">
@@ -1515,16 +1526,12 @@
                 <b-col md="5" class="my-1">
                   <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                     <b-input-group>
-                      <b-form-input
-                        v-model="approve_tblFilter"
-                        placeholder="Filter"
-                      ></b-form-input>
+                      <b-form-input v-model="approve_tblFilter" placeholder="Filter"></b-form-input>
                       <b-input-group-append>
                         <b-button
                           :disabled="!approve_tblFilter"
                           @click="approve_tblFilter = ''"
-                          >Clear</b-button
-                        >
+                        >Clear</b-button>
                       </b-input-group-append>
                     </b-input-group>
                   </b-form-group>
@@ -1533,10 +1540,7 @@
 
                 <b-col md="2 " class="my-1">
                   <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                    <b-form-select
-                      v-model="approve_perPage"
-                      :options="pageOptions"
-                    ></b-form-select>
+                    <b-form-select v-model="approve_perPage" :options="pageOptions"></b-form-select>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -1598,11 +1602,11 @@
         :footer-bg-variant="' elBG'"
         :footer-text-variant="' elClr'"
         size="xl"
-        @ok="handleOk"
+        ok-only
       >
         <template v-slot:modal-title>
           Add Approver to employee ID : {{ item_row_click.user.email }} ({{
-            item_row_click.last_name
+          item_row_click.last_name
           }})
         </template>
         <!-- form -->
@@ -1621,23 +1625,22 @@
               name="approver"
               v-validate="'required'"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('approver')"
-              >Approver name is required.</small
-            >
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('approver')"
+            >Approver name is required.</small>
           </div>
         </div>
         <!-- /form -->
         <template slot="modal-footer" slot-scope="{}">
-          <b-button size="sm" variant="success" @click="btnAddApproverOK()"
-            >Add</b-button
-          >
+          <b-button size="sm" variant="success" @click="btnAddApproverOK()">Add</b-button>
         </template>
       </b-modal>
       <!-- End ModalAddApprover -->
 
       <!-- ModalManagePayslip ---------------------------------------------------------------------------------------->
       <b-modal
-        id="ModalManagePayslip"
+        id="ModalManagePayslip1"
         :header-bg-variant="' elBG'"
         :header-text-variant="' elClr'"
         :body-bg-variant="' elBG'"
@@ -1645,10 +1648,11 @@
         :footer-bg-variant="' elBG'"
         :footer-text-variant="' elClr'"
         size="lg"
+        ok-only
       >
         <template v-slot:modal-title>
           Manage payslip for employee ID : {{ item_row_click.user.email }} ({{
-            item_row_click.last_name
+          item_row_click.last_name
           }})
         </template>
         <!-- form -->
@@ -1941,9 +1945,7 @@
         </div>
         <!-- /form -->
         <template slot="modal-footer" slot-scope="{}">
-          <b-button size="sm" variant="success" @click="btnAddApproverOK()"
-            >Add</b-button
-          >
+          <b-button size="sm" variant="success" @click="btnAddApproverOK()">Add</b-button>
         </template>
       </b-modal>
       <!-- End ModalManagePayslip -->
@@ -1958,10 +1960,11 @@
         :footer-bg-variant="' elBG'"
         :footer-text-variant="' elClr'"
         size="lg"
+        ok-only
       >
         <template v-slot:modal-title>
           Reset Password for employee ID : {{ item_edit.user.email }} ({{
-            item_edit.last_name
+          item_edit.last_name
           }})
         </template>
 
@@ -1996,18 +1999,8 @@
         </div>
 
         <template slot="modal-footer" slot-scope="{}">
-          <b-button
-            size="sm"
-            variant="success"
-            @click="btnSubmitResetPassword()"
-            >Update</b-button
-          >
-          <b-button
-            size="sm"
-            variant="danger"
-            @click="$bvModal.hide('ModalResetPassword')"
-            >Cancel</b-button
-          >
+          <b-button size="sm" variant="success" @click="btnSubmitResetPassword()">Update</b-button>
+          <b-button size="sm" variant="danger" @click="$bvModal.hide('ModalResetPassword')">Cancel</b-button>
         </template>
       </b-modal>
       <!-- End ModalResetPassword -->
@@ -2022,10 +2015,11 @@
         :footer-bg-variant="' elBG'"
         :footer-text-variant="' elClr'"
         size="xl"
+        ok-only
       >
         <template v-slot:modal-title>
           Manage Role for employee ID : {{ item_edit.user.email }} ({{
-            item_edit.last_name
+          item_edit.last_name
           }})
         </template>
 
@@ -2590,6 +2584,36 @@
             ></p-check>
           </div>
         </div>
+
+        <!-- earnings -->
+        <div class="rowFields1 row role-container" style>
+          <div class="col-lg-3">
+            <b>Earning:</b>
+          </div>
+
+          <div class="col-lg-2">
+            <p-check
+              class="checkboxStyle p-switch p-fill"
+              color="success"
+              v-model="editRoles.roles.earnings"
+            ></p-check>
+          </div>
+        </div>
+
+        <!-- deduction -->
+        <div class="rowFields1 row role-container" style>
+          <div class="col-lg-3">
+            <b>Deduction:</b>
+          </div>
+
+          <div class="col-lg-2">
+            <p-check
+              class="checkboxStyle p-switch p-fill"
+              color="success"
+              v-model="editRoles.roles.deduction"
+            ></p-check>
+          </div>
+        </div>
         <!-- Role -->
         <div class="rowFields1 row role-container" style>
           <div class="col-lg-3">
@@ -2606,13 +2630,17 @@
         </div>
 
         <template slot="modal-footer" slot-scope="{}">
-          <b-button size="sm" variant="success" @click="btnUpdateRoles()"
-            >Update</b-button
-          >
+          <b-button size="sm" variant="success" @click="btnUpdateRoles()">Update</b-button>
         </template>
       </b-modal>
       <!-- End ModalRole -->
     </div>
+
+    <!-- other modals -->
+    <earning v-bind:data="item_row_click"></earning>
+    <deduction v-bind:data="item_row_click"></deduction>
+    <payslip v-bind:data="item_row_click"></payslip>
+    <modal_emp_filter></modal_emp_filter>
   </div>
 </template>
 <script>
@@ -2623,9 +2651,20 @@ import PrettyCheck from "pretty-checkbox-vue/check";
 import "bootstrap/dist/css/bootstrap.css";
 import datePicker from "vue-bootstrap-datetimepicker";
 import "pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css";
+import hrReport from "./../../modal_vue/modal_hr_report.vue";
+
+import earning from "../../modal_vue/modal_earnings.vue";
+import deduction from "../../modal_vue/modal_deduction.vue";
+import payslip from "../../modal_vue/modal_payslip.vue";
+import modal_emp_filter from "../../modal_vue/modal_emp_filter.vue";
 
 export default {
   components: {
+    modal_emp_filter: modal_emp_filter,
+    hrReport: hrReport,
+    payslip: payslip,
+    earning: earning,
+    deduction: deduction,
     "date-picker": datePicker,
     "p-check": PrettyCheck,
     "model-list-select": ModelListSelect
@@ -2639,8 +2678,9 @@ export default {
         { key: "user.email", label: "ID", sortable: true },
         {
           key: "Name",
-          label: "Full name",
+          label: "Full Name",
           formatter: (value, key, item) => {
+            if (item.middle_name == null) item.middle_name = "";
             return (
               item.first_name + " " + item.middle_name + " " + item.last_name
             );
@@ -2662,7 +2702,8 @@ export default {
       pageOptions: [10, 25, 50, 100, 1000],
       item_add: {},
       item_edit: {
-        id: "",
+        bioID: "",
+        id: null,
         group_id: "",
         rate_id: "",
         position_id: "",
@@ -2791,12 +2832,16 @@ export default {
               return "<p class='text-danger'>Rest Day</p>";
             else if (item.is_rest_day == 2)
               return "<p class='text-danger'>Leave</p>";
+            else if (item.is_rest_day == 3)
+              return "<p class='text-danger'>Holiday</p>";
             else return item.shift_sched_in + " - " + item.shift_sched_out;
           },
           sortable: true
         },
         { key: "time_in", sortable: true },
-        { key: "time_out", sortable: true }
+        { key: "time_out", sortable: true },
+        { key: "summary.late", label: "Late", sortable: true },
+        { key: "summary.undertime", label: "Undertime", sortable: true }
       ],
       sched_items: [],
       sched_tblFilter: null,
@@ -2846,14 +2891,13 @@ export default {
         other_deduction: ""
       },
       checked_count: 0,
-      has_checked_item: false,
       editRoles: {
         id: "",
         roles: {
           create_employee: false,
           update_employee: false,
           delete_employee: false,
-          update_RAlog: false, //asd
+          update_RAlog: false,
           view_leave: false,
           create_leave: false,
           update_leave: false,
@@ -2900,9 +2944,12 @@ export default {
           update_calendar: false,
           delete_calendar: false,
 
-          manage_leave: false
+          manage_leave: false,
+          earnings: false,
+          deduction: false
         }
       },
+      user: {},
       roles: []
     };
   },
@@ -2910,59 +2957,37 @@ export default {
     this.$global.loadJS();
   },
   created() {
+    this.user = this.$global.getUser();
     this.roles = this.$global.getRoles();
+    this.groups = this.$global.getGroup();
+    this.positions = this.$global.getPosition();
+    this.branches = this.$global.getBranch();
+    this.departments = this.$global.getDepartment();
+    this.leave_types = this.$global.getLeaveType();
     this.load_items("Employee");
-    this.load_groups();
     this.load_rates();
-    this.load_positions();
-    this.load_branches();
-    this.load_departments();
-    this.load_leave_types();
     this.load_pay_period();
-    console.log(this.roles);
   },
   mounted() {
     //this.totalRows = this.items.length;
+
+    this.$root.$on("update_item", item => {
+      this.items = item;
+      this.totalRows = this.items.length;
+    });
   },
   updated() {},
   methods: {
     load_items(model) {
       this.$http.get("api/" + model).then(function(response) {
-        console.log(response.body);
-
         this.items = response.body;
         this.totalRows = this.items.length;
         this.tblisBusy = false;
       });
     },
-    load_groups() {
-      this.$http.get("api/Group").then(function(response) {
-        this.groups = response.body;
-      });
-    },
     load_rates() {
       this.$http.get("api/Rate").then(function(response) {
         this.rates = response.body;
-      });
-    },
-    load_positions() {
-      this.$http.get("api/Position").then(function(response) {
-        this.positions = response.body;
-      });
-    },
-    load_branches() {
-      this.$http.get("api/Branch").then(function(response) {
-        this.branches = response.body;
-      });
-    },
-    load_departments() {
-      this.$http.get("api/Department").then(function(response) {
-        this.departments = response.body;
-      });
-    },
-    load_leave_types() {
-      this.$http.get("api/LeaveType").then(function(response) {
-        this.leave_types = response.body;
       });
     },
     load_pay_period() {
@@ -2982,8 +3007,9 @@ export default {
     },
     openModalEmployee() {
       this.$bvModal.show("ModelAddEmployee");
-      if (this.item_edit.id != "")
+      if (this.item_edit.bioID != "")
         this.item_edit = {
+          bioID: "",
           id: "",
           group_id: "",
           rate_id: "",
@@ -3036,9 +3062,10 @@ export default {
     tblRowClicked(item, index, event) {
       this.$bvModal.show("ModelAddEmployee");
       this.item_edit = item;
+      this.item_edit.bioID = item.id;
       console.log(item);
 
-      this.editRoles.id = item.id;
+      this.editRoles.id = item.user.id;
       this.editRoles.roles = item.roleList;
       this.editRoles.roless = item.roles;
     },
@@ -3048,19 +3075,28 @@ export default {
       console.log(this.leave_edit);
     },
     handleOk(bvModalEvt) {
-      bvModalEvt.preventDefault();
+      //bvModalEvt.preventDefault();
     },
     btnAdd() {
+      console.log(this.item_edit);
+
       this.$validator.validateAll().then(result => {
         if (result) {
+          this.$root.$emit("pageLoading");
+          this.item_edit.user_id = this.user.id;
+          this.item_edit.user_name = this.user.email;
           this.$http
             .post("api/Employee", this.item_edit)
             .then(response => {
-              //console.log(response.body);
+              this.$root.$emit("pageLoaded");
+              console.log(response.body);
               swal("Notification", "Added successfully", "success");
+
+              this.$bvModal.hide("ModelAddEmployee");
               this.items = response.body;
               this.totalRows = this.items.length;
               this.item_edit = {
+                bioID: "",
                 id: "",
                 group_id: "",
                 rate_id: "",
@@ -3093,17 +3129,14 @@ export default {
                 tin_no: "",
                 philhealth_no: ""
               };
-              this.$bvModal.show("ModelAddEmployee");
             })
             .catch(response => {
+              this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
                 dangerMode: true
-              }).then(value => {
-                if (value) {
-                }
               });
             });
         }
@@ -3121,9 +3154,13 @@ export default {
           }).then(update => {
             this.tblisBusy = true;
             if (update) {
+              this.$root.$emit("pageLoading");
+              this.item_edit.user_id = this.user.id;
+              this.item_edit.user_name = this.user.email;
               this.$http
-                .put("api/Employee/" + this.item_edit.id, this.item_edit)
+                .put("api/Employee/" + this.item_edit.bioID, this.item_edit)
                 .then(response => {
+                  this.$root.$emit("pageLoaded");
                   this.items = response.body;
                   this.totalRows = this.items.length;
                   swal("Update!", "Update successfully", "success");
@@ -3131,14 +3168,12 @@ export default {
                   this.tblisBusy = false;
                 })
                 .catch(response => {
+                  this.$root.$emit("pageLoaded");
                   swal({
                     title: "Error",
                     text: response.body.error,
                     icon: "error",
                     dangerMode: true
-                  }).then(value => {
-                    if (value) {
-                    }
                   });
                 });
             }
@@ -3155,11 +3190,13 @@ export default {
         dangerMode: true
       }).then(willDelete => {
         if (willDelete) {
+          this.$root.$emit("pageLoading");
           this.items = [];
           this.tblisBusy = true;
           this.$http
-            .delete("api/Employee/" + this.item_edit.id)
+            .delete("api/Employee/" + this.item_edit.bioID)
             .then(response => {
+              this.$root.$emit("pageLoaded");
               this.$bvModal.hide("modalEdit");
               swal("Deleted!", "Item has been deleted", "success").then(
                 value => {
@@ -3170,14 +3207,12 @@ export default {
               );
             })
             .catch(response => {
+              this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
                 dangerMode: true
-              }).then(value => {
-                if (value) {
-                }
               });
             });
         }
@@ -3206,9 +3241,12 @@ export default {
         if (result) {
           this.leave_add.multiple = 0;
           this.leave_add.employee_id = this.item_row_click.id;
+
+          this.$root.$emit("pageLoading");
           this.$http
             .post("api/LeaveBalance", this.leave_add)
             .then(response => {
+              this.$root.$emit("pageLoaded");
               //console.log(response.body);
               swal("Notification", "Added successfully", "success");
               this.leave_items = response.body;
@@ -3224,28 +3262,29 @@ export default {
               this.$bvModal.hide("ModalAddLeave");
             })
             .catch(response => {
+              this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
                 dangerMode: true
-              }).then(value => {
-                if (value) {
-                }
               });
             });
         }
       });
     },
     btnAddLeaveMultiple() {
+      console.log(this.item_selected);
       this.$validator.validateAll().then(result => {
         if (result) {
-          console.log(this.items);
           this.leave_add.multiple = 1;
-          this.leave_add.employees = this.items;
+          this.leave_add.employees = this.item_selected;
+
+          this.$root.$emit("pageLoading");
           this.$http
             .post("api/LeaveBalance", this.leave_add)
             .then(response => {
+              this.$root.$emit("pageLoaded");
               console.log(response.body);
 
               swal("Notification", "Added successfully", "success");
@@ -3261,14 +3300,12 @@ export default {
               this.uncheckAllSelectedEmp();
             })
             .catch(response => {
+              this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
                 dangerMode: true
-              }).then(value => {
-                if (value) {
-                }
               });
             });
         }
@@ -3286,23 +3323,23 @@ export default {
           }).then(update => {
             this.tblisBusy = true;
             if (update) {
+              this.$root.$emit("pageLoading");
               this.$http
                 .put("api/LeaveBalance/" + this.leave_edit.id, this.leave_edit)
                 .then(response => {
+                  this.$root.$emit("pageLoaded");
                   this.leave_items = response.body;
                   swal("Info!", "Update successfully", "success");
                   this.$bvModal.hide("ModalEditLeave");
                   this.tblisBusy = false;
                 })
                 .catch(response => {
+                  this.$root.$emit("pageLoaded");
                   swal({
                     title: "Error",
                     text: response.body.error,
                     icon: "error",
                     dangerMode: true
-                  }).then(value => {
-                    if (value) {
-                    }
                   });
                 });
             }
@@ -3320,6 +3357,8 @@ export default {
     },
     pay_period_onchange() {
       this.sched_tblisBusy = true;
+
+      this.$root.$emit("pageLoading");
       this.$http
         .get(
           "api/getDTR/" + this.pay_period_select + "/" + this.item_row_click.id
@@ -3327,6 +3366,7 @@ export default {
         .then(function(response) {
           console.log(response.body);
 
+          this.$root.$emit("pageLoaded");
           this.sched_items = response.body;
           this.sched_tblisBusy = false;
           this.sched_totalRows = this.sched_items.length;
@@ -3334,12 +3374,14 @@ export default {
         });
     },
     pay_period_onchange_add() {
+      this.$root.$emit("pageLoading");
       this.$http
         .put(
           "api/getDTR_add/" + this.item_row_click.id,
           this.pay_period_select_add
         )
         .then(function(response) {
+          this.$root.$emit("pageLoaded");
           console.log(response.body);
           this.sched_items_add = response.body;
         });
@@ -3353,29 +3395,33 @@ export default {
         dangerMode: true
       }).then(add => {
         if (add) {
+          this.$root.$emit("pageLoading");
           this.$http
             .post("api/Dtr", this.sched_items_add)
             .then(response => {
+              this.$root.$emit("pageLoaded");
+              console.log(response.body);
+
               swal("Notification", "Added successfully", "success");
               //set new val
               this.sched_items_add = [];
               this.$bvModal.hide("ModalAddSched");
             })
             .catch(response => {
+              this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
                 dangerMode: true
-              }).then(value => {
-                if (value) {
-                }
               });
             });
         }
       });
     },
     btnAddSchedMultiple() {
+      console.log(this.item_selected);
+
       swal({
         title: "Are you sure?",
         text: "Do you really want to submit this schedule?",
@@ -3384,13 +3430,15 @@ export default {
         dangerMode: true
       }).then(add => {
         if (add) {
+          this.$root.$emit("pageLoading");
           var temp = {
             scheds: this.sched_items_add,
-            employees: this.items
+            employees: this.item_selected
           };
           this.$http
             .post("api/Dtr/storeMultiple", temp)
             .then(response => {
+              this.$root.$emit("pageLoaded");
               swal("Notification", "Added successfully", "success");
               //set new val
               this.sched_items_add = [];
@@ -3398,14 +3446,12 @@ export default {
               this.uncheckAllSelectedEmp();
             })
             .catch(response => {
+              this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
                 dangerMode: true
-              }).then(value => {
-                if (value) {
-                }
               });
             });
         }
@@ -3421,24 +3467,24 @@ export default {
         dangerMode: true
       }).then(add => {
         if (add) {
+          this.$root.$emit("pageLoading");
           var approver = {
-            employee_id: this.item_edit.id
+            employee_id: this.item_edit.bioID
           };
           this.$http
             .post("api/Approver", approver)
             .then(response => {
+              this.$root.$emit("pageLoaded");
               console.log(response.body);
               swal("Notification", "Approver added successfully", "success");
             })
             .catch(response => {
+              this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
                 dangerMode: true
-              }).then(value => {
-                if (value) {
-                }
               });
             });
         }
@@ -3461,9 +3507,11 @@ export default {
         this.approvers = response.body;
       });
     },
-    openModalManagePayslip(item) {
-      this.$bvModal.show("ModalManagePayslip");
+    openModal(item, modalName) {
+      //ModalManagePayslip
+      this.$bvModal.show(modalName);
       this.item_row_click = item;
+      console.log(this.item_row_click);
     },
     customeApproverName(item) {
       return `${item.employee.first_name} ${item.employee.last_name}`;
@@ -3477,33 +3525,47 @@ export default {
         dangerMode: true
       }).then(add => {
         if (add) {
+          this.$root.$emit("pageLoading");
+          this.approve_tblisBusy = true;
           this.approve_add.employee_id = this.item_row_click.id;
 
           this.$http
             .post("api/EmployeeApprover", this.approve_add)
             .then(response => {
+              this.$root.$emit("pageLoaded");
               console.log(response.body);
+              this.approve_items = response.body;
+              this.approve_tblisBusy = false;
+              this.approve_totalRows = this.approve_items.length;
               swal("Notification", "Approver added successfully", "success");
             })
             .catch(response => {
+              this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
                 dangerMode: true
-              }).then(value => {
-                if (value) {
-                }
               });
             });
         }
       });
     },
     updateLog() {
-      this.$http.post("api/updateRALog").then(response => {
-        //console.log(response.body);
-        swal("Notification", "Updated", "success");
-      });
+      this.$http
+        .post("api/updateRALog")
+        .then(response => {
+          //console.log(response.body);
+          swal("Notification", "Updated", "success");
+        })
+        .catch(response => {
+          swal({
+            title: "Error",
+            text: response.body.error,
+            icon: "error",
+            dangerMode: true
+          });
+        });
     },
     chkbox_clicked(row) {
       //
@@ -3519,15 +3581,13 @@ export default {
         //   console.log(this.checked_count);
         this.$refs.selectableTable.unselectRow(row.index);
       }
-      // if (this.checked_count > 0) this.has_checked_item = true;
-      // else this.has_checked_item = false;
     },
     uncheckAllSelectedEmp() {
       // this.items.forEach(item => {
       //   item.chk = false;
       // });
       // this.checked_count = 0;
-      this.has_checked_item = false;
+
       this.$refs.selectableTable.clearSelected();
     },
     btnSubmitResetPassword() {
@@ -3539,6 +3599,7 @@ export default {
           buttons: true,
           dangerMode: true
         }).then(update => {
+          this.$root.$emit("pageLoading");
           this.tblisBusy = true;
           ModalResetPassword;
           this.$bvModal.hide("ModalResetPassword");
@@ -3547,18 +3608,17 @@ export default {
             this.$http
               .post("api/user/ResetPassword", this.item_edit)
               .then(response => {
+                this.$root.$emit("pageLoaded");
                 swal("Update!", "Update successfully", "success");
                 this.tblisBusy = false;
               })
               .catch(response => {
+                this.$root.$emit("pageLoaded");
                 swal({
                   title: "Error",
                   text: response.body.error,
                   icon: "error",
                   dangerMode: true
-                }).then(value => {
-                  if (value) {
-                  }
                 });
               });
           }
@@ -3576,22 +3636,24 @@ export default {
         dangerMode: true
       }).then(update => {
         if (update) {
+          this.$root.$emit("pageLoading");
+          this.editRoles.user_id = this.user.id;
+          this.editRoles.user_name = this.user.email;
           this.$http
             .post("api/user/updateRoles", this.editRoles)
             .then(response => {
+              this.$root.$emit("pageLoaded");
               this.items = response.body;
               swal("Updated", "", "success");
               this.$bvModal.hide("modalRoles");
             })
             .catch(response => {
+              this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
                 dangerMode: true
-              }).then(value => {
-                if (value) {
-                }
               });
             });
         }

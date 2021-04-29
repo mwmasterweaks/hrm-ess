@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->integer('employee_id');
             $table->string('email')->unique();
             $table->string('password');
+            $table->integer('change_pass')->default(1);
             $table->string('elClr')->default('black');
             $table->string('elBG')->default('white');
             $table->rememberToken();

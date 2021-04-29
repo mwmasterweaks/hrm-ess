@@ -8,6 +8,7 @@
             v-b-modal="'ModelAdd'"
             type="button"
             class="btn btn-success btn-labeled pull-right margin-right-10"
+            v-if="roles.create_branch"
           >Add</b-button>
         </p>
       </div>
@@ -208,8 +209,18 @@
 
         <!-- /form -->
         <template slot="modal-footer" slot-scope="{  }">
-          <b-button size="sm" variant="success" @click="btnUpdate()">Update</b-button>
-          <b-button size="sm" variant="danger" @click="btnDelete()">Delete</b-button>
+          <b-button
+            size="sm"
+            variant="success"
+            v-if="roles.update_branch"
+            @click="btnUpdate()"
+          >Update</b-button>
+          <b-button
+            size="sm"
+            variant="danger"
+            v-if="roles.delete_branch"
+            @click="btnDelete()"
+          >Delete</b-button>
         </template>
       </b-modal>
       <!-- End modalEdit -->
@@ -254,20 +265,16 @@ export default {
     this.$global.loadJS();
   },
   created() {
-    //this.roles = this.$global.getRoles();
-    this.load_items("Branch");
+    this.roles = this.$global.getRoles();
+    this.items = this.$global.getBranch();
+    this.tblisBusy = false;
+    this.totalRows = this.items.length;
   },
   mounted() {
     this.load();
   },
   updated() {},
   methods: {
-    load_items(model) {
-      this.$http.get("api/" + model).then(function(response) {
-        this.items = response.body;
-        this.tblisBusy = false;
-      });
-    },
     load() {
       this.$nextTick(function() {
         setTimeout(function() {}, 100);
@@ -309,6 +316,7 @@ export default {
               this.$http
                 .put("api/Branch/" + this.item_edit.id, this.item_edit)
                 .then(response => {
+                  this.$global.setBranch(response.body);
                   this.items = response.body;
                   this.totalRows = this.items.length;
                   swal("Update!", "Update successfully", "success");
@@ -338,6 +346,7 @@ export default {
             .post("api/Branch", this.item_add)
             .then(response => {
               swal("Notification", "Added successfully", "success");
+              this.$global.setBranch(response.body);
               this.items = response.body;
               this.totalRows = this.items.length;
               this.item_add = {
@@ -379,6 +388,7 @@ export default {
               this.$bvModal.hide("modalEdit");
               swal("Deleted!", "Item has been deleted", "success").then(
                 value => {
+                  this.$global.setBranch(response.body);
                   this.items = response.body;
                   this.totalRows = this.items.length;
                   this.tblisBusy = false;

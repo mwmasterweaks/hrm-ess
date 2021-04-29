@@ -3,24 +3,23 @@
     <div class="elBG panel">
       <div class="panel-heading">
         <h6 class="elClr panel-title">
-          <b>Version</b>
-          <span class="elClr">1.0.1</span>
+          <b>BETA Version</b>
         </h6>
       </div>
 
       <div class="elClr panel-body">
         <div>
           <span class="elClr">
-            <b>Version: 1.0.1</b>
+            <b>BETA Version:</b>
           </span>
           <br />
           <span class="elClr">
-            <b>Released: July 25, 2019</b>
+            <b>Released: October 02, 2020</b>
           </span>
           <br />
           <span class="elClr">Launched of the website/system</span>
         </div>
-        <embed src="inetinfosystem.pdf" style="width:100%; height:1000px;" />
+        <embed src="doc.pdf" style="width:100%; height:1000px;" />
       </div>
       <div class="panel-footer">
         <div class="heading-elements"></div>

@@ -19,6 +19,7 @@ class CreateCalendarEventsTable extends Migration
             $table->string('description');
             $table->string('type');
             $table->string('frequency');
+            $table->integer('branch_id');
             $table->date('from');
             $table->date('to');
             $table->timestamps();
