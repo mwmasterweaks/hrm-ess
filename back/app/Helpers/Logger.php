@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+//composer require phpmailer/phpmailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -79,7 +80,12 @@ class Logger
         $mail->isHTML(true);                                                                     // Set email format to HTML
         $mail->Subject = $subject;
         $mail->Body    = $message;
-        $mail->send();
+
+         if (!$mail->send()) {
+            return 'Mailer Error: ' . $mail->ErrorInfo;
+        } else {
+            return 'ok';
+        }
     }
 
     public function mailerGmail($subject, $message, $sender, $senderName, $sendTo, $CCTO)

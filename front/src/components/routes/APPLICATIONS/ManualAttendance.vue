@@ -689,8 +689,15 @@ export default {
       }
       if (chk == 0) {
         this.apply.employee_id = this.user.employee_id;
+
+        var tempdata = {
+          apply: this.apply,
+          user_id: this.user.id,
+          user_name: this.user.name
+        }
+
         this.$http
-          .post("api/ManualAttendance", this.apply)
+          .post("api/ManualAttendance", tempdata)
           .then(response => {
             // console.log(response.body);
 
@@ -804,9 +811,14 @@ export default {
         dangerMode: true
       }).then(approve => {
         if (approve) {
+          var tempdata = {
+            item_edit: this.item_edit,
+            user_id: this.user.id,
+            user_name: this.user.name
+          }
           this.tblisBusy = true;
           this.$http
-            .post("api/ManualAttendance/cancelApp", this.item_edit)
+            .post("api/ManualAttendance/cancelApp", tempdata)
             .then(response => {
               console.log(response.body);
               this.items = response.body;

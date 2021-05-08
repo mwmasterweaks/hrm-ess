@@ -86,7 +86,8 @@
           <small
             class="text-danger pull-left"
             v-show="errors.has('deduction_types')"
-          >Deduction type is required.</small>
+            >Deduction type is required.</small
+          >
         </div>
       </div>
 
@@ -109,7 +110,8 @@
           <small
             class="text-danger pull-left"
             v-show="errors.has('effective_date')"
-          >Effective Date is required.</small>
+            >Effective Date is required.</small
+          >
         </div>
       </div>
 
@@ -146,15 +148,27 @@
             v-model.trim="item.amount"
             autocomplete="off"
           />
-          <small class="text-danger pull-left" v-show="errors.has('amount')">Input valid number.</small>
+          <small class="text-danger pull-left" v-show="errors.has('amount')"
+            >Input valid number.</small
+          >
         </div>
       </div>
 
-      <template slot="modal-footer" slot-scope="{  }">
-        <b-button size="sm" variant="success" @click="btnAdd()" v-if="item.state == 'create'">Add</b-button>
+      <template slot="modal-footer" slot-scope="{}">
+        <b-button
+          size="sm"
+          variant="success"
+          @click="btnAdd()"
+          v-if="item.state == 'create'"
+          >Add</b-button
+        >
         <span v-else>
-          <b-button size="sm" variant="success" @click="btnUpdate()">Update</b-button>
-          <b-button size="sm" variant="danger" @click="btnDelete()">Delete</b-button>
+          <b-button size="sm" variant="success" @click="btnUpdate()"
+            >Update</b-button
+          >
+          <b-button size="sm" variant="danger" @click="btnDelete()"
+            >Delete</b-button
+          >
         </span>
       </template>
     </b-modal>
@@ -195,6 +209,7 @@ export default {
   },
   created() {
     this.load();
+    this.user = this.$global.getUser();
   },
   methods: {
     load() {
@@ -217,8 +232,15 @@ export default {
           this.$root.$emit("pageLoading");
           this.tblisBusy = true;
           this.item.employee_id = this.data.id;
+
+          var tempdata = {
+            item: this.item,
+            user_id: this.user.id,
+            user_name: this.user.name
+          };
+
           this.$http
-            .post("api/Deduction", this.item)
+            .post("api/Deduction", tempdata)
             .then(response => {
               swal("Notification", "Added successfully", "success");
               this.data.deduction = response.body;
@@ -255,8 +277,14 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
+              var tempdata = {
+                item: this.item,
+                user_id: this.user.id,
+                user_name: this.user.name
+              };
+
               this.$http
-                .put("api/Deduction/" + this.item.id, this.item)
+                .put("api/Deduction/" + this.item.id, tempdata)
                 .then(response => {
                   this.data.deduction = response.body;
                   swal("Update!", "Update successfully", "success");
@@ -334,5 +362,3 @@ export default {
   margin-top: 15px;
 }
 </style>
-
-

@@ -740,8 +740,15 @@ export default {
 
       this.apply.employee_id = this.user.employee_id;
       this.apply.daysList = this.sched_items;
+
+      var tempdata = {
+        apply: this.apply,
+        user_id: this.user.id,
+        user_name: this.user.name
+      }
+
       this.$http
-        .post("api/OfficialBusiness", this.apply)
+        .post("api/OfficialBusiness", tempdata)
         .then(response => {
           console.log(response.body);
 
@@ -849,9 +856,14 @@ export default {
         dangerMode: true
       }).then(approve => {
         if (approve) {
+          var tempdata = {
+            item_edit: this.item_edit,
+            user_id: this.user.id,
+            user_name: this.user.name
+          }
           this.tblisBusy = true;
           this.$http
-            .post("api/OfficialBusiness/cancelApp", this.item_edit)
+            .post("api/OfficialBusiness/cancelApp", tempdata)
             .then(response => {
               console.log(response.body);
               this.items = response.body;

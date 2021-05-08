@@ -11,9 +11,14 @@
             <b-col md="5" class="my-1">
               <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
+                  <b-form-input
+                    v-model="tblFilter"
+                    placeholder="Filter"
+                  ></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
+                      >Clear</b-button
+                    >
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -22,7 +27,10 @@
 
             <b-col md="2 " class="my-1">
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
+                <b-form-select
+                  v-model="perPage"
+                  :options="pageOptions"
+                ></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -100,18 +108,23 @@
               autocomplete="off"
               autofocus="on"
             />
-            <small class="text-danger pull-left" v-show="errors.has('name')">Name is required.</small>
+            <small class="text-danger pull-left" v-show="errors.has('name')"
+              >Name is required.</small
+            >
           </div>
         </div>
         <!-- /form -->
-        <template slot="modal-footer" slot-scope="{  }">
-          <b-button size="sm" variant="success" @click="btnUpdate()">Update</b-button>
+        <template slot="modal-footer" slot-scope="{}">
+          <b-button size="sm" variant="success" @click="btnUpdate()"
+            >Update</b-button
+          >
           <b-button
             size="sm"
             variant="danger"
             v-if="roles.delete_branch"
             @click="btnDelete()"
-          >Delete</b-button>
+            >Delete</b-button
+          >
         </template>
       </b-modal>
       <!-- End modalEdit -->
@@ -202,8 +215,14 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
+              var tempdata = {
+                branch: this.branch,
+                user_id: this.user.id,
+                user_name: this.user.name
+              };
+
               this.$http
-                .put("api/Branch/" + this.branch.id, this.branch)
+                .put("api/Branch/" + this.branch.id, tempdata)
                 .then(response => {
                   this.items = Object.values(response.body)[1];
                   this.$global.setBranch(Object.values(response.body)[1]);

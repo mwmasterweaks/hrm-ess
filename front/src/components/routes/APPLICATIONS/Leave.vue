@@ -740,8 +740,15 @@ export default {
           this.leave_apply.employee_id = this.user.employee_id;
           this.leave_apply.daysList = this.sched_items;
           this.leave_apply.total_days = this.total_days;
+
+          var tempdata = {
+            leave_apply: this.leave_apply,
+            user_id: this.user.id,
+            user_name: this.user.name
+          }
+
           this.$http
-            .post("api/Leave", this.leave_apply)
+            .post("api/Leave", tempdata)
             .then(response => {
               this.available_balance = 0;
               swal("Notification", "Added successfully", "success");
@@ -823,9 +830,15 @@ export default {
         dangerMode: true
       }).then(approve => {
         if (approve) {
+          var tempdata = {
+            item_edit: this.item_edit,
+            user_id: this.user.id,
+            user_name: this.user.name
+          }
+
           this.tblisBusy = true;
           this.$http
-            .post("api/Leave/cancelApp", this.item_edit)
+            .post("api/Leave/cancelApp", tempdata)
             .then(response => {
               this.items = response.body;
               this.totalRows = this.items.length;

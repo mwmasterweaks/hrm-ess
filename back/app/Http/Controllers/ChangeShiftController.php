@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class ChangeShiftController extends Controller
 {
+    private $cname = "ChangeShiftController";
     public function index()
     {
         $tbl = change_shift::all();
@@ -61,8 +62,27 @@ class ChangeShiftController extends Controller
             ]);
             change_shift::where("id", $tblInserted->id)
                 ->update(['reference_no' => 'CS-' . $tblInserted->id]);
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "message",
+                "Create new Change_Shift: " . $tblInserted
+            );
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -87,13 +107,34 @@ class ChangeShiftController extends Controller
         try {
 
             $cmd  = change_shift::findOrFail($id);
-
+            $logFrom = $cmd->replicate();
             $input = $request->all();
 
             $cmd->fill($input)->save();
 
+            $logTo = $cmd;
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "update",
+                "message",
+                "update Change_Rest_Day id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
+            );
+
             return $this->index();
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "update",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -101,10 +142,31 @@ class ChangeShiftController extends Controller
     public function destroy($id)
     {
         try {
+            $tbl1 = change_shift::findOrFail($id);
             change_shift::destroy($id);
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                "",
+                "",
+                $this->cname,
+                "destroy",
+                "message",
+                "delete Change_Shift id " . $id .
+                    "\nOld Change_Shift: " . $tbl1
+            );
 
             return $this->index();
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                "",
+                "",
+                $this->cname,
+                "destroy",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

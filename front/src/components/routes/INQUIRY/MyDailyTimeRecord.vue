@@ -106,6 +106,8 @@ export default {
               return "<p class='text-danger'>Rest Day</p>";
             else if (item.is_rest_day == 2)
               return "<p class='text-danger'>Leave</p>";
+            else if (item.is_rest_day == 3)
+              return "<p class='text-danger'>Holiday</p>";
             else return item.shift_sched_in + " - " + item.shift_sched_out;
           },
           sortable: true

@@ -9,7 +9,8 @@
             type="button"
             class="btn btn-success btn-labeled pull-right margin-right-10"
             v-if="roles.create_pay_period"
-          >Add</b-button>
+            >Add</b-button
+          >
         </p>
       </div>
 
@@ -19,9 +20,14 @@
             <b-col md="5" class="my-1">
               <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
+                  <b-form-input
+                    v-model="tblFilter"
+                    placeholder="Filter"
+                  ></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
+                      >Clear</b-button
+                    >
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -30,7 +36,10 @@
 
             <b-col md="2 " class="my-1">
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
+                <b-form-select
+                  v-model="perPage"
+                  :options="pageOptions"
+                ></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -105,7 +114,9 @@
               name="Group"
               v-validate="'required'"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('Group')">Group is required.</small>
+            <small class="text-danger pull-left" v-show="errors.has('Group')"
+              >Group is required.</small
+            >
           </div>
         </div>
 
@@ -125,7 +136,9 @@
               v-model.trim="item_add.year"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('year')">Input valid year.</small>
+            <small class="text-danger pull-left" v-show="errors.has('year')"
+              >Input valid year.</small
+            >
           </div>
         </div>
 
@@ -146,7 +159,8 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('Frequency')"
-            >Frequency is required.</small>
+              >Frequency is required.</small
+            >
           </div>
         </div>
 
@@ -167,11 +181,15 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('pay_period')"
-            >Pay period is required.</small>
+              >Pay period is required.</small
+            >
           </div>
         </div>
 
-        <div class="rowFields mx-auto row" v-if="item_add.pay_period_selected == '2'">
+        <div
+          class="rowFields mx-auto row"
+          v-if="item_add.pay_period_selected == '2'"
+        >
           <div class="col-lg-3">
             <p class="textLabel">Day/s:</p>
           </div>
@@ -187,7 +205,9 @@
               v-model="item_add.days"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('year')">Input valid year.</small>
+            <small class="text-danger pull-left" v-show="errors.has('year')"
+              >Input valid year.</small
+            >
           </div>
         </div>
 
@@ -197,7 +217,11 @@
           </div>
           <div class="col-lg-9">
             <div class="input-group">
-              <date-picker v-model="item_add.from" :config="Dateoptions" autocomplete="off"></date-picker>
+              <date-picker
+                v-model="item_add.from"
+                :config="Dateoptions"
+                autocomplete="off"
+              ></date-picker>
             </div>
           </div>
         </div>
@@ -208,14 +232,24 @@
           </div>
           <div class="col-lg-9">
             <div class="input-group">
-              <date-picker v-model="item_add.to" :config="Dateoptions" autocomplete="off"></date-picker>
+              <date-picker
+                v-model="item_add.to"
+                :config="Dateoptions"
+                autocomplete="off"
+              ></date-picker>
             </div>
           </div>
         </div>
 
         <div class="rowFields mx-auto row">
           <div class="col-lg-12">
-            <b-button class="pull-right" size="sm" variant="success" @click="btnGenerate()">Generate</b-button>
+            <b-button
+              class="pull-right"
+              size="sm"
+              variant="success"
+              @click="btnGenerate()"
+              >Generate</b-button
+            >
           </div>
         </div>
 
@@ -239,7 +273,11 @@
             </div>
           </div>
 
-          <div class="rowFields mx-auto row" v-for="period in  generatedPeriod" :key="period.from">
+          <div
+            class="rowFields mx-auto row"
+            v-for="period in generatedPeriod"
+            :key="period.from"
+          >
             <div class="col-lg-4">
               <p class="textLabel">{{ period.from }}</p>
             </div>
@@ -254,7 +292,13 @@
 
         <!-- /form -->
         <div slot="modal-footer">
-          <b-button size="sm" v-if="generatedPeriod != null" variant="success" @click="btnAdd()">Add</b-button>
+          <b-button
+            size="sm"
+            v-if="generatedPeriod != null"
+            variant="success"
+            @click="btnAdd()"
+            >Add</b-button
+          >
         </div>
       </b-modal>
       <!-- End ModelAdd -->
@@ -280,7 +324,11 @@
           </div>
           <div class="col-lg-9">
             <div class="input-group">
-              <date-picker v-model="item_edit.period" :config="Dateoptions" autocomplete="off"></date-picker>
+              <date-picker
+                v-model="item_edit.period"
+                :config="Dateoptions"
+                autocomplete="off"
+              ></date-picker>
             </div>
           </div>
         </div>
@@ -291,7 +339,11 @@
           </div>
           <div class="col-lg-9">
             <div class="input-group">
-              <date-picker v-model="item_edit.from" :config="Dateoptions" autocomplete="off"></date-picker>
+              <date-picker
+                v-model="item_edit.from"
+                :config="Dateoptions"
+                autocomplete="off"
+              ></date-picker>
             </div>
           </div>
         </div>
@@ -302,25 +354,31 @@
           </div>
           <div class="col-lg-9">
             <div class="input-group">
-              <date-picker v-model="item_edit.to" :config="Dateoptions" autocomplete="off"></date-picker>
+              <date-picker
+                v-model="item_edit.to"
+                :config="Dateoptions"
+                autocomplete="off"
+              ></date-picker>
             </div>
           </div>
         </div>
 
         <!-- /form -->
-        <template slot="modal-footer" slot-scope="{  }">
+        <template slot="modal-footer" slot-scope="{}">
           <b-button
             size="sm"
             variant="success"
             v-if="roles.update_pay_period"
             @click="btnUpdate()"
-          >Update</b-button>
+            >Update</b-button
+          >
           <b-button
             size="sm"
             variant="danger"
             v-if="roles.delete_pay_period"
             @click="btnDelete()"
-          >Delete</b-button>
+            >Delete</b-button
+          >
         </template>
       </b-modal>
       <!-- End modalEdit -->
@@ -416,6 +474,7 @@ export default {
     this.$global.loadJS();
   },
   created() {
+    this.user = this.$global.getUser();
     this.roles = this.$global.getRoles();
     this.get_group();
     this.load_items("PayPeriod");
@@ -475,8 +534,14 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
+              var tempdata = {
+                item_edit: this.item_edit,
+                user_id: this.user.id,
+                user_name: this.user.name
+              };
+
               this.$http
-                .put("api/PayPeriod/" + this.item_edit.id, this.item_edit)
+                .put("api/PayPeriod/" + this.item_edit.id, tempdata)
                 .then(response => {
                   this.items = response.body;
                   this.totalRows = this.items.length;
@@ -504,7 +569,9 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           var valueToSend = {
-            data: this.generatedPeriod
+            data: this.generatedPeriod,
+            user_id: this.user.id,
+            user_name: this.user.name
           };
           this.$http.post("api/PayPeriod", valueToSend).then(response => {
             console.log(response.body);

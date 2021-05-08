@@ -9,7 +9,11 @@
         <div>
           <b-row style="margin:10px;">
             <b-col md="5" class="my-1">
-              <b-form-group label-cols-sm="4" label="Select App type" class="mb-0">
+              <b-form-group
+                label-cols-sm="4"
+                label="Select App type"
+                class="mb-0"
+              >
                 <model-list-select
                   :list="application_list"
                   v-model="selected_application"
@@ -23,9 +27,14 @@
               <br />
               <b-form-group label-cols-sm="4" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
+                  <b-form-input
+                    v-model="tblFilter"
+                    placeholder="Filter"
+                  ></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
+                      >Clear</b-button
+                    >
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -36,7 +45,10 @@
               <br />
               <br />
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
+                <b-form-select
+                  v-model="perPage"
+                  :options="pageOptions"
+                ></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -66,9 +78,9 @@
               <span v-html="data.value"></span>
             </template>
 
-            <template v-slot:cell(action)="data">
+            <!-- <template v-slot:cell(action)="data">
               <span v-html="data.value"></span>
-            </template>
+            </template> -->
 
             <template slot="table-caption"></template>
             <template v-slot:cell(action)="row">
@@ -186,7 +198,10 @@
             </tr>
           </table>
 
-          <div v-if="chkStr(item.reference_no) == 'LV'" class="rowFields mx-auto row">
+          <div
+            v-if="chkStr(item.reference_no) == 'LV'"
+            class="rowFields mx-auto row"
+          >
             <b-table
               class="elClr"
               striped
@@ -205,12 +220,12 @@
               <template v-slot:cell(shift_sched)="data">
                 <span v-html="data.value"></span>
               </template>
-              <template v-slot:cell(halfday)="data">
+              <!-- <template v-slot:cell(halfday)="data">
                 <span v-html="data.value"></span>
               </template>
               <template v-slot:cell(halfday_type)="data">
                 <span v-html="data.value"></span>
-              </template>
+              </template> -->
 
               <template v-slot:cell(halfday)="row">
                 <i class="fas fa-check" v-show="row.item.halfday == 1" />
@@ -234,10 +249,20 @@
           >
             <i class="fas fa-paperclip"></i>
           </b-button>
-          <b-button size="sm" variant="success" title="Approve" @click="approveRequest(item)">
+          <b-button
+            size="sm"
+            variant="success"
+            title="Approve"
+            @click="approveRequest(item)"
+          >
             <i class="fas fa-thumbs-up"></i>
           </b-button>
-          <b-button size="sm" variant="danger" title="Disapprove" v-b-modal.modalDisapprove>
+          <b-button
+            size="sm"
+            variant="danger"
+            title="Disapprove"
+            v-b-modal.modalDisapprove
+          >
             <i class="fas fa-thumbs-down"></i>
           </b-button>
         </template>
@@ -281,7 +306,9 @@
               v-validate="'required'"
               v-model.trim="remarks"
             ></textarea>
-            <small class="text-danger pull-left" v-show="errors.has('Remarks')">Remarks is required.</small>
+            <small class="text-danger pull-left" v-show="errors.has('Remarks')"
+              >Remarks is required.</small
+            >
           </div>
         </div>
         <b-button
@@ -289,7 +316,8 @@
           size="sm"
           variant="success"
           @click="disapproveRequest()"
-        >Submit</b-button>
+          >Submit</b-button
+        >
       </b-modal>
     </div>
   </div>
@@ -506,6 +534,7 @@ export default {
       //   });
     },
     approveRequest(item) {
+      console.log(item);
       item.userID = this.user.employee_id;
       swal({
         title: "Notification",
@@ -515,6 +544,10 @@ export default {
         dangerMode: true
       }).then(approve => {
         if (approve) {
+          item.user_id = this.user.id;
+          item.user_name =
+            this.user.employee.first_name + " " + this.user.employee.last_name;
+
           this.tblisBusy = true;
           this.$http
             .put("api/approveRequest", item)
@@ -560,6 +593,11 @@ export default {
               var item = this.item;
               item.remarks = this.remarks;
               item.userID = this.user.employee_id;
+              item.user_id = this.user.id;
+              item.user_name =
+                this.user.employee.first_name +
+                " " +
+                this.user.employee.last_name;
 
               this.tblisBusy = true;
               this.$http.put("api/disapproveRequest", item).then(response => {

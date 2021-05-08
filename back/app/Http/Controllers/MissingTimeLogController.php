@@ -61,8 +61,28 @@ class MissingTimeLogController extends Controller
             ]);
             missing_time_log::where("id", $tblInserted->id)
                 ->update(['reference_no' => 'MTL-' . $tblInserted->id]);
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "message",
+                "Create new Missing_Time_Log: " . $tblInserted
+            );
+
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -87,13 +107,34 @@ class MissingTimeLogController extends Controller
         try {
 
             $cmd  = missing_time_log::findOrFail($id);
-
+            $logFrom = $cmd->replicate();
             $input = $request->all();
 
             $cmd->fill($input)->save();
 
+            $logTo = $cmd;
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "update",
+                "message",
+                "update Missing_Time_Log id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
+            );
+
             return $this->index();
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "update",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -101,7 +142,19 @@ class MissingTimeLogController extends Controller
     public function destroy($id)
     {
         try {
+            $tbl1 = missing_time_log::findOrFail($id);
             missing_time_log::destroy($id);
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                "",
+                "",
+                $this->cname,
+                "destroy",
+                "message",
+                "delete Missing_Time_Log id " . $id .
+                    "\nOld Missing_Time_Log: " . $tbl1
+            );
 
             return $this->index();
         } catch (\Exception $ex) {

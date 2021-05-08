@@ -540,14 +540,7 @@ export default {
         showClose: true
       },
       imageFile: null,
-      yesno_list: [
-        {
-          name: "Yes"
-        },
-        {
-          name: "No"
-        }
-      ],
+      yesno_list: [{ name: "Yes" }, { name: "No" }],
       approv_tblisBusy: false,
       approv_fields: [
         {
@@ -627,6 +620,12 @@ export default {
         this.$validator.validateAll().then(result => {
           if (result) {
             this.apply.employee_id = this.user.employee_id;
+            this.apply.user_id = this.user.id;
+            this.apply.user_name =
+              this.user.employee.first_name +
+              " " +
+              this.user.employee.last_name;
+
             this.$http
               .post("api/ChangeShift", this.apply)
               .then(response => {
@@ -746,6 +745,10 @@ export default {
         dangerMode: true
       }).then(approve => {
         if (approve) {
+          this.item_edit.user_id = this.user.id;
+          this.item.edit.user_name =
+            this.user.employee.first_name + " " + this.user.employee.last_name;
+
           this.tblisBusy = true;
           this.$http
             .post("api/ChangeShift/cancelApp", this.item_edit)

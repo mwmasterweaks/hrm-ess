@@ -13,6 +13,7 @@ use Carbon\Carbon;
 
 class DtrController extends Controller
 {
+    private $cname = "DtrController";
     private $emp;
 
     public function __construct(Employee $emp)
@@ -36,7 +37,8 @@ class DtrController extends Controller
     public function store(Request $request)
     {
         try {
-            $request = $request->toArray();
+            $r = $request;
+            $request = $request->sched_items_add;
             foreach ($request as $item) {
                 $item = (object) $item;
                 $chk =  dtr::where("employee_id", $item->employee_id)
@@ -63,7 +65,7 @@ class DtrController extends Controller
                         $timeOut = $log1[0]->datetime;
 
                 if (empty($chk)) {
-                    DB::table('dtrs')->insert(
+                    $data = DB::table('dtrs')->insert(
                         [
                             'employee_id' => $item->employee_id,
                             'pay_period_id' => $item->pay_period_id,
@@ -76,8 +78,19 @@ class DtrController extends Controller
                             'time_out' => $timeOut
                         ]
                     );
+
+                    \Logger::instance()->log(
+                        Carbon::now(),
+                        $r->user_id,
+                        $r->user_name,
+                        $this->cname,
+                        "store",
+                        "message",
+                        "Create new Dtr: " . $data
+                    );
                 } else {
-                    DB::table('dtrs')
+                    $logFrom = $chk;
+                    $data = DB::table('dtrs')
                         ->where("employee_id", $item->employee_id)
                         ->where("pay_period_id", $item->pay_period_id)
                         ->where("work_date", $item->work_date)
@@ -88,12 +101,32 @@ class DtrController extends Controller
                             'time_in' => $timeIn,
                             'time_out' => $timeOut
                         ]);
+                    $logTo = $data;
+
+                    \Logger::instance()->log(
+                        Carbon::now(),
+                        $request->user_id,
+                        $request->user_name,
+                        $this->cname,
+                        "update",
+                        "message",
+                        "update dtr id " . $chk->id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
+                    );
                 }
             }
             return "ok";
             // return $this->index();
 
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $r->user_id,
+                $r->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -113,31 +146,75 @@ class DtrController extends Controller
         try {
 
             $cmd  = dtr::findOrFail($id);
-
+            $logFrom = $cmd->replicate();
             $input = $request->all();
 
             $cmd->fill($input)->save();
 
+            $logTo = $cmd;
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "update",
+                "message",
+                "update Dtr id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
+            );
+
             return $this->index();
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "update",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
     public function destroy($id)
     {
         try {
+            $tbl1 = dtr::findOrFail($id);
             dtr::destroy($id);
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                "",
+                "",
+                $this->cname,
+                "destroy",
+                "message",
+                "delete Dtr id " . $id .
+                    "\nOld Dtr: " . $tbl1
+            );
 
             return $this->index();
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                "",
+                "",
+                $this->cname,
+                "destroy",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
-    public function getDTR($period_id, $emp_id)
+    public function getDTR($period_id, $emp_id, $user_id, $user_name)
     {
         $tbl = dtr::where("employee_id", $emp_id)->where("pay_period_id", $period_id)->get();
-        $emp = Employee::where("employee_id", $emp_id)->first();
+        $emp = Employee::where("id", $emp_id)->first();
         foreach ($tbl as $item) {
+            $logFrom = dtr::findOrFail($item->id);
+            $logTo = null;
 
             if ($item->time_in == null) {
                 $log = RALog::where(DB::raw("DATE(datetime)"), $item->work_date)
@@ -146,7 +223,7 @@ class DtrController extends Controller
                     ->first();
 
                 if ($log != null)
-                    DB::table('dtrs')->where("id", $item->id)
+                    $logTo = DB::table('dtrs')->where("id", $item->id)
                         ->update(['time_in' => $log->datetime]);
             }
             if ($item->time_out == null) {
@@ -157,9 +234,19 @@ class DtrController extends Controller
                 $c = count($log);
                 if ($c > 1)
                     if ($log != null)
-                        DB::table('dtrs')->where("id", $item->id)
+                        $logTo = DB::table('dtrs')->where("id", $item->id)
                             ->update(['time_out' => $log[0]->datetime]);
             }
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $user_id,
+                $user_name,
+                $this->cname,
+                "update",
+                "message",
+                "update client id " . $item->id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
+            );
         }
         $tbl = dtr::where("employee_id", $emp_id)->where("pay_period_id", $period_id)->get();
 
@@ -379,7 +466,7 @@ class DtrController extends Controller
                         $timeOut = $log1[0]->datetime;
 
                     if (empty($chk)) {
-                        DB::table('dtrs')->insert(
+                        $data = DB::table('dtrs')->insert(
                             [
                                 'employee_id' => $emp->id,
                                 'pay_period_id' => $sched->pay_period_id,
@@ -392,18 +479,39 @@ class DtrController extends Controller
                                 'time_out' => $timeOut
                             ]
                         );
+
+                        \Logger::instance()->log(
+                            Carbon::now(),
+                            $request->user_id,
+                            $request->user_name,
+                            $this->cname,
+                            "store",
+                            "message",
+                            "Create new Dtr: " . $data
+                        );
                     } else {
-                        DB::table('dtrs')
+                        $data = DB::table('dtrs')
                             ->where("employee_id", $emp->id)
                             ->where("pay_period_id", $sched->pay_period_id)
-                            ->where("work_date", $sched->work_date)
-                            ->update([
+                            ->where("work_date", $sched->work_date);
+                        $logFrom = $data->replicate()->first();
+                        $logTo = $data->update([
                                 'shift_sched_in' => $sched->shift_sched_in,
                                 'shift_sched_out' => $sched->shift_sched_out,
                                 'is_rest_day' => $sched->is_rest_day,
                                 'time_in' => $timeIn,
                                 'time_out' => $timeOut
                             ]);
+
+                        \Logger::instance()->log(
+                            Carbon::now(),
+                            $request->user_id,
+                            $request->user_name,
+                            $this->cname,
+                            "update",
+                            "message",
+                            "update dtr id " . $logFrom->id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
+                        );
                     }
                 }
             }

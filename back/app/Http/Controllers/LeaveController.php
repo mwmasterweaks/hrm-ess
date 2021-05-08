@@ -76,6 +76,16 @@ class LeaveController extends Controller
             Leave::where("id", $tblInserted->id)
                 ->update(['reference_no' => 'LV-' . $tblInserted->id]);
 
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "message",
+                "Create new Leave: " . $tblInserted
+            );
+
             foreach ($request->daysList as $item) {
                 $item = (object) $item;
                 if ($item->is_rest_day == 0) {
@@ -116,6 +126,15 @@ class LeaveController extends Controller
             // }
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -137,13 +156,34 @@ class LeaveController extends Controller
         try {
 
             $cmd  = Leave::findOrFail($id);
-
+            $logFrom = $cmd->replicate();
             $input = $request->all();
 
             $cmd->fill($input)->save();
 
+            $logTo = $cmd;
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "update",
+                "message",
+                "update Leave id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
+            );
+
             return $this->index();
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "update",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -151,10 +191,31 @@ class LeaveController extends Controller
     public function destroy($id)
     {
         try {
+            $tbl1 = Leave::findOrFail($id);
             Leave::destroy($id);
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                "",
+                "",
+                $this->cname,
+                "destroy",
+                "message",
+                "delete Leave id " . $id .
+                    "\nOld Leave: " . $tbl1
+            );
 
             return $this->index();
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                "",
+                "",
+                $this->cname,
+                "destroy",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

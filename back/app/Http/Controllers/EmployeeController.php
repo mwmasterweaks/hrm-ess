@@ -17,7 +17,6 @@ class EmployeeController extends Controller
             $tbl = Employee::with(['user', 'deduction.type', 'earning.type', 'group', 'rate', 'position', 'branch', 'department', 'payslip.pay_period'])
                 ->get();
 
-
             return $this->ForQuery($tbl);
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);
@@ -313,6 +312,51 @@ class EmployeeController extends Controller
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
+    public function sendCredentials(Request $request)
+    {
+
+        //message
+        if (true) {
+            $message = "
+            <html>
+            <head>
+            </head>
+            <body>
+            <p>Hi " . $request->fullname . ",</p>
+            <p>Good day!</p>
+            <br />
+            <p>THIS IS AN AUTOMATIC GENERATED E-MAIL FROM HRMESS. </p>
+            <p>These are your credentials</p>
+            <p>Username : <b>" . $request->email . "</b></p>
+            <p>Password : <b>123456789</b></p>
+            <p>Please change your password after you login.</p>
+            <p>Click <a href='http://hrmess.dctechmicro.com'>here</a> to log in.</p>
+
+            <br />
+
+            <p>Thank you!</p>
+            <p>PLEASE DO NOT REPLY TO THIS E-MAIL</p>
+            </body>
+            </html>";
+        }
+        //format sa send to sa front ni
+        //   item.sendTo = [
+        //       {
+        //         email: "cnc@dctechmicro.com",
+        //         name: "Credits and Collection"
+        //       }
+        //     ];
+
+        return \Logger::instance()->mailer(
+                    "Your Credentials in HRMESS",
+                    $message,
+                    $request->user_email,
+                    $request->user_name,
+                    $request->sendTo,
+                    $request->CCto
+
+                );
+    }
     public static function convert_from_latin1_to_utf8_recursively($dat)
     {
         if (is_string($dat)) {
@@ -330,4 +374,6 @@ class EmployeeController extends Controller
             return $dat;
         }
     }
+
+
 }

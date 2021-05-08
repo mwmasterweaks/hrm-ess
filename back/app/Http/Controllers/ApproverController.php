@@ -17,6 +17,7 @@ use stdClass;
 
 class ApproverController extends Controller
 {
+    private $cname = "ApproverController";
     public function index()
     {
         $tbl = Approver::with(['employee'])->get();
@@ -32,9 +33,29 @@ class ApproverController extends Controller
     public function store(Request $request)
     {
         try {
-            Approver::create($request->all());
+            $data = Approver::create($request->all());
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "message",
+                "Create new Approver: " . $data
+            );
+
             return $this->index();
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -59,13 +80,33 @@ class ApproverController extends Controller
         try {
 
             $cmd  = Approver::findOrFail($id);
-
+            $logFrom = $cmd->replicate();
             $input = $request->all();
-
             $cmd->fill($input)->save();
+            $logTo = $cmd;
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "update",
+                "message",
+                "update Approver id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
+            );
 
             return $this->index();
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "update",
+                "Error",
+                $ex->getMessage()
+            );
+
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -73,10 +114,32 @@ class ApproverController extends Controller
     public function destroy($id)
     {
         try {
+
+            $tbl1 = Approver::findOrFail($id);
             Approver::destroy($id);
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                "",
+                "",
+                $this->cname,
+                "destroy",
+                "message",
+                "delete Approver id " . $id .
+                    "\nOld Approver: " . $tbl1
+            );
 
             return $this->index();
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                "",
+                "",
+                $this->cname,
+                "destroy",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -346,7 +409,6 @@ class ApproverController extends Controller
 
     public function approveRequest(Request $request)
     {
-
         //return $request;
         $emp_id = $request->employee_id;
         $level = DB::table('employee_approvers')
@@ -525,6 +587,16 @@ class ApproverController extends Controller
                     ->update(['approve_level' => $lvl]);
             }
         }
+
+        /* \Logger::instance()->log(
+            Carbon::now(),
+            $request->user_id,
+            $request->user_name,
+            $this->cname,
+            "update",
+            "message",
+            "update client id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
+        ); */
 
         return $this->getToApprove($request->userID);
     }

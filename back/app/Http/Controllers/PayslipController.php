@@ -32,8 +32,10 @@ class PayslipController extends Controller
             $payroll = payslip::where('employee_id', $request->employee_id)
                 ->where('pay_period_id', $request->pay_period_id)->first();
 
+            $cmd = null;
+
             if ($payroll == null) {
-                payslip::create($request->all());
+                $cmd = payslip::create($request->all());
             } else {
                 $cmd  = payslip::findOrFail($payroll->id);
                 $cmd->fill($request->all())->save();
@@ -45,10 +47,29 @@ class PayslipController extends Controller
                     over_time::where('id', $item->id)->update(['status_paid' => 'yes']);
                 }
             }
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "message",
+                "Create new Payslip: " . $cmd
+            );
             DB::commit();
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
             DB::rollBack();
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex], 500);
         }
     }

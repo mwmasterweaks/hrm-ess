@@ -77,6 +77,19 @@ class OfficialBusinessController extends Controller
 
                         official_business::where("id", $tblInserted)
                             ->update(['reference_no' => 'OB-' . $tblInserted]);
+
+                        $cmd = official_business::find($tblInserted);
+                        $data = $cmd->replicate();
+
+                        \Logger::instance()->log(
+                            Carbon::now(),
+                            $request->user_id,
+                            $request->user_name,
+                            $this->cname,
+                            "store",
+                            "message",
+                            "Create new Official_Business: " . $data
+                        );
                     }
                 }
             } else {
@@ -87,6 +100,16 @@ class OfficialBusinessController extends Controller
                 ]);
                 official_business::where("id", $tblInserted->id)
                     ->update(['reference_no' => 'OB-' . $tblInserted->id]);
+
+                \Logger::instance()->log(
+                    Carbon::now(),
+                    $request->user_id,
+                    $request->user_name,
+                    $this->cname,
+                    "store",
+                    "message",
+                    "Create new Official_Business: " . $tblInserted
+                );
             }
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
@@ -114,13 +137,34 @@ class OfficialBusinessController extends Controller
         try {
 
             $cmd  = official_business::findOrFail($id);
-
+            $logFrom = $cmd->replicate();
             $input = $request->all();
 
             $cmd->fill($input)->save();
 
+            $logTo = $cmd;
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "update",
+                "message",
+                "update Official_Business id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
+            );
+
             return $this->index();
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "update",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -128,10 +172,31 @@ class OfficialBusinessController extends Controller
     public function destroy($id)
     {
         try {
+            $tbl1 = official_business::findOrFail($id);
             official_business::destroy($id);
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                "",
+                "",
+                $this->cname,
+                "destroy",
+                "message",
+                "delete Manual_Attendance id " . $id .
+                    "\nOld Manual_Attendance: " . $tbl1
+            );
 
             return $this->index();
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                "",
+                "",
+                $this->cname,
+                "destroy",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

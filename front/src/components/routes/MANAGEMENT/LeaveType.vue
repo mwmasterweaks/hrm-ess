@@ -9,7 +9,8 @@
             type="button"
             class="btn btn-success btn-labeled pull-right margin-right-10"
             v-if="roles.create_leave"
-          >Add</b-button>
+            >Add</b-button
+          >
         </p>
       </div>
 
@@ -19,9 +20,14 @@
             <b-col md="5" class="my-1">
               <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
+                  <b-form-input
+                    v-model="tblFilter"
+                    placeholder="Filter"
+                  ></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
+                      >Clear</b-button
+                    >
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -30,7 +36,10 @@
 
             <b-col md="2 " class="my-1">
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
+                <b-form-select
+                  v-model="perPage"
+                  :options="pageOptions"
+                ></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -108,12 +117,14 @@
               autocomplete="off"
               autofocus="on"
             />
-            <small class="text-danger pull-left" v-show="errors.has('name')">Leave Name is required.</small>
+            <small class="text-danger pull-left" v-show="errors.has('name')"
+              >Leave Name is required.</small
+            >
           </div>
         </div>
 
         <!-- /form -->
-        <template slot="modal-footer" slot-scope="{  }">
+        <template slot="modal-footer" slot-scope="{}">
           <b-button size="sm" variant="success" @click="btnAdd()">Add</b-button>
         </template>
       </b-modal>
@@ -151,19 +162,28 @@
               autocomplete="off"
               autofocus="on"
             />
-            <small class="text-danger pull-left" v-show="errors.has('name')">Leave Name is required.</small>
+            <small class="text-danger pull-left" v-show="errors.has('name')"
+              >Leave Name is required.</small
+            >
           </div>
         </div>
 
         <!-- /form -->
-        <template slot="modal-footer" slot-scope="{  }">
+        <template slot="modal-footer" slot-scope="{}">
           <b-button
             size="sm"
             variant="success"
             v-if="roles.update_leave"
             @click="btnUpdate()"
-          >Update</b-button>
-          <b-button size="sm" variant="danger" v-if="roles.delete_leave" @click="btnDelete()">Delete</b-button>
+            >Update</b-button
+          >
+          <b-button
+            size="sm"
+            variant="danger"
+            v-if="roles.delete_leave"
+            @click="btnDelete()"
+            >Delete</b-button
+          >
         </template>
       </b-modal>
       <!-- End modalEdit -->
@@ -207,6 +227,7 @@ export default {
     this.$global.loadJS();
   },
   created() {
+    this.user = this.$global.getUser();
     this.roles = this.$global.getRoles();
     this.items = this.$global.getLeaveType();
     this.tblisBusy = false;
@@ -255,8 +276,14 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
+              var tempdata = {
+                item_edit: this.item_edit,
+                user_id: this.user.id,
+                user_name: this.user.name
+              };
+
               this.$http
-                .put("api/LeaveType/" + this.item_edit.id, this.item_edit)
+                .put("api/LeaveType/" + this.item_edit.id, tempdata)
                 .then(response => {
                   this.$global.setLeaveType(response.body);
                   this.items = response.body;
@@ -284,8 +311,14 @@ export default {
     btnAdd() {
       this.$validator.validateAll().then(result => {
         if (result) {
+          var tempdata = {
+            item_add: this.item_add,
+            user_id: this.user.id,
+            user_name: this.user.name
+          };
+
           this.$http
-            .post("api/LeaveType", this.item_add)
+            .post("api/LeaveType", tempdata)
             .then(response => {
               swal("Notification", "Added successfully", "success");
               this.$global.setLeaveType(response.body);

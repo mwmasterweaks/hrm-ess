@@ -20,7 +20,9 @@
                 v-model.trim="addsuggest.title"
                 autocomplete="off"
               />
-              <small class="text-danger pull-left" v-show="errors.has('title')">Title is required.</small>
+              <small class="text-danger pull-left" v-show="errors.has('title')"
+                >Title is required.</small
+              >
             </div>
             <b-card-body>
               <textarea
@@ -35,8 +37,13 @@
             </b-card-body>
             <div slot="footer">
               <b-button
-                class="pull-right" size="sm" variant="success" @click="btnSubmit()" :disabled="addsuggest.title == '' || addsuggest.message == ''"
-              >Submit</b-button>
+                class="pull-right"
+                size="sm"
+                variant="success"
+                @click="btnSubmit()"
+                :disabled="addsuggest.title == '' || addsuggest.message == ''"
+                >Submit</b-button
+              >
             </div>
           </b-card>
         </b-card-group>
@@ -51,9 +58,14 @@
             <b-col md="5" class="my-1">
               <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
+                  <b-form-input
+                    v-model="tblFilter"
+                    placeholder="Filter"
+                  ></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
+                      >Clear</b-button
+                    >
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -62,7 +74,10 @@
 
             <b-col md="2 " class="my-1">
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
+                <b-form-select
+                  v-model="perPage"
+                  :options="pageOptions"
+                ></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -133,11 +148,13 @@
               type="text"
               name="titleedit"
               class="form-control"
-              v-b-tooltip.hover title="Input the title of your suggestion/issue"
+              v-b-tooltip.hover
+              title="Input the title of your suggestion/issue"
               placeholder="Title"
               v-validate="'required'"
               v-model.trim="editSuggest.title"
-              autocomplete="off"  />
+              autocomplete="off"
+            />
           </div>
           <b-card-body>
             <textarea
@@ -160,31 +177,31 @@
               placeholder="Write a comment...."
               v-model.trim="comment"
             ></textarea>
-            <b-button size="sm" variant="success" @click="submitComment">submit comment</b-button>
+            <b-button size="sm" variant="success" @click="submitComment"
+              >submit comment</b-button
+            >
           </b-list-group>
           <b-list-group flush>
             <b-list-group-item v-for="comment in comments" :key="comment.id">
               <p style="color:#72b8dc">
-                <b>{{comment.user.email}} :</b>
-
-             </p>
-             &nbsp;&nbsp;{{comment.comment}}
-             
+                <b>{{ comment.user.email }} :</b>
+              </p>
+              &nbsp;&nbsp;{{ comment.comment }}
             </b-list-group-item>
           </b-list-group>
         </b-card>
       </b-card-group>
 
       <!-- /form -->
-      <div slot="modal-footer" slot-scope="{  }">
+      <div slot="modal-footer" slot-scope="{}">
         <b-button
           size="sm"
           variant="success"
           v-if="editSuggest.user.id == user.id"
-          :disabled="editSuggest.title == '' ||
-                editSuggest.message == ''"
+          :disabled="editSuggest.title == '' || editSuggest.message == ''"
           @click="btnUpdate()"
-        >Update</b-button>
+          >Update</b-button
+        >
       </div>
     </b-modal>
     <!-- End modalEdit -->
@@ -198,17 +215,18 @@ export default {
     return {
       sortBy: "created_at",
       sortDesc: true,
-      
+
       addsuggest: {
         title: "",
         message: ""
-       
       },
 
       tblisBusy: true,
       fields: [
-        { key: "title", label:"TTLE", sortable: true },
-        { key: "message", label: "Message",
+        { key: "title", label: "TTLE", sortable: true },
+        {
+          key: "message",
+          label: "Message",
           formatter: value => {
             var temp = "";
             if (value.length > 50) temp = "...";
@@ -216,8 +234,12 @@ export default {
           }
         },
         { key: "created_at", label: "submitted at", sortable: true },
-        
-        { key: "user.employee.first_name", label: "submitted by", sortable: true }
+
+        {
+          key: "user.employee.first_name",
+          label: "submitted by",
+          sortable: true
+        }
       ],
       editSuggest: {
         id: "",
@@ -225,7 +247,6 @@ export default {
         title: "",
         message: "",
         user: {
-
           id: "",
           name: ""
         }
@@ -246,7 +267,6 @@ export default {
     this.$global.loadJS();
   },
   created() {
-    
     this.user = this.$global.getUser();
     this.load();
   },
@@ -277,7 +297,7 @@ export default {
     },
 
     tblRowClicked(item, index, event) {
-     // console.log('kefetyyyyyy');
+      // console.log('kefetyyyyyy');
       this.$bvModal.show("modalEdit");
       this.editSuggest = item;
       this.comments = [];
@@ -285,16 +305,17 @@ export default {
         this.comments = response.body;
       });
     },
-  
+
     btnSubmit() {
       // console.log()
       this.addsuggest.user_id = this.user.id;
+      this.addsuggest.user_name = this.user.name;
       swal({
         title: "Confirmation",
         text: "Do you really want to submit this?",
         icon: "info",
         buttons: ["No", "Yes"]
-          }).then(yes => {
+      }).then(yes => {
         if (yes) {
           this.tblisBusy = true;
           this.$http
@@ -328,11 +349,16 @@ export default {
         text: "You realy want to update it?",
         icon: "warning",
         buttons: true,
-        dangerMode: true,
+        dangerMode: true
       }).then(update => {
         if (update) {
+          var tempdata = {
+            editSuggest: this.editSuggest,
+            user_id: this.user.id,
+            user_name: this.user.name
+          };
           this.$http
-            .put("api/Suggestions/" + this.editSuggest.id, this.editSuggest)
+            .put("api/Suggestions/" + this.editSuggest.id, tempdata)
             .then(response => {
               this.items = response.body;
               swal("Update!", "Update successfully", "success");
@@ -346,15 +372,14 @@ export default {
                 dangerMode: true
               }).then(value => {
                 if (value) {
-                    }
+                }
               });
             });
         }
       });
     },
 
-
-submitComment() {
+    submitComment() {
       swal({
         title: "Confirmation",
         text: "Do you really want to submit this?",
@@ -365,6 +390,7 @@ submitComment() {
           var temp = {
             suggestion_id: this.editSuggest.id,
             user_id: this.user.id,
+            user_name: this.user.name,
             comment: this.comment,
             status: "new"
           };
@@ -391,12 +417,7 @@ submitComment() {
     }
   }
 };
-
 </script>
- 
-
-
-
 
 <style scoped>
 .textLabel {
