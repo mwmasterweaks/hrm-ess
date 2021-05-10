@@ -289,12 +289,12 @@
               <template v-slot:cell(shift_sched)="data">
                 <span v-html="data.value"></span>
               </template>
-              <template v-slot:cell(halfday)="data">
+              <!-- <template v-slot:cell(halfday)="data">
                 <span v-html="data.value"></span>
               </template>
               <template v-slot:cell(type)="data">
                 <span v-html="data.value"></span>
-              </template>
+              </template> -->
               <template v-slot:cell(halfday)="row">
                 <p-check
                   v-if="row.item.is_rest_day == 0"
@@ -497,12 +497,12 @@
               <template v-slot:cell(shift_sched)="data">
                 <span v-html="data.value"></span>
               </template>
-              <template v-slot:cell(halfday)="data">
+              <!-- <template v-slot:cell(halfday)="data">
                 <span v-html="data.value"></span>
               </template>
               <template v-slot:cell(halfday_type)="data">
                 <span v-html="data.value"></span>
-              </template>
+              </template> -->
               <template v-slot:cell(halfday)="row">
                 <i class="fas fa-check" v-show="row.item.halfday == 1" />
                 <i class="fas fa-times" v-show="row.item.halfday == 0" />
@@ -740,15 +740,12 @@ export default {
           this.leave_apply.employee_id = this.user.employee_id;
           this.leave_apply.daysList = this.sched_items;
           this.leave_apply.total_days = this.total_days;
-
-          var tempdata = {
-            leave_apply: this.leave_apply,
-            user_id: this.user.id,
-            user_name: this.user.name
-          }
+          this.leave_apply.user_id = this.user.id;
+          this.leave_apply.user_name =
+            this.user.employee.first_name + " " + this.user.employee.last_name;
 
           this.$http
-            .post("api/Leave", tempdata)
+            .post("api/Leave", this.leave_apply)
             .then(response => {
               this.available_balance = 0;
               swal("Notification", "Added successfully", "success");
@@ -830,15 +827,12 @@ export default {
         dangerMode: true
       }).then(approve => {
         if (approve) {
-          var tempdata = {
-            item_edit: this.item_edit,
-            user_id: this.user.id,
-            user_name: this.user.name
-          }
+          this.item_edit.user_id = this.user.id;
+          this.item_edit.user_name = this.user.name;
 
           this.tblisBusy = true;
           this.$http
-            .post("api/Leave/cancelApp", tempdata)
+            .post("api/Leave/cancelApp", this.item_edit)
             .then(response => {
               this.items = response.body;
               this.totalRows = this.items.length;

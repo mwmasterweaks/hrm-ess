@@ -156,3 +156,63 @@ To:
 From: {"id":40210,"employee_id":1023,"pay_period_id":206,"work_date":"2021-05-12","day":"Wednesday","shift_sched_in":"2021-05-12 07:31:00","shift_sched_out":"2021-05-12 17:00:00","time_in":null,"time_out":null,"is_rest_day":0}
 To: 
 
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40196
+From: {"id":40196,"employee_id":1023,"pay_period_id":206,"work_date":"2021-04-28","day":"Wednesday","shift_sched_in":"2021-04-28 07:31:00","shift_sched_out":"2021-04-28 17:00:00","time_in":"2021-04-28 07:35:14","time_out":"2021-04-28 17:22:28","is_rest_day":0}
+To: 
+
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40197
+From: {"id":40197,"employee_id":1023,"pay_period_id":206,"work_date":"2021-04-29","day":"Thursday","shift_sched_in":"2021-04-29 07:31:00","shift_sched_out":"2021-04-29 17:00:00","time_in":"2021-04-29 07:23:59","time_out":"2021-04-29 17:28:19","is_rest_day":0}
+To: 
+
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40198
+From: {"id":40198,"employee_id":1023,"pay_period_id":206,"work_date":"2021-04-30","day":"Friday","shift_sched_in":"2021-04-30 07:31:00","shift_sched_out":"2021-04-30 17:00:00","time_in":"2021-04-30 07:26:49","time_out":"2021-04-30 17:32:45","is_rest_day":0}
+To: 
+
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40199
+From: {"id":40199,"employee_id":1023,"pay_period_id":206,"work_date":"2021-05-01","day":"Saturday","shift_sched_in":"2021-05-01 07:31:00","shift_sched_out":"2021-05-01 11:00:00","time_in":null,"time_out":null,"is_rest_day":0}
+To: 
+
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40200
+From: {"id":40200,"employee_id":1023,"pay_period_id":206,"work_date":"2021-05-02","day":"Sunday","shift_sched_in":"2021-05-02 07:31:00","shift_sched_out":"2021-05-02 17:00:00","time_in":null,"time_out":null,"is_rest_day":1}
+To: 
+
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40201
+From: {"id":40201,"employee_id":1023,"pay_period_id":206,"work_date":"2021-05-03","day":"Monday","shift_sched_in":"2021-05-03 07:31:00","shift_sched_out":"2021-05-03 17:00:00","time_in":"2021-05-03 07:25:32","time_out":"2021-05-03 17:29:05","is_rest_day":0}
+To: 
+
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40202
+From: {"id":40202,"employee_id":1023,"pay_period_id":206,"work_date":"2021-05-04","day":"Tuesday","shift_sched_in":"2021-05-04 07:31:00","shift_sched_out":"2021-05-04 17:00:00","time_in":"2021-05-04 07:24:24","time_out":"2021-05-04 17:17:59","is_rest_day":0}
+To: 
+
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40203
+From: {"id":40203,"employee_id":1023,"pay_period_id":206,"work_date":"2021-05-05","day":"Wednesday","shift_sched_in":"2021-05-05 07:31:00","shift_sched_out":"2021-05-05 17:00:00","time_in":"2021-05-05 07:23:03","time_out":"2021-05-05 17:02:59","is_rest_day":0}
+To: 
+
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40204
+From: {"id":40204,"employee_id":1023,"pay_period_id":206,"work_date":"2021-05-06","day":"Thursday","shift_sched_in":"2021-05-06 07:31:00","shift_sched_out":"2021-05-06 17:00:00","time_in":"2021-05-06 07:22:24","time_out":null,"is_rest_day":0}
+To: 
+
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40205
+From: {"id":40205,"employee_id":1023,"pay_period_id":206,"work_date":"2021-05-07","day":"Friday","shift_sched_in":"2021-05-07 07:31:00","shift_sched_out":"2021-05-07 17:00:00","time_in":null,"time_out":null,"is_rest_day":0}
+To: 
+
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40206
+From: {"id":40206,"employee_id":1023,"pay_period_id":206,"work_date":"2021-05-08","day":"Saturday","shift_sched_in":"2021-05-08 07:31:00","shift_sched_out":"2021-05-08 11:00:00","time_in":null,"time_out":null,"is_rest_day":0}
+To: 
+
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40207
+From: {"id":40207,"employee_id":1023,"pay_period_id":206,"work_date":"2021-05-09","day":"Sunday","shift_sched_in":"2021-05-09 07:31:00","shift_sched_out":"2021-05-09 17:00:00","time_in":null,"time_out":null,"is_rest_day":1}
+To: 
+
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40208
+From: {"id":40208,"employee_id":1023,"pay_period_id":206,"work_date":"2021-05-10","day":"Monday","shift_sched_in":"2021-05-10 07:31:00","shift_sched_out":"2021-05-10 17:00:00","time_in":null,"time_out":null,"is_rest_day":0}
+To: 
+
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40209
+From: {"id":40209,"employee_id":1023,"pay_period_id":206,"work_date":"2021-05-11","day":"Tuesday","shift_sched_in":"2021-05-11 07:31:00","shift_sched_out":"2021-05-11 17:00:00","time_in":null,"time_out":null,"is_rest_day":0}
+To: 
+
+2021-05-10 07:43:49	--	1	--	Peter Bismonte	--	DtrController	--	update	--	message	--	update client id 40210
+From: {"id":40210,"employee_id":1023,"pay_period_id":206,"work_date":"2021-05-12","day":"Wednesday","shift_sched_in":"2021-05-12 07:31:00","shift_sched_out":"2021-05-12 17:00:00","time_in":null,"time_out":null,"is_rest_day":0}
+To: 
+
