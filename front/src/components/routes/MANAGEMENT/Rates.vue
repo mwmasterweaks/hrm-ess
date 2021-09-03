@@ -337,14 +337,11 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
-              var tempdata = {
-                item: this.item,
-                user_id: this.user.id,
-                user_name: this.user.name
-              };
+              this.item.user_id = this.user.id;
+              this.item.user_name = this.user.name;
 
               this.$http
-                .put("api/Rate/" + this.item.id, tempdata)
+                .put("api/Rate/" + this.item.id, this.item)
                 .then(response => {
                   this.items = response.body;
                   this.totalRows = this.items.length;
@@ -370,14 +367,11 @@ export default {
     btnAdd() {
       this.$validator.validateAll().then(result => {
         if (result) {
-          var tempdata = {
-            item: this.item,
-            user_id: this.user.id,
-            user_name: this.user.name
-          };
+          this.item.user_id = this.user.id;
+          this.item.user_name = this.user.name;
 
           this.$http
-            .post("api/Rate", tempdata)
+            .post("api/Rate", this.item)
             .then(response => {
               swal("Notification", "Added successfully", "success");
               this.items = response.body;

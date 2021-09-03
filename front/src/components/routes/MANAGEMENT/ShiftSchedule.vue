@@ -461,14 +461,11 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
-              var tempdata = {
-                item_edit: this.item_edit,
-                user_id: this.user.id,
-                user_name: this.user.name
-              };
+              this.item_edit.user_id = this.user.id;
+              this.item_edit.user_name = this.user.name;
 
               this.$http
-                .put("api/Group/" + this.item_edit.id, tempdata)
+                .put("api/Group/" + this.item_edit.id, this.item_edit)
                 .then(response => {
                   this.items = response.body;
                   this.$global.setGroup(response.body);
@@ -504,25 +501,24 @@ export default {
             buttons: true
           }).then(result => {
             if (result) {
-              var tempdata = {
-                sched_items_add: this.sched_items_add,
-                user_id: this.user.id,
-                user_name: this.user.name
-              };
+              this.sched_items_add.user_id = this.user.id;
+              this.sched_items_add.user_name = this.user.name;
 
-              this.$http.post("api/ShiftSchedule", tempdata).then(response => {
-                console.log(response.body);
-                this.sched_items_add = {
-                  item: "",
-                  name: ""
-                };
-                this.pay_period_select = {
-                  year: null,
-                  month: null,
-                  day: {}
-                };
-                this.$bvModal.show("ModelAdd");
-              });
+              this.$http
+                .post("api/ShiftSchedule", this.sched_items_add)
+                .then(response => {
+                  console.log(response.body);
+                  this.sched_items_add = {
+                    item: "",
+                    name: ""
+                  };
+                  this.pay_period_select = {
+                    year: null,
+                    month: null,
+                    day: {}
+                  };
+                  this.$bvModal.show("ModelAdd");
+                });
             }
           });
         }

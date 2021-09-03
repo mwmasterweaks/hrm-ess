@@ -352,13 +352,11 @@ export default {
         dangerMode: true
       }).then(update => {
         if (update) {
-          var tempdata = {
-            editSuggest: this.editSuggest,
-            user_id: this.user.id,
-            user_name: this.user.name
-          };
+          this.editSuggest.user_id = this.user.id;
+          this.editSuggest.user_name = this.user.name;
+
           this.$http
-            .put("api/Suggestions/" + this.editSuggest.id, tempdata)
+            .put("api/Suggestions/" + this.editSuggest.id, this.editSuggest)
             .then(response => {
               this.items = response.body;
               swal("Update!", "Update successfully", "success");

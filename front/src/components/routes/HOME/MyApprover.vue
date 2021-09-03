@@ -215,14 +215,11 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
-              var tempdata = {
-                branch: this.branch,
-                user_id: this.user.id,
-                user_name: this.user.name
-              };
+              this.branch.user_id = this.user.id;
+              this.branch.user_name = this.user.name;
 
               this.$http
-                .put("api/Branch/" + this.branch.id, tempdata)
+                .put("api/Branch/" + this.branch.id, this.branch)
                 .then(response => {
                   this.items = Object.values(response.body)[1];
                   this.$global.setBranch(Object.values(response.body)[1]);

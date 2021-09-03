@@ -325,14 +325,11 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
-              var tempdata = {
-                item_edit: this.item_edit,
-                user_id: this.user.id,
-                user_name: this.user.name
-              };
+              this.item_edit.user_id = this.user.id;
+              this.item_edit.user_name = this.user.name;
 
               this.$http
-                .put("api/Department/" + this.item_edit.id, tempdata)
+                .put("api/Department/" + this.item_edit.id, this.item_edit)
                 .then(response => {
                   this.$global.setDepartment(response.body);
                   this.items = response.body;
@@ -360,13 +357,11 @@ export default {
     btnAdd() {
       this.$validator.validateAll().then(result => {
         if (result) {
-          var tempdata = {
-            item_add: this.item_add,
-            user_id: this.user.id,
-            user_name: this.user.name
-          };
+          this.item_add.user_id = this.user.id;
+          this.item_add.user_name = this.user.name;
+
           this.$http
-            .post("api/Department", tempdata)
+            .post("api/Department", this.item_add)
             .then(response => {
               swal("Notification", "Added successfully", "success");
               this.$global.setDepartment(response.body);

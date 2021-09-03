@@ -534,14 +534,11 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
-              var tempdata = {
-                item_edit: this.item_edit,
-                user_id: this.user.id,
-                user_name: this.user.name
-              };
+              this.item_edit.user_id = this.user.id;
+              this.item_edit.user_name = this.user.name;
 
               this.$http
-                .put("api/PayPeriod/" + this.item_edit.id, tempdata)
+                .put("api/PayPeriod/" + this.item_edit.id, this.item_edit)
                 .then(response => {
                   this.items = response.body;
                   this.totalRows = this.items.length;

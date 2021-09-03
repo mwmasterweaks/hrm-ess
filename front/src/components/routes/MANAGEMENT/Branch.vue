@@ -322,13 +322,11 @@ export default {
           }).then(update => {
             if (update) {
               this.$root.$emit("pageLoading");
-              var tempdata = {
-                item_edit: this.item_edit,
-                user_id: this.user.id,
-                user_name: this.user.name
-              };
+              this.item_edit.user_id = this.user.id;
+              this.item_edit.user_name = this.user.name;
+
               this.$http
-                .put("api/Branch/" + this.item_edit.id, tempdata)
+                .put("api/Branch/" + this.item_edit.id, this.item_edit)
                 .then(response => {
                   this.$root.$emit("pageLoaded");
                   this.$global.setBranch(response.body);
@@ -356,13 +354,11 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.$root.$emit("pageLoading");
-          var tempdata = {
-            item_add: this.item_add,
-            user_id: this.user.id,
-            user_name: this.user.name
-          };
+          this.item_add.user_id = this.user.id;
+          this.item_add.user_name = this.user.name;
+
           this.$http
-            .post("api/Branch", tempdata)
+            .post("api/Branch", this.item_add)
             .then(response => {
               this.$root.$emit("pageLoaded");
               swal("Notification", "Added successfully", "success");

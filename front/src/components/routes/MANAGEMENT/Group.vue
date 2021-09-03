@@ -321,13 +321,11 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
-              var tempdata = {
-                item_edit: this.item_edit,
-                user_id: this.user.id,
-                user_name: this.user.name
-              };
+              this.item_edit.user_id = this.user.id;
+              this.item_edit.user_name = this.user.name;
+
               this.$http
-                .put("api/Group/" + this.item_edit.id, tempdata)
+                .put("api/Group/" + this.item_edit.id, this.item_edit)
                 .then(response => {
                   this.items = response.body;
                   this.$global.setGroup(response.body);
@@ -355,14 +353,11 @@ export default {
     btnAdd() {
       this.$validator.validateAll().then(result => {
         if (result) {
-          var tempdata = {
-            item_add: this.item_add,
-            user_id: this.user.id,
-            user_name: this.user.name
-          };
+          this.item_add.user_id = this.user.id;
+          this.item_add.user_name = this.user.name;
 
           this.$http
-            .post("api/Group", tempdata)
+            .post("api/Group", this.item_add)
             .then(response => {
               swal("Notification", "Added successfully", "success");
               this.$global.setGroup(response.body);

@@ -232,15 +232,11 @@ export default {
           this.$root.$emit("pageLoading");
           this.tblisBusy = true;
           this.item.employee_id = this.data.id;
-
-          var tempdata = {
-            item: this.item,
-            user_id: this.user.id,
-            user_name: this.user.name
-          };
+          this.item.user_id = this.user.id;
+          this.item.user_name = this.user.name;
 
           this.$http
-            .post("api/Earning", tempdata)
+            .post("api/Earning", this.item)
             .then(response => {
               swal("Notification", "Added successfully", "success");
               this.data.earning = response.body;
@@ -277,14 +273,11 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
-              var tempdata = {
-                item: this.item,
-                user_id: this.user.id,
-                user_name: this.user.name
-              };
+              this.item.user_id = this.user.id;
+              this.item.user_name = this.user.name;
 
               this.$http
-                .put("api/Earning/" + this.item.id, tempdata)
+                .put("api/Earning/" + this.item.id, this.item)
                 .then(response => {
                   this.data.earning = response.body;
                   swal("Update!", "Update successfully", "success");

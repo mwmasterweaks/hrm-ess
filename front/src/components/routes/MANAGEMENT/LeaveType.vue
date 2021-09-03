@@ -276,14 +276,11 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
-              var tempdata = {
-                item_edit: this.item_edit,
-                user_id: this.user.id,
-                user_name: this.user.name
-              };
+              this.item_edit.user_id = this.user.id;
+              this.item_edit.user_name = this.user.name;
 
               this.$http
-                .put("api/LeaveType/" + this.item_edit.id, tempdata)
+                .put("api/LeaveType/" + this.item_edit.id, this.item_edit)
                 .then(response => {
                   this.$global.setLeaveType(response.body);
                   this.items = response.body;
@@ -311,14 +308,11 @@ export default {
     btnAdd() {
       this.$validator.validateAll().then(result => {
         if (result) {
-          var tempdata = {
-            item_add: this.item_add,
-            user_id: this.user.id,
-            user_name: this.user.name
-          };
+          this.item_add.user_id = this.user.id;
+          this.item_add.user_name = this.user.name;
 
           this.$http
-            .post("api/LeaveType", tempdata)
+            .post("api/LeaveType", this.item_add)
             .then(response => {
               swal("Notification", "Added successfully", "success");
               this.$global.setLeaveType(response.body);
