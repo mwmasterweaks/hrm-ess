@@ -570,15 +570,8 @@ export default {
         this.$validator.validateAll().then(result => {
           if (result) {
             this.apply.employee_id = this.user.employee_id;
-
-            var tempdata = {
-              apply: this.apply,
-              user_id: this.user.id,
-              user_name: this.user.name
-            }
-
             this.$http
-              .post("api/MissingTimeLog", tempdata)
+              .post("api/MissingTimeLog", this.apply)
               .then(response => {
                 swal("Notification", "Added successfully", "success");
 
@@ -692,14 +685,9 @@ export default {
         dangerMode: true
       }).then(approve => {
         if (approve) {
-          var tempdata = {
-            item_edit: this.item_edit,
-            user_id: this.user.id,
-            user_name: this.user.name
-          }
           this.tblisBusy = true;
           this.$http
-            .post("api/MissingTimeLog/cancelApp", tempdata)
+            .post("api/MissingTimeLog/cancelApp", this.item_edit)
             .then(response => {
               this.items = response.body;
               this.totalRows = this.items.length;

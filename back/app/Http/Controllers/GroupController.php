@@ -24,28 +24,9 @@ class GroupController extends Controller
     public function store(Request $request)
     {
         try {
-            $data = Group::create($request->all());
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "store",
-                "message",
-                "Create new Group: " . $data
-            );
+            Group::create($request->all());
             return $this->index();
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "store",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -70,34 +51,13 @@ class GroupController extends Controller
         try {
 
             $cmd  = Group::findOrFail($id);
-            $logFrom = $cmd->replicate();
+
             $input = $request->all();
 
             $cmd->fill($input)->save();
 
-            $logTo = $cmd;
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "update",
-                "message",
-                "update Group id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
-            );
-
             return $this->index();
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "update",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -110,32 +70,11 @@ class GroupController extends Controller
 
             if (empty($tbl)) {
                 Group::destroy($id);
-
-                \Logger::instance()->log(
-                    Carbon::now(),
-                    "",
-                    "",
-                    $this->cname,
-                    "destroy",
-                    "message",
-                    "delete Group id " . $id .
-                        "\nOld Group: " . $tbl
-                );
                 return $this->index();
             } else {
                 return response()->json(['error' => 'Cant delete this Group, It\'s still in use.'], 500);
             }
         } catch (\Exception $ex) {
-            \Logger::instance()->log(
-                    Carbon::now(),
-                    "",
-                    "",
-                    $this->cname,
-                    "destroy",
-                    "message",
-                    "delete Group id " . $id .
-                        "\nOld Group: " . $tbl
-                );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

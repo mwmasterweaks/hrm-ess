@@ -23,29 +23,9 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         try {
-            $data = department::create($request->all());
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "store",
-                "message",
-                "Create new Department: " . $data
-            );
-
+            department::create($request->all());
             return $this->index();
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "store",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -70,34 +50,13 @@ class DepartmentController extends Controller
         try {
 
             $cmd  = department::findOrFail($id);
-            $logFrom = $cmd->replicate();
+
             $input = $request->all();
 
             $cmd->fill($input)->save();
 
-            $logTo = $cmd;
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "update",
-                "message",
-                "update Department id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
-            );
-
             return $this->index();
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "update",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -105,31 +64,10 @@ class DepartmentController extends Controller
     public function destroy($id)
     {
         try {
-            $tbl1 = department::findOrFail($id);
             department::destroy($id);
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                "",
-                "",
-                $this->cname,
-                "destroy",
-                "message",
-                "delete Department id " . $id .
-                    "\nOld Department: " . $tbl1
-            );
 
             return $this->index();
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                "",
-                "",
-                $this->cname,
-                "destroy",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

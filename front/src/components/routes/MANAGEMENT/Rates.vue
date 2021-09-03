@@ -9,8 +9,7 @@
             type="button"
             class="btn btn-success btn-labeled pull-right margin-right-10"
             v-if="roles.create_rate"
-            >Add</b-button
-          >
+          >Add</b-button>
         </p>
       </div>
 
@@ -20,14 +19,9 @@
             <b-col md="5" class="my-1">
               <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input
-                    v-model="tblFilter"
-                    placeholder="Filter"
-                  ></b-form-input>
+                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
-                      >Clear</b-button
-                    >
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -36,10 +30,7 @@
 
             <b-col md="2 " class="my-1">
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select
-                  v-model="perPage"
-                  :options="pageOptions"
-                ></b-form-select>
+                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -119,9 +110,7 @@
               autocomplete="off"
               autofocus="on"
             />
-            <small class="text-danger pull-left" v-show="errors.has('name')"
-              >Rate name is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('name')">Rate name is required.</small>
           </div>
         </div>
 
@@ -144,8 +133,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('daily_rate')"
-              >Daily rate is required.</small
-            >
+            >Daily rate is required.</small>
           </div>
         </div>
 
@@ -168,8 +156,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('sss_deduction')"
-              >SSS Deductions is required.</small
-            >
+            >SSS Deductions is required.</small>
           </div>
         </div>
 
@@ -192,8 +179,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('phic_deduction')"
-              >PHIC Deduction is required.</small
-            >
+            >PHIC Deduction is required.</small>
           </div>
         </div>
 
@@ -216,26 +202,15 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('hdmf_deduction')"
-              >HDMF Deduction is required.</small
-            >
+            >HDMF Deduction is required.</small>
           </div>
         </div>
         <!-- /form -->
-        <template slot="modal-footer" slot-scope="{}">
-          <b-button
-            size="sm"
-            variant="success"
-            @click="btnAdd()"
-            v-if="item.state == 'create'"
-            >Add</b-button
-          >
+        <template slot="modal-footer" slot-scope="{  }">
+          <b-button size="sm" variant="success" @click="btnAdd()" v-if="item.state == 'create'">Add</b-button>
           <span v-else>
-            <b-button size="sm" variant="success" @click="btnUpdate()"
-              >Update</b-button
-            >
-            <b-button size="sm" variant="danger" @click="btnDelete()"
-              >Delete</b-button
-            >
+            <b-button size="sm" variant="success" @click="btnUpdate()">Update</b-button>
+            <b-button size="sm" variant="danger" @click="btnDelete()">Delete</b-button>
           </span>
         </template>
       </b-modal>
@@ -282,7 +257,6 @@ export default {
     this.$global.loadJS();
   },
   created() {
-    this.user = this.$global.getUser();
     this.roles = this.$global.getRoles();
     this.load_items("Rate");
   },
@@ -337,14 +311,8 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
-              var tempdata = {
-                item: this.item,
-                user_id: this.user.id,
-                user_name: this.user.name
-              };
-
               this.$http
-                .put("api/Rate/" + this.item.id, tempdata)
+                .put("api/Rate/" + this.item.id, this.item)
                 .then(response => {
                   this.items = response.body;
                   this.totalRows = this.items.length;
@@ -370,14 +338,8 @@ export default {
     btnAdd() {
       this.$validator.validateAll().then(result => {
         if (result) {
-          var tempdata = {
-            item: this.item,
-            user_id: this.user.id,
-            user_name: this.user.name
-          };
-
           this.$http
-            .post("api/Rate", tempdata)
+            .post("api/Rate", this.item)
             .then(response => {
               swal("Notification", "Added successfully", "success");
               this.items = response.body;

@@ -62,7 +62,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 
     Route::post('Dtr/storeMultiple', 'DtrController@storeMultiple');
-    Route::get('getDTR/{period_id}/{emp_id}/{user_id}/{user_name}', 'DtrController@getDTR');
+    Route::get('getDTR/{period_id}/{emp_id}', 'DtrController@getDTR');
     Route::get('getDTRinWorkDate/{work_date}/{emp_id}', 'DtrController@getDTRinWorkDate');
     Route::get('getDTRinRange/{from}/{to}/{emp_id}', 'DtrController@getDTRinRange');
 
@@ -99,6 +99,4 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('Payslip/generatePayslip', 'PayslipController@generatePayslip');
 
     Route::post('EmployeeApprover/storeMultiple', 'EmployeeApproverController@storeMultiple');
-
-
 });

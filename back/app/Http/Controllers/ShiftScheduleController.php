@@ -48,17 +48,6 @@ class ShiftScheduleController extends Controller
             }
 
             schedule::insert($schedules);
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "store",
-                "message",
-                "Create new Shift_Schedule: " . $schedules
-            );
-
             DB::commit();
             return "ok";
         } catch (\Illuminate\Database\QueryException $ex) {
@@ -73,16 +62,6 @@ class ShiftScheduleController extends Controller
                     "Error",
                     $ex->getMessage()
                 );
-
-            \Logger::instance()->logError(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "store",
-                "Error",
-                $ex->getMessage()
-            );
 
             return response()->json(['error' => $ex], 500);
         }

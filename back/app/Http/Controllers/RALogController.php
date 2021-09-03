@@ -53,10 +53,10 @@ class RALogController extends Controller
             //430000
 
             $tbl = DB::connection('sqlsrv')->select("select [RN] as rn, [UID] as employeeID, [Date] as datetime
-                from [FASSQL].[dbo].[RALog] where [RN] > " . $RALog);
+                from [FASSQL].[dbo].[RALog] where [RN] > " . $RALog); //sqlserver na query
 
             // $tbl = DB::connection('sqlsrv')->select("select [RN] as rn, [UID] as employeeID, [Date] as datetime
-            //    from [FASSQL].[dbo].[RALog] where [RN] > 410000 and [RN] < 430000");
+            //    from [FASSQL].[dbo].[RALog] where [RN] > " . $RALog . " and [RN] < 540000");
             $temp = [];
             foreach ($tbl as $i => $d) {
                 $temp[$i] = [

@@ -462,15 +462,8 @@ export default {
         this.$validator.validateAll().then(result => {
           if (result) {
             this.apply.employee_id = this.user.employee_id;
-
-            var tempdata = {
-              apply: this.apply,
-              user_id: this.user.id,
-              user_name: this.user.name
-            }
-
             this.$http
-              .post("api/OverTime", tempdata)
+              .post("api/OverTime", this.apply)
               .then(response => {
                 swal("Notification", "Added successfully", "success");
 
