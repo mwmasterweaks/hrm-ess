@@ -65,9 +65,9 @@ class EmployeeApproverController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            /* $cmd  = Employee_approver::findOrFail($id);
-            $input = $request->all();
-            $cmd->fill($input)->save(); */
+            // $cmd  = Employee_approver::findOrFail($id);
+            // $input = $request->all();
+            // $cmd->fill($input)->save();
             DB::table('employee_approvers')
                 ->where('approver_id', $request->approver_id)
                 ->where('employee_id', $request->employee_id)

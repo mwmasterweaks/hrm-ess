@@ -35,14 +35,9 @@
             <b-col md="5" class="my-1">
               <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input
-                    v-model="tblFilter"
-                    placeholder="Filter"
-                  ></b-form-input>
+                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
-                      >Clear</b-button
-                    >
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -52,17 +47,12 @@
                 v-b-modal="'modalEmployeeFilter'"
                 type="button"
                 class="btn btn-success btn-labeled pull-right margin-left-10"
-              >
-                Multiple Filter
-              </button>
+              >Multiple Filter</button>
             </b-col>
 
             <b-col md="2 " class="my-1">
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select
-                  v-model="perPage"
-                  :options="pageOptions"
-                ></b-form-select>
+                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -144,7 +134,7 @@
                 class="btn btn-success btn-labeled"
                 v-b-tooltip.hover
                 title="Manage Payslip"
-                @click="openModal(row.item, 'ModalManagePayslip')"
+                @click="openModal(row.item , 'ModalManagePayslip')"
                 v-if="roles.view_payslip"
               >
                 <i class="fas fa-money-check"></i>
@@ -190,8 +180,8 @@
                     class="p-icon p-curve p-jelly"
                     color="primary"
                   >
-                    <i slot="extra" class="icon fas fa-check"></i> </p-check
-                  >Check all
+                    <i slot="extra" class="icon fas fa-check"></i>
+                  </p-check>Check all
                 </div>
               </div>
               <div class="col-md-5" v-if="item_selected.length > 0">
@@ -292,9 +282,10 @@
               v-model.trim="item_edit.id"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('bio_id')"
-              >Biometric ID is required.</small
-            >
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('bio_id')"
+            >Biometric ID is required.</small>
           </div>
         </div>
 
@@ -316,9 +307,10 @@
               autocomplete="off"
               autofocus="on"
             />
-            <small class="text-danger pull-left" v-show="errors.has('fname')"
-              >First Name is required.</small
-            >
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('fname')"
+            >First Name is required.</small>
           </div>
         </div>
 
@@ -358,9 +350,7 @@
               v-model.trim="item_edit.last_name"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('lname')"
-              >Last Name is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('lname')">Last Name is required.</small>
           </div>
         </div>
 
@@ -378,9 +368,7 @@
               name="genders"
               v-validate="'required'"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('genders')"
-              >Gender is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('genders')">Gender is required.</small>
           </div>
         </div>
 
@@ -404,8 +392,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('date_hired')"
-              >Date Hired is required.</small
-            >
+            >Date Hired is required.</small>
           </div>
         </div>
 
@@ -423,9 +410,7 @@
               name="groups"
               v-validate="'required'"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('groups')"
-              >Group is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('groups')">Group is required.</small>
           </div>
         </div>
 
@@ -443,9 +428,7 @@
               name="rates"
               v-validate="'required'"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('rates')"
-              >Rate is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('rates')">Rate is required.</small>
           </div>
         </div>
 
@@ -466,8 +449,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('positions')"
-              >Position is required.</small
-            >
+            >Position is required.</small>
           </div>
         </div>
 
@@ -485,9 +467,7 @@
               name="branches"
               v-validate="'required'"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('branches')"
-              >Branch is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('branches')">Branch is required.</small>
           </div>
         </div>
 
@@ -508,8 +488,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('departments')"
-              >Department is required.</small
-            >
+            >Department is required.</small>
           </div>
         </div>
 
@@ -530,8 +509,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('employment_statuses')"
-              >Employment Status is required.</small
-            >
+            >Employment Status is required.</small>
           </div>
         </div>
 
@@ -544,14 +522,12 @@
                 href="javascript:void(0);"
                 @click="view_other_details = true"
                 v-if="!view_other_details"
-                >Show Other Details (Optional)</a
-              >
+              >Show Other Details (Optional)</a>
               <a
                 href="javascript:void(0);"
                 @click="view_other_details = false"
                 v-if="view_other_details"
-                >Hide Other Details</a
-              >
+              >Hide Other Details</a>
             </center>
           </div>
         </div>
@@ -898,40 +874,35 @@
             variant="warning"
             v-b-modal="'ModalRole'"
             v-if="item_edit.bioID != '' && roles.role"
-            >Role</b-button
-          >
+          >Role</b-button>
 
           <b-button
             size="sm"
             variant="warning"
             v-b-modal="'ModalResetPassword'"
             v-if="item_edit.bioID != '' && roles.update_employee"
-            >Reset Password</b-button
-          >
+          >Reset Password</b-button>
 
           <b-button
             size="sm"
             variant="success"
             v-if="item_edit.bioID != '' && roles.create_approver"
             @click="btnMakeApprover"
-            >Make Approver</b-button
-          >
+          >Make Approver</b-button>
 
           <b-button
             size="sm"
             variant="success"
             v-if="item_edit.bioID != '' && roles.update_employee"
             @click="btnUpdate"
-            >Update</b-button
-          >
+          >Update</b-button>
 
           <b-button
             size="sm"
             variant="danger"
             v-if="item_edit.bioID != '' && roles.delete_employee"
             @click="btnDelete"
-            >Delete</b-button
-          >
+          >Delete</b-button>
         </template>
       </b-modal>
       <!-- End ModelAddEmployee -->
@@ -969,16 +940,9 @@
                 <b-col md="5" class="my-1">
                   <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                     <b-input-group>
-                      <b-form-input
-                        v-model="leave_tblFilter"
-                        placeholder="Filter"
-                      ></b-form-input>
+                      <b-form-input v-model="leave_tblFilter" placeholder="Filter"></b-form-input>
                       <b-input-group-append>
-                        <b-button
-                          :disabled="!leave_tblFilter"
-                          @click="leave_tblFilter = ''"
-                          >Clear</b-button
-                        >
+                        <b-button :disabled="!leave_tblFilter" @click="leave_tblFilter = ''">Clear</b-button>
                       </b-input-group-append>
                     </b-input-group>
                   </b-form-group>
@@ -987,10 +951,7 @@
 
                 <b-col md="2 " class="my-1">
                   <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                    <b-form-select
-                      v-model="leave_perPage"
-                      :options="pageOptions"
-                    ></b-form-select>
+                    <b-form-select v-model="leave_perPage" :options="pageOptions"></b-form-select>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -1055,9 +1016,10 @@
         size="xl"
         ok-only
       >
-        <template v-slot:modal-title v-if="item_selected.length > 0"
-          >Add Leave Balance to all selected employee</template
-        >
+        <template
+          v-slot:modal-title
+          v-if="item_selected.length > 0"
+        >Add Leave Balance to all selected employee</template>
         <template v-else v-slot:modal-title>
           Add Leave Balance to employee ID :
           {{ item_row_click.user.email }} ({{ item_row_click.last_name }})
@@ -1082,8 +1044,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('leave_types')"
-              >Leave type is required.</small
-            >
+            >Leave type is required.</small>
           </div>
         </div>
 
@@ -1103,9 +1064,7 @@
               v-model.trim="leave_add.enroll_year"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('year')"
-              >Input valid year.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('year')">Input valid year.</small>
           </div>
         </div>
 
@@ -1125,9 +1084,7 @@
               v-model.trim="leave_add.balance"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('balance')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('balance')">Input valid number.</small>
           </div>
         </div>
 
@@ -1147,9 +1104,7 @@
               v-model.trim="leave_add.availed"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('availed')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('availed')">Input valid number.</small>
           </div>
         </div>
 
@@ -1169,9 +1124,7 @@
               v-model.trim="leave_add.accrued"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('accrued')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('accrued')">Input valid number.</small>
           </div>
         </div>
         <!-- /form -->
@@ -1236,9 +1189,7 @@
               v-model.trim="leave_edit.enroll_year"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('year')"
-              >Input valid year.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('year')">Input valid year.</small>
           </div>
         </div>
 
@@ -1258,9 +1209,7 @@
               v-model.trim="leave_edit.balance"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('balance')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('balance')">Input valid number.</small>
           </div>
         </div>
 
@@ -1280,9 +1229,7 @@
               v-model.trim="leave_edit.availed"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('availed')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('availed')">Input valid number.</small>
           </div>
         </div>
 
@@ -1302,16 +1249,12 @@
               v-model.trim="leave_edit.accrued"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('accrued')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('accrued')">Input valid number.</small>
           </div>
         </div>
         <!-- /form -->
         <template slot="modal-footer" slot-scope="{}">
-          <b-button size="sm" variant="success" @click="btnEditLeave()"
-            >Update</b-button
-          >
+          <b-button size="sm" variant="success" @click="btnEditLeave()">Update</b-button>
         </template>
       </b-modal>
       <!-- End ModalEditLeave -->
@@ -1330,7 +1273,7 @@
       >
         <template v-slot:modal-title>
           DTR of employee ID : {{ item_row_click.user.email }} ({{
-            item_row_click.last_name
+          item_row_click.last_name
           }})
         </template>
 
@@ -1372,16 +1315,9 @@
                 <b-col md="5" class="my-1">
                   <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                     <b-input-group>
-                      <b-form-input
-                        v-model="sched_tblFilter"
-                        placeholder="Filter"
-                      ></b-form-input>
+                      <b-form-input v-model="sched_tblFilter" placeholder="Filter"></b-form-input>
                       <b-input-group-append>
-                        <b-button
-                          :disabled="!sched_tblFilter"
-                          @click="sched_tblFilter = ''"
-                          >Clear</b-button
-                        >
+                        <b-button :disabled="!sched_tblFilter" @click="sched_tblFilter = ''">Clear</b-button>
                       </b-input-group-append>
                     </b-input-group>
                   </b-form-group>
@@ -1390,10 +1326,7 @@
 
                 <b-col md="2 " class="my-1">
                   <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                    <b-form-select
-                      v-model="sched_perPage"
-                      :options="pageOptions"
-                    ></b-form-select>
+                    <b-form-select v-model="sched_perPage" :options="pageOptions"></b-form-select>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -1459,12 +1392,13 @@
         size="xl"
         ok-only
       >
-        <template v-slot:modal-title v-if="item_selected.length > 0"
-          >Add Schedule to all selected employee</template
-        >
+        <template
+          v-slot:modal-title
+          v-if="item_selected.length > 0"
+        >Add Schedule to all selected employee</template>
         <template v-slot:modal-title v-else>
           Add Schedule to employee ID : {{ item_row_click.user.email }} ({{
-            item_row_click.last_name
+          item_row_click.last_name
           }})
         </template>
         <!-- form -->
@@ -1524,9 +1458,7 @@
             :key="sched_item.work_date"
           >
             <div class="col-lg-3">
-              <p class="textLabel">
-                {{ sched_item.work_date }} ({{ sched_item.day }})
-              </p>
+              <p class="textLabel">{{ sched_item.work_date }} ({{ sched_item.day }})</p>
             </div>
             <div class="col-lg-1">
               <p-check
@@ -1605,8 +1537,7 @@
                 type="button"
                 class="btn btn-success btn-labeled pull-right margin-right-10"
                 v-if="roles.create_approver"
-                >Add Approver</b-button
-              >
+              >Add Approver</b-button>
             </p>
           </div>
           <div class="elClr panel-body">
@@ -1615,16 +1546,12 @@
                 <b-col md="5" class="my-1">
                   <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                     <b-input-group>
-                      <b-form-input
-                        v-model="approve_tblFilter"
-                        placeholder="Filter"
-                      ></b-form-input>
+                      <b-form-input v-model="approve_tblFilter" placeholder="Filter"></b-form-input>
                       <b-input-group-append>
                         <b-button
                           :disabled="!approve_tblFilter"
                           @click="approve_tblFilter = ''"
-                          >Clear</b-button
-                        >
+                        >Clear</b-button>
                       </b-input-group-append>
                     </b-input-group>
                   </b-form-group>
@@ -1633,10 +1560,7 @@
 
                 <b-col md="2 " class="my-1">
                   <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                    <b-form-select
-                      v-model="approve_perPage"
-                      :options="pageOptions"
-                    ></b-form-select>
+                    <b-form-select v-model="approve_perPage" :options="pageOptions"></b-form-select>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -1730,12 +1654,13 @@
         size="xl"
         ok-only
       >
-        <template v-slot:modal-title v-if="item_selected.length > 0"
-          >Add Approver to all selected employee</template
-        >
+        <template
+          v-slot:modal-title
+          v-if="item_selected.length > 0"
+        >Add Approver to all selected employee</template>
         <template v-else v-slot:modal-title>
           Add Approver to employee ID : {{ item_row_click.user.email }} ({{
-            item_row_click.last_name
+          item_row_click.last_name
           }})
         </template>
 
@@ -1755,9 +1680,10 @@
               name="approver"
               v-validate="'required'"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('approver')"
-              >Approver name is required.</small
-            >
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('approver')"
+            >Approver name is required.</small>
           </div>
         </div>
         <!-- /form -->
@@ -1771,13 +1697,7 @@
             <i class="fas fa-plus-square"></i>
           </b-button>
 
-          <b-button
-            size="sm"
-            v-else
-            variant="success"
-            @click="btnAddApproverOK()"
-            >Add</b-button
-          >
+          <b-button size="sm" v-else variant="success" @click="btnAddApproverOK()">Add</b-button>
         </template>
       </b-modal>
       <!-- End ModalAddApprover -->
@@ -1796,7 +1716,7 @@
       >
         <template v-slot:modal-title>
           Manage payslip for employee ID : {{ item_row_click.user.email }} ({{
-            item_row_click.last_name
+          item_row_click.last_name
           }})
         </template>
         <!-- form -->
@@ -2089,9 +2009,7 @@
         </div>
         <!-- /form -->
         <template slot="modal-footer" slot-scope="{}">
-          <b-button size="sm" variant="success" @click="btnAddApproverOK()"
-            >Add</b-button
-          >
+          <b-button size="sm" variant="success" @click="btnAddApproverOK()">Add</b-button>
         </template>
       </b-modal>
       <!-- End ModalManagePayslip -->
@@ -2110,7 +2028,7 @@
       >
         <template v-slot:modal-title>
           Reset Password for employee ID : {{ item_edit.user.email }} ({{
-            item_edit.last_name
+          item_edit.last_name
           }})
         </template>
 
@@ -2145,18 +2063,8 @@
         </div>
 
         <template slot="modal-footer" slot-scope="{}">
-          <b-button
-            size="sm"
-            variant="success"
-            @click="btnSubmitResetPassword()"
-            >Update</b-button
-          >
-          <b-button
-            size="sm"
-            variant="danger"
-            @click="$bvModal.hide('ModalResetPassword')"
-            >Cancel</b-button
-          >
+          <b-button size="sm" variant="success" @click="btnSubmitResetPassword()">Update</b-button>
+          <b-button size="sm" variant="danger" @click="$bvModal.hide('ModalResetPassword')">Cancel</b-button>
         </template>
       </b-modal>
       <!-- End ModalResetPassword -->
@@ -2175,7 +2083,7 @@
       >
         <template v-slot:modal-title>
           Manage Role for employee ID : {{ item_edit.user.email }} ({{
-            item_edit.last_name
+          item_edit.last_name
           }})
         </template>
 
@@ -2786,9 +2694,7 @@
         </div>
 
         <template slot="modal-footer" slot-scope="{}">
-          <b-button size="sm" variant="success" @click="btnUpdateRoles()"
-            >Update</b-button
-          >
+          <b-button size="sm" variant="success" @click="btnUpdateRoles()">Update</b-button>
         </template>
       </b-modal>
       <!-- End ModalRole -->
