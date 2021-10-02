@@ -682,7 +682,7 @@ export default {
       this.$bvModal.show("ModalApprovers");
     },
     cancelApplication() {
-      this.item_edit.user_id = this.user.employee_id;
+      this.item_edit.employee_id = this.user.employee_id;
       swal({
         title: "Notification",
         text: "Do you really want to cancel this application?",
@@ -691,12 +691,12 @@ export default {
         dangerMode: true
       }).then(approve => {
         if (approve) {
-          this.apply.user_id = this.user.id;
-          this.apply.item_edit.user_name = this.user.name;
+          this.item_edit.user_id = this.user.id;
+          this.item_edit.user_name = this.user.name;
 
           this.tblisBusy = true;
           this.$http
-            .post("api/MissingTimeLog/cancelApp", this.apply)
+            .post("api/MissingTimeLog/cancelApp", this.item_edit)
             .then(response => {
               this.items = response.body;
               this.totalRows = this.items.length;

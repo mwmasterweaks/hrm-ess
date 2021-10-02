@@ -248,6 +248,7 @@ export default {
   },
   data() {
     return {
+      user: {},
       tblisBusy: true,
       fields: [
         { key: "name", sortable: true },

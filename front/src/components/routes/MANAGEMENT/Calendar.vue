@@ -436,6 +436,7 @@ export default {
   },
   data() {
     return {
+      user: {},
       tblisBusy: true,
       fields: [
         { key: "name", sortable: true },
@@ -504,8 +505,8 @@ export default {
     this.$global.loadJS();
   },
   created() {
-    this.user = this.$global.getUser();
     this.roles = this.$global.getRoles();
+    this.user = this.$global.getUser();
     this.branch_list = this.$global.getBranch();
     this.get_group();
     this.load_items("Calendar");
@@ -604,7 +605,6 @@ export default {
         if (result) {
           this.item_add.user_id = this.user.id;
           this.item_add.user_name = this.user.name;
-
           this.$http
             .post("api/Calendar", this.item_add)
             .then(response => {

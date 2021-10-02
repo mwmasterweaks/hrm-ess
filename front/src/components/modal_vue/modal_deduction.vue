@@ -186,6 +186,7 @@ export default {
   },
   data() {
     return {
+      user: {},
       fields: [
         { key: "type.name", label: "Type", sortable: true },
         { key: "effective_date", sortable: true },
@@ -208,8 +209,8 @@ export default {
     };
   },
   created() {
-    this.load();
     this.user = this.$global.getUser();
+    this.load();
   },
   methods: {
     load() {

@@ -32,29 +32,9 @@ class EmployeeApproverController extends Controller
 
             $level = (int) ($tbl + 1);
             //return $level;
-            $data = Employee_approver::create($request->except('level') + ["level" => $level]);
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "store",
-                "message",
-                "Create new Employee_Approver: " . $data
-            );
-
+            Employee_approver::create($request->except('level') + ["level" => $level]);
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "store",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -85,36 +65,16 @@ class EmployeeApproverController extends Controller
     public function update(Request $request, $id)
     {
         try {
-
-            $cmd  = Employee_approver::findOrFail($id);
-            $logFrom = $cmd->replicate();
+            /* $cmd  = Employee_approver::findOrFail($id);
             $input = $request->all();
+            $cmd->fill($input)->save(); */
+            DB::table('employee_approvers')
+                ->where('approver_id', $request->approver_id)
+                ->where('employee_id', $request->employee_id)
+                ->update(['level' => $request->level]);
 
-            $cmd->fill($input)->save();
-
-            $logTo = $cmd;
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "update",
-                "message",
-                "update Employee_Approver id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
-            );
-
-            return $this->index();
+            return $this->show($request->employee_id);
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "update",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -122,35 +82,20 @@ class EmployeeApproverController extends Controller
     public function destroy($id)
     {
         try {
-            $tbl1 = Employee_approver::findOrFail($id);
-            Employee_approver::destroy($id);
+            // Employee_approver::destroy($id);
+            $value = explode(",", $id);
+            $approver_id = $value[0];
+            $employee_id = $value[1];
+            DB::table('employee_approvers')
+                ->where('approver_id', $approver_id)
+                ->where('employee_id', $employee_id)
+                ->delete();
 
-            \Logger::instance()->log(
-                Carbon::now(),
-                "",
-                "",
-                $this->cname,
-                "destroy",
-                "message",
-                "delete Employee_Approver id " . $id .
-                    "\nOld Employee_Approver: " . $tbl1
-            );
-
-            return $this->index();
+            return $this->show($employee_id);
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                "",
-                "",
-                $this->cname,
-                "destroy",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
-
     public function storeMultiple(Request $request)
     {
         try {

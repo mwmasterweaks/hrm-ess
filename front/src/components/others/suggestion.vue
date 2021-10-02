@@ -309,7 +309,6 @@ export default {
     btnSubmit() {
       // console.log()
       this.addsuggest.user_id = this.user.id;
-      this.addsuggest.user_name = this.user.name;
       swal({
         title: "Confirmation",
         text: "Do you really want to submit this?",
@@ -388,7 +387,6 @@ export default {
           var temp = {
             suggestion_id: this.editSuggest.id,
             user_id: this.user.id,
-            user_name: this.user.name,
             comment: this.comment,
             status: "new"
           };

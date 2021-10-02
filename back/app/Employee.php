@@ -15,6 +15,7 @@ use App\earning;
 use App\dtr;
 use App\payslip;
 use App\Role;
+use App\over_time;
 
 class Employee extends Model
 {
@@ -80,6 +81,11 @@ class Employee extends Model
     public function payslip()
     {
         return $this->hasMany(payslip::class, 'employee_id', 'id')->orderBy("created_at", "DESC");
+    }
+
+    public function overtime()
+    {
+        return $this->hasMany(over_time::class, 'employee_id', 'id');
     }
 
     public function emp_roles()

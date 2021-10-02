@@ -279,12 +279,12 @@
               <template v-slot:cell(shift_sched)="data">
                 <span v-html="data.value"></span>
               </template>
-              <template v-slot:cell(halfday)="data">
+              <!-- <template v-slot:cell(halfday)="data">
                 <span v-html="data.value"></span>
               </template>
               <template v-slot:cell(halfday_type)="data">
                 <span v-html="data.value"></span>
-              </template>
+              </template> -->
 
               <template v-slot:cell(halfday)="row">
                 <i class="fas fa-check" v-show="row.item.halfday == 1" />

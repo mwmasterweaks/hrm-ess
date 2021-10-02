@@ -81,7 +81,7 @@ class Logger
         $mail->Subject = $subject;
         $mail->Body    = $message;
 
-         if (!$mail->send()) {
+        if (!$mail->send()) {
             return 'Mailer Error: ' . $mail->ErrorInfo;
         } else {
             return 'ok';

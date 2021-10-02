@@ -29,10 +29,10 @@
       :footer-text-variant="' elClr'"
     >
       <div class="rowFields mx-auto row">
-        <div class="col-lg-2">
+        <div class="col-lg-1">
           <p class="elClr" style="margin-top:9px;">Period:</p>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-5">
           <model-list-select
             :list="pay_period_list"
             v-model="pay_period_select"
@@ -40,33 +40,71 @@
             option-text="period"
             placeholder="Select pay period"
             name="pay_period_list"
-            @input="pay_period_onchange"
             v-validate="'required'"
           ></model-list-select>
         </div>
+        <div class="col-lg-5">
+          <b-form-select
+            v-model="selectedSummary"
+            :options="summaryOptions"
+          ></b-form-select>
+        </div>
+        <div class="col-lg-1">
+          <b-button @click="pay_period_onchange" class="sumReport-btn">
+            FILTER
+          </b-button>
+        </div>
       </div>
       <br />
-      <b-table
-        id="HRsummaryTable"
-        class="elClr centerText"
-        tbody-tr-class="elClr"
-        show-empty
-        striped
-        hover
-        outlined
-        :fields="fields"
-        :items="items"
-        :busy="tblisBusy"
-        head-variant=" elClr"
-      >
-        <div slot="table-busy" class="text-center text-danger my-2">
-          <b-spinner class="align-middle"></b-spinner>
-          <strong>Loading...</strong>
-        </div>
-        <template slot="table-caption"></template>
-      </b-table>
+      <div v-if="activeDiv != 'totals'">
+        <b-table
+          id="HRsummaryTable"
+          class="elClr centerText"
+          tbody-tr-class="elClr"
+          show-empty
+          striped
+          hover
+          outlined
+          :fields="rsFields"
+          :items="items"
+          :busy="tblisBusy"
+          head-variant=" elClr"
+        >
+          <div slot="table-busy" class="text-center text-danger my-2">
+            <b-spinner class="align-middle"></b-spinner>
+            <strong>Loading...</strong>
+          </div>
+          <template slot="table-caption"></template>
+        </b-table>
+      </div>
+      <div v-if="activeDiv == 'totals'">
+        <b-table
+          id="HRsummaryTable"
+          class="elClr centerText"
+          tbody-tr-class="elClr"
+          show-empty
+          striped
+          hover
+          outlined
+          :fields="fields"
+          :items="items"
+          :busy="tblisBusy"
+          head-variant=" elClr"
+        >
+          <div slot="table-busy" class="text-center text-danger my-2">
+            <b-spinner class="align-middle"></b-spinner>
+            <strong>Loading...</strong>
+          </div>
+          <template slot="table-caption"></template>
+        </b-table>
+      </div>
       <template v-slot:modal-footer>
-        <b-button size="sm" variant="success" @click="fnExcelReport('HRsummaryTable')">Export</b-button>
+        <b-button
+          size="sm"
+          variant="success"
+          @click="fnExcelReport('HRsummaryTable')"
+          >Export</b-button
+        >
       </template>
     </b-modal>
   </div>
@@ -107,6 +145,61 @@ export default {
         },
         { key: "summary.no_in_and_out", label: "Total Absent", sortable: true }
       ],
+      rsFields: [
+        {
+          key: "Name",
+          label: "Full Name",
+          formatter: (value, key, item) => {
+            if (item.middle_name == null) item.middle_name = "";
+            return (
+              item.last_name + ", " + item.first_name + " " + item.middle_name
+            );
+          },
+          sortable: true
+        },
+        {
+          key: "Class",
+          label: "Class",
+          formatter: (value, key, item) => {
+            return item.department.name + " / " + item.branch.name;
+          },
+          sortable: true
+        },
+        {
+          key: "Qty",
+          label: "Qty",
+          formatter: (value, key, item) => {
+            if (this.selectedSummary == "late") return item.summary.late;
+            else if (this.selectedSummary == "absent")
+              return item.summary.no_in_and_out;
+            else if (this.selectedSummary == "undertime")
+              return item.summary.undertime;
+            else if (this.selectedSummary == "overtime")
+              return item.summary.overtime;
+          },
+          sortable: true
+        },
+        {
+          key: "Amount",
+          label: "Amount",
+          formatter: (value, key, item) => {
+            if (this.selectedSummary == "late") return item.summary.late * 0.88;
+            else if (this.selectedSummary == "absent")
+              return item.summary.no_in_and_out;
+            else if (this.selectedSummary == "undertime")
+              return item.summary.undertime * 0.66;
+            else if (this.selectedSummary == "overtime") return "-";
+          },
+          sortable: true
+        }
+      ],
+      summaryOptions: [
+        { value: "totals", text: "All Records" },
+        { value: "late", text: "Late" },
+        { value: "absent", text: "Absent" },
+        { value: "undertime", text: "Undertime" },
+        { value: "overtime", text: "Overtime" }
+      ],
       items: [],
       tblFilter: null,
       totalRows: 1,
@@ -115,7 +208,9 @@ export default {
       pageOptions: [20, 50, 100, 200, 500],
       pay_period_list: [],
       pay_period_select: "",
-      roles: []
+      roles: [],
+      selectedSummary: "totals",
+      activeDiv: "totals"
     };
   },
   created() {
@@ -130,13 +225,20 @@ export default {
     },
     pay_period_onchange() {
       console.log(this.pay_period_select);
+      console.log(this.selectedSummary);
 
       // this.tblisBusy = true;
       this.$http
-        .put("api/HRSummaryReport/" + this.pay_period_select)
+        .put(
+          "api/HRSummaryReport/" +
+            this.pay_period_select +
+            "/" +
+            this.selectedSummary
+        )
         .then(function(response) {
           console.log(response.body);
           this.items = response.body;
+          this.activeDiv = this.selectedSummary;
           // this.tblisBusy = false;
           // this.totalRows = this.sched_items.length;
           // this.currentPage = 1;
@@ -170,7 +272,7 @@ export default {
             tab_text = tab_text + "</table>";
             tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, ""); //remove if u want links in your table
             tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
-            tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+            tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // removes input params
 
             var ua = window.navigator.userAgent;
             var msie = ua.indexOf("MSIE ");
@@ -231,5 +333,14 @@ export default {
 
 .margin-right-10 {
   margin-right: 10px;
+}
+
+.sumReport-btn {
+  float: right;
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-left: 5px;
+  border-radius: 2px;
+  height: 100%;
 }
 </style>

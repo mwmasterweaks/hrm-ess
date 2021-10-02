@@ -60,27 +60,8 @@ class ChangeRestDayController extends Controller
             ]);
             change_rest_day::where("id", $tblInserted->id)
                 ->update(['reference_no' => 'CRD-' . $tblInserted->id]);
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "store",
-                "message",
-                "Create new Change_Rest_Day: " . $tblInserted
-            );
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "store",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -105,34 +86,13 @@ class ChangeRestDayController extends Controller
         try {
 
             $cmd  = change_rest_day::findOrFail($id);
-            $logFrom = $cmd->replicate();
+
             $input = $request->all();
 
             $cmd->fill($input)->save();
 
-            $logTo = $cmd;
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "update",
-                "message",
-                "update Change_Rest_Day id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
-            );
-
             return $this->index();
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "update",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -140,31 +100,10 @@ class ChangeRestDayController extends Controller
     public function destroy($id)
     {
         try {
-            $tbl1 = change_rest_day::findOrFail($id);
             change_rest_day::destroy($id);
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                "",
-                "",
-                $this->cname,
-                "destroy",
-                "message",
-                "delete Change_Rest_Day id " . $id .
-                    "\nOld Change_Rest_Day: " . $tbl1
-            );
 
             return $this->index();
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                "",
-                "",
-                $this->cname,
-                "destroy",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

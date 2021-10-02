@@ -141,6 +141,7 @@ export default {
   },
   data() {
     return {
+      user: {},
       tblisBusy: false,
       fields: [
         {

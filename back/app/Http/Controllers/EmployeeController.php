@@ -17,6 +17,7 @@ class EmployeeController extends Controller
             $tbl = Employee::with(['user', 'deduction.type', 'earning.type', 'group', 'rate', 'position', 'branch', 'department', 'payslip.pay_period'])
                 ->get();
 
+
             return $this->ForQuery($tbl);
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);
@@ -314,7 +315,6 @@ class EmployeeController extends Controller
     }
     public function sendCredentials(Request $request)
     {
-
         //message
         if (true) {
             $message = "
@@ -339,23 +339,16 @@ class EmployeeController extends Controller
             </body>
             </html>";
         }
-        //format sa send to sa front ni
-        //   item.sendTo = [
-        //       {
-        //         email: "cnc@dctechmicro.com",
-        //         name: "Credits and Collection"
-        //       }
-        //     ];
+
 
         return \Logger::instance()->mailer(
-                    "Your Credentials in HRMESS",
-                    $message,
-                    $request->user_email,
-                    $request->user_name,
-                    $request->sendTo,
-                    $request->CCto
-
-                );
+            "Your Credentials in HRMESS",
+            $message,
+            $request->user_email,
+            $request->user_name,
+            $request->sendTo,
+            $request->CCto
+        );
     }
     public static function convert_from_latin1_to_utf8_recursively($dat)
     {
@@ -374,6 +367,4 @@ class EmployeeController extends Controller
             return $dat;
         }
     }
-
-
 }

@@ -334,9 +334,9 @@
               <strong>Loading...</strong>
             </div>
 
-            <template v-slot:cell(time_id)="data">
+            <!-- <template v-slot:cell(time_id)="data">
               <span v-html="data.value"></span>
-            </template>
+            </template> -->
             <template v-slot:cell(time_id)="row">
               <div class="input-group">
                 <date-picker

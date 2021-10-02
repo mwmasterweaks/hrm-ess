@@ -244,6 +244,7 @@ export default {
   },
   data() {
     return {
+      user: {},
       tblisBusy: true,
       fields: [
         { key: "name", sortable: true },
@@ -272,11 +273,11 @@ export default {
     this.$global.loadJS();
   },
   created() {
+    this.user = this.$global.getUser();
     this.roles = this.$global.getRoles();
     this.items = this.$global.getBranch();
     this.tblisBusy = false;
     this.totalRows = this.items.length;
-    this.user = this.$global.getUser();
   },
   mounted() {
     this.load();

@@ -23,29 +23,9 @@ class BranchController extends Controller
     public function store(Request $request)
     {
         try {
-            $data = branch::create($request->all());
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "store",
-                "message",
-                "Create new Branch: " . $data
-            );
-
+            branch::create($request->all());
             return $this->index();
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "store",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -69,34 +49,13 @@ class BranchController extends Controller
         try {
 
             $cmd  = branch::findOrFail($id);
-            $logFrom = $cmd->replicate();
+
             $input = $request->all();
 
             $cmd->fill($input)->save();
 
-            $logTo = $cmd;
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "update",
-                "message",
-                "update Branch id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
-            );
-
             return $this->index();
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "update",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -104,31 +63,10 @@ class BranchController extends Controller
     public function destroy($id)
     {
         try {
-            $tbl1 = branch::findOrFail($id);
             branch::destroy($id);
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                "",
-                "",
-                $this->cname,
-                "destroy",
-                "message",
-                "delete Branch id " . $id .
-                    "\nOld Branch: " . $tbl1
-            );
 
             return $this->index();
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                "",
-                "",
-                $this->cname,
-                "destroy",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

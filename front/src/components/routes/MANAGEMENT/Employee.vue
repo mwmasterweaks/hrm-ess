@@ -1662,6 +1662,36 @@
                   <b-spinner class="align-middle"></b-spinner>
                   <strong>Loading...</strong>
                 </div>
+
+                <template #cell(level)="data">
+                  <b-form-input
+                    v-if="appLevelRow[data.index]"
+                    type="text"
+                    v-model="approve_items[data.index].level"
+                  ></b-form-input>
+                  <span v-else>{{ data.value }}</span>
+                </template>
+                <template #cell(edit)="data">
+                  <div class="text-right">
+                    <b-button
+                      @click="manageApproverRow(data, 'edit')"
+                      class="row-icon"
+                    >
+                      <span v-if="!appLevelRow[data.index]" class="ri-edit"
+                        ><i class="fas fa-pen"></i
+                      ></span>
+                      <span v-else class="done" title="Save changes"
+                        ><i class="fas fa-check"></i
+                      ></span>
+                    </b-button>
+                    <b-button
+                      @click="manageApproverRow(data, 'delete')"
+                      class="row-icon ri-delete"
+                    >
+                      <span><i class="fas fa-trash-alt"></i></span>
+                    </b-button>
+                  </div>
+                </template>
               </b-table>
             </div>
           </div>
@@ -1708,6 +1738,7 @@
             item_row_click.last_name
           }})
         </template>
+
         <!-- form -->
 
         <div class="rowFields mx-auto row">
@@ -2988,7 +3019,8 @@ export default {
             );
           }
         },
-        { key: "level", sortable: true }
+        { key: "level", sortable: true },
+        { key: "edit", label: "" }
       ],
       approve_items: [],
       approve_tblFilter: null,
@@ -3077,7 +3109,10 @@ export default {
         }
       },
       user: {},
-      roles: []
+      roles: [],
+      appLevelRow: {},
+      prevIndex: null,
+      prevLev: null
     };
   },
   beforeCreate() {
@@ -3091,7 +3126,7 @@ export default {
     this.branches = this.$global.getBranch();
     this.departments = this.$global.getDepartment();
     this.leave_types = this.$global.getLeaveType();
-    this.load_items();
+    this.load_items("Employee");
     this.load_rates();
     this.load_pay_period();
     this.reloadApprover();
@@ -3106,9 +3141,8 @@ export default {
   },
   updated() {},
   methods: {
-    load_items() {
-      this.$http.get("api/Employee").then(function(response) {
-        console.log(response);
+    load_items(model) {
+      this.$http.get("api/" + model).then(function(response) {
         this.items = response.body;
         this.totalRows = this.items.length;
         this.tblisBusy = false;
@@ -3213,8 +3247,7 @@ export default {
         if (result) {
           this.$root.$emit("pageLoading");
           this.item_edit.user_id = this.user.id;
-          this.item_edit.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+          this.item_edit.user_name = this.user.email;
           this.$http
             .post("api/Employee", this.item_edit)
             .then(response => {
@@ -3286,10 +3319,7 @@ export default {
             if (update) {
               this.$root.$emit("pageLoading");
               this.item_edit.user_id = this.user.id;
-              this.item_edit.user_name =
-                this.user.employee.first_name +
-                " " +
-                this.user.employee.last_name;
+              this.item_edit.user_name = this.user.email;
               this.$http
                 .put("api/Employee/" + this.item_edit.bioID, this.item_edit)
                 .then(response => {
@@ -3317,7 +3347,7 @@ export default {
     btnDelete() {
       swal({
         title: "Are you sure?",
-        text: "Do you really want to delete this item permanently",
+        text: "Do you really want to delete this item permanently?",
         icon: "warning",
         buttons: true,
         dangerMode: true
@@ -3373,9 +3403,6 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.leave_add.multiple = 0;
-          this.leave_add.user_id = this.user.id;
-          this.leave_add.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
           this.leave_add.employee_id = this.item_row_click.id;
 
           this.$root.$emit("pageLoading");
@@ -3415,9 +3442,6 @@ export default {
         if (result) {
           this.leave_add.multiple = 1;
           this.leave_add.employees = this.item_selected;
-          this.leave_add.user_id = this.user.id;
-          this.leave_add.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
 
           this.$root.$emit("pageLoading");
           this.$http
@@ -3462,12 +3486,6 @@ export default {
           }).then(update => {
             this.tblisBusy = true;
             if (update) {
-              this.leave_edit.user_id = this.user.id;
-              this.leave_edit.user_name =
-                this.user.employee.first_name +
-                " " +
-                this.user.employee.last_name;
-
               this.$root.$emit("pageLoading");
               this.$http
                 .put("api/LeaveBalance/" + this.leave_edit.id, this.leave_edit)
@@ -3506,16 +3524,7 @@ export default {
       this.$root.$emit("pageLoading");
       this.$http
         .get(
-          "api/getDTR/" +
-            this.pay_period_select +
-            "/" +
-            this.item_row_click.id +
-            "/" +
-            this.user.id +
-            "/" +
-            this.user.employee.first_name +
-            " " +
-            this.user.employee.last_name
+          "api/getDTR/" + this.pay_period_select + "/" + this.item_row_click.id
         )
         .then(function(response) {
           console.log(response.body);
@@ -3549,15 +3558,9 @@ export default {
         dangerMode: true
       }).then(add => {
         if (add) {
-          var tempdata = {
-            sched_items_add: this.sched_items_add,
-            user_id: this.user.id,
-            user_name:
-              this.user.employee.first_name + " " + this.user.employee.last_name
-          };
           this.$root.$emit("pageLoading");
           this.$http
-            .post("api/Dtr", tempdata)
+            .post("api/Dtr", this.sched_items_add)
             .then(response => {
               this.$root.$emit("pageLoaded");
               console.log(response.body);
@@ -3593,10 +3596,7 @@ export default {
           this.$root.$emit("pageLoading");
           var temp = {
             scheds: this.sched_items_add,
-            employees: this.item_selected,
-            user_id: this.user.id,
-            user_name:
-              this.user.employee.first_name + " " + this.user.employee.last_name
+            employees: this.item_selected
           };
           this.$http
             .post("api/Dtr/storeMultiple", temp)
@@ -3673,10 +3673,7 @@ export default {
         if (add) {
           this.$root.$emit("pageLoading");
           var approver = {
-            employee_id: this.item_edit.bioID,
-            user_id: this.user.id,
-            user_name:
-              this.user.employee.first_name + " " + this.user.employee.last_name
+            employee_id: this.item_edit.bioID
           };
           this.$http
             .post("api/Approver", approver)
@@ -3738,8 +3735,6 @@ export default {
         if (add) {
           this.$root.$emit("pageLoading");
           this.approve_tblisBusy = true;
-          this.approve_add.user_id = this.user.id;
-          this.approve_add.user_name = this.user.name;
           this.approve_add.employee_id = this.item_row_click.id;
 
           this.$http
@@ -3883,7 +3878,6 @@ export default {
       this.item_selected = items;
     },
     sendCredentials(item) {
-      console.log(this.user);
       let credentials = {
         user_id: this.user.id,
         user_name:
@@ -3905,7 +3899,7 @@ export default {
           }
         ]
       };
-
+      console.log(credentials);
       swal({
         title: "Are you sure?",
         text: "Do you really want to send email credential?",
@@ -3917,6 +3911,7 @@ export default {
           this.$http
             .post("api/Employee/sendCredentials", credentials)
             .then(function(response) {
+              console.log(response.body);
               if (response.body.includes("ok")) {
                 swal("Email Sent!", {
                   icon: "success"
@@ -3931,6 +3926,74 @@ export default {
             });
         }
       });
+    },
+    manageApproverRow(data, action) {
+      if (action == "edit") {
+        console.log(data.item.level);
+        console.log(this.prevLev);
+        this.appLevelRow = {
+          [data.index]: !this.appLevelRow[data.index] // assign [data.index] with value opposite of current value
+        };
+
+        // no updates in db if there are no edits
+        if (this.prevIndex != null && this.prevLev != null) {
+          if (data.index == this.prevIndex) {
+            if (data.item.level != this.prevLev) {
+              if (!this.appLevelRow[data.index] == true) {
+                this.$http
+                  .put("api/EmployeeApprover/" + this.user.id, data.item)
+                  .then(response => {
+                    console.log(response.body);
+                    this.approve_items = response.body;
+                    this.approve_tblisBusy = false;
+                    this.approve_totalRows = this.approve_items.length;
+                    swal("Approver level has been updated!", {
+                      icon: "success",
+                      buttons: false
+                    });
+                  });
+              }
+            }
+          }
+          this.prevIndex = data.index;
+          this.prevLev = data.item.level;
+        } else {
+          this.prevIndex = data.index;
+          this.prevLev = data.item.level;
+        }
+      } else {
+        var approverId = data.item.approver_id + "," + data.item.employee_id;
+        swal({
+          title: "Are you sure?",
+          text: "Do you really want to delete this item permanently?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true
+        }).then(willDelete => {
+          if (willDelete) {
+            this.$http
+              .delete("api/EmployeeApprover/" + approverId)
+              .then(response => {
+                console.log(response.body);
+                swal("Deleted!", "Approver has been deleted", "success").then(
+                  value => {
+                    this.approve_items = response.body;
+                    this.approve_tblisBusy = false;
+                    this.approve_totalRows = this.approve_items.length;
+                  }
+                );
+              })
+              .catch(response => {
+                swal({
+                  title: "Error",
+                  text: response.body.error,
+                  icon: "error",
+                  dangerMode: true
+                });
+              });
+          }
+        });
+      }
     }
   }
 };
@@ -3943,18 +4006,38 @@ export default {
 .rowFields {
   margin-top: 15px;
 }
-
 .rowFields1 {
   margin: 20px;
   font-size: 12px;
 }
-
 .modal-content,
 modal-header {
   border: 1px solid red;
 }
-
 .margin-right-10 {
   margin-right: 10px;
+}
+.row-icon {
+  background: transparent;
+  border: 0;
+}
+.ri-edit {
+  color: rgb(5, 88, 143);
+}
+.ri-delete {
+  color: #9c1e1e;
+  margin-left: 5px;
+}
+.row-icon:focus,
+ri-delete:focus {
+  box-shadow: none;
+}
+.done {
+  color: #048100;
+}
+@media print {
+  body * {
+    visibility: hidden;
+  }
 }
 </style>

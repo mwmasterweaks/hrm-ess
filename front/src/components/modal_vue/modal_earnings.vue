@@ -186,6 +186,7 @@ export default {
   },
   data() {
     return {
+      user: {},
       fields: [
         { key: "type.name", label: "Type", sortable: true },
         { key: "effective_date", sortable: true },

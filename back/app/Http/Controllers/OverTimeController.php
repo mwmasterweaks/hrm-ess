@@ -60,27 +60,8 @@ class OverTimeController extends Controller
             ]);
             over_time::where("id", $tblInserted->id)
                 ->update(['reference_no' => 'OT-' . $tblInserted->id]);
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "store",
-                "message",
-                "Create new Over_Time: " . $tblInserted
-            );
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "store",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -105,34 +86,13 @@ class OverTimeController extends Controller
         try {
 
             $cmd  = over_time::findOrFail($id);
-            $logFrom = $cmd->replicate();
+
             $input = $request->all();
 
             $cmd->fill($input)->save();
 
-            $logTo = $cmd;
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "update",
-                "message",
-                "update Over_Time id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
-            );
-
             return $this->index();
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                $request->user_id,
-                $request->user_name,
-                $this->cname,
-                "update",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -140,31 +100,10 @@ class OverTimeController extends Controller
     public function destroy($id)
     {
         try {
-            $tbl1 = over_time::findOrFail($id);
             over_time::destroy($id);
-
-            \Logger::instance()->log(
-                Carbon::now(),
-                "",
-                "",
-                $this->cname,
-                "destroy",
-                "message",
-                "delete Over_Time id " . $id .
-                    "\nOld Over_Time: " . $tbl1
-            );
 
             return $this->index();
         } catch (\Exception $ex) {
-            \Logger::instance()->logError(
-                Carbon::now(),
-                "",
-                "",
-                $this->cname,
-                "destroy",
-                "Error",
-                $ex->getMessage()
-            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

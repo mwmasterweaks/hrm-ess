@@ -399,6 +399,7 @@ export default {
   },
   data() {
     return {
+      user: {},
       tblisBusy: true,
       fields: [
         { key: "period", sortable: true },
@@ -566,9 +567,7 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           var valueToSend = {
-            data: this.generatedPeriod,
-            user_id: this.user.id,
-            user_name: this.user.name
+            data: this.generatedPeriod
           };
           this.$http.post("api/PayPeriod", valueToSend).then(response => {
             console.log(response.body);
