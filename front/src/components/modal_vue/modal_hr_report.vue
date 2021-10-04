@@ -227,7 +227,7 @@ export default {
       console.log(this.pay_period_select);
       console.log(this.selectedSummary);
 
-      // this.tblisBusy = true;
+      this.tblisBusy = true;
       this.$http
         .put(
           "api/HRSummaryReport/" +
@@ -239,7 +239,7 @@ export default {
           console.log(response.body);
           this.items = response.body;
           this.activeDiv = this.selectedSummary;
-          // this.tblisBusy = false;
+          this.tblisBusy = false;
           // this.totalRows = this.sched_items.length;
           // this.currentPage = 1;
         });
