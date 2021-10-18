@@ -16,7 +16,7 @@ class SuggestionController extends Controller
     public function index()
     {
       // $tbl =  Suggestion::all();
-       $tbl = Suggestion::with(['user.employee'])->get();
+        $tbl = Suggestion::with(['user.employee'])->get();
 
         return response()->json($tbl);
     }
@@ -86,13 +86,13 @@ class SuggestionController extends Controller
 
             $cmd->fill($input)->save();
 
-            return response()->json($this->index());
+            return $this->index();
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
 
- 
+
     public function destroy($id)
     {
         try {

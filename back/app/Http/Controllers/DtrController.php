@@ -70,7 +70,7 @@ class DtrController extends Controller
                             'work_date' => $item->work_date,
                             'day' => $item->day,
                             'shift_sched_in' => $item->shift_sched_in,
-                            'shift_sched_out' => $item->shift_sched_out,
+                            'shift_sched_out' =>$item->shift_sched_out,
                             'is_rest_day' => $item->is_rest_day,
                             'time_in' => $timeIn,
                             'time_out' => $timeOut

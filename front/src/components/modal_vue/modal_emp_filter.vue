@@ -13,7 +13,12 @@
     >
       <!-- branch -->
       <div class="cont-wrap">
-        <p-check class="checkboxStyle p-switch p-fill" color="success" v-model="cbFilter.branch"></p-check>Branch
+        <p-check
+          class="checkboxStyle p-switch p-fill"
+          color="success"
+          v-model="cbFilter.branch"
+        ></p-check
+        >Branch
         <div class="rowFields mx-auto row" v-if="cbFilter.branch">
           <div class="col-lg-3">
             <p class="textLabel">Select Branch:</p>
@@ -31,7 +36,12 @@
 
       <!-- group -->
       <div class="cont-wrap">
-        <p-check class="checkboxStyle p-switch p-fill" color="success" v-model="cbFilter.group"></p-check>Group
+        <p-check
+          class="checkboxStyle p-switch p-fill"
+          color="success"
+          v-model="cbFilter.group"
+        ></p-check
+        >Group
         <div class="rowFields mx-auto row" v-if="cbFilter.group">
           <div class="col-lg-3">
             <p class="textLabel">Select Group:</p>
@@ -49,7 +59,12 @@
 
       <!-- position -->
       <div class="cont-wrap">
-        <p-check class="checkboxStyle p-switch p-fill" color="success" v-model="cbFilter.position"></p-check>Position
+        <p-check
+          class="checkboxStyle p-switch p-fill"
+          color="success"
+          v-model="cbFilter.position"
+        ></p-check
+        >Position
         <div class="rowFields mx-auto row" v-if="cbFilter.position">
           <div class="col-lg-3">
             <p class="textLabel">Select Position:</p>
@@ -71,7 +86,8 @@
           class="checkboxStyle p-switch p-fill"
           color="success"
           v-model="cbFilter.department"
-        ></p-check>Department
+        ></p-check
+        >Department
         <div class="rowFields mx-auto row" v-if="cbFilter.department">
           <div class="col-lg-3">
             <p class="textLabel">Select Department:</p>
@@ -89,7 +105,12 @@
 
       <!-- rate -->
       <div class="cont-wrap">
-        <p-check class="checkboxStyle p-switch p-fill" color="success" v-model="cbFilter.rate"></p-check>Rate
+        <p-check
+          class="checkboxStyle p-switch p-fill"
+          color="success"
+          v-model="cbFilter.rate"
+        ></p-check
+        >Rate
         <div class="rowFields mx-auto row" v-if="cbFilter.rate">
           <div class="col-lg-3">
             <p class="textLabel">Select Rate:</p>
@@ -111,13 +132,18 @@
           class="checkboxStyle p-switch p-fill"
           color="success"
           v-model="cbFilter.employment_status"
-        ></p-check>Employment Status
+        ></p-check
+        >Employment Status
         <div class="rowFields mx-auto row" v-if="cbFilter.employment_status">
           <div class="col-lg-3">
             <p class="textLabel">Type Employment Status:</p>
           </div>
           <div class="col-lg-9">
-            <input type="text" class="form-control" v-model.trim="cbFilter.data.employment_status" />
+            <input
+              type="text"
+              class="form-control"
+              v-model.trim="cbFilter.data.employment_status"
+            />
           </div>
         </div>
       </div>
@@ -128,13 +154,18 @@
           class="checkboxStyle p-switch p-fill"
           color="success"
           v-model="cbFilter.first_name"
-        ></p-check>First Name
+        ></p-check
+        >First Name
         <div class="rowFields mx-auto row" v-if="cbFilter.first_name">
           <div class="col-lg-3">
             <p class="textLabel">Type First Name:</p>
           </div>
           <div class="col-lg-9">
-            <input type="text" class="form-control" v-model.trim="cbFilter.data.first_name" />
+            <input
+              type="text"
+              class="form-control"
+              v-model.trim="cbFilter.data.first_name"
+            />
           </div>
         </div>
       </div>
@@ -145,46 +176,75 @@
           class="checkboxStyle p-switch p-fill"
           color="success"
           v-model="cbFilter.middle_name"
-        ></p-check>Last Name
+        ></p-check
+        >Last Name
         <div class="rowFields mx-auto row" v-if="cbFilter.middle_name">
           <div class="col-lg-3">
             <p class="textLabel">Type Middle Name:</p>
           </div>
           <div class="col-lg-9">
-            <input type="text" class="form-control" v-model.trim="cbFilter.data.middle_name" />
+            <input
+              type="text"
+              class="form-control"
+              v-model.trim="cbFilter.data.middle_name"
+            />
           </div>
         </div>
       </div>
 
       <!-- last_name -->
       <div class="cont-wrap">
-        <p-check class="checkboxStyle p-switch p-fill" color="success" v-model="cbFilter.last_name"></p-check>Middle Name
+        <p-check
+          class="checkboxStyle p-switch p-fill"
+          color="success"
+          v-model="cbFilter.last_name"
+        ></p-check
+        >Middle Name
         <div class="rowFields mx-auto row" v-if="cbFilter.last_name">
           <div class="col-lg-3">
             <p class="textLabel">Type Last Name:</p>
           </div>
           <div class="col-lg-9">
-            <input type="text" class="form-control" v-model.trim="cbFilter.data.last_name" />
+            <input
+              type="text"
+              class="form-control"
+              v-model.trim="cbFilter.data.last_name"
+            />
           </div>
         </div>
       </div>
 
       <!-- gender -->
       <div class="cont-wrap">
-        <p-check class="checkboxStyle p-switch p-fill" color="success" v-model="cbFilter.gender"></p-check>Gender
+        <p-check
+          class="checkboxStyle p-switch p-fill"
+          color="success"
+          v-model="cbFilter.gender"
+        ></p-check
+        >Gender
         <div class="rowFields mx-auto row" v-if="cbFilter.gender">
           <div class="col-lg-3">
             <p class="textLabel">Type Gender:</p>
           </div>
           <div class="col-lg-9">
-            <input type="text" class="form-control" v-model.trim="cbFilter.data.gender" />
+            <!-- <input
+              type="text"
+              class="form-control"
+              v-model.trim="cbFilter.data.gender"
+            /> -->
+            <b-form-select
+              v-model.trim="cbFilter.data.gender"
+              :options="genderOptions"
+            ></b-form-select>
           </div>
         </div>
       </div>
       <!-- //
       //-->
-      <div slot="modal-footer" slot-scope="{  }">
-        <button class="btn btn-success btn-labeled" @click="filter_ok">ok</button>
+      <div slot="modal-footer" slot-scope="{}">
+        <button class="btn btn-success btn-labeled" @click="filter_ok">
+          ok
+        </button>
       </div>
     </b-modal>
   </div>
@@ -244,6 +304,10 @@ export default {
         {
           name: "Terminated"
         }
+      ],
+      genderOptions: [
+        { value: "Male", text: "Male" },
+        { value: "Female", text: "Female" }
       ],
       groups: [],
       positions: [],
@@ -342,5 +406,3 @@ export default {
   margin-bottom: 10px;
 }
 </style>
-
-

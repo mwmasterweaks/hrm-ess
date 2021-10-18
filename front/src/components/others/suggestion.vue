@@ -2,7 +2,7 @@
   <div class="mx-auto col-md-10">
     <div class="elBG panel">
       <div class="panel-heading">
-        <h6 class="elClr panel-title">Suggestions / Issue</h6>
+        <h6 class="elClr panel-title">Suggestions / Issues</h6>
       </div>
 
       <div class="elClr panel-body">
@@ -324,9 +324,9 @@ export default {
                 value => {
                   this.items = response.body;
                   this.totalRows = this.items.length;
-                  this.tblisBusy = false;
                 }
               );
+              this.tblisBusy = false;
             })
             .catch(response => {
               swal({
@@ -345,7 +345,7 @@ export default {
     btnUpdate() {
       swal({
         title: "Are you sure?",
-        text: "You realy want to update it?",
+        text: "Update suggestion/issue?", // temporary
         icon: "warning",
         buttons: true,
         dangerMode: true
@@ -355,8 +355,9 @@ export default {
           this.editSuggest.user_name = this.user.name;
 
           this.$http
-            .put("api/Suggestions/" + this.editSuggest.id, this.editSuggest)
+            .put("api/Suggestion/" + this.editSuggest.id, this.editSuggest)
             .then(response => {
+              console.log(response.body);
               this.items = response.body;
               swal("Update!", "Update successfully", "success");
               this.$bvModal.hide("modalEdit");

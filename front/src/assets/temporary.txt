@@ -1,5 +1,35 @@
 to do:
-- create summary reports for absent, late, and overtime.
+- logs
 
 current activity:
-- decide where to create button
+- logs
+
+summary report files
+- api.php
+- modal_hr_report.vue
+- DtrController.php
+
+edit/delete approver files
+- api.php
+- Employee.vue
+- EmployeeApproverController.php
+
+multiple time update
+- DtrController.php
+- Employee.vue
+
+logs
+- Logger.php
+- LeaveController.php
+- LeaveBalanceController.php
+
+fix bugs
+- Overtime.vue
+- ManualAttendance.vue
+- Leave.vue
+- ChangeRestDay.vue
+- suggestion.vue
+- App.vue
+- SuggestionController.php
+- EmployeeController.php
+- modal_emp_filter.vue

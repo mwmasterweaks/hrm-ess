@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use App\leave_balance;
+use App\leave_day;
+use LeaveDay;
 
 class LeaveController extends Controller
 {
+    private $cname = "LeaveController";
     public function index()
     {
         $tbl = Leave::all();
@@ -25,8 +28,7 @@ class LeaveController extends Controller
 
     public function store(Request $request)
     {
-
-        //return $request;
+        // return $request;
         try {
 
             // $date_from = new Carbon($request->date_from);
@@ -64,8 +66,6 @@ class LeaveController extends Controller
                 file_put_contents($path, $decoded);
             }
 
-
-
             $tblInserted = Leave::create($request->except('attachment', 'total_days', 'date_filed', 'approve_level') + [
                 "attachment" => $fileName,
                 "total_days" => $request->total_days,
@@ -76,10 +76,11 @@ class LeaveController extends Controller
             Leave::where("id", $tblInserted->id)
                 ->update(['reference_no' => 'LV-' . $tblInserted->id]);
 
+            $lds = "";
             foreach ($request->daysList as $item) {
                 $item = (object) $item;
                 if ($item->is_rest_day == 0) {
-                    DB::table('leave_days')->insert(
+                    /* $ld = DB::table('leave_days')->insert(
                         [
                             'leave_id' => $tblInserted->id,
                             'leave_date' => $item->work_date,
@@ -88,11 +89,29 @@ class LeaveController extends Controller
                             'created_at' => new Carbon(),
                             'updated_at' => new Carbon()
                         ]
-                    );
+                    ); */
+                    $ld = tap(new leave_day, function($row) use($tblInserted, $item) {
+                        $row->leave_id = $tblInserted->id;
+                        $row->leave_date = $item->work_date;
+                        $row->halfday = $item->haftday;
+                        $row->halfday_type = $item->haftday_type;
+                        $row->created_at = new Carbon();
+                        $row->updated_at = new Carbon();
+                    });
+                    $lds .= "\n" . $ld;
                 }
             }
 
-
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "message",
+                "Create new leave with ID: " . $tblInserted->id . "\nDetails: " .  $tblInserted .
+                "\nCreate new leave day/s: " . $lds
+            );
 
             //DEDUCT BALANCE NEED TO MOVE IN APPROVE
             // $tbl = DB::table('leave_balances')

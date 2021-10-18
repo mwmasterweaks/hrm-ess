@@ -289,12 +289,12 @@
               <template v-slot:cell(shift_sched)="data">
                 <span v-html="data.value"></span>
               </template>
-              <template v-slot:cell(halfday)="data">
+              <!-- <template v-slot:cell(halfday)="data">
                 <span v-html="data.value"></span>
               </template>
               <template v-slot:cell(type)="data">
                 <span v-html="data.value"></span>
-              </template>
+              </template> -->
               <template v-slot:cell(halfday)="row">
                 <p-check
                   v-if="row.item.is_rest_day == 0"
@@ -497,12 +497,12 @@
               <template v-slot:cell(shift_sched)="data">
                 <span v-html="data.value"></span>
               </template>
-              <template v-slot:cell(halfday)="data">
+              <!-- <template v-slot:cell(halfday)="data">
                 <span v-html="data.value"></span>
               </template>
               <template v-slot:cell(halfday_type)="data">
                 <span v-html="data.value"></span>
-              </template>
+              </template> -->
               <template v-slot:cell(halfday)="row">
                 <i class="fas fa-check" v-show="row.item.halfday == 1" />
                 <i class="fas fa-times" v-show="row.item.halfday == 0" />
@@ -737,12 +737,16 @@ export default {
     btnApply() {
       this.$validator.validateAll().then(result => {
         if (result) {
+          this.leave_apply.user_id = this.user.employee_id;
+          this.leave_apply.user_name =
+            this.user.employee.first_name + " " + this.user.employee.last_name;
           this.leave_apply.employee_id = this.user.employee_id;
           this.leave_apply.daysList = this.sched_items;
           this.leave_apply.total_days = this.total_days;
           this.$http
             .post("api/Leave", this.leave_apply)
             .then(response => {
+              console.log(response.body);
               this.available_balance = 0;
               swal("Notification", "Added successfully", "success");
               this.items = response.body;

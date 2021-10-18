@@ -755,7 +755,7 @@ export default {
       this.$bvModal.show("ModalApprovers");
     },
     cancelApplication() {
-      this.item_edit.user_id = this.user.employee_id;
+      // this.item_edit.user_id = this.user.employee_id;
       swal({
         title: "Notification",
         text: "Do you really want to cancel this application?",
@@ -764,7 +764,7 @@ export default {
         dangerMode: true
       }).then(approve => {
         if (approve) {
-          this.item_edit.user_id = this.user.id;
+          this.item_edit.user_id = this.user.employee_id;
           this.item_edit.user_name = this.user.name;
 
           this.tblisBusy = true;

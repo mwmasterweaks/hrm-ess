@@ -13,8 +13,10 @@ class Logger
     {
         $filenameDate = date("mY");
         $myfile = fopen("logs/log" . $filenameDate . ".txt", "a") or die("Unable to open file!");
-        $txt = $date . "\t--\t" . $userID . "\t--\t" . $userName . "\t--\t" . $ControllerName .
-            "\t--\t" . $functionName . "\t--\t" . $logType . "\t--\t" . $message . "\n\n";
+        // $txt = $date . "\t--\t" . $userID . "\t--\t" . $userName . "\t--\t" . $ControllerName .
+        //     "\t--\t" . $functionName . "\t--\t" . $logType . "\t--\t" . $message . "\n\n";
+        $txt = $date . "    |    User: (" . $userID . ") " . $userName . "    |    " . $ControllerName .
+            " (" . $functionName . ")    |    " . $logType . "    |    " . $message . "\n\n";
         fwrite($myfile, $txt);
         fclose($myfile);
         return "ok";
@@ -24,8 +26,10 @@ class Logger
     {
         $filenameDate = date("mY");
         $myfile = fopen("logs/Errorlog" . $filenameDate . ".txt", "a") or die("Unable to open file!");
-        $txt = $date . "\t--\t" . $userID . "\t--\t" . $userName . "\t--\t" . $ControllerName .
-            "\t--\t" . $functionName . "\t--\t" . $logType . "\t--\t" . $message . "\n\n";
+        // $txt = $date . "\t--\t" . $userID . "\t--\t" . $userName . "\t--\t" . $ControllerName .
+        //     "\t--\t" . $functionName . "\t--\t" . $logType . "\t--\t" . $message . "\n\n";
+        $txt = $date . "    |    User: (" . $userID . ") " . $userName . "    |    " . $ControllerName .
+            " (" . $functionName . ")    |    " . $logType . "    |    " . $message . "\n\n";
         fwrite($myfile, $txt);
         fclose($myfile);
         return "ok";

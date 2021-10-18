@@ -1,0 +1,4 @@
+2021-10-15 10:48:27	--	719	--	PeterBismonte	--	EmployeeController	--	update	--	Error	--	Call to undefined method Illuminate\Database\Eloquent\Builder::replicate()
+
+2021-10-15 14:34:16    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    Error    |    Array to string conversion
+

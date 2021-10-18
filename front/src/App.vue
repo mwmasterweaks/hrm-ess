@@ -105,8 +105,8 @@ export default {
         this.$global.setUser(response.body);
         this.user = this.$global.getUser();
         this.isLoad += 1; //6
-        // console.log(this.user);
         this.getUserRoles();
+        console.log(this.user);
       });
     },
     getUserRoles() {

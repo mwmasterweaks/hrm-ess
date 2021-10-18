@@ -149,7 +149,7 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
         try {
-            //destopy also the user
+            //destroy also the user
             $tbl1 = Employee::findOrFail($id);
             $tbl2 = User::where('employee_id', $id)->first();
             User::where('employee_id', $id)->delete();
@@ -305,8 +305,7 @@ class EmployeeController extends Controller
             if ($request->middle_name)
                 $tbl->where("middle_name", 'like', '%' . $data->middle_name . '%');
             if ($request->gender)
-                $tbl->where("gender", 'like', '%' . $data->gender . '%');
-
+                $tbl->where("gender", $data->gender);
 
             return $this->ForQuery($tbl->get());
         } catch (\Exception $ex) {

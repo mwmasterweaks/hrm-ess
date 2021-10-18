@@ -1,0 +1,98 @@
+2021-10-15 10:17:16	--	1	--	20180926719	--	EmployeeController	--	update	--	message	--	update Employee id 1025
+From: {"group_id":1,"rate_id":1,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Daryl Kate","middle_name":"Tablizo","last_name":"Good","gender":"Female","date_hired":"2021-03-08","img":null,"permanent_address":null,"tel_no":null,"mobile_no":null,"email1":"dkgood@dctechmicro.com","email2":null,"provincial_address":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"pag_ibig":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null}
+To: {"id":1025,"group_id":1,"rate_id":1,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Daryl Kate","middle_name":"T.","last_name":"Good","gender":"Female","date_hired":"2021-03-08","img":null,"permanent_address":null,"tel_no":null,"mobile_no":null,"email1":"dkgood@dctechmicro.com","email2":null,"provincial_address":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"pag_ibig":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"created_at":"2021-09-02 13:28:15","updated_at":"2021-10-15 10:17:16"}
+
+2021-10-15 10:23:16	--	1	--	1	--	EmployeeController	--	update	--	message	--	update Employee id 3
+From: {"id":3,"employee_id":1,"leave_type_id":1,"enroll_year":"2021","balance":"6.00","availed":"0.00","accrued":"0.00","created_at":"2021-04-08 13:53:26","updated_at":"2021-10-15 10:21:12"}
+To: 1
+
+2021-10-15 10:27:52	--	1	--	1	--	EmployeeController	--	update	--	message	--	update Employee id 3
+From: {"id":3,"employee_id":1,"leave_type_id":1,"enroll_year":"2021","balance":"7.00","availed":"0.00","accrued":"0.00","created_at":"2021-04-08 13:53:26","updated_at":"2021-10-15 10:23:16"}
+To: 1
+
+2021-10-15 10:31:28	--	1	--	1	--	EmployeeController	--	update	--	message	--	update Employee id 3
+From: {"employee_id":1,"leave_type_id":1,"enroll_year":"2021","balance":"6.00","availed":"0.00","accrued":"0.00"}
+To: {"id":3,"employee_id":1,"leave_type_id":1,"enroll_year":"2021","balance":"7.00","availed":"0.00","accrued":"0.00","created_at":"2021-04-08 13:53:26","updated_at":"2021-10-15 10:31:28"}
+2021-10-15 10:57:36	--	719	--	PeterBismonte	--	EmployeeController	--	update	--	message	--	update Employee id 3
+From: {"employee_id":1,"leave_type_id":1,"enroll_year":"2021","balance":"7.00","availed":"0.00","accrued":"0.00"}
+To: {"id":3,"employee_id":1,"leave_type_id":1,"enroll_year":"2021","balance":"6.00","availed":"0.00","accrued":"0.00","created_at":"2021-04-08 13:53:26","updated_at":"2021-10-15 10:57:36"}
+
+2021-10-15 11:15:48	--	719	--	Peter Bismonte	--	LeaveBalanceController	--	store	--	message	--	Create new User: 24
+Employee: {"employee_id":214,"leave_type_id":1,"enroll_year":null,"balance":"7","availed":"0","accrued":"0","updated_at":"2021-10-15 11:15:48","created_at":"2021-10-15 11:15:48","id":24}
+
+2021-10-15 11:37:45-----------------------
+User: 719 - Peter Bismonte
+Controller: LeaveBalanceController
+Function: update
+Log Type: message
+Update Leave Balance id 3
+From: {"employee_id":1,"leave_type_id":1,"enroll_year":"2021","balance":"6.00","availed":"0.00","accrued":"0.00"}
+To: {"id":3,"employee_id":1,"leave_type_id":1,"enroll_year":"2021","balance":"7.00","availed":"0.00","accrued":"0.00","created_at":"2021-04-08 13:53:26","updated_at":"2021-10-15 11:37:45"}
+
+2021-10-15 11:40:48	|	719	|	Peter Bismonte	|	LeaveBalanceController	|	update	|	message	|	Update Leave Balance id 3
+From: {"employee_id":1,"leave_type_id":1,"enroll_year":"2021","balance":"7.00","availed":"0.00","accrued":"0.00"}
+To: {"id":3,"employee_id":1,"leave_type_id":1,"enroll_year":"2021","balance":"6.00","availed":"0.00","accrued":"0.00","created_at":"2021-04-08 13:53:26","updated_at":"2021-10-15 11:40:48"}
+
+2021-10-15 13:03:52 -- User: (719) Peter Bismonte -- LeaveBalanceController (update) -- message -- Update Leave Balance id 3
+From: {"employee_id":1,"leave_type_id":1,"enroll_year":"2021","balance":"6.00","availed":"0.00","accrued":"0.00"}
+To: {"id":3,"employee_id":1,"leave_type_id":1,"enroll_year":"2021","balance":"7.00","availed":"0.00","accrued":"0.00","created_at":"2021-04-08 13:53:26","updated_at":"2021-10-15 13:03:52"}
+
+2021-10-15 13:05:40	--	User: (719) Peter Bismonte	--	LeaveBalanceController (update)	--	message	--	Update Leave Balance id 3
+From: {"employee_id":1,"leave_type_id":1,"enroll_year":"2021","balance":"7.00","availed":"0.00","accrued":"0.00"}
+To: {"id":3,"employee_id":1,"leave_type_id":1,"enroll_year":"2021","balance":"6.00","availed":"0.00","accrued":"0.00","created_at":"2021-04-08 13:53:26","updated_at":"2021-10-15 13:05:40"}
+
+2021-10-15 13:13:21    |    User: (719) Peter Bismonte    |    LeaveBalanceController (update)    |    message    |    Update Leave Balance id 3
+From: {"employee_id":1,"leave_type_id":1,"enroll_year":null,"balance":"6.00","availed":"0.00","accrued":"0.00"}
+To: {"id":3,"employee_id":1,"leave_type_id":1,"enroll_year":null,"balance":"7.00","availed":"0.00","accrued":"0.00","created_at":"2021-04-08 13:53:26","updated_at":"2021-10-15 13:13:21"}
+
+2021-10-15 13:25:02    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    create new leave balance with ID: 25
+Details: {"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"7","availed":"0","accrued":"0","updated_at":"2021-10-15 13:25:02","created_at":"2021-10-15 13:25:02","id":25}
+
+2021-10-15 14:04:13    |    User: (719) Peter Bismonte    |    LeaveBalanceController (update)    |    message    |    update leave balance with ID:719
+From: [{"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"2.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 13:25:02","updated_at":"2021-10-15 13:59:10"}]
+To: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"2","availed":"0","accrued":"0","created_at":"2021-10-15 13:25:02","updated_at":"2021-10-15 14:04:13"}
+
+2021-10-15 14:05:14    |    User: (719) Peter Bismonte    |    LeaveBalanceController (update)    |    message    |    update leave balance with ID:719
+From: [{"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"2.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 13:25:02","updated_at":"2021-10-15 14:04:13"}]
+To: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"7","availed":"0","accrued":"0","created_at":"2021-10-15 13:25:02","updated_at":"2021-10-15 14:05:14"}
+
+2021-10-15 14:07:58    |    User: (719) Peter Bismonte    |    LeaveBalanceController (update)    |    message    |    update leave balance with ID:25
+From: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"7.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 13:25:02","updated_at":"2021-10-15 14:05:14"}
+To: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"3","availed":"0","accrued":"0","created_at":"2021-10-15 13:25:02","updated_at":"2021-10-15 14:07:58"}
+
+2021-10-15 14:10:01    |    User: (719) Peter Bismonte    |    LeaveBalanceController (update)    |    message    |    update leave balance with ID: 25
+From: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"3.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 13:25:02","updated_at":"2021-10-15 14:07:58"}
+To: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"6.50","availed":"0","accrued":"0","created_at":"2021-10-15 13:25:02","updated_at":"2021-10-15 14:10:01"}
+
+2021-10-15 14:10:01    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    create new leave balance with ID: 26
+Details: {"employee_id":4,"leave_type_id":6,"enroll_year":null,"balance":"6.50","availed":"0","accrued":"0","updated_at":"2021-10-15 14:10:01","created_at":"2021-10-15 14:10:01","id":26}
+
+2021-10-15 14:10:01    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    create new leave balance with ID: 27
+Details: {"employee_id":5,"leave_type_id":6,"enroll_year":null,"balance":"6.50","availed":"0","accrued":"0","updated_at":"2021-10-15 14:10:01","created_at":"2021-10-15 14:10:01","id":27}
+
+2021-10-15 14:45:22    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    update leave balance with ID: 25
+From: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"8.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 13:25:02","updated_at":"2021-10-15 14:34:16"}
+To: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"7","availed":"0","accrued":"0","created_at":"2021-10-15 13:25:02","updated_at":"2021-10-15 14:45:22"}
+update leave balance with ID: 26
+From: {"id":26,"employee_id":4,"leave_type_id":6,"enroll_year":null,"balance":"8.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 14:10:01","updated_at":"2021-10-15 14:34:16"}
+To: {"id":26,"employee_id":4,"leave_type_id":6,"enroll_year":null,"balance":"7","availed":"0","accrued":"0","created_at":"2021-10-15 14:10:01","updated_at":"2021-10-15 14:45:22"}
+update leave balance with ID: 27
+From: {"id":27,"employee_id":5,"leave_type_id":6,"enroll_year":null,"balance":"8.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 14:10:01","updated_at":"2021-10-15 14:34:16"}
+To: {"id":27,"employee_id":5,"leave_type_id":6,"enroll_year":null,"balance":"7","availed":"0","accrued":"0","created_at":"2021-10-15 14:10:01","updated_at":"2021-10-15 14:45:22"}
+create new leave balance with ID: 28
+Details: {"employee_id":6,"leave_type_id":6,"enroll_year":null,"balance":"7","availed":"0","accrued":"0","updated_at":"2021-10-15 14:45:22","created_at":"2021-10-15 14:45:22","id":28}
+
+
+2021-10-15 16:00:51    |    User: (719) Peter Bismonte    |    LeaveBalanceController (destroy)    |    message    |    delete leave balance with ID: 28
+Details: {"id":28,"employee_id":6,"leave_type_id":6,"enroll_year":null,"balance":"7.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 14:45:22","updated_at":"2021-10-15 14:45:22"}
+
+2021-10-18 10:03:11    |    User: (719) Peter Bismonte    |    LeaveController (store)    |    message    |    Create new leave with ID: 9
+Details: {"employee_id":719,"leave_type_id":6,"reference_no":"tempnumber123","date_from":"2021-09-06","date_to":"2021-09-06","reason":"apply for sick leave test logs 1","status":"Pending","attachment":"noattachment.png","total_days":1,"date_filed":"2021-10-18T02:03:11.765593Z","approve_level":"1","updated_at":"2021-10-18 10:03:11","created_at":"2021-10-18 10:03:11","id":9}
+Create new leave day/s: 
+1
+
+2021-10-18 10:24:26    |    User: (719) Peter Bismonte    |    LeaveController (store)    |    message    |    Create new leave with ID: 11
+Details: {"employee_id":719,"leave_type_id":6,"reference_no":"tempnumber123","date_from":"2021-09-08","date_to":"2021-09-08","reason":"apply for sick leave test logs 2","status":"Pending","attachment":"noattachment.png","total_days":1,"date_filed":"2021-10-18T02:24:26.450257Z","approve_level":"1","updated_at":"2021-10-18 10:24:26","created_at":"2021-10-18 10:24:26","id":11}
+Create new leave day/s: 
+{"leave_id":11,"leave_date":"2021-09-08","halfday":false,"halfday_type":0,"created_at":"2021-10-18 10:24:26","updated_at":"2021-10-18 10:24:26"}
+
