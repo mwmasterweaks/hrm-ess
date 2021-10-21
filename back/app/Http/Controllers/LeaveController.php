@@ -30,6 +30,7 @@ class LeaveController extends Controller
     {
         // return $request;
         try {
+            DB::beginTransaction();
 
             // $date_from = new Carbon($request->date_from);
             // $date_to = new Carbon($request->date_to);
@@ -80,24 +81,14 @@ class LeaveController extends Controller
             foreach ($request->daysList as $item) {
                 $item = (object) $item;
                 if ($item->is_rest_day == 0) {
-                    /* $ld = DB::table('leave_days')->insert(
+                    $ld = leave_day::create(
                         [
                             'leave_id' => $tblInserted->id,
                             'leave_date' => $item->work_date,
                             'halfday' => $item->haftday,
-                            'halfday_type' => $item->haftday_type,
-                            'created_at' => new Carbon(),
-                            'updated_at' => new Carbon()
+                            'halfday_type' => $item->haftday_type
                         ]
-                    ); */
-                    $ld = tap(new leave_day, function($row) use($tblInserted, $item) {
-                        $row->leave_id = $tblInserted->id;
-                        $row->leave_date = $item->work_date;
-                        $row->halfday = $item->haftday;
-                        $row->halfday_type = $item->haftday_type;
-                        $row->created_at = new Carbon();
-                        $row->updated_at = new Carbon();
-                    });
+                    );
                     $lds .= "\n" . $ld;
                 }
             }
@@ -133,8 +124,19 @@ class LeaveController extends Controller
             //             ->increment('availed', $temp);
             //     }
             // }
+            DB::commit();
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
+            DB::rollBack();
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->employee_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -182,12 +184,34 @@ class LeaveController extends Controller
     {
         try {
 
-            DB::table('leaves')
-                ->where('reference_no', $request->reference_no)
-                ->update(['status' => 'Canceled']);
+            $leave = Leave::where('reference_no', $request->reference_no);
+            $leaves = tap($leave->first(), function($row) {
+                $row->status = 'Canceled';
+                $row->save();
+            });
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "cancelApp",
+                "Update status to 'Canceled'",
+                "Cancel leave with ID: " . $request->id .
+                    "\nDetails: " . $leaves
+            );
 
             return $this->show($request->user_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "cancelApp",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

@@ -737,7 +737,6 @@ export default {
     btnApply() {
       this.$validator.validateAll().then(result => {
         if (result) {
-          this.leave_apply.user_id = this.user.employee_id;
           this.leave_apply.user_name =
             this.user.employee.first_name + " " + this.user.employee.last_name;
           this.leave_apply.employee_id = this.user.employee_id;
@@ -819,6 +818,9 @@ export default {
     },
     cancelApplication() {
       this.item_edit.user_id = this.user.employee_id;
+      this.item_edit.user_name =
+        this.user.employee.first_name + " " + this.user.employee.last_name;
+      console.log(this.item_edit);
       swal({
         title: "Notification",
         text: "Do you really want to cancel this application?",

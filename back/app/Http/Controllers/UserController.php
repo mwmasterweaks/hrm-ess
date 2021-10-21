@@ -117,22 +117,18 @@ class UserController extends Controller
             $logFrom = $tbl->replicate();
 
             if (empty($request->password)) {
-                $logTo = DB::table('users')
-                    ->where('id', $id)
-                    ->update([
+                $logTo = tap(User::where('id', $id))->update([
                         'elClr' => $request->elClr,
-                        'elBG' => $request->elBG,
-                        'updated_at' => \Carbon\Carbon::now()
-                    ]);
+                        'elBG' => $request->elBG
+                        // 'updated_at' => \Carbon\Carbon::now()
+                    ])->first();;
             } else {
-                $logTo = DB::table('users')
-                    ->where('id', $id)
-                    ->update([
+                $logTo = tap(User::where('id', $id))->update([
                         'elClr' => $request->elClr,
                         'elBG' => $request->elBG,
-                        'password' => bcrypt($request->password),
-                        'updated_at' => \Carbon\Carbon::now()
-                    ]);
+                        'password' => bcrypt($request->password)
+                        // 'updated_at' => \Carbon\Carbon::now()
+                    ])->first();;
             }
 
             if (!empty($request->roles)) {
@@ -142,19 +138,19 @@ class UserController extends Controller
             }
             \Logger::instance()->log(
                 Carbon::now(),
-                $request->id,
-                $request->email,
+                $request->employee_id,
+                $request->user_name,
                 $this->cname,
                 "update",
                 "message",
-                "update client id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
+                "Update user with ID: " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
             );
             return response()->json($this->index());
         } catch (\Exception $ex) {
             \Logger::instance()->logError(
                 Carbon::now(),
-                $request->id,
-                $request->email,
+                $request->employee_id,
+                $request->user_name,
                 $this->cname,
                 "update",
                 "Error",
@@ -173,8 +169,34 @@ class UserController extends Controller
                     'password' => bcrypt($request->password),
                     'updated_at' => \Carbon\Carbon::now()
                 ]);
+
+            $query = User::where('employee_id', $request->id);
+            $user = tap($query->first(), function($row) use($request) {
+                $row->password = bcrypt($request->password);
+                $row->updated_at = \Carbon\Carbon::now();
+            });
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "ResetPassword",
+                "message",
+                "Reset user password with ID: " . $user->id
+            );
+
             return "ok";
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "ResetPassword",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

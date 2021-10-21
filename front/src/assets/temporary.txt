@@ -19,9 +19,31 @@ multiple time update
 - Employee.vue
 
 logs
-- Logger.php
-- LeaveController.php
+- ApproverController.php
+- BranchController.php
+- CalendarController.php
+- ChangeRestDaycontroller.php
+- ChangeShiftController.php
+- DeductionController.php
+- DepartmentController.php
+- DtrController.php
+- EarningController.php
+- EmployeeController.php
+- EmployeeApproverController.php
+- EmployeePositionController.php
+- GroupController.php
 - LeaveBalanceController.php
+- LeaveController.php
+- LeaveTypeController.php
+- Logger.php
+- ManualAttendanceController.php
+- MissingTimeLogController.php
+- OfficialBusinessController.php
+- OverTimeController.php
+- SuggestionCommentController.php
+- SuggestionController.php
+- UserController.php
+- ** and their vues
 
 fix bugs
 - Overtime.vue
@@ -33,3 +55,12 @@ fix bugs
 - SuggestionController.php
 - EmployeeController.php
 - modal_emp_filter.vue
+
+REQUESTS
+requestor: Peter Bismonte
+- email approvers for applications
+- email approvers by level, ex. email level 2 after level 1 approval
+- allow approval from email, redirect page and show confirmation message
+
+requestor: Director Go
+- notify user if the employee already completed the training and probitionary period

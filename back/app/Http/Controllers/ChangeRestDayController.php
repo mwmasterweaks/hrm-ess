@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class ChangeRestDayController extends Controller
 {
+    private $cname = "ChangeRestDayController";
     public function index()
     {
         $tbl = change_rest_day::all();
@@ -60,8 +61,28 @@ class ChangeRestDayController extends Controller
             ]);
             change_rest_day::where("id", $tblInserted->id)
                 ->update(['reference_no' => 'CRD-' . $tblInserted->id]);
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->employee_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "message",
+                "Create new change_rest_day with ID: " . $tblInserted->id . "\nDetails: " .  $tblInserted
+            );
+
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -112,12 +133,34 @@ class ChangeRestDayController extends Controller
     {
         try {
 
-            DB::table('change_rest_days')
-                ->where('reference_no', $request->reference_no)
-                ->update(['status' => 'Canceled']);
+            $crd = change_rest_day::where('reference_no', $request->reference_no);
+            $crds = tap($crd->first(), function($row) {
+                $row->status = 'Canceled';
+                $row->save();
+            });
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "cancelApp",
+                "Update status to 'Canceled'",
+                "Cancel change_rest_day with ID: " . $request->id .
+                    "\nDetails: " . $crds
+            );
 
             return $this->show($request->user_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "cancelApp",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

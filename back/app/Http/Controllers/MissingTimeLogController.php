@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class MissingTimeLogController extends Controller
 {
+    private $cname = "MissingTimeLogController";
     public function index()
     {
         $tbl = missing_time_log::all();
@@ -61,8 +62,28 @@ class MissingTimeLogController extends Controller
             ]);
             missing_time_log::where("id", $tblInserted->id)
                 ->update(['reference_no' => 'MTL-' . $tblInserted->id]);
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->employee_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "message",
+                "Create new missing_time_log with ID: " . $tblInserted->id . "\nDetails: " .  $tblInserted
+            );
+
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->employee_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -113,12 +134,34 @@ class MissingTimeLogController extends Controller
     {
         try {
 
-            DB::table('missing_time_logs')
-                ->where('reference_no', $request->reference_no)
-                ->update(['status' => 'Canceled']);
+            $mtl = missing_time_log::where('reference_no', $request->reference_no);
+            $mtls = tap($mtl->first(), function($row) {
+                $row->status = 'Canceled';
+                $row->save();
+            });
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->employee_id,
+                $request->user_name,
+                $this->cname,
+                "cancelApp",
+                "Update status to 'Canceled'",
+                "Cancel missing_time_log with ID: " . $request->id .
+                    "\nDetails: " . $mtls
+            );
 
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->employee_id,
+                $request->user_name,
+                $this->cname,
+                "cancelApp",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

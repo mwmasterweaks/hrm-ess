@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class OverTimeController extends Controller
 {
+    private $cname = "OverTimeController";
     public function index()
     {
         $tbl = over_time::all();
@@ -25,6 +26,7 @@ class OverTimeController extends Controller
     public function store(Request $request)
     {
         try {
+            DB::beginTransaction();
             $fileName = "noattachment.png";
             if ($request->attachment != "") {
 
@@ -60,8 +62,30 @@ class OverTimeController extends Controller
             ]);
             over_time::where("id", $tblInserted->id)
                 ->update(['reference_no' => 'OT-' . $tblInserted->id]);
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->employee_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "message",
+                "Create new overtime with ID: " . $tblInserted->id . "\nDetails: " .  $tblInserted
+            );
+
+            DB::commit();
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
+            DB::rollBack();
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -114,8 +138,34 @@ class OverTimeController extends Controller
             DB::table('over_times')
                 ->where('reference_no', $request->reference_no)
                 ->update(['status' => 'Canceled']);
+
+            $ot = over_time::where('reference_no', $request->reference_no);
+            $ots = tap($ot->first(), function($row) {
+                $row->status = 'Canceled';
+                $row->save();
+            });
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "cancelApp",
+                "Update status to 'Canceled'",
+                "Cancel overtime with ID: " . $request->id .
+                    "\nDetails: " . $ots
+            );
             return $this->show($request->user_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "cancelApp",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

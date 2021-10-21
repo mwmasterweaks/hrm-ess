@@ -17,6 +17,7 @@ use stdClass;
 
 class ApproverController extends Controller
 {
+    private $cname = "ApproverController";
     public function index()
     {
         $tbl = Approver::with(['employee'])->get();
@@ -32,9 +33,29 @@ class ApproverController extends Controller
     public function store(Request $request)
     {
         try {
-            Approver::create($request->all());
+            $approver = Approver::create($request->all());
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "message",
+                "Create new approver with ID: " . $approver->id . "\nDetails: " . $approver
+            );
+
             return $this->index();
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

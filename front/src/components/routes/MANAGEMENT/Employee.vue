@@ -1466,7 +1466,7 @@
           >Add Schedule to all selected employee</template
         >
         <template v-slot:modal-title v-else>
-          Add Schedule to employee ID : {{ item_row_click.user.email }} ({{
+          Add Schedule to employee ID: {{ item_row_click.user.email }} ({{
             item_row_click.last_name
           }})
         </template>
@@ -1777,7 +1777,7 @@
           >Add Approver to all selected employee</template
         >
         <template v-else v-slot:modal-title>
-          Add Approver to employee ID : {{ item_row_click.user.email }} ({{
+          Add Approver to employee ID: {{ item_row_click.user.email }} ({{
             item_row_click.last_name
           }})
         </template>
@@ -2181,7 +2181,7 @@
               type="password"
               class="form-control"
               v-b-tooltip.hover
-              placeholder="re-type new password"
+              placeholder="Re-type new password"
               v-model.trim="item_edit.repassword"
             />
           </div>
@@ -3291,8 +3291,9 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.$root.$emit("pageLoading");
-          this.item_edit.user_id = this.user.id;
-          this.item_edit.user_name = this.user.email;
+          this.item_edit.user_id = this.user.employee_id;
+          this.item_edit.user_name =
+            this.user.employee.first_name + " " + this.user.employee.last_name;
           this.$http
             .post("api/Employee", this.item_edit)
             .then(response => {
@@ -3363,8 +3364,11 @@ export default {
             this.tblisBusy = true;
             if (update) {
               this.$root.$emit("pageLoading");
-              this.item_edit.user_id = this.user.id;
-              this.item_edit.user_name = this.user.email;
+              this.item_edit.user_id = this.user.employee_id;
+              this.item_edit.user_name =
+                this.user.employee.first_name +
+                " " +
+                this.user.employee.last_name;
               this.$http
                 .put("api/Employee/" + this.item_edit.bioID, this.item_edit)
                 .then(response => {
@@ -3401,8 +3405,16 @@ export default {
           this.$root.$emit("pageLoading");
           this.items = [];
           this.tblisBusy = true;
+          var temp =
+            this.item_edit.bioID +
+            "," +
+            this.user.employee_id +
+            "," +
+            this.user.employee.first_name +
+            " " +
+            this.user.employee.last_name;
           this.$http
-            .delete("api/Employee/" + this.item_edit.bioID)
+            .delete("api/Employee/" + temp)
             .then(response => {
               this.$root.$emit("pageLoaded");
               this.$bvModal.hide("modalEdit");
@@ -3660,8 +3672,8 @@ export default {
           this.$http
             .post("api/Dtr", this.sched_items_add)
             .then(response => {
-              this.$root.$emit("pageLoaded");
               console.log(response.body);
+              this.$root.$emit("pageLoaded");
               swal("Notification", "Added successfully", "success");
               //set new val
               this.sched_items_add = [];
@@ -3773,7 +3785,10 @@ export default {
         if (add) {
           this.$root.$emit("pageLoading");
           var approver = {
-            employee_id: this.item_edit.bioID
+            employee_id: this.item_edit.bioID,
+            user_id: this.user.employee_id,
+            user_name:
+              this.user.employee.first_name + " " + this.user.employee.last_name
           };
           this.$http
             .post("api/Approver", approver)
@@ -3836,6 +3851,9 @@ export default {
           this.$root.$emit("pageLoading");
           this.approve_tblisBusy = true;
           this.approve_add.employee_id = this.item_row_click.id;
+          this.approve_add.user_id = this.user.employee_id;
+          this.approve_add.user_name =
+            this.user.employee.first_name + " " + this.user.employee.last_name;
 
           this.$http
             .post("api/EmployeeApprover", this.approve_add)
@@ -3913,6 +3931,11 @@ export default {
           this.$bvModal.hide("ModalResetPassword");
           this.$bvModal.hide("ModelAddEmployee");
           if (update) {
+            this.item_edit.user_id = this.user.employee_id;
+            this.item_edit.user_name =
+              this.user.employee.first_name +
+              " " +
+              this.user.employee.last_name;
             this.$http
               .post("api/user/ResetPassword", this.item_edit)
               .then(response => {
@@ -3945,8 +3968,9 @@ export default {
       }).then(update => {
         if (update) {
           this.$root.$emit("pageLoading");
-          this.editRoles.user_id = this.user.id;
-          this.editRoles.user_name = this.user.email;
+          this.editRoles.user_id = this.user.employee_id;
+          this.editRoles.user_name =
+            this.user.employee.first_name + " " + this.user.employee.last_name;
           this.$http
             .post("api/user/updateRoles", this.editRoles)
             .then(response => {
@@ -4029,7 +4053,7 @@ export default {
     },
     manageApproverRow(data, action) {
       if (action == "edit") {
-        console.log(data.item.level);
+        console.log(data.item);
         console.log(this.prevLev);
         this.appLevelRow = {
           [data.index]: !this.appLevelRow[data.index] // assign [data.index] with value opposite of current value
@@ -4040,8 +4064,14 @@ export default {
           if (data.index == this.prevIndex) {
             if (data.item.level != this.prevLev) {
               if (!this.appLevelRow[data.index] == true) {
+                var temp =
+                  this.user.employee_id +
+                  "," +
+                  this.user.employee.first_name +
+                  " " +
+                  this.user.employee.last_name;
                 this.$http
-                  .put("api/EmployeeApprover/" + this.user.id, data.item)
+                  .put("api/EmployeeApprover/" + temp, data.item)
                   .then(response => {
                     console.log(response.body);
                     this.approve_items = response.body;
@@ -4062,7 +4092,16 @@ export default {
           this.prevLev = data.item.level;
         }
       } else {
-        var approverId = data.item.approver_id + "," + data.item.employee_id;
+        var approverId =
+          data.item.approver_id +
+          "," +
+          data.item.employee_id +
+          "," +
+          this.user.employee_id +
+          "," +
+          this.user.employee.first_name +
+          " " +
+          this.user.employee.last_name;
         swal({
           title: "Are you sure?",
           text: "Do you really want to delete this item permanently?",

@@ -2,3 +2,9 @@
 
 2021-10-15 14:34:16    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    Error    |    Array to string conversion
 
+2021-10-18 11:33:52    |    User: (719) Peter Bismonte    |    LeaveController (cancelApp)    |    Error    |    Undefined property: Illuminate\Database\Query\Builder::$id
+
+2021-10-18 11:37:51    |    User: (719) Peter Bismonte    |    LeaveController (cancelApp)    |    Error    |    Object of class Illuminate\Database\Query\Builder could not be converted to string
+
+2021-10-18 11:40:57    |    User: (719) Peter Bismonte    |    LeaveController (cancelApp)    |    Error    |    Call to undefined method Illuminate\Database\Query\Builder::save()
+

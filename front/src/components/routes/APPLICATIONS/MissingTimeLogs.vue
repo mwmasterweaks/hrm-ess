@@ -570,7 +570,6 @@ export default {
         this.$validator.validateAll().then(result => {
           if (result) {
             this.apply.employee_id = this.user.employee_id;
-            this.apply.user_id = this.user.id;
             this.apply.user_name =
               this.user.employee.first_name +
               " " +
@@ -683,6 +682,8 @@ export default {
     },
     cancelApplication() {
       this.item_edit.employee_id = this.user.employee_id;
+      this.item_edit.user_name =
+        this.user.employee.first_name + " " + this.user.employee.last_name;
       swal({
         title: "Notification",
         text: "Do you really want to cancel this application?",
@@ -691,9 +692,6 @@ export default {
         dangerMode: true
       }).then(approve => {
         if (approve) {
-          this.item_edit.user_id = this.user.id;
-          this.item_edit.user_name = this.user.name;
-
           this.tblisBusy = true;
           this.$http
             .post("api/MissingTimeLog/cancelApp", this.item_edit)

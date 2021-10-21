@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class OfficialBusinessController extends Controller
 {
+    private $cname = "OfficialBusinessController";
     public function index()
     {
         $tbl = official_business::all();
@@ -55,10 +56,11 @@ class OfficialBusinessController extends Controller
                 file_put_contents($path, $decoded);
             }
             if ($request->multiple_apply == true) {
+                $data = "";
                 foreach ($request->daysList as $item) {
                     $item = (object) $item;
                     if ($item->is_rest_day == 0) {
-                        $tblInserted = DB::table('official_businesses')->insertGetId(
+                        /* $tblInserted = DB::table('official_businesses')->insertGetId(
                             [
                                 'employee_id' => $item->employee_id,
                                 'work_date' => $item->work_date,
@@ -73,12 +75,40 @@ class OfficialBusinessController extends Controller
                                 'created_at' => new Carbon(),
                                 'updated_at' => new Carbon()
                             ]
+                        ); */
+
+                        $tblInserted = official_business::create(
+                            [
+                                'employee_id' => $item->employee_id,
+                                'work_date' => $item->work_date,
+                                'shift' => 'From: ' . $item->shift_sched_in . 'To: ' . $item->shift_sched_out,
+                                'time_in' => $item->time_in,
+                                'time_out' => $item->time_out,
+                                'reference_no' => 'tempnumber123',
+                                'reason' => $request->reason,
+                                'attachment' => $fileName,
+                                'date_filed' => new Carbon(),
+                                'approve_level' => "1"
+                            ]
                         );
 
-                        official_business::where("id", $tblInserted)
-                            ->update(['reference_no' => 'OB-' . $tblInserted]);
+                        official_business::where("id", $tblInserted->id)
+                            ->update(['reference_no' => 'OB-' . $tblInserted->id]);
+
+                        $data .= "\nCreate new official business with ID: " .
+                            $tblInserted->id . "\nDetails: " .  $tblInserted;
                     }
                 }
+
+                \Logger::instance()->log(
+                    Carbon::now(),
+                    $request->employee_id,
+                    $request->user_name,
+                    $this->cname,
+                    "store",
+                    "message",
+                    $data
+                );
             } else {
                 $tblInserted = official_business::create($request->except('attachment') + [
                     "attachment" => $fileName,
@@ -87,6 +117,16 @@ class OfficialBusinessController extends Controller
                 ]);
                 official_business::where("id", $tblInserted->id)
                     ->update(['reference_no' => 'OB-' . $tblInserted->id]);
+
+                \Logger::instance()->log(
+                    Carbon::now(),
+                    $request->user_id,
+                    $request->user_name,
+                    $this->cname,
+                    "store",
+                    "message",
+                    "Create new official business with ID: " . $tblInserted->id . "\nDetails: " .  $tblInserted
+                );
             }
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
@@ -140,12 +180,34 @@ class OfficialBusinessController extends Controller
     {
         try {
 
-            DB::table('official_businesses')
-                ->where('reference_no', $request->reference_no)
-                ->update(['status' => 'Canceled']);
+            $ob = official_business::where('reference_no', $request->reference_no);
+            $obs = tap($ob->first(), function($row) {
+                $row->status = 'Canceled';
+                $row->save();
+            });
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "cancelApp",
+                "Update status to 'Canceled'",
+                "Cancel official business with ID: " . $request->id .
+                    "\nDetails: " . $obs
+            );
 
             return $this->show($request->user_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "cancelApp",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

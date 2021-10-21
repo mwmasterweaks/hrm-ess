@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Suggestion_comment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SuggestionCommentController extends Controller
 {
-    
+    private $cname = "SuggestionCommentController";
     public function index()
     {
         $tbl = Suggestion_comment::all();
@@ -15,29 +16,49 @@ class SuggestionCommentController extends Controller
         return response()->json($tbl);
     }
 
-   
+
     public function create()
     {
-        
+
     }
 
        public function store(Request $request)
     {
         try {
-            Suggestion_comment::create($request->all());
+            $sc = Suggestion_comment::create($request->all());
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->userid,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "message",
+                "Create suggestion_comment with ID: " . $sc->id . "\nDetails: " .  $sc
+            );
+
             return $this->getComments($request->suggestion_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->userid,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
 
-    
+
     public function show(Suggestion_comment $suggestion_comment)
     {
-        
+
     }
 
-    
+
     public function edit(Suggestion_comment $suggestion_comment)
     {
         //
@@ -59,7 +80,7 @@ class SuggestionCommentController extends Controller
         }
     }
 
-    
+
     public function destroy($id)
     {
         try {

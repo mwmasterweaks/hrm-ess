@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class ManualAttendanceController extends Controller
 {
+    private $cname = "ManualAttendanceController";
     public function index()
     {
         $tbl = manual_attendance::all();
@@ -26,6 +27,7 @@ class ManualAttendanceController extends Controller
     {
         try {
             $fileName = "noattachment.png";
+            $data = "";
             if ($request->attachment != "") {
 
                 $exploded = explode(',', $request->attachment);
@@ -55,10 +57,11 @@ class ManualAttendanceController extends Controller
             }
 
             if ($request->multiple_apply == true) {
+
                 foreach ($request->daysList as $item) {
                     $item = (object) $item;
                     if ($item->is_rest_day == 0) {
-                        $tblInserted = DB::table('manual_attendances')->insertGetId(
+                        $tblInserted = manual_attendance::create(
                             [
                                 'employee_id' => $item->employee_id,
                                 'work_date' => $item->work_date,
@@ -69,14 +72,14 @@ class ManualAttendanceController extends Controller
                                 'reason' => $request->reason,
                                 'attachment' => $fileName,
                                 'date_filed' => new Carbon(),
-                                'approve_level' => "1",
-                                'created_at' => new Carbon(),
-                                'updated_at' => new Carbon()
+                                'approve_level' => "1"
                             ]
                         );
 
                         manual_attendance::where("id", $tblInserted)
                             ->update(['reference_no' => 'MA-' . $tblInserted]);
+
+                        $data .= "\nCreate new manual_attendance with ID: " . $tblInserted->id . "\nDetails: " .  $tblInserted;
                     }
                 }
             } else {
@@ -87,11 +90,32 @@ class ManualAttendanceController extends Controller
                 ]);
                 manual_attendance::where("id", $tblInserted->id)
                     ->update(['reference_no' => 'MA-' . $tblInserted->id]);
+
+                $data = "Create new manual_attendance with ID: " . $tblInserted->id . "\nDetails: " .  $tblInserted;
             }
 
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->employee_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "message",
+                $data
+            );
 
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
+            DB::rollBack();
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->employee_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -142,12 +166,34 @@ class ManualAttendanceController extends Controller
     {
         try {
 
-            DB::table('manual_attendances')
-                ->where('reference_no', $request->reference_no)
-                ->update(['status' => 'Canceled']);
+            $ma = manual_attendance::where('reference_no', $request->reference_no);
+            $mas = tap($ma->first(), function($row) {
+                $row->status = 'Canceled';
+                $row->save();
+            });
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "cancelApp",
+                "Update status to 'Canceled'",
+                "Cancel manual_attendance with ID: " . $request->id .
+                    "\nDetails: " . $mas
+            );
 
             return $this->show($request->user_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "cancelApp",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

@@ -35,6 +35,7 @@ class DtrController extends Controller
 
     public function store(Request $request)
     {
+        return $request;
         try {
             $request = $request->toArray();
             foreach ($request as $item) {
@@ -90,6 +91,7 @@ class DtrController extends Controller
                         ]);
                 }
             }
+
             return "ok";
             // return $this->index();
 

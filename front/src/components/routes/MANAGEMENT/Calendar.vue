@@ -572,8 +572,11 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
-              this.item_edit.user_id = this.user.id;
-              this.item_edit.user_name = this.user.name;
+              this.item_edit.user_id = this.user.employee_id;
+              this.item_edit.user_name =
+                this.user.employee.first_name +
+                " " +
+                this.user.employee.last_name;
 
               this.$http
                 .put("api/Calendar/" + this.item_edit.id, this.item_edit)
@@ -603,8 +606,10 @@ export default {
     btnAdd() {
       this.$validator.validateAll().then(result => {
         if (result) {
-          this.item_add.user_id = this.user.id;
-          this.item_add.user_name = this.user.name;
+          this.item_add.user_id = this.user.employee_id;
+          this.item_add.user_name =
+            this.user.employee.first_name + " " + this.user.employee.last_name;
+
           this.$http
             .post("api/Calendar", this.item_add)
             .then(response => {
@@ -648,8 +653,17 @@ export default {
         if (willDelete) {
           this.items = [];
           this.tblisBusy = true;
+          var temp =
+            this.item_edit.id +
+            "," +
+            this.user.employee_id +
+            "," +
+            this.user.employee.first_name +
+            " " +
+            this.user.employee.last_name;
+
           this.$http
-            .delete("api/Calendar/" + this.item_edit.id)
+            .delete("api/Calendar/" + temp)
             .then(response => {
               this.$bvModal.hide("modalEdit");
               swal("Deleted!", "Item has been deleted", "success").then(

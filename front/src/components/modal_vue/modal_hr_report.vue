@@ -20,7 +20,7 @@
     <b-modal
       id="modalhrreport"
       size="xl"
-      title="Summary report"
+      title="Summary Report"
       :header-bg-variant="' elBG'"
       :header-text-variant="' elClr'"
       :body-bg-variant="' elBG'"

@@ -96,3 +96,255 @@ Details: {"employee_id":719,"leave_type_id":6,"reference_no":"tempnumber123","da
 Create new leave day/s: 
 {"leave_id":11,"leave_date":"2021-09-08","halfday":false,"halfday_type":0,"created_at":"2021-10-18 10:24:26","updated_at":"2021-10-18 10:24:26"}
 
+2021-10-18 11:21:52    |    User: (719) Peter Bismonte    |    LeaveController (store)    |    message    |    Create new leave with ID: 12
+Details: {"employee_id":719,"leave_type_id":6,"reference_no":"tempnumber123","date_from":"2021-09-09","date_to":"2021-09-09","reason":"apply for sick leave test logs 3","status":"Pending","attachment":"noattachment.png","total_days":1,"date_filed":"2021-10-18T03:21:52.807101Z","approve_level":"1","updated_at":"2021-10-18 11:21:52","created_at":"2021-10-18 11:21:52","id":12}
+Create new leave day/s: 
+{"leave_id":12,"leave_date":"2021-09-09","halfday":false,"halfday_type":0,"created_at":"2021-10-18 11:21:52","updated_at":"2021-10-18 11:21:52"}
+
+2021-10-18 11:24:25    |    User: (719) Peter Bismonte    |    LeaveController (store)    |    message    |    Create new leave with ID: 13
+Details: {"employee_id":719,"leave_type_id":6,"reference_no":"tempnumber123","date_from":"2021-09-09","date_to":"2021-09-09","reason":"apply for sick leave test logs 3","status":"Pending","attachment":"noattachment.png","total_days":1,"date_filed":"2021-10-18T03:24:25.476801Z","approve_level":"1","updated_at":"2021-10-18 11:24:25","created_at":"2021-10-18 11:24:25","id":13}
+Create new leave day/s: 
+{"leave_id":13,"leave_date":"2021-09-09","halfday":false,"halfday_type":0,"created_at":"2021-10-18 11:24:25","updated_at":"2021-10-18 11:24:25","id":0}
+
+2021-10-18 12:46:44    |    User: (719) Peter Bismonte    |    LeaveController (destroy)    |    message    |    Cancel leave with ID: 6
+Details: {"id":6,"employee_id":719,"leave_type_id":"3","reference_no":"LV-6","date_from":"2021-08-30","date_to":"2021-08-31","total_days":"1.00","reason":"apply leave test 1","attachment":"noattachment.png","date_filed":"2021-10-12","status":"Canceled","remarks":null,"approve_level":1,"created_at":"2021-10-12 10:21:27","updated_at":"2021-10-18 12:46:44"}
+
+2021-10-18 14:41:13    |    User: (719)     |    OverTimeController (store)    |    message    |    Create new overtime with ID: 8
+Details: {"employee_id":719,"work_date":"2021-09-01","reference_no":"tempnumber123","shift":"From: 2021-09-01 07:31:00 To: 2021-09-01 17:00:00","with_break":"No","break_hours":0,"total_hours":2,"time_in":"2021-09-01 17:00:00","time_out":"2021-09-01 19:00","reason":"apply for overtime test logs 1","status":"Pending","attachment":"noattachment.png","date_filed":"2021-10-18T06:41:13.848500Z","approve_level":"1","updated_at":"2021-10-18 14:41:13","created_at":"2021-10-18 14:41:13","id":8}
+
+2021-10-18 15:41:03    |    User: (719)     |    OverTimeController (destroy)    |    Update status to 'Canceled'    |    Cancel overtime with ID: 8
+Details: {"id":8,"employee_id":719,"reference_no":"OT-8","work_date":"2021-09-01","shift":"From: 2021-09-01 07:31:00 To: 2021-09-01 17:00:00","time_in":"2021-09-01 17:00:00","time_out":"2021-09-01 19:00:00","with_break":"No","break_hours":"0.00","total_hours":"2.00","reason":"apply for overtime test logs 1","attachment":"noattachment.png","date_filed":"2021-10-18","status":"Canceled","status_paid":"no","remarks":null,"approve_level":1,"created_at":"2021-10-18 14:41:13","updated_at":"2021-10-18 14:41:13"}
+
+2021-10-18 15:44:50    |    User: (719) Peter Bismonte    |    OverTimeController (store)    |    message    |    Create new overtime with ID: 9
+Details: {"employee_id":719,"work_date":"2021-09-02","reference_no":"tempnumber123","shift":"From: 2021-09-02 07:31:00 To: 2021-09-02 17:00:00","with_break":"No","break_hours":0,"total_hours":2,"time_in":"2021-09-02 17:00:00","time_out":"2021-09-02 19:00","reason":"apply for overtime test logs 2","status":"Pending","attachment":"noattachment.png","date_filed":"2021-10-18T07:44:50.702846Z","approve_level":"1","updated_at":"2021-10-18 15:44:50","created_at":"2021-10-18 15:44:50","id":9}
+
+2021-10-18 15:45:12    |    User: (719) Peter Bismonte    |    OverTimeController (destroy)    |    Update status to 'Canceled'    |    Cancel overtime with ID: 9
+Details: {"id":9,"employee_id":719,"reference_no":"OT-9","work_date":"2021-09-02","shift":"From: 2021-09-02 07:31:00 To: 2021-09-02 17:00:00","time_in":"2021-09-02 17:00:00","time_out":"2021-09-02 19:00:00","with_break":"No","break_hours":"0.00","total_hours":"2.00","reason":"apply for overtime test logs 2","attachment":"noattachment.png","date_filed":"2021-10-18","status":"Canceled","status_paid":"no","remarks":null,"approve_level":1,"created_at":"2021-10-18 15:44:50","updated_at":"2021-10-18 15:44:50"}
+
+2021-10-18 16:39:02    |    User: (719)     |    OfficialBusinessController (store)    |    message    |    
+Create new official business with ID: 25
+Details: {"employee_id":719,"work_date":"2021-09-01","shift":"From: 2021-09-01 07:31:00To: 2021-09-01 17:00:00","time_in":"2021-09-01 07:31:00","time_out":"2021-09-01 17:00:00","reference_no":"tempnumber123","reason":"apply for official business test 1","attachment":"noattachment.png","date_filed":"2021-10-18T08:39:02.575984Z","approve_level":"1","created_at":"2021-10-18 16:39:02","updated_at":"2021-10-18 16:39:02","id":25}
+Create new official business with ID: 26
+Details: {"employee_id":719,"work_date":"2021-09-02","shift":"From: 2021-09-02 07:31:00To: 2021-09-02 17:00:00","time_in":"2021-09-02 07:31:00","time_out":"2021-09-02 17:00:00","reference_no":"tempnumber123","reason":"apply for official business test 1","attachment":"noattachment.png","date_filed":"2021-10-18T08:39:02.581719Z","approve_level":"1","created_at":"2021-10-18 16:39:02","updated_at":"2021-10-18 16:39:02","id":26}
+
+2021-10-19 08:28:34    |    User: (719) Peter Bismonte    |    OfficialBusinessController (destroy)    |    Update status to 'Canceled'    |    Cancel official business with ID: 25
+Details: {"id":25,"employee_id":719,"reference_no":"OB-25","work_date":"2021-09-01","shift":"From: 2021-09-01 07:31:00To: 2021-09-01 17:00:00","time_in":"2021-09-01 07:31:00","time_out":"2021-09-01 17:00:00","with_break":null,"break_hours":"0.00","total_hours":"0.00","reason":"apply for official business test 1","attachment":"noattachment.png","date_filed":"2021-10-18","status":"Canceled","remarks":null,"approve_level":1,"created_at":"2021-10-18 16:39:02","updated_at":"2021-10-19 08:28:34"}
+
+2021-10-19 08:32:24    |    User: (719) Peter Bismonte    |    OfficialBusinessController (store)    |    message    |    
+Create new official business with ID: 27
+Details: {"employee_id":719,"work_date":"2021-10-04","shift":"From: 2021-10-04 07:31:00To: 2021-10-04 17:00:00","time_in":"2021-10-04 07:31:00","time_out":"2021-10-04 17:00:00","reference_no":"tempnumber123","reason":"apply for official business test logs 2","attachment":"noattachment.png","date_filed":"2021-10-19T00:32:24.921820Z","approve_level":"1","updated_at":"2021-10-19 08:32:24","created_at":"2021-10-19 08:32:24","id":27}
+Create new official business with ID: 28
+Details: {"employee_id":719,"work_date":"2021-10-05","shift":"From: 2021-10-05 07:31:00To: 2021-10-05 17:00:00","time_in":"2021-10-05 07:31:00","time_out":"2021-10-05 17:00:00","reference_no":"tempnumber123","reason":"apply for official business test logs 2","attachment":"noattachment.png","date_filed":"2021-10-19T00:32:24.928228Z","approve_level":"1","updated_at":"2021-10-19 08:32:24","created_at":"2021-10-19 08:32:24","id":28}
+
+2021-10-19 08:45:48    |    User: (719) Peter Bismonte    |    ChangeShiftController (store)    |    message    |    Create new change shift with ID: 3
+Details: {"employee_id":719,"work_date":"2021-10-02","reference_no":"tempnumber123","shift":"From: 2021-10-02 07:31:00 To: 2021-10-02 11:00:00","time_in":"2021-10-09 07:31","time_out":"2021-10-09 11:00","reason":"apply for change of shift test logs 1","status":"Pending","attachment":"noattachment.png","date_filed":"2021-10-19T00:45:48.090547Z","approve_level":"1","updated_at":"2021-10-19 08:45:48","created_at":"2021-10-19 08:45:48","id":3}
+
+2021-10-19 08:46:40    |    User: (719) Peter Bismonte    |    ChangeShiftController (destroy)    |    Update status to 'Canceled'    |    Cancel leave with ID: 3
+Details: {"id":3,"employee_id":719,"reference_no":"CS-3","work_date":"2021-10-02","shift":"From: 2021-10-02 07:31:00 To: 2021-10-02 11:00:00","time_in":"2021-10-09 07:31:00","time_out":"2021-10-09 11:00:00","reason":"apply for change of shift test logs 1","attachment":"noattachment.png","date_filed":"2021-10-19","status":"Canceled","remarks":null,"approve_level":1,"created_at":"2021-10-19 08:45:48","updated_at":"2021-10-19 08:45:48"}
+
+2021-10-19 09:41:47    |    User: (719) Peter Bismonte    |    ChangeRestDayController (store)    |    message    |    Create new change_rest_day with ID: 2
+Details: {"employee_id":719,"work_date":"2021-10-03","reference_no":"tempnumber123","shift":"Rest day","type":"Rest Day to Shift","time_in":"2021-10-03 07:00","time_out":"2021-10-03 11:00","reason":"apply for change of rest day test logs 1","status":"Pending","attachment":"noattachment.png","date_filed":"2021-10-19T01:41:47.342075Z","approve_level":"1","updated_at":"2021-10-19 09:41:47","created_at":"2021-10-19 09:41:47","id":2}
+
+2021-10-19 09:42:26    |    User: (719)     |    ChangeRestDayController (destroy)    |    Update status to 'Canceled'    |    Cancel change_rest_day with ID: 2
+Details: {"id":2,"employee_id":719,"reference_no":"CRD-2","work_date":"2021-10-03","shift":"Rest day","type":"Rest Day to Shift","time_in":"2021-10-03 07:00:00","time_out":"2021-10-03 11:00:00","reason":"apply for change of rest day test logs 1","attachment":"noattachment.png","date_filed":"2021-10-19","status":"Canceled","remarks":null,"approve_level":1,"created_at":"2021-10-19 09:41:47","updated_at":"2021-10-19 09:42:26"}
+
+2021-10-19 10:05:29    |    User: (719) Peter Bismonte    |    MissingTimeLogController (store)    |    message    |    Create new missing_time_log with ID: 1
+Details: {"employee_id":719,"work_date":"2021-10-06","reference_no":"tempnumber123","shift":"From: 2021-10-06 07:31:00 To: 2021-10-06 17:00:00","time_in":"2021-10-06 07:31:00","time_out":"2021-10-06 17:00:00","reason":"apply for missing time logs test logs 1","status":"Pending","attachment":"noattachment.png","date_filed":"2021-10-19T02:05:29.432695Z","approve_level":"1","updated_at":"2021-10-19 10:05:29","created_at":"2021-10-19 10:05:29","id":1}
+
+2021-10-19 10:08:24    |    User: (1)     |    MissingTimeLogController (destroy)    |    Update status to 'Canceled'    |    Cancel missing_time_log with ID: 1
+Details: {"id":1,"employee_id":719,"reference_no":"MTL-1","work_date":"2021-10-06","shift":"From: 2021-10-06 07:31:00 To: 2021-10-06 17:00:00","time_in":"2021-10-06 07:31:00","time_out":"2021-10-06 17:00:00","reason":"apply for missing time logs test logs 1","attachment":"noattachment.png","date_filed":"2021-10-19","status":"Canceled","remarks":null,"approve_level":1,"created_at":"2021-10-19 10:05:29","updated_at":"2021-10-19 10:08:24"}
+
+2021-10-19 10:14:12    |    User: (719) Peter Bismonte    |    MissingTimeLogController (store)    |    message    |    Create new missing_time_log with ID: 2
+Details: {"employee_id":719,"work_date":"2021-10-20","reference_no":"tempnumber123","shift":"From: 2021-10-20 07:31:00 To: 2021-10-20 17:00:00","time_in":"2021-10-20 07:31:00","time_out":"2021-10-20 17:00:00","reason":"dfasdf","status":"Pending","attachment":"noattachment.png","date_filed":"2021-10-19T02:14:12.532268Z","approve_level":"1","updated_at":"2021-10-19 10:14:12","created_at":"2021-10-19 10:14:12","id":2}
+
+2021-10-19 10:32:43    |    User: (1)     |    MissingTimeLogController (destroy)    |    Update status to 'Canceled'    |    Cancel missing_time_log with ID: 2
+Details: {"id":2,"employee_id":719,"reference_no":"MTL-2","work_date":"2021-10-20","shift":"From: 2021-10-20 07:31:00 To: 2021-10-20 17:00:00","time_in":"2021-10-20 07:31:00","time_out":"2021-10-20 17:00:00","reason":"dfasdf","attachment":"noattachment.png","date_filed":"2021-10-19","status":"Canceled","remarks":null,"approve_level":1,"created_at":"2021-10-19 10:14:12","updated_at":"2021-10-19 10:32:43"}
+
+2021-10-19 10:34:25    |    User: (719) Peter Bismonte    |    MissingTimeLogController (store)    |    message    |    Create new missing_time_log with ID: 3
+Details: {"employee_id":719,"work_date":"2021-10-06","reference_no":"tempnumber123","shift":"From: 2021-10-06 07:31:00 To: 2021-10-06 17:00:00","time_in":"2021-10-06 07:31:00","time_out":"2021-10-06 17:00:00","reason":"xasdasd","status":"Pending","attachment":"noattachment.png","date_filed":"2021-10-19T02:34:25.604872Z","approve_level":"1","updated_at":"2021-10-19 10:34:25","created_at":"2021-10-19 10:34:25","id":3}
+
+2021-10-19 10:34:29    |    User: (719) Peter undefined    |    MissingTimeLogController (destroy)    |    Update status to 'Canceled'    |    Cancel missing_time_log with ID: 3
+Details: {"id":3,"employee_id":719,"reference_no":"MTL-3","work_date":"2021-10-06","shift":"From: 2021-10-06 07:31:00 To: 2021-10-06 17:00:00","time_in":"2021-10-06 07:31:00","time_out":"2021-10-06 17:00:00","reason":"xasdasd","attachment":"noattachment.png","date_filed":"2021-10-19","status":"Canceled","remarks":null,"approve_level":1,"created_at":"2021-10-19 10:34:25","updated_at":"2021-10-19 10:34:29"}
+
+2021-10-19 11:07:30    |    User: (719) Peter Bismonte    |    ManualAttendanceController (destroy)    |    Update status to 'Canceled'    |    Cancel manual_attendance with ID: 4
+Details: {"id":4,"employee_id":719,"reference_no":"MA-4","work_date":"2021-10-20","shift":"From: 2021-10-20 07:31:00 To: 2021-10-20 17:00:00","time_in":"2021-10-20 07:31:00","time_out":"2021-10-20 17:00:00","reason":"apply for manual attendance test logs 1","attachment":"noattachment.png","date_filed":"2021-10-19","status":"Canceled","remarks":null,"approve_level":1,"created_at":"2021-10-19 11:03:29","updated_at":"2021-10-19 11:07:30"}
+
+2021-10-19 11:07:54    |    User: (719) Peter Bismonte    |    ManualAttendanceController (destroy)    |    Update status to 'Canceled'    |    Cancel manual_attendance with ID: 3
+Details: {"id":3,"employee_id":719,"reference_no":"MA-3","work_date":"2021-10-07","shift":"From: 2021-10-07 07:31:00 To: 2021-10-07 17:00:00","time_in":"2021-10-07 07:31:00","time_out":"2021-10-07 17:00:00","reason":"apply for manual attendance test logs 1","attachment":"noattachment.png","date_filed":"2021-10-19","status":"Canceled","remarks":null,"approve_level":1,"created_at":"2021-10-19 11:02:15","updated_at":"2021-10-19 11:07:54"}
+
+2021-10-19 11:08:29    |    User: (719) Peter Bismonte    |    ManualAttendanceController (store)    |    message    |    Create new manual_attendance with ID: 6
+Details: {"employee_id":719,"work_date":"2021-10-08","reference_no":"tempnumber123","shift":"From: 2021-10-08 07:31:00 To: 2021-10-08 17:00:00","time_in":"2021-10-08 07:31:00","time_out":"2021-10-08 17:00:00","reason":"fdgsdfgasdgf","status":"Pending","attachment":"noattachment.png","date_filed":"2021-10-19T03:08:29.225126Z","approve_level":"1","updated_at":"2021-10-19 11:08:29","created_at":"2021-10-19 11:08:29","id":6}
+
+2021-10-19 11:10:28    |    User: (719) Peter Bismonte    |    ManualAttendanceController (destroy)    |    Update status to 'Canceled'    |    Cancel manual_attendance with ID: 6
+Details: {"id":6,"employee_id":719,"reference_no":"MA-6","work_date":"2021-10-08","shift":"From: 2021-10-08 07:31:00 To: 2021-10-08 17:00:00","time_in":"2021-10-08 07:31:00","time_out":"2021-10-08 17:00:00","reason":"fdgsdfgasdgf","attachment":"noattachment.png","date_filed":"2021-10-19","status":"Canceled","remarks":null,"approve_level":1,"created_at":"2021-10-19 11:08:29","updated_at":"2021-10-19 11:10:28"}
+
+2021-10-19 11:13:15    |    User: (719) Peter Bismonte    |    ManualAttendanceController (store)    |    message    |    
+Create new manual_attendance with ID: 7
+Details: {"employee_id":719,"work_date":"2021-09-28","shift":"From: 2021-09-28 07:31:00To: 2021-09-28 17:00:00","time_in":"2021-09-28 07:31:00","time_out":"2021-09-28 17:00:00","reference_no":"tempnumber123","reason":"apply for manual attendance multiple dates test logs 1","attachment":"noattachment.png","date_filed":"2021-10-19T03:13:15.409495Z","approve_level":"1","updated_at":"2021-10-19 11:13:15","created_at":"2021-10-19 11:13:15","id":7}
+Create new manual_attendance with ID: 8
+Details: {"employee_id":719,"work_date":"2021-09-29","shift":"From: 2021-09-29 07:31:00To: 2021-09-29 17:00:00","time_in":"2021-09-29 07:31:00","time_out":"2021-09-29 17:00:00","reference_no":"tempnumber123","reason":"apply for manual attendance multiple dates test logs 1","attachment":"noattachment.png","date_filed":"2021-10-19T03:13:15.416046Z","approve_level":"1","updated_at":"2021-10-19 11:13:15","created_at":"2021-10-19 11:13:15","id":8}
+
+2021-10-19 14:44:25    |    User: (719) 20180926719    |    EmployeeController (store)    |    message    |    Create new User with ID: 447
+Employee: {"id":5000,"group_id":1,"rate_id":1,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Maka","middle_name":"Albarn","last_name":"Evans","gender":"Female","date_hired":"2021-10-19","permanent_address":null,"tel_no":null,"mobile_no":null,"email1":null,"email2":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"updated_at":"2021-10-19 14:44:25","created_at":"2021-10-19 14:44:25"}
+
+2021-10-19 14:48:26    |    User: (719) Peter Bismonte    |    EmployeeController (updateRoles)    |    Message    |    Update roles for user ID: 447
+Roles: 6710
+
+2021-10-19 14:50:37    |    User: (719) Peter Bismonte    |    EmployeeController (updateRoles)    |    Message    |    Update roles for user ID: 447
+New roles: 6 7 10 11 
+
+2021-10-19 14:51:45    |    User: (719) Peter Bismonte     |    ApproverController (store)    |    message    |    Create new approver with id: 16
+Details: {"employee_id":5000,"updated_at":"2021-10-19 14:51:45","created_at":"2021-10-19 14:51:45","id":16}
+
+2021-10-19 14:55:17    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 5000
+From: {"group_id":1,"rate_id":1,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Maka","middle_name":"Albarn","last_name":"Evans","gender":"Female","date_hired":"2021-10-19","img":null,"permanent_address":null,"tel_no":null,"mobile_no":null,"email1":null,"email2":null,"provincial_address":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"pag_ibig":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null}
+To: {"id":5000,"group_id":1,"rate_id":1,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Maka","middle_name":"Albarin","last_name":"Evans","gender":"Female","date_hired":"2021-10-18","img":null,"permanent_address":null,"tel_no":null,"mobile_no":null,"email1":null,"email2":null,"provincial_address":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"pag_ibig":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"created_at":"2021-10-19 14:44:25","updated_at":"2021-10-19 14:55:17"}
+
+2021-10-19 14:56:25    |    User: (719) Peter Bismonte    |    EmployeeController (destroy)    |    message    |    delete Employee id 5000,719,Peter Bismonte
+Old Employee: {"id":5000,"group_id":1,"rate_id":1,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Maka","middle_name":"Albarin","last_name":"Evans","gender":"Female","date_hired":"2021-10-18","img":null,"permanent_address":null,"tel_no":null,"mobile_no":null,"email1":null,"email2":null,"provincial_address":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"pag_ibig":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"created_at":"2021-10-19 14:44:25","updated_at":"2021-10-19 14:55:17"}
+Old User: {"id":447,"employee_id":5000,"email":"202110195000","elClr":"black","elBG":"white","created_at":"2021-10-19 14:44:25","updated_at":"2021-10-19 14:44:25"}
+
+2021-10-19 15:30:35    |    User: (719) Peter Bismonte    |    EmployeeController (store)    |    message    |    Create new User with ID: 448
+Employee: {"id":5000,"group_id":2,"rate_id":1,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Maka","middle_name":"Albarn","last_name":"Evans","gender":"Female","date_hired":"2021-10-18","permanent_address":null,"tel_no":null,"mobile_no":null,"email1":null,"email2":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"updated_at":"2021-10-19 15:30:35","created_at":"2021-10-19 15:30:35"}
+
+2021-10-19 15:32:13    |    User: (719) Peter Bismonte    |    UserController (store)    |    message    |    Reset user password with ID: 448
+
+2021-10-20 08:58:20    |    User: (719) Peter Bismonte    |    ApproverController (store)    |    message    |    Create new approver with ID: 17
+Details: {"employee_id":1025,"updated_at":"2021-10-20 08:58:20","created_at":"2021-10-20 08:58:20","id":17}
+
+2021-10-20 08:58:59    |    User: (719) Peter Bismonte    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver with ID: 0
+Details: {"approver_id":17,"employee_id":5000,"level":1,"updated_at":"2021-10-20 08:58:59","created_at":"2021-10-20 08:58:59","id":0}
+
+2021-10-20 10:39:51    |    User: ()     |    EmployeeApproverController (update)    |    message    |    Update employee_approver with ID: 17
+From: {"approver_id":17,"employee_id":5000,"level":1,"created_at":"2021-10-20 08:58:59","updated_at":"2021-10-20 08:58:59"}
+To: {"approver_id":17,"employee_id":5000,"level":2,"created_at":"2021-10-20 10:39:51","updated_at":"2021-10-20 10:39:51"}
+
+2021-10-20 10:46:46    |    User: (719) Peter Bismonte    |    EmployeeApproverController (update)    |    message    |    Update employee_approver with ID: 17
+From: {"approver_id":17,"employee_id":5000,"level":2,"created_at":"2021-10-20 10:39:51","updated_at":"2021-10-20 10:39:51"}
+To: {"approver_id":17,"employee_id":5000,"level":1,"created_at":"2021-10-20 10:46:46","updated_at":"2021-10-20 10:46:46"}
+
+2021-10-20 10:50:48    |    User: (719) Peter Bismonte    |    EmployeeApproverController (update)    |    message    |    Update employee_approver with ID: 17
+From: {"approver_id":17,"employee_id":5000,"level":1,"created_at":"2021-10-20 10:46:46","updated_at":"2021-10-20 10:46:46"}
+To: {"approver_id":17,"employee_id":5000,"level":99,"created_at":"2021-10-20 10:50:48","updated_at":"2021-10-20 10:50:48"}
+
+2021-10-20 10:51:55    |    User: (719) Peter Bismonte    |    EmployeeApproverController (update)    |    message    |    Update employee_approver with ID: 17
+From: {"approver_id":17,"employee_id":5000,"level":99,"created_at":"2021-10-20 10:50:48","updated_at":"2021-10-20 10:50:48"}
+To: {"approver_id":17,"employee_id":5000,"level":1,"created_at":"2021-10-20 10:51:55","updated_at":"2021-10-20 10:51:55"}
+
+2021-10-20 11:29:28    |    User: (719) Peter Bismonte    |    EmployeeApproverController (destroy)    |    message    |    Delete employee_approve with approver ID and employee ID: 17 5000
+Details: 
+
+2021-10-20 12:43:35    |    User: (719) Peter Bismonte    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver (foreign key): 17
+Details: {"approver_id":17,"employee_id":5000,"level":1,"updated_at":"2021-10-20 12:43:35","created_at":"2021-10-20 12:43:35","id":0}
+
+2021-10-20 12:43:40    |    User: (719) Peter Bismonte    |    EmployeeApproverController (destroy)    |    message    |    Delete employee_approve with approver ID and employee ID: 17, 5000
+Details: {"approver_id":17,"employee_id":5000,"level":1,"created_at":"2021-10-20 12:43:35","updated_at":"2021-10-20 12:43:35"}
+
+2021-10-20 12:48:17    |    User: (719) Peter Bismonte    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver with approver ID and employee ID: 5000, 17
+Details: {"approver_id":17,"employee_id":5000,"level":1,"updated_at":"2021-10-20 12:48:17","created_at":"2021-10-20 12:48:17","id":0}
+
+2021-10-20 12:48:35    |    User: (719) Peter Bismonte    |    EmployeeApproverController (update)    |    message    |    Update employee_approver with ID: 17
+From: {"approver_id":17,"employee_id":5000,"level":1,"created_at":"2021-10-20 12:48:17","updated_at":"2021-10-20 12:48:17"}
+To: {"approver_id":17,"employee_id":5000,"level":2,"created_at":"2021-10-20 12:48:35","updated_at":"2021-10-20 12:48:35"}
+
+2021-10-20 12:48:39    |    User: (719) Peter Bismonte    |    EmployeeApproverController (destroy)    |    message    |    Delete employee_approve with approver ID and employee ID: 17, 5000
+Details: {"approver_id":17,"employee_id":5000,"level":2,"created_at":"2021-10-20 12:48:35","updated_at":"2021-10-20 12:48:35"}
+
+2021-10-20 13:11:59    |    User: (719) Peter Bismonte    |    EarningController (store)    |    message    |    Create new earning with ID: 10
+Details: {"earning_type_id":1,"effective_date":"2021-10-01","end_date":"2021-10-02","amount":"100","employee_id":5000,"updated_at":"2021-10-20 13:11:59","created_at":"2021-10-20 13:11:59","id":10}
+
+2021-10-20 13:12:41    |    User: () Peter Bismonte    |    EarningController (update)    |    message    |    Update earning with ID: 10
+From: {"id":10,"employee_id":5000,"earning_type_id":1,"effective_date":"2021-10-01","end_date":"2021-10-02","amount":100,"created_at":"2021-10-20 13:11:59","updated_at":"2021-10-20 13:11:59"}
+To: {"id":10,"employee_id":5000,"earning_type_id":1,"effective_date":"2021-10-01","end_date":"2021-10-02","amount":"500","created_at":"2021-10-20 13:11:59","updated_at":"2021-10-20 13:12:41"}
+
+2021-10-20 13:13:43    |    User: (719) Peter Bismonte    |    EarningController (destoryItem)    |    message    |    Delete earning with ID: 10
+Details: {"id":10,"employee_id":5000,"earning_type_id":1,"effective_date":"2021-10-01","end_date":"2021-10-02","amount":500,"created_at":"2021-10-20 13:11:59","updated_at":"2021-10-20 13:12:41"}
+
+2021-10-20 13:30:44    |    User: (719) Peter Bismonte    |    DeductionController (store)    |    message    |    Create new deduction with ID: 18
+Details: {"deduction_type_id":1,"effective_date":"2021-10-08","end_date":"2021-10-18","amount":"245","employee_id":5000,"updated_at":"2021-10-20 13:30:44","created_at":"2021-10-20 13:30:44","id":18}
+
+2021-10-20 13:31:02    |    User: (719) Peter Bismonte    |    DeductionController (update)    |    message    |    Update deduction with ID: 18
+From: {"id":18,"employee_id":5000,"deduction_type_id":1,"effective_date":"2021-10-08","end_date":"2021-10-18","amount":245,"created_at":"2021-10-20 13:30:44","updated_at":"2021-10-20 13:30:44"}
+To: {"id":18,"employee_id":5000,"deduction_type_id":1,"effective_date":"2021-10-08","end_date":"2021-10-18","amount":"200","created_at":"2021-10-20 13:30:44","updated_at":"2021-10-20 13:31:02"}
+
+2021-10-20 13:31:06    |    User: (719) Peter Bismonte    |    DeductionController (destoryItem)    |    message    |    Delete deduction with ID: 18
+Details: {"id":18,"employee_id":5000,"deduction_type_id":1,"effective_date":"2021-10-08","end_date":"2021-10-18","amount":200,"created_at":"2021-10-20 13:30:44","updated_at":"2021-10-20 13:31:02"}
+
+2021-10-20 15:52:05    |    User: (719) Peter Bismonte    |    GroupController (store)    |    message    |    Create new group with ID: 3
+Details: {"name":"grouptest","desc":"testing group management","updated_at":"2021-10-20 15:52:05","created_at":"2021-10-20 15:52:05","id":3}
+
+2021-10-20 15:53:03    |    User: (719) Peter Bismonte    |    GroupController (update)    |    message    |    Update group with ID: 3
+From: {"id":3,"name":"grouptest","desc":"testing group management","created_at":"2021-10-20 15:52:05","updated_at":"2021-10-20 15:52:05"}
+To: {"id":3,"name":"Group Test","desc":"testing group management","created_at":"2021-10-20 15:52:05","updated_at":"2021-10-20 15:53:03"}
+
+2021-10-20 15:55:08    |    User: (719) Peter Bismonte    |    GroupController (destroy)    |    message    |    Delete group with ID: 3
+Details: {"id":3,"name":"Group Test","desc":"testing group management","created_at":"2021-10-20 15:52:05","updated_at":"2021-10-20 15:53:03"}
+
+2021-10-20 16:29:06    |    User: (719) Peter Bismonte    |    EmployeePositionController (store)    |    message    |    Create new employee_position with ID: 61
+Details: {"name":"position test","description":"testing position management","updated_at":"2021-10-20 16:29:06","created_at":"2021-10-20 16:29:06","id":61}
+
+2021-10-20 16:29:30    |    User: (719) Peter Bismonte    |    EmployeePositionController (update)    |    message    |    Update employee_position with ID: 61
+From: {"id":61,"name":"position test","description":"testing position management","created_at":"2021-10-20 16:29:06","updated_at":"2021-10-20 16:29:06"}
+To: {"id":61,"name":"Position","description":"testing position management","created_at":"2021-10-20 16:29:06","updated_at":"2021-10-20 16:29:30"}
+
+2021-10-20 16:29:36    |    User: (719) Peter Bismonte    |    EmployeePositionController (destroy)    |    message    |    Delete group with ID: 61
+Details: {"id":61,"name":"Position","description":"testing position management","created_at":"2021-10-20 16:29:06","updated_at":"2021-10-20 16:29:30"}
+
+2021-10-20 16:37:12    |    User: (719) Peter Bismonte    |    DepartmentController (store)    |    message    |    Create new department with ID: 10
+Details: {"name":"dept test","description":"tedgnkjdfgsfdgsdg","updated_at":"2021-10-20 16:37:12","created_at":"2021-10-20 16:37:12","id":10}
+
+2021-10-20 16:37:19    |    User: (719)     |    DepartmentController (update)    |    message    |    Update department with ID: 10
+From: {"id":10,"name":"dept test","description":"tedgnkjdfgsfdgsdg","created_at":"2021-10-20 16:37:12","updated_at":"2021-10-20 16:37:12"}
+To: {"id":10,"name":"dept test","description":"yow","created_at":"2021-10-20 16:37:12","updated_at":"2021-10-20 16:37:19"}
+
+2021-10-20 16:37:24    |    User: (719) Peter Bismonte    |    DepartmentController (destroy)    |    message    |    Delete group with ID: 10
+Details: {"id":10,"name":"dept test","description":"yow","created_at":"2021-10-20 16:37:12","updated_at":"2021-10-20 16:37:19"}
+
+2021-10-20 16:55:18    |    User: (719) Peter Bismonte    |    BranchController (store)    |    message    |    Create new branch with ID: 39
+Details: {"name":"gdfsgsdfgs","description":"fdgsdfgsfdgfgsdfg","updated_at":"2021-10-20 16:55:18","created_at":"2021-10-20 16:55:18","id":39}
+
+2021-10-20 16:55:31    |    User: (719) Peter Bismonte    |    BranchController (update)    |    message    |    Update branch with ID: 39
+From: {"id":39,"name":"gdfsgsdfgs","description":"fdgsdfgsfdgfgsdfg","created_at":"2021-10-20 16:55:18","updated_at":"2021-10-20 16:55:18"}
+To: {"id":39,"name":"ggfgfgfgfgfgfgfgfgfg","description":"fdgsdfgsfdgfgsdfg","created_at":"2021-10-20 16:55:18","updated_at":"2021-10-20 16:55:31"}
+
+2021-10-20 16:55:35    |    User: (719) Peter Bismonte    |    BranchController (destroy)    |    message    |    Delete branch with ID: 39
+Details: {"id":39,"name":"ggfgfgfgfgfgfgfgfgfg","description":"fdgsdfgsfdgfgsdfg","created_at":"2021-10-20 16:55:18","updated_at":"2021-10-20 16:55:31"}
+
+2021-10-21 08:28:43    |    User: (719) Peter Bismonte    |    LeaveTypeController (store)    |    message    |    Create new leave_type with ID: 7
+Details: {"name":"teaetatgfs","updated_at":"2021-10-21 08:28:42","created_at":"2021-10-21 08:28:42","id":7}
+
+2021-10-21 08:28:51    |    User: (719) Peter Bismonte    |    LeaveTypeController (update)    |    message    |    Update leave_type with ID: 7
+From: {"id":7,"name":"teaetatgfs","created_at":"2021-10-21 08:28:42","updated_at":"2021-10-21 08:28:42"}
+To: {"id":7,"name":"yow","created_at":"2021-10-21 08:28:42","updated_at":"2021-10-21 08:28:51"}
+
+2021-10-21 08:28:55    |    User: (719) Peter Bismonte    |    LeaveTypeController (destroy)    |    message    |    Delete branch with ID: 7
+Details: {"id":7,"name":"yow","created_at":"2021-10-21 08:28:42","updated_at":"2021-10-21 08:28:51"}
+
+2021-10-21 08:35:57    |    User: (719) Peter Bismonte    |    CalendarEventController (store)    |    message    |    Create new calendar_event with ID: 12
+Details: {"name":"event test","description":"testing","type":"testing","frequency":"This year only","from":"2021-10-23","to":"2021-10-23","branch_id":1,"updated_at":"2021-10-21 08:35:57","created_at":"2021-10-21 08:35:57","id":12}
+
+2021-10-21 08:36:13    |    User: (719) Peter Bismonte    |    CalendarEventController (update)    |    message    |    Update calendar_event with ID: 12
+From: {"id":12,"name":"event test","description":"testing","type":"testing","frequency":"This year only","branch_id":1,"from":"2021-10-23","to":"2021-10-23","created_at":"2021-10-21 08:35:57","updated_at":"2021-10-21 08:35:57"}
+To: {"id":12,"name":"event test","description":"testing calendar event","type":"testing","frequency":"This year only","branch_id":1,"from":"2021-10-23","to":"2021-10-23","created_at":"2021-10-21 08:35:57","updated_at":"2021-10-21 08:36:13"}
+
+2021-10-21 09:27:25    |    User: (719) Peter Bismonte    |    CalendarEventController (destroy)    |    message    |    Delete calendar_event with ID: 12
+Details: {"id":12,"name":"event test","description":"testing calendar event","type":"testing","frequency":"This year only","branch_id":1,"from":"2021-10-23","to":"2021-10-23","created_at":"2021-10-21 08:35:57","updated_at":"2021-10-21 08:36:13"}
+
+2021-10-21 13:43:26    |    User: (719) Peter Bismonte    |    UserController (update)    |    message    |    Update user with id 1
+From: {"employee_id":719,"email":"20180926719","elClr":"black","elBG":"white"}
+To: {"id":1,"employee_id":719,"email":"20180926719","elClr":"gray","elBG":"white","created_at":"2019-09-08 22:31:31","updated_at":"2021-10-21 13:43:26"}
+
+2021-10-21 13:45:29    |    User: (719) Peter Bismonte    |    UserController (update)    |    message    |    Update user with ID: 1
+From: {"employee_id":719,"email":"20180926719","elClr":"gray","elBG":"white"}
+To: {"id":1,"employee_id":719,"email":"20180926719","elClr":"black","elBG":"white","created_at":"2019-09-08 22:31:31","updated_at":"2021-10-21 13:45:29"}
+
+2021-10-21 14:12:26    |    User: (719) Peter Peter    |    SuggestionController (store)    |    message    |    Create new suggestion with ID: 9
+Details: {"title":"suggestion test logs 1","message":"testing suggestion logs","user_id":1,"updated_at":"2021-10-21 14:12:26","created_at":"2021-10-21 14:12:26","id":9}
+
+2021-10-21 14:13:11    |    User: (719) Peter Bismonte    |    SuggestionController (update)    |    message    |    Update suggestion with ID: 9
+From: {"id":9,"user_id":1,"title":"suggestion test logs 1","message":"testing suggestion logs","status":null,"created_at":"2021-10-21 14:12:26","updated_at":"2021-10-21 14:12:26"}
+To: {"id":9,"user_id":1,"title":"suggestion test logs 1","message":"first test of suggestion logs","status":null,"created_at":"2021-10-21 14:12:26","updated_at":"2021-10-21 14:13:11"}
+
+2021-10-21 14:14:50    |    User: (719) Peter Bismonte    |    SuggestionCommentController (store)    |    message    |    Create suggestion_comment with ID: 4
+Details: {"suggestion_id":9,"user_id":1,"comment":"testing suggestion comments logs for the second time","status":"new","updated_at":"2021-10-21 14:14:50","created_at":"2021-10-21 14:14:50","id":4}
+

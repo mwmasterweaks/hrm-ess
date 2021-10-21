@@ -223,7 +223,7 @@ export default {
 
       tblisBusy: true,
       fields: [
-        { key: "title", label: "TTLE", sortable: true },
+        { key: "title", label: "Title", sortable: true },
         {
           key: "message",
           label: "Message",
@@ -233,11 +233,11 @@ export default {
             return value.slice(0, 50) + temp;
           }
         },
-        { key: "created_at", label: "submitted at", sortable: true },
+        { key: "created_at", label: "Submitted at", sortable: true },
 
         {
           key: "user.employee.first_name",
-          label: "submitted by",
+          label: "Submitted by",
           sortable: true
         }
       ],
@@ -309,6 +309,9 @@ export default {
     btnSubmit() {
       // console.log()
       this.addsuggest.user_id = this.user.id;
+      this.addsuggest.userid = this.user.employee_id;
+      this.addsuggest.user_name =
+        this.user.employee.first_name + " " + this.user.employee.last_name;
       swal({
         title: "Confirmation",
         text: "Do you really want to submit this?",
@@ -352,7 +355,9 @@ export default {
       }).then(update => {
         if (update) {
           this.editSuggest.user_id = this.user.id;
-          this.editSuggest.user_name = this.user.name;
+          this.editSuggest.userid = this.user.employee_id;
+          this.editSuggest.user_name =
+            this.user.employee.first_name + " " + this.user.employee.last_name;
 
           this.$http
             .put("api/Suggestion/" + this.editSuggest.id, this.editSuggest)
@@ -389,7 +394,10 @@ export default {
             suggestion_id: this.editSuggest.id,
             user_id: this.user.id,
             comment: this.comment,
-            status: "new"
+            status: "new",
+            userid: this.user.employee_id,
+            user_name:
+              this.user.employee.first_name + " " + this.user.employee.last_name
           };
           this.$http
             .post("api/SuggestionComment", temp)

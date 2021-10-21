@@ -233,8 +233,9 @@ export default {
           this.$root.$emit("pageLoading");
           this.tblisBusy = true;
           this.item.employee_id = this.data.id;
-          this.item.user_id = this.user.id;
-          this.item.user_name = this.user.name;
+          this.item.user_id = this.user.employee_id;
+          this.item.user_name =
+            this.user.employee.first_name + " " + this.user.employee.last_name;
 
           this.$http
             .post("api/Deduction", this.item)
@@ -274,8 +275,11 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
-              this.item.user_id = this.user.id;
-              this.item.user_name = this.user.name;
+              this.item.user_id = this.user.employee_id;
+              this.item.user_name =
+                this.user.employee.first_name +
+                " " +
+                this.user.employee.last_name;
 
               this.$http
                 .put("api/Deduction/" + this.item.id, this.item)
@@ -313,6 +317,9 @@ export default {
         if (willDelete) {
           this.tblisBusy = true;
           this.$root.$emit("pageLoading");
+          this.item.user_id = this.user.employee_id;
+          this.item.user_name =
+            this.user.employee.first_name + " " + this.user.employee.last_name;
           this.$http
             .post("api/Deduction/destroyItem", this.item)
             .then(response => {

@@ -10,6 +10,7 @@ use Carbon\Carbon;
 
 class EmployeeApproverController extends Controller
 {
+    private $cname = "EmployeeApproverController";
     public function index()
     {
         $tbl = Employee_approver::all();
@@ -32,9 +33,31 @@ class EmployeeApproverController extends Controller
 
             $level = (int) ($tbl + 1);
             //return $level;
-            Employee_approver::create($request->except('level') + ["level" => $level]);
+            $tblInserted = Employee_approver::create($request->except('level') + ["level" => $level]);
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "message",
+                "Create new employee_approver with approver ID and employee ID: " .
+                    $tblInserted->approver_id . ", " . $request->employee_id .
+                    "\nDetails: " .  $tblInserted
+            );
+
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "store",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -64,35 +87,82 @@ class EmployeeApproverController extends Controller
 
     public function update(Request $request, $id)
     {
+        $value = explode(",", $id);
         try {
             // $cmd  = Employee_approver::findOrFail($id);
             // $input = $request->all();
             // $cmd->fill($input)->save();
-            DB::table('employee_approvers')
-                ->where('approver_id', $request->approver_id)
-                ->where('employee_id', $request->employee_id)
-                ->update(['level' => $request->level]);
+
+            $ea = Employee_approver::where('approver_id', $request->approver_id)
+                ->where('employee_id', $request->employee_id);
+            $logFrom = (clone $ea)->first();
+
+            $emp_approver = tap((clone $ea))->update([
+                'level' => $request->level
+            ])->first();
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $value[0],
+                $value[1],
+                $this->cname,
+                "update",
+                "message",
+                "Update employee_approver with ID: " . $emp_approver->approver_id .
+                    "\nFrom: " .  $logFrom . "\nTo: " . $emp_approver
+            );
 
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $value[0],
+                $value[1],
+                $this->cname,
+                "update",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
 
     public function destroy($id)
     {
+        $value = explode(",", $id);
+        $approver_id = $value[0];
+        $employee_id = $value[1];
         try {
             // Employee_approver::destroy($id);
-            $value = explode(",", $id);
-            $approver_id = $value[0];
-            $employee_id = $value[1];
-            DB::table('employee_approvers')
-                ->where('approver_id', $approver_id)
-                ->where('employee_id', $employee_id)
-                ->delete();
+
+            $ea = Employee_approver::where('approver_id', $approver_id)
+                ->where('employee_id', $employee_id);
+            $deleted = (clone $ea)->first();
+            (clone $ea)->delete();
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $value[2],
+                $value[3],
+                $this->cname,
+                "destroy",
+                "message",
+                "Delete employee_approver with approver ID and employee ID: " .
+                    $approver_id . ", " . $employee_id .
+                    "\nDetails: " . $deleted
+            );
 
             return $this->show($employee_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $value[2],
+                $value[3],
+                $this->cname,
+                "update",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
@@ -102,6 +172,7 @@ class EmployeeApproverController extends Controller
             $employees = $request->employees;
             $approve_add = (object) $request->approve_add;
             $data = [];
+            $logData = "";
 
             foreach ($employees as $emp) {
                 $emp = (object) $emp;
@@ -119,12 +190,33 @@ class EmployeeApproverController extends Controller
                     "updated_at" => Carbon::now()
                 ];
                 array_push($data, $temp);
+
+                $logData .= "\n" . $temp;
             }
             Employee_approver::insert($data);
+
+            \Logger::instance()->log(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "storeMulitple",
+                "message",
+                "Create new employee_approvers: " . $logData
+            );
             //return "ok";
             // $asdf = app('ap')
             return app(EmployeeController::class)->index();
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $request->user_id,
+                $request->user_name,
+                $this->cname,
+                "storeMulitple",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

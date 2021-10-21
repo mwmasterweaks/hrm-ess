@@ -733,7 +733,6 @@ export default {
       }
       if (chk == 0) {
         this.apply.employee_id = this.user.employee_id;
-        this.apply.user_id = this.user.id;
         this.apply.user_name =
           this.user.employee.first_name + " " + this.user.employee.last_name;
 

@@ -66,16 +66,13 @@ class EmployeeController extends Controller
 
             $email = $hired->format('Ymd') . $emp->id;
 
-            $user = DB::table('users')->insert([
-                [
-                    'employee_id' => $emp->id,
-                    'email' => $email,
-                    'password' => bcrypt("123456789"),
-                    'remember_token' => str_random(10),
-                    'created_at' =>  \Carbon\Carbon::now(),
-                    'updated_at' => \Carbon\Carbon::now()
-                ]
-            ]);
+            $user = User::create([
+                'employee_id' => $emp->id,
+                'email' => $email,
+                'password' => bcrypt("123456789"),
+                'remember_token' => str_random(10)
+             ]);
+
             \Logger::instance()->log(
                 Carbon::now(),
                 $request->user_id,
@@ -83,7 +80,7 @@ class EmployeeController extends Controller
                 $this->cname,
                 "store",
                 "message",
-                "Create new User: " . $user . "\nEmployee: " .  $emp
+                "Create new User with ID: " . $user->id . "\nEmployee: " .  $emp
             );
             DB::commit();
             return $this->index();
@@ -129,7 +126,7 @@ class EmployeeController extends Controller
                 $this->cname,
                 "update",
                 "message",
-                "update Employee id " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
+                "Update Employee with ID: " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
             );
 
             return $this->index();
@@ -148,21 +145,26 @@ class EmployeeController extends Controller
     }
     public function destroy($id)
     {
+        $value = explode(",", $id);
+        $bioID = $value[0];
+        $user_id = $value[1];
+        $user_name = $value[2];
+
         try {
             //destroy also the user
-            $tbl1 = Employee::findOrFail($id);
-            $tbl2 = User::where('employee_id', $id)->first();
-            User::where('employee_id', $id)->delete();
-            Employee::destroy($id);
+            $tbl1 = Employee::findOrFail($bioID);
+            $tbl2 = User::where('employee_id', $bioID)->first();
+            User::where('employee_id', $bioID)->delete();
+            Employee::destroy($bioID);
 
             \Logger::instance()->log(
                 Carbon::now(),
-                "",
-                "",
+                $user_id,
+                $user_name,
                 $this->cname,
                 "destroy",
                 "message",
-                "delete Employee id " . $id .
+                "delete Employee with ID: " . $bioID .
                     "\nOld Employee: " . $tbl1 .
                     "\nOld User: " . $tbl2
             );
@@ -171,8 +173,8 @@ class EmployeeController extends Controller
         } catch (\Exception $ex) {
             \Logger::instance()->logError(
                 Carbon::now(),
-                "",
-                "",
+                $user_id,
+                $user_name,
                 $this->cname,
                 "destroy",
                 "Error",
@@ -241,12 +243,14 @@ class EmployeeController extends Controller
             ];
             $x = 0;
             $roletemp = [];
+            $data = "";
             foreach ($roles as $role) {
                 $x++;
                 if (isset($request->roles[$role])) {
                     if ($request->roles[$role]) {
                         $temp = ['user_id' => $id, 'role_id' => $x];
                         array_push($roletemp, $temp);
+                        $data .= $x . " ";
                     }
                 }
             }
@@ -259,7 +263,7 @@ class EmployeeController extends Controller
                 $this->cname,
                 "updateRoles",
                 "Message",
-                "Update Role User ID: " . $id
+                "Update roles for user ID: " . $id . "\nNew roles: " . $data
             );
             return $this->index();
         } catch (\Exception $ex) {

@@ -740,8 +740,8 @@ export default {
 
       this.apply.employee_id = this.user.employee_id;
       this.apply.daysList = this.sched_items;
-      this.apply.user_id = this.user.id;
-      this.apply.user_name = this.user.name;
+      this.apply.user_name =
+        this.user.employee.first_name + " " + this.user.employee.last_name;
 
       this.$http
         .post("api/OfficialBusiness", this.apply)
@@ -852,8 +852,8 @@ export default {
         dangerMode: true
       }).then(approve => {
         if (approve) {
-          this.item_edit.user_id = this.user.id;
-          this.item_edit.user_name = this.user.name;
+          this.item_edit.user_name =
+            this.user.employee.first_name + " " + this.user.employee.last_name;
 
           this.tblisBusy = true;
           this.$http

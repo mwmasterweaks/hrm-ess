@@ -66,7 +66,7 @@ class LeaveBalanceController extends Controller
 
                 \Logger::instance()->log(
                     Carbon::now(),
-                    $request->user_id,
+                    $request->employee_id,
                     $request->user_name,
                     $this->cname,
                     "store",
@@ -80,7 +80,7 @@ class LeaveBalanceController extends Controller
 
                 \Logger::instance()->log(
                     Carbon::now(),
-                    $request->user_id,
+                    $request->employee_id,
                     $request->user_name,
                     $this->cname,
                     "store",
@@ -96,7 +96,7 @@ class LeaveBalanceController extends Controller
             DB::rollBack();
             \Logger::instance()->logError(
                 Carbon::now(),
-                $request->user_id,
+                $request->employee_id,
                 $request->user_name,
                 $this->cname,
                 "store",
@@ -151,17 +151,17 @@ class LeaveBalanceController extends Controller
     }
     public function destroy($id)
     {
+        $value = explode(",", $id);
+        $lb_id = $value[0];
+        $user_id = $value[1];
+        $user_name = $value[2];
         try {
             // lb_id, user_id, user_name
-            $value = explode(",", $id);
-            $lb_id = $value[0];
-            $user_id = $value[1];
-            $user_name = $value[2];
 
             $lb = leave_balance::where('id', $lb_id);
             $emp_id = (clone $lb)->value('employee_id');
             $deleted = (clone $lb)->first();
-            leave_balance::destroy($id);
+            leave_balance::destroy($lb_id);
 
             \Logger::instance()->log(
                 Carbon::now(),
@@ -176,6 +176,15 @@ class LeaveBalanceController extends Controller
 
             return $this->show($emp_id);
         } catch (\Exception $ex) {
+            \Logger::instance()->logError(
+                Carbon::now(),
+                $user_id,
+                $user_name,
+                $this->cname,
+                "destroy",
+                "Error",
+                $ex->getMessage()
+            );
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }

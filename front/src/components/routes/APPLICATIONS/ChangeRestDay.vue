@@ -664,6 +664,8 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.apply.employee_id = this.user.employee_id;
+          this.apply.user_name =
+            this.user.employee.first_name + " " + this.user.employee.last_name;
           this.$http
             .post("api/ChangeRestDay", this.apply)
             .then(response => {
@@ -791,6 +793,8 @@ export default {
     },
     cancelApplication() {
       this.item_edit.user_id = this.user.employee_id;
+      this.item_edit.user_name =
+        this.user.employee_id.first_name + " " + this.user.employee.last_name;
       swal({
         title: "Notification",
         text: "Do you really want to cancel this application?",
