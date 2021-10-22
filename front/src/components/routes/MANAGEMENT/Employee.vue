@@ -2951,7 +2951,7 @@ export default {
           name: "Trainee"
         },
         {
-          name: "Provisionary"
+          name: "Probationary"
         },
         {
           name: "Regular"

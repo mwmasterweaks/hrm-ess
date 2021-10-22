@@ -1,7 +1,11 @@
 <template>
-  <sidebar-menu :menu="menu" width="300px" :collapsed="true" :hideToggle="true" />
+  <sidebar-menu
+    :menu="menu"
+    width="300px"
+    :collapsed="true"
+    :hideToggle="true"
+  />
 </template>
-
 
 <script>
 import { SidebarMenu } from "vue-sidebar-menu";

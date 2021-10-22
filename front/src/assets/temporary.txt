@@ -63,4 +63,4 @@ requestor: Peter Bismonte
 - allow approval from email, redirect page and show confirmation message
 
 requestor: Director Go
-- notify user if the employee already completed the training and probitionary period
+- notify user if the employee already completed the training and probationary period
