@@ -1,8 +1,14 @@
 to do:
-- logs
+- training and probationary notification
+- employment status history
+- leave balance
+
+on stand-by:
+- employment status should be null if not trainee nor probationary // done
+- finish everthing about leave balance  // done
 
 current activity:
-- logs
+- to review date format (concerning timezones)
 
 summary report files
 - api.php
@@ -17,6 +23,16 @@ edit/delete approver files
 multiple time update
 - DtrController.php
 - Employee.vue
+
+leave balance update history
+- LeaveBalanceController.php
+-
+
+approve in email
+- ApproverController.php
+
+ot new
+- added column type in db over_times table
 
 logs
 - ApproverController.php

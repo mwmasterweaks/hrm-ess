@@ -543,7 +543,7 @@
             <b-img
               thumbnail
               fluid
-              :src="'http://localhost:8000/attachments/' + item_edit.attachment"
+              :src="$url_back + item_edit.attachment"
               alt="Image 1"
             ></b-img>
           </center>

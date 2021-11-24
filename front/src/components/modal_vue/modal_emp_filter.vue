@@ -139,11 +139,15 @@
             <p class="textLabel">Type Employment Status:</p>
           </div>
           <div class="col-lg-9">
-            <input
+            <!-- <input
               type="text"
               class="form-control"
               v-model.trim="cbFilter.data.employment_status"
-            />
+            /> -->
+            <b-form-select
+              v-model.trim="cbFilter.data.employment_status"
+              :options="statOptions"
+            ></b-form-select>
           </div>
         </div>
       </div>
@@ -243,7 +247,7 @@
       //-->
       <div slot="modal-footer" slot-scope="{}">
         <button class="btn btn-success btn-labeled" @click="filter_ok">
-          ok
+          Search
         </button>
       </div>
     </b-modal>
@@ -293,7 +297,7 @@ export default {
           name: "Trainee"
         },
         {
-          name: "Provisionary"
+          name: "Probationary"
         },
         {
           name: "Regular"
@@ -308,6 +312,13 @@ export default {
       genderOptions: [
         { value: "Male", text: "Male" },
         { value: "Female", text: "Female" }
+      ],
+      statOptions: [
+        { value: "Trainee", text: "Trainee" },
+        { value: "Probationary", text: "Probationary" },
+        { value: "Regular", text: "Regular" },
+        { value: "Resigned", text: "Resigned" },
+        { value: "Terminated", text: "Terminated" }
       ],
       groups: [],
       positions: [],

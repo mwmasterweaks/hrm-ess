@@ -3,6 +3,9 @@
 
 use Illuminate\Http\Request;
 
+
+Route::get('publicApproveRequest/{r}/{t}/{id}/{eid}', 'ApproverController@publicApproveRequest');
+
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
@@ -46,8 +49,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('Earning', 'EarningController');
     Route::resource('EarningType', 'EarningTypeController');
     Route::resource('Payslip', 'PayslipController');
-
-
+    Route::resource('EmpStatHistory', 'EmployeeStatusHistoryController');
+    Route::resource('LeaveUpdateHistory', 'LeaveUpdateHistoryController');
+    Route::resource('BioAttendance', 'BiometricAttendanceController');
 
 
     Route::post('user/updateRoles', 'EmployeeController@updateRoles');
@@ -100,4 +104,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('Payslip/generatePayslip', 'PayslipController@generatePayslip');
 
     Route::post('EmployeeApprover/storeMultiple', 'EmployeeApproverController@storeMultiple');
+
+    Route::get('getToPromote', 'EmployeeController@getToPromote');
+
+
 });

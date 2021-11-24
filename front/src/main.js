@@ -11,6 +11,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import VueSidebarMenu from "vue-sidebar-menu";
 import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
+import * as VueGoogleMaps from 'vue2-google-maps';
+import VueGeolocation from 'vue-browser-geolocation';
 
 //import excel from "vue-excel-export";
 
@@ -23,15 +25,27 @@ Vue.use(IconsPlugin);
 Vue.use(VueResource);
 Vue.use(Auth);
 Vue.use(Global);
+Vue.use(VueGeolocation);
 Vue.use(VeeValidate, {
   fieldsBagName: "veeFields"
 });
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyCCvHdNEai5B7i5fXOhgl0nvz_eYLBn_tE"
+  }
+});
 
-if (window.location.host == "hrmess.dctechmicro.com")
-  Vue.http.options.root = "http://hrmess.dctechmicro.com/hrmessback/";
-else if (window.location.host == "localhost:8088")
-  Vue.http.options.root = "http://localhost:8088/hrmessfront/hrmessback";
-else Vue.http.options.root = "http://localhost:8000";
+var protocol = window.location.protocol;
+console.log("yow");
+if (window.location.host == "hrmess.dctechmicro.com") {
+  console.log(protocol);
+  console.log("server");
+  Vue.prototype.$url_back = protocol + "//hrmess.dctechmicro.com/back/";
+  Vue.http.options.root = protocol + "//hrmess.dctechmicro.com/back/";
+} else {
+  Vue.prototype.$url_back = "http://localhost:8000";
+  Vue.http.options.root = "http://localhost:8000";
+}
 
 Vue.http.headers.common["Authorization"] = "Bearer " + Vue.auth.getToken();
 

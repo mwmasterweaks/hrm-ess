@@ -106,7 +106,6 @@ class ManualAttendanceController extends Controller
 
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {
-            DB::rollBack();
             \Logger::instance()->logError(
                 Carbon::now(),
                 $request->employee_id,

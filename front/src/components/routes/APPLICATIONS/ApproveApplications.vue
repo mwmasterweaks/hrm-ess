@@ -9,7 +9,11 @@
         <div>
           <b-row style="margin:10px;">
             <b-col md="5" class="my-1">
-              <b-form-group label-cols-sm="4" label="Select App type" class="mb-0">
+              <b-form-group
+                label-cols-sm="4"
+                label="Select App type"
+                class="mb-0"
+              >
                 <model-list-select
                   :list="application_list"
                   v-model="selected_application"
@@ -23,9 +27,14 @@
               <br />
               <b-form-group label-cols-sm="4" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
+                  <b-form-input
+                    v-model="tblFilter"
+                    placeholder="Filter"
+                  ></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
+                      >Clear</b-button
+                    >
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -36,7 +45,10 @@
               <br />
               <br />
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
+                <b-form-select
+                  v-model="perPage"
+                  :options="pageOptions"
+                ></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -66,9 +78,9 @@
               <span v-html="data.value"></span>
             </template>
 
-            <template v-slot:cell(action)="data">
+            <!-- <template v-slot:cell(action)="data">
               <span v-html="data.value"></span>
-            </template>
+            </template> -->
 
             <template slot="table-caption"></template>
             <template v-slot:cell(action)="row">
@@ -123,7 +135,38 @@
         title="Details"
       >
         <center>
-          <table class="my-table">
+          <table class="my-table" v-if="chkStr(item.reference_no) == 'BA'">
+            <tr>
+              <td class="my-td">Reference no:</td>
+              <td class="my-td">{{ item.reference_no }}</td>
+
+              <td class="my-td">Description:</td>
+              <td class="my-td">{{ item.description }}</td>
+            </tr>
+
+            <tr>
+              <td class="my-td">Type</td>
+              <td class="my-td">{{ item.type }}</td>
+
+              <td class="my-td">Employee:</td>
+              <td class="my-td">{{ item.first_name }} {{ item.last_name }}</td>
+            </tr>
+
+            <tr>
+              <td class="my-td">Latitude:</td>
+              <td class="my-td">{{ item.latitude }}</td>
+
+              <td class="my-td">Longitude:</td>
+              <td class="my-td">{{ item.longitude }}</td>
+            </tr>
+
+            <tr>
+              <td class="my-td">Punch Time:</td>
+              <td class="my-td" colspan="3">{{ item.punch_time_converted }}</td>
+            </tr>
+          </table>
+
+          <table class="my-table" v-else>
             <tr>
               <td class="my-td">Reference no:</td>
               <td class="my-td">{{ item.reference_no }}</td>
@@ -186,7 +229,10 @@
             </tr>
           </table>
 
-          <div v-if="chkStr(item.reference_no) == 'LV'" class="rowFields mx-auto row">
+          <div
+            v-if="chkStr(item.reference_no) == 'LV'"
+            class="rowFields mx-auto row"
+          >
             <b-table
               class="elClr"
               striped
@@ -205,12 +251,12 @@
               <template v-slot:cell(shift_sched)="data">
                 <span v-html="data.value"></span>
               </template>
-              <template v-slot:cell(halfday)="data">
+              <!-- <template v-slot:cell(halfday)="data">
                 <span v-html="data.value"></span>
               </template>
               <template v-slot:cell(halfday_type)="data">
                 <span v-html="data.value"></span>
-              </template>
+              </template> -->
 
               <template v-slot:cell(halfday)="row">
                 <i class="fas fa-check" v-show="row.item.halfday == 1" />
@@ -234,10 +280,20 @@
           >
             <i class="fas fa-paperclip"></i>
           </b-button>
-          <b-button size="sm" variant="success" title="Approve" @click="approveRequest(item)">
+          <b-button
+            size="sm"
+            variant="success"
+            title="Approve"
+            @click="approveRequest(item)"
+          >
             <i class="fas fa-thumbs-up"></i>
           </b-button>
-          <b-button size="sm" variant="danger" title="Disapprove" v-b-modal.modalDisapprove>
+          <b-button
+            size="sm"
+            variant="danger"
+            title="Disapprove"
+            v-b-modal.modalDisapprove
+          >
             <i class="fas fa-thumbs-down"></i>
           </b-button>
         </template>
@@ -250,7 +306,7 @@
             <b-img
               thumbnail
               fluid
-              :src="'http://localhost:8000/attachments/' + item.attachment"
+              :src="$url_back + item.attachment"
               alt="Image 1"
             ></b-img>
           </center>
@@ -281,7 +337,9 @@
               v-validate="'required'"
               v-model.trim="remarks"
             ></textarea>
-            <small class="text-danger pull-left" v-show="errors.has('Remarks')">Remarks is required.</small>
+            <small class="text-danger pull-left" v-show="errors.has('Remarks')"
+              >Remarks is required.</small
+            >
           </div>
         </div>
         <b-button
@@ -289,7 +347,8 @@
           size="sm"
           variant="success"
           @click="disapproveRequest()"
-        >Submit</b-button>
+          >Submit</b-button
+        >
       </b-modal>
     </div>
   </div>
@@ -386,6 +445,9 @@ export default {
         },
         {
           name: "Manual Attendance"
+        },
+        {
+          name: "Biometric Attendance"
         }
       ],
       selected_application: "",
@@ -414,6 +476,7 @@ export default {
   methods: {
     load_item(id) {
       this.$http.get("api/getToApprove/" + id).then(function(response) {
+        console.log(response.body);
         this.items = response.body;
         this.totalRows = this.items.length;
         this.tblisBusy = false;
@@ -506,7 +569,11 @@ export default {
       //   });
     },
     approveRequest(item) {
+      console.log(item);
+      if (item.reference_no.substr(0, 2) == "BA")
+        item.work_date = item.punch_time.substr(0, 10);
       item.userID = this.user.employee_id;
+      console.log(item);
       swal({
         title: "Notification",
         text: "Do you really want to approve this application?",
@@ -517,7 +584,7 @@ export default {
         if (approve) {
           this.tblisBusy = true;
           this.$http
-            .put("api/approveRequest", item)
+            .put("api/approveRequest/", item)
             .then(response => {
               console.log(response.body);
 

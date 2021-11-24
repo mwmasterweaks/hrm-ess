@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Leave;
 use App\leave_balance;
+use App\leave_update_history;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -27,7 +28,6 @@ class LeaveBalanceController extends Controller
     public function store(Request $request)
     {
         try {
-            DB::beginTransaction();
             if ($request->multiple == 1) {
                 $data = "";
 
@@ -38,35 +38,64 @@ class LeaveBalanceController extends Controller
                     $row_match = (clone $row)->count();
 
                     if ($row_match > 0) {
-                        $logFrom = (clone $row)->first();
-                        $logTo = tap((clone $row)->first(), function ($row) use ($request) {
-                            $row->balance = $request->balance;
-                            $row->availed = $request->availed;
-                            $row->accrued = $request->accrued;
-                            $row->save();
-                        });
+                        if ($request->action == 'update') {
+                            $logFrom = (clone $row)->first();
+                            $logTo = tap((clone $row)->first(), function ($row) use ($request) {
+                                $row->balance = $request->balance;
+                                $row->availed = $request->availed;
+                                $row->accrued = $request->accrued;
+                                $row->save();
+                            });
 
-                        $data .= "\nUpdate leave balance with ID: " . $logTo->id .
-                            "\nFrom: " . $logFrom . "\nTo: " . $logTo;
+                            $lb_logTo = leave_update_history::create([
+                                'old_details' =>
+                                    'Type: ' . $request->leave_type_id .
+                                    ' Balance: ' . $logFrom->balance .
+                                    ' Availed: ' . $logFrom->availed .
+                                    ' Accrued: ' . $logFrom->accrued,
+                                'updated_details' =>
+                                    'Type: ' . $request->leave_type_id .
+                                    ' Balance: ' . $request->balance .
+                                    ' Availed: ' . $request->availed .
+                                    ' Accrued: ' . $request->accrued,
+                                'user_id' => $request->user_id,
+                                'employee_id' => $item->id
+                            ]);
 
+                            $data .= "\nUpdate leave balance with ID: " . $logTo->id .
+                                "\nFrom: " . $logFrom . "\nTo: " . $logTo;
+                        }
                     } else {
-                        $lb = new leave_balance;
-                        $lb->employee_id = $item->id;
-                        $lb->leave_type_id = $request->leave_type_id;
-                        $lb->enroll_year = $request->enroll_year;
-                        $lb->balance = $request->balance;
-                        $lb->availed = $request->availed;
-                        $lb->accrued = $request->accrued;
+                        if ($request->action == 'add') {
+                            $lb = new leave_balance;
+                            $lb->employee_id = $item->id;
+                            $lb->leave_type_id = $request->leave_type_id;
+                            $lb->enroll_year = $request->enroll_year;
+                            $lb->balance = $request->balance;
+                            $lb->availed = $request->availed;
+                            $lb->accrued = $request->accrued;
 
-                        $lb->save();
+                            $lb->save();
 
-                        $data .= "\nCreate new leave balance with ID: " . $lb->id . "\nDetails: " .  $lb;
+                            $lb_logTo = leave_update_history::create([
+                                'old_details' => '',
+                                'updated_details' =>
+                                    'Type: ' . $request->leave_type_id .
+                                    ' Balance: ' . $request->balance .
+                                    ' Availed: ' . $request->availed .
+                                    ' Accrued: ' . $request->accrued,
+                                'user_id' => $request->user_id,
+                                'employee_id' => $item->id
+                            ]);
+
+                            $data .= "\nCreate new leave balance with ID: " . $lb->id . "\nDetails: " .  $lb;
+                        }
                     }
                 }
 
                 \Logger::instance()->log(
                     Carbon::now(),
-                    $request->employee_id,
+                    $request->user_id,
                     $request->user_name,
                     $this->cname,
                     "store",
@@ -80,7 +109,7 @@ class LeaveBalanceController extends Controller
 
                 \Logger::instance()->log(
                     Carbon::now(),
-                    $request->employee_id,
+                    $request->user_id,
                     $request->user_name,
                     $this->cname,
                     "store",
@@ -90,10 +119,8 @@ class LeaveBalanceController extends Controller
 
                 return $this->show($request->employee_id);
             }
-            DB::commit();
             return 0;
         } catch (\Exception $ex) {
-            DB::rollBack();
             \Logger::instance()->logError(
                 Carbon::now(),
                 $request->employee_id,
@@ -119,11 +146,27 @@ class LeaveBalanceController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $leave_type = (object) $request->leave_type;
             $cmd  = leave_balance::findOrFail($id);
             $logFrom = $cmd->replicate();
             $input = $request->all();
             $cmd->fill($input)->save();
             $logTo = $cmd;
+
+            $lb_logTo = leave_update_history::create([
+                'old_details' =>
+                    'Type: ' . $leave_type->name .
+                    ', Balance: ' . $logFrom->balance .
+                    ', Availed: ' . $logFrom->availed .
+                    ', Accrued: ' . $logFrom->accrued,
+                'updated_details' =>
+                    'Type: ' . $leave_type->name .
+                    ', Balance: ' . $request->balance .
+                    ', Availed: ' . $request->availed .
+                    ', Accrued: ' . $request->accrued,
+                'user_id' => $request->user_id,
+                'employee_id' => $request->employee_id
+            ]);
 
             \Logger::instance()->log(
                 Carbon::now(),

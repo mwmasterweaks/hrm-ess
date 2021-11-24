@@ -4,6 +4,8 @@ import VueRouter from "vue-router";
 import Login from "./components/user/Login.vue";
 import Register from "./components/user/Register.vue";
 import Dashboard from "./components/Dashboard.vue";
+// -----------------BIOMETRIC ATTENDANCE-------------
+import BiometricAttendance from "./components/routes/BIOMETRIC/BiometricAttendance.vue";
 // -----------------HOME-------------
 import MyApplication from "./components/routes/HOME/MyApplication.vue";
 import MyApprover from "./components/routes/HOME/MyApprover.vue";
@@ -53,6 +55,13 @@ const router = new VueRouter({
     {
       path: "/register",
       component: Register,
+      meta: {
+        forAuth: true
+      }
+    },
+    {
+      path: "/BiometricAttendance",
+      component: BiometricAttendance,
       meta: {
         forAuth: true
       }

@@ -17,6 +17,7 @@ class CreateOverTimesTable extends Migration
             $table->increments('id');
             $table->integer('employee_id');
             $table->string('reference_no');
+            $table->string('type');
             $table->date('work_date');
             $table->string('shift');
             $table->datetime('time_in');

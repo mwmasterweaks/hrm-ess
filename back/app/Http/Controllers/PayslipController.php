@@ -78,7 +78,7 @@ class PayslipController extends Controller
         $payperiod = (object) $request->payperiod;
         $c1 = collect();
         $rate = Rate::where('id', $emp->rate_id)->first();
-        $basicPay = $rate->daily_rate * 13;
+        $basicPay = round($rate->daily_rate * 13);
         $grossPay = $basicPay;
         $totalDeduct = 0;
 
@@ -88,6 +88,10 @@ class PayslipController extends Controller
             ->where('status_paid', "no")
             ->get();
         $totalOTHours = 0;
+        $totalROTHours = 0;
+        $totalRHOTHours = 0;
+        $totalSHOTHours = 0;
+        $totalSHRDOTHours = 0;
         //Regular OT for meantime
         $regularOTRate = ($rate->daily_rate * 1.25) / 8;
         $LHoliOTRate = ($rate->daily_rate * 2) / 8;
@@ -95,8 +99,18 @@ class PayslipController extends Controller
         $SHoliRDOTRate = ($rate->daily_rate * 1.5) / 8;
         foreach ($ot as $item) {
             $totalOTHours += $item->total_hours;
+            if ($item->type == "Regular Overtime") $totalROTHours += $item->total_hours;
+            if ($item->type == "Regular Holiday Overtime") $totalRHOTHours += $item->total_hours;
+            if ($item->type == "Special Holiday Overtime") $totalSHOTHours += $item->total_hours;
+            if ($item->type == "Special Holiday on Rest Day Overtime") $totalSHRDOTHours += $item->total_hours;
         }
-        $ot_pay = $totalOTHours * $regularOTRate;
+
+        $rot_pay = $totalROTHours * $regularOTRate;
+        $rhot_pay = $totalRHOTHours * $LHoliOTRate;
+        $shot_pay = $totalSHOTHours * $SHoliOTRate;
+        $shrdot_pay = $totalSHRDOTHours * $SHoliRDOTRate;
+        $ot_pay = $rot_pay + $rhot_pay + $shot_pay + $shrdot_pay;
+        // $ot_pay = $totalOTHours * $regularOTRate;
         $grossPay += round($ot_pay, 2);
 
         //get earnings

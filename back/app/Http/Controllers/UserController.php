@@ -92,7 +92,6 @@ class UserController extends Controller
                 );
                 return response()->json($this->index());
             } else {
-
                 return response()->json(['error' => 'Email already exists!'], 500);
             }
         } catch (Exception $ex) {
@@ -211,7 +210,8 @@ class UserController extends Controller
     {
 
 
-        $user = User::with(['employee.group', 'employee.rate', 'employee.position', 'employee.branch', 'employee.department', 'approver'])
+        $user = User::with(['employee.group', 'employee.rate', 'employee.position', 'emp_approver.approver.employee',
+        'employee.branch', 'employee.department', 'approver'])
             ->where('email', '=', $email)->first();
         return response()->json($user);
     }

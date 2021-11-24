@@ -158,6 +158,11 @@
               >
                 <i class="fas fa-envelope-open-text"></i>
               </button>
+              &nbsp;<i
+                class="fas fa-circle fa-xs"
+                v-if="row.item.to_promote == 'yes'"
+                style="color: #cf2d2d;"
+              ></i>
             </template>
             <template v-slot:cell(chkbox)="row">
               <div>
@@ -199,7 +204,7 @@
                   <button
                     class="btn btn-success"
                     v-b-tooltip.hover
-                    title="Add Leave Balance to all selected employee"
+                    title="Add/Update Leave Balance to all selected employee"
                     v-b-modal="'ModalAddLeave'"
                     v-if="roles.create_leave"
                   >
@@ -315,6 +320,7 @@
               v-model.trim="item_edit.first_name"
               autocomplete="off"
               autofocus="on"
+              @input="changes('first_name')"
             />
             <small class="text-danger pull-left" v-show="errors.has('fname')"
               >First Name is required.</small
@@ -337,6 +343,7 @@
               placeholder="Middle name"
               v-model.trim="item_edit.middle_name"
               autocomplete="off"
+              @input="changes('middle_name')"
             />
           </div>
         </div>
@@ -357,6 +364,7 @@
               v-validate="'required'"
               v-model.trim="item_edit.last_name"
               autocomplete="off"
+              @input="changes('last_name')"
             />
             <small class="text-danger pull-left" v-show="errors.has('lname')"
               >Last Name is required.</small
@@ -377,6 +385,7 @@
               placeholder="Select Gender"
               name="genders"
               v-validate="'required'"
+              @input="changes('gender')"
             ></model-list-select>
             <small class="text-danger pull-left" v-show="errors.has('genders')"
               >Gender is required.</small
@@ -399,6 +408,7 @@
                 autocomplete="off"
                 v-validate="'required'"
                 name="date_hired"
+                @input="changes('date_hired')"
               ></date-picker>
             </div>
             <small
@@ -422,6 +432,7 @@
               placeholder="Select Group"
               name="groups"
               v-validate="'required'"
+              @input="changes('group_id')"
             ></model-list-select>
             <small class="text-danger pull-left" v-show="errors.has('groups')"
               >Group is required.</small
@@ -442,6 +453,7 @@
               placeholder="Select Rate"
               name="rates"
               v-validate="'required'"
+              @input="changes('rate_id')"
             ></model-list-select>
             <small class="text-danger pull-left" v-show="errors.has('rates')"
               >Rate is required.</small
@@ -462,6 +474,7 @@
               placeholder="Select Position"
               name="positions"
               v-validate="'required'"
+              @input="changes('position_id')"
             ></model-list-select>
             <small
               class="text-danger pull-left"
@@ -484,6 +497,7 @@
               placeholder="Select Branch"
               name="branches"
               v-validate="'required'"
+              @input="changes('branch_id')"
             ></model-list-select>
             <small class="text-danger pull-left" v-show="errors.has('branches')"
               >Branch is required.</small
@@ -504,6 +518,7 @@
               placeholder="Select Department"
               name="departments"
               v-validate="'required'"
+              @input="changes('department_id')"
             ></model-list-select>
             <small
               class="text-danger pull-left"
@@ -517,8 +532,9 @@
           <div class="col-lg-3">
             <p class="textLabel">Employment Status:</p>
           </div>
-          <div class="col-lg-9">
+          <div class="col-lg-9" style="display: flex">
             <model-list-select
+              style="flex: 1"
               :list="employment_statuses"
               v-model="item_edit.employment_status"
               option-value="name"
@@ -526,12 +542,71 @@
               placeholder="Select Employment Status"
               name="employment_statuses"
               v-validate="'required'"
+              @input="changes('employment_status')"
             ></model-list-select>
             <small
               class="text-danger pull-left"
               v-show="errors.has('employment_statuses')"
               >Employment Status is required.</small
             >
+            <div style="display: flex; flex: 2.5">
+              <span>&nbsp;From</span>
+              <b-form-datepicker
+                v-model="item_edit.start_date"
+                style="flex: 1; margin-left: 8px"
+                placeholder="Start Date"
+                title="Start Date"
+                size="sm"
+                @input="changes('employment_status')"
+              ></b-form-datepicker>
+              <span
+                v-if="
+                  item_edit.employment_status == 'Trainee' ||
+                    item_edit.employment_status == 'Probationary'
+                "
+                >&nbsp;To</span
+              >
+              <b-form-datepicker
+                v-if="
+                  item_edit.employment_status == 'Trainee' ||
+                    item_edit.employment_status == 'Probationary'
+                "
+                v-model="item_edit.end_date"
+                style="flex: 1; margin-left: 8px"
+                placeholder="End Date"
+                title="End Date"
+                @input="changes('employment_status')"
+              ></b-form-datepicker>
+            </div>
+
+            <b-button
+              v-if="statusHistory == 0 && status_histories.length > 0"
+              style="margin-left: 8px;"
+              class="px-2"
+              title="Status History"
+              @click="statusHistory = 1"
+              ><i class="fas fa-history"></i
+            ></b-button>
+            <b-button
+              v-if="statusHistory == 1 && status_histories.length > 0"
+              variant="info"
+              style="margin-left: 8px;"
+              class="px-2"
+              title="Status History"
+              @click="statusHistory = 0"
+              ><i class="fas fa-history"></i
+            ></b-button>
+          </div>
+          <div class="col-lg-3" v-if="statusHistory == 1"></div>
+          <div class="col-lg-9 mt-1" v-if="statusHistory == 1">
+            <b-table
+              :items="status_histories"
+              :fields="status_history_fields"
+              striped
+              borderless
+              hover
+              small
+            ></b-table>
           </div>
         </div>
 
@@ -569,6 +644,7 @@
                 placeholder="Civil status"
                 v-model.trim="item_edit.civil_status"
                 autocomplete="off"
+                @input="changes('civil_status')"
               />
             </div>
           </div>
@@ -586,6 +662,7 @@
                 placeholder="Permanent address"
                 v-model.trim="item_edit.permanent_address"
                 autocomplete="off"
+                @input="changes('permanent_address')"
               />
             </div>
           </div>
@@ -603,6 +680,7 @@
                 placeholder="Telephone number"
                 v-model.trim="item_edit.tel_no"
                 autocomplete="off"
+                @input="changes('tel_no')"
               />
             </div>
           </div>
@@ -620,6 +698,7 @@
                 placeholder="Mobile number"
                 v-model.trim="item_edit.mobile_no"
                 autocomplete="off"
+                @input="changes('mobile_no')"
               />
             </div>
           </div>
@@ -637,6 +716,7 @@
                 placeholder="Email"
                 v-model.trim="item_edit.email1"
                 autocomplete="off"
+                @input="changes('email1')"
               />
             </div>
           </div>
@@ -654,6 +734,7 @@
                 placeholder="Second Email"
                 v-model.trim="item_edit.email2"
                 autocomplete="off"
+                @input="changes('email2')"
               />
             </div>
           </div>
@@ -671,6 +752,7 @@
                 placeholder="Provincial address"
                 v-model.trim="item_edit.provincial_address"
                 autocomplete="off"
+                @input="changes('provincial_address')"
               />
             </div>
           </div>
@@ -688,6 +770,7 @@
                 placeholder="Provincial telephone number"
                 v-model.trim="item_edit.provincial_tel_no"
                 autocomplete="off"
+                @input="changes('provincial_tel_no')"
               />
             </div>
           </div>
@@ -705,6 +788,7 @@
                   title="Birth date of the employee"
                   placeholder="Birth date (yyyy-MM-dd)"
                   autocomplete="off"
+                  @input="changes('birth_date')"
                 ></date-picker>
               </div>
             </div>
@@ -723,6 +807,7 @@
                 placeholder="Birth place"
                 v-model.trim="item_edit.birth_place"
                 autocomplete="off"
+                @input="changes('birth_place')"
               />
             </div>
           </div>
@@ -740,6 +825,7 @@
                 placeholder="Nationality"
                 v-model.trim="item_edit.nationality"
                 autocomplete="off"
+                @input="changes('nationality')"
               />
             </div>
           </div>
@@ -757,6 +843,7 @@
                 placeholder="Religion"
                 v-model.trim="item_edit.religion"
                 autocomplete="off"
+                @input="changes('religion')"
               />
             </div>
           </div>
@@ -774,6 +861,7 @@
                 placeholder="SSS number"
                 v-model.trim="item_edit.sss_no"
                 autocomplete="off"
+                @input="changes('sss_no')"
               />
             </div>
           </div>
@@ -791,6 +879,7 @@
                 placeholder="Pag-ibig"
                 v-model.trim="item_edit.pag_ibig"
                 autocomplete="off"
+                @input="changes('pag_ibig')"
               />
             </div>
           </div>
@@ -808,6 +897,7 @@
                 placeholder="PRC License"
                 v-model.trim="item_edit.prc_license"
                 autocomplete="off"
+                @input="changes('prc_license')"
               />
             </div>
           </div>
@@ -825,6 +915,7 @@
                 placeholder="TIN number"
                 v-model.trim="item_edit.tin_no"
                 autocomplete="off"
+                @input="changes('tin_no')"
               />
             </div>
           </div>
@@ -842,6 +933,7 @@
                 placeholder="Philhealth number"
                 v-model.trim="item_edit.philhealth_no"
                 autocomplete="off"
+                @input="changes('philhealth_no')"
               />
             </div>
           </div>
@@ -859,6 +951,7 @@
                 placeholder="height"
                 v-model.trim="item_edit.height"
                 autocomplete="off"
+                @input="changes('height')"
               />
             </div>
           </div>
@@ -876,6 +969,7 @@
                 placeholder="weight"
                 v-model.trim="item_edit.weight"
                 autocomplete="off"
+                @input="changes('weight')"
               />
             </div>
           </div>
@@ -955,11 +1049,19 @@
             <p class="elClr panel-title">
               Manage Leave for employee ID: {{ item_row_click.user.email }}
               <b-button
-                v-b-modal="'ModalAddLeave'"
                 type="button"
-                class="btn btn-success btn-labeled pull-right margin-right-10"
+                class="btn btn-dark btn-labeled pull-right margin-right-10"
+                @click="resetModal('add')"
               >
                 <i class="fas fa-plus-square"></i>
+              </b-button>
+              <b-button
+                title="Leave Balance History"
+                type="button"
+                class="btn btn-dark btn-labeled pull-right margin-right-10"
+                v-b-modal="'ModalLeaveBalanceHistory'"
+              >
+                <i class="fas fa-history"></i>
               </b-button>
             </p>
           </div>
@@ -1056,7 +1158,7 @@
         ok-only
       >
         <template v-slot:modal-title v-if="item_selected.length > 0"
-          >Add Leave Balance to all selected employee</template
+          >Add/Update Leave Balance to all selected employee</template
         >
         <template v-else v-slot:modal-title>
           Add Leave Balance to employee ID:
@@ -1179,8 +1281,18 @@
           <b-button
             size="sm"
             v-if="item_selected.length > 0"
+            variant="warning"
+            title="Update leave balance"
+            @click="btnAddLeaveMultiple('update')"
+          >
+            <i class="fas fa-edit"></i>
+          </b-button>
+          <b-button
+            size="sm"
+            v-if="item_selected.length > 0"
             variant="success"
-            @click="btnAddLeaveMultiple()"
+            title="Add leave balance"
+            @click="btnAddLeaveMultiple('add')"
           >
             <i class="fas fa-plus-square"></i>
           </b-button>
@@ -2835,6 +2947,37 @@
         </template>
       </b-modal>
       <!-- End ModalRole -->
+
+      <!-- ModalLeaveBalanceHistory ---------------------------------------------------------------------------------------->
+      <b-modal
+        id="ModalLeaveBalanceHistory"
+        :header-bg-variant="' elBG'"
+        :header-text-variant="' elClr'"
+        :body-bg-variant="' elBG'"
+        :body-text-variant="' elClr'"
+        :footer-bg-variant="' elBG'"
+        :footer-text-variant="' elClr'"
+        hide-footer
+        size="xl"
+        ok-only
+      >
+        <template v-slot:modal-title>
+          Leave Balance History for employee ID:
+          {{ item_row_click.user.email }} ({{ item_row_click.last_name }})
+        </template>
+
+        <div>
+          <b-table
+            :items="balance_histories"
+            :fields="balance_history_fields"
+            striped
+            hover
+            outlined
+          ></b-table>
+        </div>
+        <!-- /form -->
+      </b-modal>
+      <!-- End ModalLeaveBalanceHistory -->
     </div>
 
     <!-- other modals -->
@@ -3157,7 +3300,35 @@ export default {
       prevIndex: null,
       prevLev: null,
       groupTimeIn: null,
-      groupTimeOut: null
+      groupTimeOut: null,
+      employeeChanges: [],
+      statusHistory: 0,
+      status_histories: [],
+      balance_histories: [],
+      status_history_fields: [
+        { key: "status", label: "Status" },
+        { key: "start_date", label: "Start Date" },
+        { key: "end_date", label: "End Date" }
+      ],
+      balance_history_fields: [
+        {
+          key: "old_details",
+          label: "Old Details"
+          /* formatter: (value, key, item) => {
+            let data = item.old_details.split(", ").map(item => item.trim());
+            return data.join(" | ");
+          } */
+        },
+        { key: "updated_details", label: "Updated Details" },
+        {
+          key: "user",
+          label: "Updated By",
+          formatter: (value, key, item) => {
+            return item.user.first_name + " " + item.user.last_name;
+          }
+        },
+        { key: "created_at", label: "Updated At" }
+      ]
     };
   },
   beforeCreate() {
@@ -3188,6 +3359,7 @@ export default {
   methods: {
     load_items(model) {
       this.$http.get("api/" + model).then(function(response) {
+        console.log(response.body);
         this.items = response.body;
         this.totalRows = this.items.length;
         this.tblisBusy = false;
@@ -3248,8 +3420,12 @@ export default {
           height: "",
           weight: "",
           tin_no: "",
-          philhealth_no: ""
+          philhealth_no: "",
+          start_date: null,
+          end_date: null
         };
+      this.status_histories = [];
+      this.statusHistory = 0;
     },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length;
@@ -3271,11 +3447,18 @@ export default {
       this.$bvModal.show("ModelAddEmployee");
       this.item_edit = item;
       this.item_edit.bioID = item.id;
+      this.statusHistory = 0;
+      this.status_histories = [];
       console.log(item);
 
       this.editRoles.id = item.user.id;
       this.editRoles.roles = item.roleList;
       this.editRoles.roless = item.roles;
+
+      this.$http.get("api/EmpStatHistory/" + item.id).then(function(response) {
+        console.log(response.body);
+        this.status_histories = response.body;
+      });
     },
     tblRowClicked_leave(item, index, event) {
       this.$bvModal.show("ModalEditLeave");
@@ -3300,7 +3483,6 @@ export default {
               this.$root.$emit("pageLoaded");
               console.log(response.body);
               swal("Notification", "Added successfully", "success");
-
               this.$bvModal.hide("ModelAddEmployee");
               this.items = response.body;
               this.totalRows = this.items.length;
@@ -3336,7 +3518,9 @@ export default {
                 height: "",
                 weight: "",
                 tin_no: "",
-                philhealth_no: ""
+                philhealth_no: "",
+                start_date: null,
+                end_date: null
               };
             })
             .catch(response => {
@@ -3352,6 +3536,7 @@ export default {
       });
     },
     btnUpdate() {
+      console.log(this.item_edit);
       this.$validator.validateAll().then(result => {
         if (result) {
           swal({
@@ -3361,7 +3546,7 @@ export default {
             buttons: true,
             dangerMode: true
           }).then(update => {
-            this.tblisBusy = true;
+            // this.tblisBusy = true;
             if (update) {
               this.$root.$emit("pageLoading");
               this.item_edit.user_id = this.user.employee_id;
@@ -3369,10 +3554,13 @@ export default {
                 this.user.employee.first_name +
                 " " +
                 this.user.employee.last_name;
+              this.item_edit.edits = this.employeeChanges;
               this.$http
                 .put("api/Employee/" + this.item_edit.bioID, this.item_edit)
                 .then(response => {
+                  console.log(response.body);
                   this.$root.$emit("pageLoaded");
+                  this.$root.$emit("Sidebar");
                   this.items = response.body;
                   this.totalRows = this.items.length;
                   swal("Update", "Successfully updated!", "success");
@@ -3440,10 +3628,12 @@ export default {
     },
     // LEAVESS functions
     openModalLeave(item) {
+      console.log(item);
       this.item_row_click = item;
       this.uncheckAllSelectedEmp();
       this.$bvModal.show("modalManageLeave");
       this.load_leave_balance(this.item_row_click.id);
+      this.load_balance_history(this.item_row_click.id);
     },
     load_leave_balance(id) {
       this.leave_tblisBusy = true;
@@ -3451,6 +3641,12 @@ export default {
         this.leave_items = response.body;
         this.leave_totalRows = this.leave_items.length;
         this.leave_tblisBusy = false;
+      });
+    },
+    load_balance_history(id) {
+      this.$http.get("api/LeaveUpdateHistory/" + id).then(function(response) {
+        console.log(response.body);
+        this.balance_histories = response.body;
       });
     },
     openModalAddLeave() {
@@ -3496,11 +3692,12 @@ export default {
         }
       });
     },
-    btnAddLeaveMultiple() {
+    btnAddLeaveMultiple(action) {
       console.log(this.item_selected);
       this.$validator.validateAll().then(result => {
         if (result) {
           this.leave_add.multiple = 1;
+          this.leave_add.action = action;
           this.leave_add.employees = this.item_selected;
           this.leave_add.user_id = this.user.employee_id;
           this.leave_add.user_name =
@@ -3514,16 +3711,16 @@ export default {
               console.log(response.body);
 
               swal("Notification", "Added successfully", "success");
-              this.leave_add = {
+              /* this.leave_add = {
                 employee_id: "",
                 leave_type_id: "",
                 enroll_year: "",
                 balance: "0",
                 availed: "0",
                 accrued: "0"
-              };
-              this.$bvModal.hide("ModalAddLeave");
-              this.uncheckAllSelectedEmp();
+              }; */
+              // this.$bvModal.hide("ModalAddLeave");
+              // this.uncheckAllSelectedEmp();
             })
             .catch(response => {
               this.$root.$emit("pageLoaded");
@@ -4147,6 +4344,28 @@ export default {
         var new_sched = cdate + time;
         element.shift_sched_out = new_sched;
       });
+    },
+    changes(item) {
+      if (!this.employeeChanges.includes(item)) {
+        this.employeeChanges.push(item);
+      }
+      console.log(this.employeeChanges);
+    },
+    toggleHistory(flag) {
+      this.statusHistory = flag;
+    },
+    resetModal(modal) {
+      if (modal == "add") {
+        this.$bvModal.show("ModalAddLeave");
+        this.leave_add = {
+          employee_id: "",
+          leave_type_id: "",
+          enroll_year: "",
+          balance: "0",
+          availed: "0",
+          accrued: "0"
+        };
+      }
     }
   }
 };

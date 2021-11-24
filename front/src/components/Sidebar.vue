@@ -1,10 +1,12 @@
 <template>
-  <sidebar-menu
-    :menu="menu"
-    width="300px"
-    :collapsed="true"
-    :hideToggle="true"
-  />
+  <div>
+    <sidebar-menu
+      :menu="menu"
+      width="300px"
+      :collapsed="true"
+      :hideToggle="true"
+    />
+  </div>
 </template>
 
 <script>
@@ -20,6 +22,11 @@ export default {
           header: true,
           title: "Main Navigation",
           hiddenOnCollapse: true
+        },
+        {
+          title: "BIOMETRIC ATTENDANCE",
+          icon: "fas fa-fingerprint",
+          href: "/BiometricAttendance"
         },
         {
           title: "HOME",
@@ -128,22 +135,34 @@ export default {
         //console.log(response.body.length);
         //save to global
         if (response.body.length > 0) {
-          this.menu[2].child[0].badge.text = response.body.length;
+          this.menu[3].child[0].badge.text = response.body.length;
         } else {
-          this.menu[2].child.shift();
+          this.menu[3].child.shift();
         }
         //this.items = response.body;
         //this.tblisBusy = false;
       });
 
       if (this.roles.hr) {
-        this.menu[4] = {
+        this.$http.get("api/getToPromote/").then(function(response) {
+          console.log(response.body);
+          if (response.body > 0) {
+            this.menu[5].child[0].badge.text = response.body;
+            this.menu[5].child[0].badge.class = "vsm--badge_default";
+          }
+        });
+
+        this.menu[5] = {
           title: "MANAGEMENT",
           icon: "fas fa-user-cog",
           child: [
             {
               href: "/ManageEmployee",
-              title: "Employee"
+              title: "Employee",
+              badge: {
+                text: "",
+                class: ""
+              }
             },
             {
               href: "/ShiftSchedule",
@@ -169,22 +188,22 @@ export default {
         };
 
         if (this.roles.create_rate)
-          this.menu[4].child.push({
+          this.menu[5].child.push({
             href: "/ManageRates",
             title: "Rates"
           });
         if (this.roles.create_branch)
-          this.menu[4].child.push({
+          this.menu[5].child.push({
             href: "/ManageBranch",
             title: "Branch"
           });
         if (this.roles.create_leave)
-          this.menu[4].child.push({
+          this.menu[5].child.push({
             href: "/ManageLeaveType",
             title: "Leave type"
           });
         if (this.roles.create_calendar)
-          this.menu[4].child.push({
+          this.menu[5].child.push({
             href: "/ManageCalendar",
             title: "Calendar"
           });

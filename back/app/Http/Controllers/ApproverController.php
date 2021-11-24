@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Approver;
+use App\biometric_attendance;
+use App\dtr;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -11,8 +13,11 @@ use App\over_time;
 use App\official_business;
 use App\change_shift;
 use App\change_rest_day;
+use App\leave_day;
+use App\leave_type;
 use App\missing_time_log;
 use App\manual_attendance;
+use LeaveDay;
 use stdClass;
 
 class ApproverController extends Controller
@@ -23,7 +28,6 @@ class ApproverController extends Controller
         $tbl = Approver::with(['employee'])->get();
         return response()->json($tbl);
     }
-
 
     public function create()
     {
@@ -359,6 +363,34 @@ class ApproverController extends Controller
                     }
             }
 
+            // biometric_attendances
+            $tbl = DB::table('biometric_attendances')
+                ->join('employees', 'employees.id', 'biometric_attendances.employee_id')
+                ->where('status', 'Pending')
+                ->select('biometric_attendances.id AS bid', 'employees.*', 'biometric_attendances.*')
+                ->get();
+
+            foreach ($tbl as $item) {
+                $tbl = DB::table('employee_approvers')
+                    ->join('approvers', 'employee_approvers.approver_id', 'approvers.id')
+                    ->where('employee_approvers.employee_id', $item->employee_id)
+                    ->where('employee_approvers.level', $item->approve_level)
+                    ->first('approvers.*');
+
+                $item->reference_no = "BA-" . $item->bid;
+                $item->temp = $tbl;
+                $item->description = "Biometric attendance";
+                $item->from = "--";
+                $item->to = "--";
+                // to review date format
+                $item->punch_time_converted = Carbon::parse($item->punch_time, 'UTC')->isoFormat('lll');
+                $item->date_filed = (new Carbon(substr($item->created_at, 0, 10)))->toFormattedDateString();
+                if ($tbl != null)
+                    if ($tbl->employee_id == $emp_id) {
+                        array_push($ret_val, $item);
+                    }
+            }
+
             return response()->json($ret_val);
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);
@@ -439,7 +471,7 @@ class ApproverController extends Controller
                     ->where('reference_no', $request->reference_no)
                     ->update(['approve_level' => $lvl]);
             }
-        } else if ($request->description ==  'Overtime') {
+        } else if ($request->description == 'Overtime') {
             //ok na ning OT
             if ($level <= $request->approve_level) {
                 DB::table('over_times')
@@ -451,7 +483,7 @@ class ApproverController extends Controller
                     ->where('reference_no', $request->reference_no)
                     ->update(['approve_level' => $lvl]);
             }
-        } else if ($request->description ==  'Official businesses') {
+        } else if ($request->description == 'Official businesses') {
             // ok na ning OB
             if ($level <= $request->approve_level) {
                 DB::table('official_businesses')
@@ -467,7 +499,7 @@ class ApproverController extends Controller
                     ->where('reference_no', $request->reference_no)
                     ->update(['approve_level' => $lvl]);
             }
-        } else if ($request->description ==  'Change shift') {
+        } else if ($request->description == 'Change shift') {
             //ok
             if ($level <= $request->approve_level) {
                 DB::table('change_shifts')
@@ -487,7 +519,7 @@ class ApproverController extends Controller
                     ->where('reference_no', $request->reference_no)
                     ->update(['approve_level' => $lvl]);
             }
-        } else if ($request->description ==  'Change rest day') {
+        } else if ($request->description == 'Change rest day') {
             //ok nana
             $from = new Carbon($request->from);
             $to = new Carbon($request->to);
@@ -513,7 +545,7 @@ class ApproverController extends Controller
                     ->where('reference_no', $request->reference_no)
                     ->update(['approve_level' => $lvl]);
             }
-        } else if ($request->description ==  'Missing time logs') {
+        } else if ($request->description == 'Missing time logs') {
             //ok nani pero dili dapat ing ani
             if ($level <= $request->approve_level) {
                 DB::table('missing_time_logs')
@@ -545,9 +577,555 @@ class ApproverController extends Controller
                     ->where('reference_no', $request->reference_no)
                     ->update(['approve_level' => $lvl]);
             }
+        } else if ($request->description == 'Biometric attendance') {
+            if ($level <= $request->approve_level) {
+                DB::table('biometric_attendances')
+                    ->where('id', $request->bid)
+                    ->update(['status' => 'Approved', 'approve_level' => '0']);
+
+                $type = 'time_out';
+                if ($request->type == 'Time In') $type = 'time_in';
+                DB::table('dtrs')
+                    ->where('employee_id', $emp_id)
+                    ->where('work_date', $request->work_date)
+                    ->update([$type => $request->punch_time]);
+            } else {
+                $lvl = $request->approve_level + 1;
+                DB::table('biometric_attendances')
+                    ->where('id', $request->bid)
+                    ->update(['approve_level' => $lvl]);
+            }
         }
 
         return $this->getToApprove($request->userID);
+    }
+
+    public function publicApproveRequest($r, $t, $id, $eid)
+    {
+        if (is_numeric($id) && is_numeric($eid)) {
+            $review = $r == 1 ? "Request Approved" : "Request Disapproved";
+            $level = DB::table('employee_approvers')
+                ->where('employee_id', $eid)
+                ->max('level');
+            $emp = DB::table('employees')->where('id', $eid)->first();
+            if ($t == 1) { // not sure, needs testing
+                $query = Leave::where('id', $id);
+                $tbl =  (clone $query)->first();
+                if ($r == 1) {
+                    $leave_days = leave_day::where('leave_id', $id)->get();
+                    if ($level <= $tbl->approve_level) {
+                        //check balance
+                        $balance = DB::table('leave_balances')
+                            ->where('employee_id', $eid)
+                            ->where('leave_type_id', $tbl->leave_type_id)
+                            ->sum('balance');
+                        $leave_type = leave_type::where('id', $tbl->leave_type_id)->first();
+                        $total_day = (float) $tbl->total_days;
+                        if ($balance >= $total_day) {
+                            $log_to = tap(clone $query)->update([
+                                'status' => 'Approved',
+                                'approve_level' => '0'
+                            ])->first();
+                            //update dtr is_rest_day = 2
+                            foreach ($leave_days as $item) {
+                                $item = (object) $item;
+                                $dtr_query = dtr::where('employee_id', $eid)
+                                    ->where('work_date', $tbl->leave_date);
+                                if ($item->halfday == 0) {
+                                    $dtr_log = tap($dtr_query)->update([
+                                        'is_rest_day' => '2'
+                                    ])->first();
+                                } else {
+                                    if ($item->halfday_type == 1) {
+                                        $dtr_logs = tap(clone $query)->update([
+                                            'shift_sched_in' => DB::raw('ADDTIME(shift_sched_in, "5:30:0.000000")')
+                                        ])->first();
+                                    } else {
+                                        $dtr_logs = tap(clone $query)->update([
+                                            'shift_sched_out' => DB::raw('SUBTIME(shift_sched_out, "5:00:0.000000")')
+                                        ])->first();
+                                    }
+                                }
+                            }
+                            //update balance
+                            $tbl2 = DB::table('leave_balances')
+                                ->where('employee_id', $eid)
+                                ->where('leave_type_id', $tbl->leave_type_id)
+                                ->get();
+                            $tempTotal = $total_day;
+                            foreach ($tbl2 as $item) {
+                                if ($tempTotal != 0) {
+                                    $count = 0;
+                                    if ($tempTotal >= $item->balance) {
+                                        $count = $item->balance;
+                                        $tempTotal -= $item->balance;
+                                    } else {
+                                        $count = $tempTotal;
+                                        $tempTotal = 0;
+                                    }
+
+                                    DB::table('leave_balances')
+                                        ->where('id', $item->id)
+                                        ->decrement('balance', $count);
+                                }
+                                //update balance end
+                            }
+                        } else {
+                            return response()->json(['error' => "Not enough Leave Balance"], 500);
+                            return $this->confMesssage(
+                                "Request Disapproved (Not enough leave balance)",
+                                "LV-" . $id,
+                                "Official Business",
+                                "-",
+                                $emp->first_name . " " . $emp->last_name,
+                                $tbl->from,
+                                $tbl->to,
+                                $tbl->reason,
+                                "",
+                                "",
+                                "",
+                                "",
+                                $tbl->date_filed,
+                                $tbl->total_days,
+                                "",
+                                "",
+                                "",
+                                "",
+                                ""
+                            );
+                        }
+                    } else {
+                        $lvl = $tbl->approve_level + 1;
+                        DB::table('leaves')
+                            ->where('reference_no', $tbl->reference_no)
+                            ->update(['approve_level' => $lvl]);
+                    }
+                } else {
+                    $log_to = tap(clone $query)->update([
+                        'remarks' => $tbl->remarks,
+                        'status' => 'Disapproved'
+                    ])->first();
+                }
+
+                $from = new Carbon($tbl->date_from);
+                $to = new Carbon($tbl->date_to);
+                $tbl->from = $from->toFormattedDateString();
+                $tbl->to = $to->toFormattedDateString();
+
+                return $this->confMesssage(
+                    $review,
+                    "LV-" . $id,
+                    "Official Business",
+                    "-",
+                    $emp->first_name . " " . $emp->last_name,
+                    $tbl->from,
+                    $tbl->to,
+                    $tbl->reason,
+                    "",
+                    "",
+                    "",
+                    "",
+                    $tbl->date_filed,
+                    $tbl->total_days,
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                );
+            }
+            if ($t == 2) {
+                $query = over_time::where('id', $id);
+                $tbl = (clone $query)->first();
+                if ($r == 1) {
+                    if ($level <= $tbl->approve_level) {
+                        $log_to = tap(clone $query)->update([
+                            'status' => 'Approved',
+                            'approve_level' => '0'
+                        ])->first();
+                    } else {
+                        $lvl = $tbl->approve_level + 1;
+                        $log_to = tap(clone $query)->update([
+                            'approve_level' => $lvl
+                        ])->first();
+                    }
+                } else {
+                    $log_to = tap(clone $query)->update([
+                        'remarks' => $tbl->remarks,
+                        'status' => 'Disapproved'
+                    ])->first();
+                }
+
+                $from = new Carbon($tbl->time_in);
+                $to = new Carbon($tbl->time_out);
+                $tbl->from = $from->toFormattedDateString() . " " . $from->toTimeString();
+                $tbl->to = $to->toFormattedDateString() . " " . $to->toTimeString();
+
+                return $this->confMesssage(
+                    $review,
+                    "OT-" . $id,
+                    "Overtime",
+                    $tbl->work_date,
+                    $emp->first_name . " " . $emp->last_name,
+                    $tbl->from,
+                    $tbl->to,
+                    $tbl->reason,
+                    "",
+                    "",
+                    "",
+                    "",
+                    $tbl->date_filed,
+                    "",
+                    $tbl->with_break,
+                    $tbl->break_hours,
+                    $tbl->total_hours,
+                    "",
+                    ""
+                );
+            }
+            if ($t == 3) {
+                $query = official_business::where('id', $id);
+                $tbl = (clone $query)->first();
+                if ($r == 1) {
+                    if ($level <= $tbl->approve_level) {
+                        $log_to = tap(clone $query)->update([
+                            'status' => 'Approved',
+                            'approve_level' => '0'
+                        ])->first();
+                        $dtr_query = dtr::where('employee_id', $eid)
+                            ->where('work_date', $tbl->work_date);
+                        $dtr_log = tap($dtr_query)->update([
+                            'time_in' => $tbl->time_in,
+                            'time_out' => $tbl->time_out
+                        ])->first();
+                    } else {
+                        $lvl = $tbl->approve_level + 1;
+                        $log_to = tap(clone $query)->update([
+                            'approve_level' => $lvl
+                        ])->first();
+                    }
+                } else {
+                    $log_to = tap(clone $query)->update([
+                        'remarks' => $tbl->remarks,
+                        'status' => 'Disapproved'
+                    ])->first();
+                }
+
+                $from = new Carbon($tbl->time_in);
+                $to = new Carbon($tbl->time_out);
+                $tbl->from = $from->toFormattedDateString() . " " . $from->toTimeString();
+                $tbl->to = $to->toFormattedDateString() . " " . $to->toTimeString();
+
+                return $this->confMesssage(
+                    $review,
+                    "OB-" . $id,
+                    "Official Business",
+                    $tbl->work_date,
+                    $emp->first_name . " " . $emp->last_name,
+                    $tbl->from,
+                    $tbl->to,
+                    $tbl->reason,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                );
+            }
+            if ($t == 4) {
+                $query = change_shift::where('id', $id);
+                $tbl = (clone $query)->first();
+                if ($r == 1) {
+                    if ($level <= $tbl->approve_level) {
+                        $log_to = tap(clone $query)->update([
+                            'status' => 'Approved',
+                            'approve_level' => '0'
+                        ])->first();
+                        $from = new Carbon($tbl->from);
+                        $to = new Carbon($tbl->to);
+                        $dtr_query = dtr::where('employee_id', $eid)
+                            ->where('work_date', $tbl->work_date);
+                        $dtr_log = tap($dtr_query)->update([
+                            'shift_sched_in' => $from,
+                            'shift_sched_out' => $to
+                        ])->first();
+                    } else {
+                        $lvl = $tbl->approve_level + 1;
+                        $log_to = tap(clone $query)->update([
+                            'approve_level' => $lvl
+                        ])->first();
+                    }
+                } else {
+                    $log_to = tap(clone $query)->update([
+                        'remarks' => $tbl->remarks,
+                        'status' => 'Disapproved'
+                    ])->first();
+                }
+
+                $from = new Carbon($tbl->time_in);
+                $to = new Carbon($tbl->time_out);
+                $tbl->from = $from->toFormattedDateString() . " " . $from->toTimeString();
+                $tbl->to = $to->toFormattedDateString() . " " . $to->toTimeString();
+
+                return $this->confMesssage(
+                    $review,
+                    "CS-" . $id,
+                    "Change Shift",
+                    $tbl->work_date,
+                    $emp->first_name . " " . $emp->last_name,
+                    $tbl->from,
+                    $tbl->to,
+                    $tbl->reason,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                );
+            }
+            if ($t == 5) {
+                $query = change_rest_day::where('id', $id);
+                $tbl = (clone $query)->first();
+                if ($r == 1) {
+                    $from = new Carbon($tbl->time_in);
+                    $to = new Carbon($tbl->time_out);
+                    if ($level <= $tbl->approve_level) {
+                        $log_to = tap(clone $query)->update([
+                            'status' => 'Approved',
+                            'approve_level' => '0'
+                        ])->first();
+
+                        $dtr_query = dtr::where('employee_id', $eid)
+                            ->where('work_date', $tbl->work_date);
+                        if ($tbl->type == "Shift to Rest Day") {
+                            $dtr_log = tap(clone $dtr_query)->update([
+                                'is_rest_day' => '1'
+                            ])->first();
+                        } else {
+                            $dtr_log = tap(clone $dtr_query)->update([
+                                'is_rest_day' => '0',
+                                'shift_sched_in' => $from,
+                                'shift_sched_out' => $to
+                            ])->first();
+                        }
+                    } else {
+                        $lvl = $tbl->approve_level + 1;
+                        $log_to = tap(clone $query)->update([
+                            'approve_level' => $lvl
+                        ])->first();
+                    }
+                } else {
+                    $log_to = tap(clone $query)->update([
+                        'remarks' => $tbl->remarks,
+                        'status' => 'Disapproved'
+                    ])->first();
+                }
+
+                $tbl->from = $from->toFormattedDateString() . " " . $from->toTimeString();
+                $tbl->to = $to->toFormattedDateString() . " " . $to->toTimeString();
+
+                return $this->confMesssage(
+                    $review,
+                    "CRD-" . $id,
+                    "Change Rest Day",
+                    $tbl->work_date,
+                    $emp->first_name . " " . $emp->last_name,
+                    $tbl->from,
+                    $tbl->to,
+                    $tbl->reason,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    $tbl->shift,
+                    $tbl->type
+                );
+            }
+            if ($t == 6) {
+                $query = missing_time_log::where('id', $id);
+                $tbl = (clone $query)->first();
+                if ($r == 1) {
+                    if ($level <= $tbl->approve_level) {
+                        $log_to = tap(clone $query)->update([
+                            'status' => 'Approved',
+                            'approve_level' => '0'
+                        ])->first();
+                        $dtr_query = dtr::where('employee_id', $eid)
+                            ->where('work_date', $tbl->work_date);
+                        $dtr_log = tap($dtr_query)->update([
+                            'time_in' => $tbl->time_in,
+                            'time_out' => $tbl->time_out
+                        ])->first();
+                    } else {
+                        $lvl = $tbl->approve_level + 1;
+                        $log_to = tap(clone $query)->update([
+                            'approve_level' => $lvl
+                        ])->first();
+                    }
+                } else {
+                    $log_to = tap(clone $query)->update([
+                        'remarks' => $tbl->remarks,
+                        'status' => 'Disapproved'
+                    ])->first();
+                }
+
+                $from = new Carbon($tbl->time_in);
+                $to = new Carbon($tbl->time_out);
+                $tbl->from = $from->toFormattedDateString() . " " . $from->toTimeString();
+                $tbl->to = $to->toFormattedDateString() . " " . $to->toTimeString();
+
+                return $this->confMesssage(
+                    $review,
+                    "MTL-" . $id,
+                    "Missing Time Logs",
+                    $tbl->work_date,
+                    $emp->first_name . " " . $emp->last_name,
+                    $tbl->from,
+                    $tbl->to,
+                    $tbl->reason,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                );
+            }
+            if ($t == 7) {
+                $query = manual_attendance::where('id', $id);
+                $tbl =  (clone $query)->first();
+                if ($r == 1) {
+                    if ($level <= $tbl->approve_level) {
+                        $log_to = tap(clone $query)->update([
+                            'status' => 'Approved',
+                            'approve_level' => '0'
+                        ])->first();
+                        $dtr_query = dtr::where('employee_id', $eid)
+                            ->where('work_date', $tbl->work_date);
+                        $dtr_log = tap($dtr_query)->update([
+                            'time_in' => $tbl->time_in,
+                            'time_out' => $tbl->time_out
+                        ])->first();
+                    } else {
+                        $lvl = $tbl->approve_level + 1;
+                        $log_to = tap(clone $query)->update([
+                            'approve_level' => $lvl
+                        ])->first();
+                    }
+                } else {
+                    $log_to = tap(clone $query)->update([
+                        'remarks' => $tbl->remarks,
+                        'status' => 'Disapproved'
+                    ])->first();
+                }
+
+                $from = new Carbon($tbl->time_in);
+                $to = new Carbon($tbl->time_out);
+                $tbl->from = $from->toFormattedDateString() . " " . $from->toTimeString();
+                $tbl->to = $to->toFormattedDateString() . " " . $to->toTimeString();
+
+                return $this->confMesssage(
+                    $review,
+                    "MA-" . $id,
+                    "Manual Attendance",
+                    $tbl->work_date,
+                    $emp->first_name . " " . $emp->last_name,
+                    $tbl->from,
+                    $tbl->to,
+                    $tbl->reason,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                );
+            }
+            if ($t == 8) {
+                $query = biometric_attendance::where('id', $id);
+                $tbl = (clone $query)->first();
+                if ($tbl->approve_level != 0) {
+                    if ($r == 1) {
+
+                        if ($level <= $tbl->approve_level) {
+                            $log_to = biometric_attendance::where('id', $id)->update([
+                                'status' => 'Approved',
+                                'approve_level' => '0'
+                            ]);
+
+                            $type = 'time_out';
+                            $workdate = substr($tbl->punch_time, 0, 10);
+                            if ($tbl->type == 'Time In')
+                                $type = 'time_in';
+                            //
+                            dtr::where('employee_id', $eid)
+                                ->where('work_date', $workdate)
+                                ->update([
+                                    $type => $tbl->punch_time
+                                ]);
+                        } else {
+                            $lvl = $tbl->approve_level + 1;
+                            $log_to = biometric_attendance::where('id', $id)->update([
+                                'approve_level' => $lvl
+                            ]);
+                        }
+                    } else {
+                        $log_to = biometric_attendance::where('id', $id)->update([
+                            'status' => 'Disapproved'
+                        ]);
+                    }
+                }
+                return $this->confMesssage(
+                    $review,
+                    "BA-" . $id,
+                    "Biometric Attendance",
+                    "",
+                    $emp->first_name . " " . $emp->last_name,
+                    "",
+                    "",
+                    "",
+                    $tbl->type,
+                    $tbl->latitude,
+                    $tbl->longitude,
+                    $tbl->punch_time,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                );
+            }
+        } else
+            return 0;
     }
 
     public function disapproveRequest(Request $request)
@@ -556,7 +1134,8 @@ class ApproverController extends Controller
             DB::table('leaves')
                 ->where('reference_no', $request->reference_no)
                 ->update(['remarks' => $request->remarks, 'status' => 'Disapproved']);
-        } else if ($request->description ==  'Overtime') {
+        } else if ($request->description ==  'O
+        vertime') {
             DB::table('over_times')
                 ->where('reference_no', $request->reference_no)
                 ->update(['remarks' => $request->remarks, 'status' => 'Disapproved']);
@@ -580,9 +1159,216 @@ class ApproverController extends Controller
             DB::table('manual_attendances')
                 ->where('reference_no', $request->reference_no)
                 ->update(['remarks' => $request->remarks, 'status' => 'Disapproved']);
+        } else if ($request->description == 'Biometric attendance') {
+            DB::table('biometric_attendances')
+                ->where('id', $request->bid)
+                ->update(['status' => 'Disapproved']);
         }
 
         return $this->getToApprove($request->userID);
+    }
+
+    public function confMesssage(
+        $review,
+        $ref,
+        $desc,
+        $work_date,
+        $emp_name,
+        $from,
+        $to,
+        $reason,
+        $ba_type,
+        $lat,
+        $lng,
+        $punch_time,
+        $date_filed,
+        $total_days,
+        $w_break,
+        $break_hours,
+        $total_hours,
+        $shift,
+        $crd_type
+    ) {
+        $ret =
+            "<div id='container'>
+            <div class='main'>
+                <span class='common head'>
+                    HRMESS
+                </span>";
+
+        if ($review == "Request Approved") {
+            $ret .=
+                "<span class='common message'>" .
+                $review
+                . "</span>";
+        } else {
+            $ret .=
+                "<span class='common message' style='color: #c03434'>" .
+                $review
+                . "</span>";
+        }
+        $ret .=
+            "<span class='common details'>
+                    <br/>
+                    <table class='my-table'>
+                        <tr>
+                            <td class='my-td'>Reference no:</td>
+                            <td class='my-td'>" . $ref . "</td>
+
+                            <td class='my-td'>Description:</td>
+                            <td class='my-td'>" . $desc . "</td>
+                        </tr>";
+
+        if (substr($ref, 0, 2) == 'BA') {
+            $ret .=
+                "<tr>
+                            <td class='my-td'>Type</td>
+                            <td class='my-td'>" . $ba_type . "</td>
+
+                            <td class='my-td'>Employee:</td>
+                            <td class='my-td'>" . $emp_name . "</td>
+                        </tr>
+
+                        <tr>
+                            <td class='my-td'>Latitude:</td>
+                            <td class='my-td'>" . $lat . "</td>
+
+                            <td class='my-td'>Longitude:</td>
+                            <td class='my-td'>" . $lng . "</td>
+                        </tr>
+
+                        <tr>
+                            <td class='my-td'>Punch Time:</td>
+                            <td class='my-td' colspan='3'>" . $punch_time . "</td>
+                        </tr>";
+        } else {
+            $ret .=
+                "<tr>
+                            <td class='my-td'>Work Date:</td>
+                            <td class='my-td'>" . $work_date . "</td>
+
+                            <td class='my-td'>Employee:</td>
+                            <td class='my-td'>" . $emp_name . "</td>
+                        </tr>";
+
+
+            if (substr($ref, 0, 2) == 'CR') {
+                $ret .=
+                    "<tr>
+                            <td class='my-td'>Shift:</td>
+                            <td class='my-td'>" . $shift . "</td>
+
+                            <td class='my-td'>Type:</td>
+                            <td class='my-td'>" . $crd_type . "</td>
+                        </tr>";
+            }
+
+            $ret .=
+                "<tr>
+                            <td class='my-td'>From:</td>
+                            <td class='my-td'>" . $from . "</td>
+
+                            <td class='my-td'>To:</td>
+                            <td class='my-td'>" . $to . "</td>
+                        </tr>";
+
+            if (substr($ref, 0, 2) == 'LV') {
+                $ret .=
+                    "<tr>
+                            <td class='my-td'>Date Filed:</td>
+                            <td class='my-td'>" . $date_filed . "</td>
+
+                            <td class='my-td'>Total day/s:</td>
+                            <td class='my-td'>" . $total_days . "</td>
+                        </tr>";
+            }
+
+            if (substr($ref, 0, 2) == 'OT') {
+                $ret .=
+                    "<tr>
+                            <td class='my-td'>With Break:</td>
+                            <td class='my-td'>" . $w_break . "</td>
+
+                            <td class='my-td'>Break Hours:</td>
+                            <td class='my-td'>" . $break_hours . "</td>
+                        </tr>
+
+                        <tr>
+                            <td class='my-td'>Date Filed:</td>
+                            <td class='my-td'>" . $date_filed . "</td>
+
+                            <td class='my-td'>Total Hours:</td>
+                            <td class='my-td'>" . $total_hours . "</td>
+                        </tr>";
+            }
+
+            $ret .=
+                "<tr>
+                            <td class='my-td'>Reason:</td>
+                            <td class='my-td' colspan='3'>" . $reason . "</td>
+                        </tr>";
+        }
+
+        $ret .=
+            "</table>
+                </span>
+            </div>
+        </div>
+
+        <style>
+            #container {
+                display: flex;
+                justify-content: center;
+            }
+            .main {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(to bottom, #008015 0%, #008015 95px, #f7f7f7 95px, #f7f7f7 100%);
+                margin-top: 80px;
+                padding: 40px;
+                padding-top: 29px;
+                border-radius: 6px;
+                text-align: center;
+            }
+            .common {
+                font-family: 'Calibri';
+                font-weight: bold;
+            }
+            .head {
+                color: #ffffff;
+                font-size: 30px;
+                margin-bottom: 20px;
+                align-self: center;
+                letter-spacing: 3px;
+            }
+            .message {
+                font-size: 20px;
+                color: #008015;
+                letter-spacing: 0.5px;
+                align-self: start;
+                padding-top: 30px;
+            }
+            .details {
+                color: #4e4e4e;
+                font-size: medium;
+                align-self: start
+            }
+            .my-td {
+                padding: 10px;
+            }
+            .my-table,
+            .my-td {
+                border: 1px solid #b6b6b6;
+            }
+            .my-table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+        </style>";
+
+        return $ret;
     }
 
     public function getMyApp($id)

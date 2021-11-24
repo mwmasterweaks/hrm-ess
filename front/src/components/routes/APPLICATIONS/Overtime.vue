@@ -126,6 +126,30 @@
 
         <div class="rowFields mx-auto row">
           <div class="col-lg-3">
+            <p class="textLabel">Type:</p>
+          </div>
+          <div class="col-lg-9">
+            <div class="input-group">
+              <model-list-select
+                :list="otType_list"
+                v-model="apply.type"
+                option-value="name"
+                option-text="name"
+                placeholder="Overtime Type"
+                name="with_break"
+                v-validate="'required'"
+              ></model-list-select>
+            </div>
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('work_date')"
+              >Work date is required.</small
+            >
+          </div>
+        </div>
+
+        <div class="rowFields mx-auto row">
+          <div class="col-lg-3">
             <p class="textLabel">Work Date:</p>
           </div>
           <div class="col-lg-9">
@@ -135,7 +159,7 @@
                 :config="Dateoptions"
                 v-b-tooltip.hover
                 title="Work date"
-                placeholder="Work date"
+                placeholder="Work Date"
                 autocomplete="off"
                 @input="work_date_onchange"
                 v-validate="'required'"
@@ -479,7 +503,7 @@
             <b-img
               thumbnail
               fluid
-              :src="'http://localhost:8000/attachments/' + item_edit.attachment"
+              :src="$url_back + item_edit.attachment"
               alt="Image 1"
             ></b-img>
           </center>
@@ -565,6 +589,12 @@ export default {
           name: "No"
         }
       ],
+      otType_list: [
+        { name: "Regular Overtime" },
+        { name: "Regular Holiday Overtime" },
+        { name: "Special Holiday Overtime" },
+        { name: "Special Holiday on Rest Day Overtime" }
+      ],
 
       approv_tblisBusy: false,
       approv_fields: [
@@ -640,6 +670,7 @@ export default {
       bvModalEvt.preventDefault();
     },
     btnApply() {
+      console.log(this.apply);
       if (this.apply.total_hours > 0) {
         this.$validator.validateAll().then(result => {
           if (result) {

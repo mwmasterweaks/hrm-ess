@@ -102,8 +102,8 @@ export default {
     getUser() {
       this.email = this.$global.getEmail();
       this.$http.get("api/user/getUser/" + this.email).then(response => {
+        this.user = response.body;
         this.$global.setUser(response.body);
-        this.user = this.$global.getUser();
         this.isLoad += 1; //6
         this.getUserRoles();
         console.log(this.user);
@@ -127,9 +127,10 @@ export default {
   margin-top: 2px;
   margin-right: 8px;
   border: 1px solid black;
+  /* color: #c03434; */
 }
 body {
-  background-color: #edebeb;
+  background-color: #f3f3f3;
   color: black;
   font-size: 14px;
   line-height: 1;
@@ -412,5 +413,27 @@ input {
   width: 100%;
   height: 100%;
   z-index: 5000;
+}
+.cml-10 {
+  margin-left: 10px;
+}
+.cplr-10 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.cbg-gray {
+  background: #303030;
+}
+.btn-default {
+  border: none;
+  border-radius: 3px;
+  color: #e9e9e9;
+}
+.btn-default:hover {
+  background: #1a1a1a;
+}
+.btn-default:focus {
+  box-shadow: none;
+  outline: 0;
 }
 </style>

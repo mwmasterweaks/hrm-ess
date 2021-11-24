@@ -16,6 +16,7 @@ use App\dtr;
 use App\payslip;
 use App\Role;
 use App\over_time;
+use App\employee_status_history;
 
 class Employee extends Model
 {
@@ -88,8 +89,9 @@ class Employee extends Model
         return $this->hasMany(over_time::class, 'employee_id', 'id');
     }
 
-    public function emp_roles()
+    public function employeeStatus()
     {
+        return $this->hasMany(employee_status_history::class, 'employee_id', 'id');
     }
     // public function emp_roles()
     // {

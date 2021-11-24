@@ -5,6 +5,7 @@ namespace App;
 use App\Role;
 use App\Employee;
 use App\Approver;
+use App\Employee_approver;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -36,6 +37,11 @@ class User extends Authenticatable
     public function approver()
     {
         return $this->hasOne(Approver::class, 'employee_id', 'employee_id');
+    }
+
+      public function emp_approver()
+    {
+        return $this->hasMany(Employee_approver::class, 'employee_id', 'employee_id')->orderBy('level');
     }
     // public function group()
     // {

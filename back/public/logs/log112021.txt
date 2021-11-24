@@ -1,0 +1,272 @@
+2021-11-03 09:35:22    |    User: (719) Peter Bismonte    |    OverTimeController (store)    |    message    |    Create new overtime with ID: 10
+Details: {"employee_id":719,"work_date":"2021-10-27","reference_no":"tempnumber123","shift":"From: 2021-10-27 07:31:00 To: 2021-10-27 17:00:00","with_break":"No","break_hours":0,"total_hours":2,"time_in":"2021-10-27 17:00:00","time_out":"2021-10-27 19:00","reason":"More work on queue","status":"Pending","attachment":"noattachment.png","date_filed":"2021-11-03T01:35:22.045878Z","approve_level":"1","updated_at":"2021-11-03 09:35:22","created_at":"2021-11-03 09:35:22","id":10}
+
+2021-11-03 15:04:58    |    User: (861) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    Create new leave balance with ID: 29
+Details: {"employee_id":861,"leave_type_id":6,"enroll_year":null,"balance":"8","availed":"0","accrued":"0","updated_at":"2021-11-03 15:04:58","created_at":"2021-11-03 15:04:58","id":29}
+
+2021-11-03 16:41:12    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    Create new leave balance with ID: 30
+Details: {"employee_id":832,"leave_type_id":6,"enroll_year":null,"balance":"7","availed":"0","accrued":"0","updated_at":"2021-11-03 16:41:12","created_at":"2021-11-03 16:41:12","id":30}
+
+2021-11-03 16:43:22    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    
+Create new leave balance with ID: 31
+Details: {"employee_id":832,"leave_type_id":6,"enroll_year":null,"balance":"7","availed":"0","accrued":"0","updated_at":"2021-11-03 16:43:22","created_at":"2021-11-03 16:43:22","id":31}
+
+2021-11-03 16:46:53    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    Create new leave balance with ID: 32
+Details: {"employee_id":832,"leave_type_id":6,"enroll_year":null,"balance":"7","availed":"0","accrued":"0","updated_at":"2021-11-03 16:46:53","created_at":"2021-11-03 16:46:53","id":32}
+
+2021-11-03 16:48:58    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    Create new leave balance with ID: 33
+Details: {"employee_id":832,"leave_type_id":6,"enroll_year":null,"balance":"7","availed":"0","accrued":"0","updated_at":"2021-11-03 16:48:58","created_at":"2021-11-03 16:48:58","id":33}
+
+2021-11-03 16:54:03    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    
+Create new leave balance with ID: 34
+Details: {"employee_id":833,"leave_type_id":6,"enroll_year":null,"balance":"7","availed":"0","accrued":"0","updated_at":"2021-11-03 16:54:03","created_at":"2021-11-03 16:54:03","id":34}
+
+2021-11-04 08:05:06    |    User: (719) Peter Bismonte    |    EmployeeController (store)    |    message    |    Create new User with ID: 449
+Details: {"id":5001,"group_id":1,"rate_id":1,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Soul Eater","middle_name":null,"last_name":"Evans","gender":"Male","date_hired":"2021-11-04","permanent_address":null,"tel_no":null,"mobile_no":null,"email1":null,"email2":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"updated_at":"2021-11-04 08:05:06","created_at":"2021-11-04 08:05:06"}
+Create new employee_status with ID: 1
+Details: {"employee_id":5001,"status":"Regular","updated_at":"2021-11-04 08:05:06","created_at":"2021-11-04 08:05:06","id":1}
+
+2021-11-04 08:21:01    |    User: () Peter Bismonte    |    LeaveController (store)    |    message    |    Create new leave with ID: 14
+Details: {"employee_id":719,"leave_type_id":6,"reference_no":"tempnumber123","date_from":"2021-11-01","date_to":"2021-11-01","reason":"apply for leave test","status":"Pending","attachment":"noattachment.png","total_days":1,"date_filed":"2021-11-04T00:21:01.758312Z","approve_level":"1","updated_at":"2021-11-04 08:21:01","created_at":"2021-11-04 08:21:01","id":14}
+Create new leave day/s: 
+{"leave_id":14,"leave_date":"2021-11-01","halfday":false,"halfday_type":0,"updated_at":"2021-11-04 08:21:01","created_at":"2021-11-04 08:21:01","id":0}
+
+2021-11-04 08:30:17    |    User: (719) Peter Bismonte    |    OverTimeController (store)    |    message    |    Create new overtime with ID: 11
+Details: {"employee_id":719,"work_date":"2021-11-01","reference_no":"tempnumber123","shift":"From: 2021-11-01 07:31:00 To: 2021-11-01 17:00:00","with_break":"No","break_hours":0,"total_hours":1,"time_in":"2021-11-01 17:00:00","time_out":"2021-11-01 18:00","reason":"overtime test","status":"Pending","attachment":"noattachment.png","date_filed":"2021-11-04T00:30:17.084066Z","approve_level":"1","updated_at":"2021-11-04 08:30:17","created_at":"2021-11-04 08:30:17","id":11}
+
+2021-11-04 16:05:40    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1115
+From: {employment_status: Probationary}
+To: {employment_status: Trainee}
+
+2021-11-04 16:15:08    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 832
+From: {employment_status: Trainee, rate_id: 2}
+To: {employment_status: Probationary, rate_id: 3}
+
+2021-11-04 16:24:43    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 832
+From: {}
+To: {}
+
+2021-11-04 16:27:54    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 832
+From: {}
+To: {}
+
+2021-11-04 16:28:12    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 832
+From: {rate_id: 3}
+To: {rate_id: 1}
+
+2021-11-04 16:32:30    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 832
+From: {rate_id: 1, employment_status: Probationary}
+To: {rate_id: 3, employment_status: Probationary}
+
+2021-11-05 09:44:04    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 833
+From: {employment_status: Trainee}
+To: {employment_status: Trainee}
+
+2021-11-05 10:01:50    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 787
+From: {employment_status: Probationary}
+To: {employment_status: Probationary}
+
+2021-11-05 11:16:58    |    User: (719) Peter Bismonte    |    LeaveBalanceController (destroy)    |    message    |    Delete leave balance with ID: 26
+Details: {"id":26,"employee_id":4,"leave_type_id":6,"enroll_year":null,"balance":"7.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 14:10:01","updated_at":"2021-10-15 14:45:22"}
+
+2021-11-05 11:18:16    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    
+Create new leave balance with ID: 35
+Details: {"employee_id":4,"leave_type_id":6,"enroll_year":null,"balance":"4","availed":"0","accrued":"0","updated_at":"2021-11-05 11:18:16","created_at":"2021-11-05 11:18:16","id":35}
+
+2021-11-05 11:18:47    |    User: (719) Peter Bismonte    |    LeaveBalanceController (destroy)    |    message    |    Delete leave balance with ID: 35
+Details: {"id":35,"employee_id":4,"leave_type_id":6,"enroll_year":null,"balance":"4.00","availed":"0.00","accrued":"0.00","created_at":"2021-11-05 11:18:16","updated_at":"2021-11-05 11:18:16"}
+
+2021-11-05 11:20:05    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    
+Update leave balance with ID: 25
+From: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"7.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 13:25:02","updated_at":"2021-10-15 14:45:22"}
+To: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"2","availed":"0","accrued":"0","created_at":"2021-10-15 13:25:02","updated_at":"2021-11-05 11:20:05"}
+
+2021-11-05 11:20:35    |    User: (719) Peter Bismonte    |    LeaveBalanceController (update)    |    message    |    Update leave balance with ID: 25
+From: {"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"2.00","availed":"0.00","accrued":"0.00"}
+To: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"7.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 13:25:02","updated_at":"2021-11-05 11:20:35"}
+
+2021-11-05 11:22:22    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    
+Create new leave balance with ID: 36
+Details: {"employee_id":4,"leave_type_id":6,"enroll_year":null,"balance":"3","availed":"0","accrued":"0","updated_at":"2021-11-05 11:22:22","created_at":"2021-11-05 11:22:22","id":36}
+
+2021-11-05 11:23:32    |    User: (719) Peter Bismonte    |    LeaveBalanceController (update)    |    message    |    Update leave balance with ID: 36
+From: {"employee_id":4,"leave_type_id":6,"enroll_year":null,"balance":"3.00","availed":"0.00","accrued":"0.00"}
+To: {"id":36,"employee_id":4,"leave_type_id":6,"enroll_year":null,"balance":"7","availed":"0.00","accrued":"0.00","created_at":"2021-11-05 11:22:22","updated_at":"2021-11-05 11:23:32"}
+
+2021-11-05 11:23:51    |    User: (719) Peter Bismonte    |    LeaveBalanceController (destroy)    |    message    |    Delete leave balance with ID: 36
+Details: {"id":36,"employee_id":4,"leave_type_id":6,"enroll_year":null,"balance":"7.00","availed":"0.00","accrued":"0.00","created_at":"2021-11-05 11:22:22","updated_at":"2021-11-05 11:23:32"}
+
+2021-11-05 11:25:35    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    
+
+2021-11-05 11:28:07    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    
+Update leave balance with ID: 25
+From: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"7.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 13:25:02","updated_at":"2021-11-05 11:20:35"}
+To: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"3","availed":"0","accrued":"0","created_at":"2021-10-15 13:25:02","updated_at":"2021-11-05 11:28:07"}
+
+2021-11-05 11:28:11    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    
+Create new leave balance with ID: 37
+Details: {"employee_id":4,"leave_type_id":6,"enroll_year":null,"balance":"3","availed":"0","accrued":"0","updated_at":"2021-11-05 11:28:11","created_at":"2021-11-05 11:28:11","id":37}
+
+2021-11-05 12:36:54    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 787
+From: {rate_id: 3, employment_status: Probationary}
+To: {rate_id: 1, employment_status: Regular}
+
+2021-11-05 12:39:24    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    Create new leave balance with ID: 38
+Details: {"employee_id":6,"leave_type_id":6,"enroll_year":null,"balance":"7","availed":"0","accrued":"0","updated_at":"2021-11-05 12:39:24","created_at":"2021-11-05 12:39:24","id":38}
+
+2021-11-05 12:39:46    |    User: (719) Peter Bismonte    |    LeaveBalanceController (destroy)    |    message    |    Delete leave balance with ID: 38
+Details: {"id":38,"employee_id":6,"leave_type_id":6,"enroll_year":null,"balance":"7.00","availed":"0.00","accrued":"0.00","created_at":"2021-11-05 12:39:24","updated_at":"2021-11-05 12:39:24"}
+
+2021-11-05 12:40:09    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    
+Create new leave balance with ID: 39
+Details: {"employee_id":6,"leave_type_id":6,"enroll_year":null,"balance":"3","availed":"0","accrued":"0","updated_at":"2021-11-05 12:40:09","created_at":"2021-11-05 12:40:09","id":39}
+
+2021-11-05 12:41:01    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    
+Update leave balance with ID: 27
+From: {"id":27,"employee_id":5,"leave_type_id":6,"enroll_year":null,"balance":"7.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 14:10:01","updated_at":"2021-10-15 14:45:22"}
+To: {"id":27,"employee_id":5,"leave_type_id":6,"enroll_year":null,"balance":"2","availed":"0","accrued":"0","created_at":"2021-10-15 14:10:01","updated_at":"2021-11-05 12:41:01"}
+Update leave balance with ID: 39
+From: {"id":39,"employee_id":6,"leave_type_id":6,"enroll_year":null,"balance":"3.00","availed":"0.00","accrued":"0.00","created_at":"2021-11-05 12:40:09","updated_at":"2021-11-05 12:40:09"}
+To: {"id":39,"employee_id":6,"leave_type_id":6,"enroll_year":null,"balance":"2","availed":"0","accrued":"0","created_at":"2021-11-05 12:40:09","updated_at":"2021-11-05 12:41:01"}
+
+2021-11-05 13:16:45    |    User: (719) Peter Bismonte    |    EmployeeController (updateRoles)    |    Message    |    Update roles for user ID: 53
+New roles: 5 6 7 8 
+
+2021-11-05 14:38:56    |    User: (719) Peter Bismonte    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver with approver ID and employee ID: 1, 861
+Details: {"approver_id":1,"employee_id":861,"level":1,"updated_at":"2021-11-05 14:38:56","created_at":"2021-11-05 14:38:56","id":0}
+
+2021-11-05 14:39:28    |    User: (719) Peter Bismonte    |    ApproverController (store)    |    message    |    Create new approver with ID: 2
+Details: {"employee_id":83,"updated_at":"2021-11-05 14:39:28","created_at":"2021-11-05 14:39:28","id":2}
+
+2021-11-05 14:39:44    |    User: (719) Peter Bismonte    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver with approver ID and employee ID: 2, 861
+Details: {"approver_id":2,"employee_id":861,"level":2,"updated_at":"2021-11-05 14:39:44","created_at":"2021-11-05 14:39:44","id":0}
+
+2021-11-05 17:46:09    |    User: (719) Peter Bismonte    |    LeaveBalanceController (store)    |    message    |    Create new leave balance with ID: 40
+Details: {"employee_id":861,"leave_type_id":5,"enroll_year":null,"balance":"7","availed":"0","accrued":"0","updated_at":"2021-11-05 17:46:09","created_at":"2021-11-05 17:46:09","id":40}
+
+2021-11-05 17:51:37    |    User: () Mice Dianne Morta    |    LeaveController (store)    |    message    |    Create new leave with ID: 15
+Details: {"employee_id":861,"leave_type_id":6,"reference_no":"tempnumber123","date_from":"2021-11-03","date_to":"2021-11-03","reason":"Headache","status":"Pending","attachment":"noattachment.png","total_days":1,"date_filed":"2021-11-05T09:51:37.275192Z","approve_level":"1","updated_at":"2021-11-05 17:51:37","created_at":"2021-11-05 17:51:37","id":15}
+Create new leave day/s: 
+{"leave_id":15,"leave_date":"2021-11-03","halfday":false,"halfday_type":0,"updated_at":"2021-11-05 17:51:37","created_at":"2021-11-05 17:51:37","id":0}
+
+2021-11-05 18:06:29    |    User: (861) Mice Dianne Morta    |    OverTimeController (store)    |    message    |    Create new overtime with ID: 12
+Details: {"employee_id":861,"work_date":"2021-11-08","reference_no":"tempnumber123","shift":"From: 2021-11-08 07:31:00 To: 2021-11-08 17:00:00","with_break":"No","break_hours":0,"total_hours":2,"time_in":"2021-11-08 17:00:00","time_out":"2021-11-08 15:00","reason":"Work on updates in Logistics IMS","status":"Pending","attachment":"noattachment.png","date_filed":"2021-11-05T10:06:29.466644Z","approve_level":"1","updated_at":"2021-11-05 18:06:29","created_at":"2021-11-05 18:06:29","id":12}
+
+2021-11-05 18:14:09    |    User: () Mice Dianne Morta    |    OfficialBusinessController (store)    |    message    |    Create new official business with ID: 29
+Details: {"employee_id":861,"work_date":"2021-10-01","reference_no":"tempnumber123","shift":"From: 2021-10-01 07:31:00 To: 2021-10-01 17:00:00","with_break":null,"total_hours":37.483333333333334,"time_in":"2021-10-01 07:31:00","time_out":"2021-10-02 21:00","reason":"Canvas","status":"Pending","attachment":"noattachment.png","date_filed":"2021-11-05T10:14:09.932524Z","approve_level":"1","updated_at":"2021-11-05 18:14:09","created_at":"2021-11-05 18:14:09","id":29}
+
+2021-11-05 18:37:24    |    User: (861) Mice Dianne Morta    |    ChangeShiftController (store)    |    message    |    Create new change_shift with ID: 1
+Details: {"employee_id":861,"work_date":"2021-10-01","reference_no":"tempnumber123","shift":"From: 2021-10-01 07:31:00 To: 2021-10-01 17:00:00","time_in":"2021-10-01 12:31","time_out":"2021-10-01 21:00","reason":"My vaccination schedule was in the morning.","status":"Pending","attachment":"noattachment.png","date_filed":"2021-11-05T10:37:24.826363Z","approve_level":"1","updated_at":"2021-11-05 18:37:24","created_at":"2021-11-05 18:37:24","id":1}
+
+2021-11-05 18:50:07    |    User: (861) Mice Dianne Morta    |    ChangeRestDayController (store)    |    message    |    Create new change_rest_day with ID: 1
+Details: {"employee_id":861,"work_date":"2021-11-07","reference_no":"tempnumber123","shift":"Rest day","type":"Rest Day to Shift","time_in":"2021-11-07 07:31","time_out":"2021-11-07 17:00","reason":"One of my co-workers begged me.","status":"Pending","attachment":"noattachment.png","date_filed":"2021-11-05T10:50:07.635302Z","approve_level":"1","updated_at":"2021-11-05 18:50:07","created_at":"2021-11-05 18:50:07","id":1}
+
+2021-11-05 18:51:10    |    User: (861) Mice Dianne Morta    |    MissingTimeLogController (store)    |    message    |    Create new missing_time_log with ID: 4
+Details: {"employee_id":861,"work_date":"2021-11-02","reference_no":"tempnumber123","shift":"From: 2021-11-02 07:31:00 To: 2021-11-02 17:00:00","time_in":"2021-11-02 07:31:00","time_out":"2021-11-02 17:00:00","reason":"I forgot.","status":"Pending","attachment":"noattachment.png","date_filed":"2021-11-05T10:51:10.530230Z","approve_level":"1","updated_at":"2021-11-05 18:51:10","created_at":"2021-11-05 18:51:10","id":4}
+
+2021-11-05 19:08:43    |    User: (861) Mice Dianne Morta    |    ManualAttendanceController (store)    |    message    |    Create new manual_attendance with ID: 9
+Details: {"employee_id":861,"work_date":"2021-10-25","reference_no":"tempnumber123","shift":"From: 2021-10-25 07:31:00 To: 2021-10-25 17:00:00","time_in":"2021-10-25 07:31","time_out":"2021-10-25 17:00","reason":"I have a problem with my fingerprint.","status":"Pending","attachment":"noattachment.png","date_filed":"2021-11-05T11:08:43.984575Z","approve_level":"1","updated_at":"2021-11-05 19:08:43","created_at":"2021-11-05 19:08:43","id":9}
+
+2021-11-05 20:26:17    |    User: () Mice Dianne Morta    |    LeaveController (store)    |    message    |    Create new leave with ID: 16
+Details: {"employee_id":861,"leave_type_id":5,"reference_no":"tempnumber123","date_from":"2021-11-01","date_to":"2021-11-03","reason":"Family bonding","status":"Pending","attachment":"kmJNL5hazb0gbQU4299573.jpeg","total_days":2,"date_filed":"2021-11-05T12:26:17.814369Z","approve_level":"1","updated_at":"2021-11-05 20:26:17","created_at":"2021-11-05 20:26:17","id":16}
+Create new leave day/s: 
+{"leave_id":16,"leave_date":"2021-11-01","halfday":false,"halfday_type":0,"updated_at":"2021-11-05 20:26:17","created_at":"2021-11-05 20:26:17","id":0}
+{"leave_id":16,"leave_date":"2021-11-02","halfday":false,"halfday_type":0,"updated_at":"2021-11-05 20:26:17","created_at":"2021-11-05 20:26:17","id":0}
+
+2021-11-05 20:27:54    |    User: (861) Mice Dianne Morta    |    LeaveController (cancelApp)    |    Update status to 'Canceled'    |    Cancel leave with ID: 16
+Details: {"id":16,"employee_id":861,"leave_type_id":"5","reference_no":"LV-16","date_from":"2021-11-01","date_to":"2021-11-03","total_days":"2.00","reason":"Family bonding","attachment":"kmJNL5hazb0gbQU4299573.jpeg","date_filed":"2021-11-05","status":"Canceled","remarks":null,"approve_level":1,"created_at":"2021-11-05 20:26:17","updated_at":"2021-11-05 20:27:54"}
+
+2021-11-05 20:30:54    |    User: () Mice Dianne Morta    |    LeaveController (store)    |    message    |    Create new leave with ID: 17
+Details: {"employee_id":861,"leave_type_id":5,"reference_no":"tempnumber123","date_from":"2021-11-02","date_to":"2021-11-04","reason":"Family bonding","status":"Pending","attachment":"noattachment.png","total_days":1.5,"date_filed":"2021-11-05T12:30:54.216705Z","approve_level":"1","updated_at":"2021-11-05 20:30:54","created_at":"2021-11-05 20:30:54","id":17}
+Create new leave day/s: 
+{"leave_id":17,"leave_date":"2021-11-02","halfday":false,"halfday_type":0,"updated_at":"2021-11-05 20:30:54","created_at":"2021-11-05 20:30:54","id":0}
+{"leave_id":17,"leave_date":"2021-11-04","halfday":false,"halfday_type":0,"updated_at":"2021-11-05 20:30:54","created_at":"2021-11-05 20:30:54","id":0}
+
+2021-11-05 20:33:35    |    User: (861) Mice Dianne Morta    |    OverTimeController (store)    |    message    |    Create new overtime with ID: 13
+Details: {"employee_id":861,"work_date":"2021-11-12","reference_no":"tempnumber123","shift":"From: 2021-11-12 07:31:00 To: 2021-11-12 17:00:00","with_break":"No","break_hours":0,"total_hours":3,"time_in":"2021-11-12 17:00:00","time_out":"2021-11-12 20:00","reason":"Work on updates in Infosystem","status":"Pending","attachment":"noattachment.png","date_filed":"2021-11-05T12:33:35.777783Z","approve_level":"1","updated_at":"2021-11-05 20:33:35","created_at":"2021-11-05 20:33:35","id":13}
+
+2021-11-05 20:36:28    |    User: () Mice Dianne Morta    |    OfficialBusinessController (store)    |    message    |    Create new official business with ID: 30
+Details: {"employee_id":861,"work_date":"2021-11-18","reference_no":"tempnumber123","shift":"From: 2021-11-18 07:31:00 To: 2021-11-18 17:00:00","with_break":null,"total_hours":9.483333333333333,"time_in":"2021-11-18 07:31:00","time_out":"2021-11-18 17:00:00","reason":"Troubleshoot","status":"Pending","attachment":"noattachment.png","date_filed":"2021-11-05T12:36:28.861517Z","approve_level":"1","updated_at":"2021-11-05 20:36:28","created_at":"2021-11-05 20:36:28","id":30}
+
+2021-11-05 20:37:49    |    User: (861) Mice Dianne Morta    |    ChangeShiftController (store)    |    message    |    Create new change_shift with ID: 2
+Details: {"employee_id":861,"work_date":"2021-11-19","reference_no":"tempnumber123","shift":"From: 2021-11-19 07:31:00 To: 2021-11-19 17:00:00","time_in":"2021-11-19 12:31","time_out":"2021-11-19 20:00","reason":"I need to take care of my younger brother.","status":"Pending","attachment":"noattachment.png","date_filed":"2021-11-05T12:37:49.450269Z","approve_level":"1","updated_at":"2021-11-05 20:37:49","created_at":"2021-11-05 20:37:49","id":2}
+
+2021-11-05 20:39:30    |    User: (861) Mice Dianne Morta    |    ChangeRestDayController (store)    |    message    |    Create new change_rest_day with ID: 2
+Details: {"employee_id":861,"work_date":"2021-11-21","reference_no":"tempnumber123","shift":"Rest day","type":"Rest Day to Shift","time_in":"2021-11-21 07:31","time_out":"2021-11-05 17:00","reason":"I have a very important meeting on my rest day.","status":"Pending","attachment":"noattachment.png","date_filed":"2021-11-05T12:39:30.957760Z","approve_level":"1","updated_at":"2021-11-05 20:39:30","created_at":"2021-11-05 20:39:30","id":2}
+
+2021-11-05 20:41:25    |    User: (861) Mice Dianne Morta    |    MissingTimeLogController (store)    |    message    |    Create new missing_time_log with ID: 5
+Details: {"employee_id":861,"work_date":"2021-11-19","reference_no":"tempnumber123","shift":"From: 2021-11-19 07:31:00 To: 2021-11-19 17:00:00","time_in":"2021-11-19 07:31:00","time_out":"2021-11-19 17:00:00","reason":"I was in a rush.","status":"Pending","attachment":"noattachment.png","date_filed":"2021-11-05T12:41:25.216801Z","approve_level":"1","updated_at":"2021-11-05 20:41:25","created_at":"2021-11-05 20:41:25","id":5}
+
+2021-11-05 20:42:51    |    User: (861) Mice Dianne Morta    |    ManualAttendanceController (store)    |    message    |    
+Create new manual_attendance with ID: 10
+Details: {"employee_id":861,"work_date":"2021-11-25","shift":"From: 2021-11-25 07:31:00To: 2021-11-25 17:00:00","time_in":"2021-11-25 07:31:00","time_out":"2021-11-25 17:00:00","reference_no":"tempnumber123","reason":"The scanner kept showing errors.","attachment":"noattachment.png","date_filed":"2021-11-05T12:42:51.570772Z","approve_level":"1","updated_at":"2021-11-05 20:42:51","created_at":"2021-11-05 20:42:51","id":10}
+Create new manual_attendance with ID: 11
+Details: {"employee_id":861,"work_date":"2021-11-26","shift":"From: 2021-11-26 07:31:00To: 2021-11-26 17:00:00","time_in":"2021-11-26 07:31:00","time_out":"2021-11-26 17:00:00","reference_no":"tempnumber123","reason":"The scanner kept showing errors.","attachment":"noattachment.png","date_filed":"2021-11-05T12:42:51.577107Z","approve_level":"1","updated_at":"2021-11-05 20:42:51","created_at":"2021-11-05 20:42:51","id":11}
+Create new manual_attendance with ID: 12
+Details: {"employee_id":861,"work_date":"2021-11-27","shift":"From: 2021-11-27 07:31:00To: 2021-11-27 11:00:00","time_in":"2021-11-27 07:31:00","time_out":"2021-11-27 11:00:00","reference_no":"tempnumber123","reason":"The scanner kept showing errors.","attachment":"noattachment.png","date_filed":"2021-11-05T12:42:51.580393Z","approve_level":"1","updated_at":"2021-11-05 20:42:51","created_at":"2021-11-05 20:42:51","id":12}
+
+2021-11-09 11:20:45    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 832
+From: {employment_status: Probationary}
+To: {employment_status: Regular}
+
+2021-11-09 11:20:57    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 833
+From: {employment_status: Trainee}
+To: {employment_status: Regular}
+
+2021-11-09 11:23:00    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1
+From: {employment_status: Regular}
+To: {employment_status: Trainee}
+
+2021-11-09 11:24:01    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1
+From: {employment_status: Trainee}
+To: {employment_status: Regular}
+
+2021-11-09 15:57:07    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 835
+From: {employment_status: Trainee}
+To: {employment_status: Trainee}
+
+2021-11-09 16:00:15    |    User: (719) Peter Bismonte    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver with approver ID and employee ID: 2, 719
+Details: {"approver_id":2,"employee_id":719,"level":1,"updated_at":"2021-11-09 16:00:15","created_at":"2021-11-09 16:00:15","id":0}
+
+2021-11-18 08:55:00    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 835
+From: {employment_status: Trainee}
+To: {employment_status: Regular}
+
+2021-11-18 09:58:14    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 789
+From: {employment_status: Probationary}
+To: {employment_status: Probationary}
+
+2021-11-18 09:59:17    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 789
+From: {employment_status: Probationary}
+To: {employment_status: Regular}
+
+2021-11-18 14:23:57    |    User: (719) Peter Bismonte    |    LeaveBalanceController (update)    |    message    |    Update leave balance with ID: 25
+From: {"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"3.00","availed":"0.00","accrued":"0.00"}
+To: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"4.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 13:25:02","updated_at":"2021-11-18 14:23:57"}
+
+2021-11-18 14:24:59    |    User: (719) Peter Bismonte    |    LeaveBalanceController (update)    |    message    |    Update leave balance with ID: 25
+From: {"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"4.00","availed":"0.00","accrued":"0.00"}
+To: {"id":25,"employee_id":1,"leave_type_id":6,"enroll_year":null,"balance":"3.00","availed":"0.00","accrued":"0.00","created_at":"2021-10-15 13:25:02","updated_at":"2021-11-18 14:24:59"}
+
+2021-11-24 10:57:51    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 861
+From: {email1: MDMorta@dctechmicro.com}
+To: {email1: mdmorta@dctechmicro.com}
+
+2021-11-24 14:25:01    |    User: (719) Peter Bismonte    |    EmployeeApproverController (destroy)    |    message    |    Delete employee_approver with approver ID and employee ID: 1, 861
+Details: {"approver_id":1,"employee_id":861,"level":1,"created_at":"2021-05-04 08:43:07","updated_at":"2021-05-04 08:43:07"}
+
+2021-11-24 14:25:39    |    User: (719) Peter Bismonte    |    EmployeeApproverController (destroy)    |    message    |    Delete employee_approver with approver ID and employee ID: 7, 861
+Details: {"approver_id":7,"employee_id":861,"level":2,"created_at":"2021-05-04 08:43:18","updated_at":"2021-05-04 08:43:18"}
+
+2021-11-24 14:25:46    |    User: (719) Peter Bismonte    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver with approver ID and employee ID: 1, 861
+Details: {"approver_id":1,"employee_id":861,"level":1,"updated_at":"2021-11-24 14:25:46","created_at":"2021-11-24 14:25:46","id":0}
+
+2021-11-24 14:25:53    |    User: (719) Peter Bismonte    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver with approver ID and employee ID: 1, 861
+Details: {"approver_id":1,"employee_id":861,"level":2,"updated_at":"2021-11-24 14:25:53","created_at":"2021-11-24 14:25:53","id":0}
+
+2021-11-24 14:25:57    |    User: (719) Peter Bismonte    |    EmployeeApproverController (destroy)    |    message    |    Delete employee_approver with approver ID and employee ID: 1, 861
+Details: {"approver_id":1,"employee_id":861,"level":1,"created_at":"2021-11-24 14:25:46","updated_at":"2021-11-24 14:25:46"}
+
+2021-11-24 14:26:03    |    User: (719) Peter Bismonte    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver with approver ID and employee ID: 1, 861
+Details: {"approver_id":1,"employee_id":861,"level":1,"updated_at":"2021-11-24 14:26:03","created_at":"2021-11-24 14:26:03","id":0}
+

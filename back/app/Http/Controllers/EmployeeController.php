@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\employee_status_history;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -15,10 +16,25 @@ class EmployeeController extends Controller
     {
         try {
             $tbl = Employee::with(['user', 'deduction.type', 'earning.type', 'group', 'rate', 'position', 'branch', 'department', 'payslip.pay_period'])
-                ->get();
+            ->where('employment_status', 'Trainee')
+            ->whereHas('employeeStatus', function($query) {
+                $query
+                    ->where('status', 'Trainee')
+                    ->latest()
+                    ->where('end_date', '<=', Carbon::today());
+            })
+            ->orWhere('employment_status', 'Probationary')
+            ->whereHas('employeeStatus', function($query) {
+                $query
+                    ->where('status', 'Probationary')
+                    ->latest()
+                    ->where('end_date', '<=', Carbon::today());
+            });
+            $others = Employee::with(['user', 'deduction.type', 'earning.type', 'group', 'rate', 'position', 'branch', 'department', 'payslip.pay_period'])
+            ->whereNotIn('id', (clone $tbl)->pluck('id'));
+            $employees = (clone $tbl)->union($others)->get();
 
-
-            return $this->ForQuery($tbl);
+            return $this->ForQuery($employees);
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);
         }
@@ -28,11 +44,25 @@ class EmployeeController extends Controller
         $retVal = [];
         foreach ($tbl as $item) {
             $item->chk = false;
+            $item->to_promote = 'no';
 
             $user_role = User::with(['roles'])
                 ->where('employee_id', $item->id)
                 ->first();
             $item->roles  = $user_role->roles;
+            $emp_stat_hist = employee_status_history::where('employee_id', $item->id)
+                ->latest()
+                ->first();
+            if (@isset($emp_stat_hist->start_date)) {
+                $item->start_date = $emp_stat_hist->start_date;
+                $item->end_date = $emp_stat_hist->end_date;
+
+                if ($emp_stat_hist->end_date != null && $emp_stat_hist->end_date <= Carbon::today())
+                    $item->to_promote = 'yes';
+            } else {
+                $item->start_date = null;
+                $item->end_date = null;
+            }
 
             $c = collect();
             $c->put("sample", "true");
@@ -72,6 +102,12 @@ class EmployeeController extends Controller
                 'password' => bcrypt("123456789"),
                 'remember_token' => str_random(10)
              ]);
+             $emp_status = employee_status_history::create([
+                'employee_id' => $emp->id,
+                'status' => $request->employment_status,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date
+            ]);
 
             \Logger::instance()->log(
                 Carbon::now(),
@@ -80,7 +116,8 @@ class EmployeeController extends Controller
                 $this->cname,
                 "store",
                 "message",
-                "Create new User with ID: " . $user->id . "\nEmployee: " .  $emp
+                "Create new User with ID: " . $user->id . "\nDetails: " .  $emp .
+                "\nCreate new employee_status with ID: " . $emp_status->id . "\nDetails: " . $emp_status
             );
             DB::commit();
             return $this->index();
@@ -111,13 +148,38 @@ class EmployeeController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $cmd  = Employee::findOrFail($id);
+            /* $cmd  = Employee::findOrFail($id);
             $logFrom = $cmd->replicate();
             $input = $request->all();
-
             $cmd->fill($input)->save();
-
-            $logTo = $cmd;
+            $logTo = $cmd; */
+            $changes = $request->edits;
+            $logFrom = "";
+            $logTo = "";
+            $emp_update = [];
+            $emp_query = Employee::where('id', $id);
+            foreach ($changes as $key => $value) {
+                if ($value == 'employment_status') {
+                    if ($request->employment_status != 'Trainee' &&
+                        $request->employment_status != 'Probationary') {
+                        $request->end_date = null;
+                    }
+                    employee_status_history::create([
+                        'employee_id' => $id,
+                        'status' => $request->employment_status,
+                        'start_date' => $request->start_date,
+                        'end_date' => $request->end_date
+                    ]);
+                }
+                foreach ($request->toArray() as $key2 => $value2) {
+                    if ($value == $key2) {
+                        $logFrom .= $value . ": " . (clone $emp_query)->value($value) . ", ";
+                        $emp_update[$value] = $value2;
+                        $logTo .= $value . ": " . $value2 . ", ";
+                    }
+                }
+            }
+            tap((clone $emp_query))->update($emp_update)->first();
 
             \Logger::instance()->log(
                 Carbon::now(),
@@ -126,7 +188,8 @@ class EmployeeController extends Controller
                 $this->cname,
                 "update",
                 "message",
-                "Update Employee with ID: " . $id . "\nFrom: " . $logFrom . "\nTo: " . $logTo
+                "Update Employee with ID: " . $id . "\nFrom: {" . substr($logFrom, 0, -2) . "}\nTo: {" .
+                    substr($logTo, 0, -2) . "}"
             );
 
             return $this->index();
@@ -156,6 +219,7 @@ class EmployeeController extends Controller
             $tbl2 = User::where('employee_id', $bioID)->first();
             User::where('employee_id', $bioID)->delete();
             Employee::destroy($bioID);
+            employee_status_history::where('employee_id', $bioID)->delete();
 
             \Logger::instance()->log(
                 Carbon::now(),
@@ -281,7 +345,6 @@ class EmployeeController extends Controller
     }
     public function multipleFilter(Request $request)
     {
-
         try {
             $data = (object) $request->data;
 
@@ -310,6 +373,9 @@ class EmployeeController extends Controller
                 $tbl->where("middle_name", 'like', '%' . $data->middle_name . '%');
             if ($request->gender)
                 $tbl->where("gender", $data->gender);
+            else if (!$request->group && !$request->rate && !$request->position && !$request->branch && !$request->department &&
+                !$request->employment_status && !$request->first_name && !$request->last_name && !$request->middle_name && !$request->gender)
+                return $this->index();
 
             return $this->ForQuery($tbl->get());
         } catch (\Exception $ex) {
@@ -333,7 +399,7 @@ class EmployeeController extends Controller
             <p>Username : <b>" . $request->email . "</b></p>
             <p>Password : <b>123456789</b></p>
             <p>Please change your password after you login.</p>
-            <p>Click <a href='http://hrmess.dctechmicro.com'>here</a> to log in.</p>
+            <p>Click <a href='https://hrmess.dctechmicro.com'>here</a> to log in.</p>
 
             <br />
 
@@ -369,5 +435,23 @@ class EmployeeController extends Controller
         } else {
             return $dat;
         }
+    }
+    public function getToPromote() {
+        return Employee::with(['user', 'deduction.type', 'earning.type', 'group', 'rate', 'position', 'branch', 'department', 'payslip.pay_period', 'employeeStatus'])
+            ->where('employment_status', 'Trainee')
+            ->whereHas('employeeStatus', function($query) {
+                $query
+                    ->where('status', 'Trainee')
+                    ->latest()
+                    ->where('end_date', '<=', Carbon::today());
+            })
+            ->orWhere('employment_status', 'Probationary')
+            ->whereHas('employeeStatus', function($query) {
+                $query
+                    ->where('status', 'Probationary')
+                    ->latest()
+                    ->where('end_date', '<=', Carbon::today());
+            })
+            ->count();
     }
 }
