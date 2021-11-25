@@ -65,7 +65,14 @@
             <td class="my-td">Longitude:</td>
             <td class="my-td">{{ marker.position.lng }}</td>
           </tr>
-
+          <tr>
+            <td class="my-td">Location:</td>
+            <td class="my-td" colspan="3">
+              <a
+                :href="'https://www.google.com/maps/@'+marker.position.lat+','+marker.position.lng+',19z'"
+              >www.google.com/maps</a>
+            </td>
+          </tr>
           <tr>
             <td class="my-td">Punch Time:</td>
             <td class="my-td" colspan="3">{{ dt.split("/").join("-") }}</td>
@@ -198,7 +205,7 @@ export default {
       this.$http.post("api/BioAttendance", temp).then(response => {
         console.log(response.body);
         swal({
-          title: type + " Recorded!",
+          title: type + " recorded and sent for approval!",
           icon: "success"
         });
       });

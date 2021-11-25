@@ -1074,28 +1074,30 @@ class ApproverController extends Controller
                 if ($tbl->approve_level != 0) {
                     if ($r == 1) {
 
-                        if ($level <= $tbl->approve_level) {
-                            $log_to = biometric_attendance::where('id', $id)->update([
-                                'status' => 'Approved',
-                                'approve_level' => '0'
-                            ]);
+                        // if ($level <= $tbl->approve_level) {
+                        $log_to = biometric_attendance::where('id', $id)->update([
+                            'status' => 'Approved',
+                            'approve_level' => '0'
+                        ]);
 
-                            $type = 'time_out';
-                            $workdate = substr($tbl->punch_time, 0, 10);
-                            if ($tbl->type == 'Time In')
-                                $type = 'time_in';
-                            //
-                            dtr::where('employee_id', $eid)
-                                ->where('work_date', $workdate)
-                                ->update([
-                                    $type => $tbl->punch_time
-                                ]);
-                        } else {
-                            $lvl = $tbl->approve_level + 1;
-                            $log_to = biometric_attendance::where('id', $id)->update([
-                                'approve_level' => $lvl
+                        $type = 'time_out';
+                        $workdate = substr($tbl->punch_time, 0, 10);
+                        if ($tbl->type == 'Time In')
+                            $type = 'time_in';
+                        //
+                        dtr::where('employee_id', $eid)
+                            ->where('work_date', $workdate)
+                            ->update([
+                                $type => $tbl->punch_time
                             ]);
-                        }
+                        // } else {
+                        //     $lvl = $tbl->approve_level + 1;
+                        //     $log_to = biometric_attendance::where('id', $id)->update([
+                        //         'approve_level' => $lvl
+                        //     ]);
+                        //     //send email to next approver HERE
+
+                        // }
                     } else {
                         $log_to = biometric_attendance::where('id', $id)->update([
                             'status' => 'Disapproved'
