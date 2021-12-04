@@ -25,6 +25,7 @@ import Navbar from "./components/Navbar.vue";
 import Sidebar from "./components/Sidebar.vue";
 import Login from "./components/user/Login.vue";
 import Register from "./components/user/Register.vue";
+import Keycloak from "keycloak-js";
 
 export default {
   components: {
@@ -44,7 +45,7 @@ export default {
   },
 
   created() {
-    this.isAuth = this.$auth.isAuthenticated();
+    this.isAuth = this.$keycloak.authenticated;
     this.load();
   },
   mounted() {

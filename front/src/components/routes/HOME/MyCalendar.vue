@@ -30,7 +30,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .textLabel {
   margin-top: 9px;

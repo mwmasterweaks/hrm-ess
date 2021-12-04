@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\biometric_attendance;
+use App\dtr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BiometricAttendanceController extends Controller
 {
@@ -35,44 +37,57 @@ class BiometricAttendanceController extends Controller
      */
     public function store(Request $request)
     {
-        $bio = biometric_attendance::create($request->all());
-        if (true) {
-            $message = "
-            <html>
-            <head>
-            </head>
-            <body>
-            " . $request->msg . "
-            </body>
-            <style>
-            .my-td {
-            padding: 5px;
-            }
-            .my-table,
-            .my-td {
-            border: 1px solid slategrey;
-            }
-            .my-table {
-            border-collapse: collapse;
-            width: 100%;
-            }
-            </style>
-            </html>";
-            $message = str_replace("REFFFFFFFFF", "BA-" . $bio->id, $message);
-            $message = str_replace("biotype", $request->type, $message);
-            $message = str_replace("getbioid", $bio->id, $message);
-        }
-        //return $request;
-        return \Logger::instance()->mailerZimbra(
-            "Biometric Approval",
-            $message,
-            $request->user_email,
-            $request->user_name,
-            $request->sendTo,
-            $request->CCto
-        );
-        // walay logket
-        return $bio;
+        $work_date = substr($request->punch_time, 0, 10);
+        $type = $request->type == 'Time In' ? 'time_in' : 'time_out';
+        $dtr = dtr::where('employee_id', $request->employee_id)
+            ->where('work_date', $work_date);
+        $dtr_count = (clone $dtr)->count();
+        $dtr_row = (clone $dtr)->first();
+        // return $dtr;
+        if ($dtr_count > 0) {
+            if ($dtr_row->time_in == NULL) { // time_out too
+                $bio = biometric_attendance::create($request->all());
+                (clone $dtr)->update([$type => $request->punch_time]);
+
+                if (true) {
+                    $message = "
+                    <html>
+                    <head>
+                    </head>
+                    <body>
+                    " . $request->msg . "
+                    </body>
+                    <style>
+                    .my-td {
+                    padding: 5px;
+                    }
+                    .my-table,
+                    .my-td {
+                    border: 1px solid slategrey;
+                    }
+                    .my-table {
+                    border-collapse: collapse;
+                    width: 100%;
+                    }
+                    </style>
+                    </html>";
+                    $message = str_replace("REFFFFFFFFF", "BA-" . $bio->id, $message);
+                    $message = str_replace("biotype", $request->type, $message);
+                    $message = str_replace("getbioid", $bio->id, $message);
+                }
+
+                \Logger::instance()->mailerZimbra(
+                    "Biometric Approval",
+                    $message,
+                    $request->user_email,
+                    $request->user_name,
+                    $request->sendTo,
+                    $request->CCto
+                );
+
+                return 1;
+            } else return 2;
+        } else return 0;
     }
 
     /**

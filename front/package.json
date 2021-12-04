@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --port 3000 --open --hot --host 192.168.0.195",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "bootstrap-vue": "^2.15.0",
     "chart.js": "^2.8.0",
     "file-saver": "^2.0.2",
+    "keycloak-js": "^15.0.2",
     "moment": "^2.24.0",
     "portal-vue": "^2.1.5",
     "pretty-checkbox-vue": "^1.1.9",

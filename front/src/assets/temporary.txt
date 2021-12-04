@@ -6,9 +6,11 @@ to do:
 on stand-by:
 - employment status should be null if not trainee nor probationary // done
 - finish everthing about leave balance  // done
+- to review date format (concerning timezones)
 
 current activity:
-- to review date format (concerning timezones)
+- remove approval process in biometric attendance
+- prevent users from cheating when logging in by asking a favor from co-workers
 
 summary report files
 - api.php
@@ -80,3 +82,6 @@ requestor: Peter Bismonte
 
 requestor: Director Go
 - notify user if the employee already completed the training and probationary period
+
+
+dec 3, 2021 - mice login time 7:27:02
