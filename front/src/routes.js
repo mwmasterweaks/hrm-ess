@@ -70,7 +70,7 @@ const router = new VueRouter({
       path: "/home",
       component: MyCalendar,
       meta: {
-        forAuth: true
+        forVisitors: true
       }
     },
     {

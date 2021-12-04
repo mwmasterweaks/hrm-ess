@@ -13,6 +13,7 @@ import VueSidebarMenu from "vue-sidebar-menu";
 import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
 import * as VueGoogleMaps from 'vue2-google-maps';
 import VueGeolocation from 'vue-browser-geolocation';
+import Keycloak from 'keycloak-js';
 
 //import excel from "vue-excel-export";
 
@@ -49,24 +50,44 @@ if (window.location.host == "hrmess.dctechmicro.com") {
 
 Vue.http.headers.common["Authorization"] = "Bearer " + Vue.auth.getToken();
 
-Router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.forVisitors)) {
-    if (Vue.auth.isAuthenticated()) {
-      next({
-        path: "/home"
-      });
-    } else next();
-  } else if (to.matched.some(record => record.meta.forAuth)) {
-    if (!Vue.auth.isAuthenticated()) {
-      next({
-        path: "/login"
-      });
-    } else next();
-  } else next();
-});
 
-new Vue({
+let initOptions = {
+  url: "https://apiauth.dctechmicro.com:8443/auth/", realm: 'DctecH APPS', clientId: 'hrmess', onLoad: 'login-required'
+}
+
+let keycloak = Keycloak(initOptions);
+console.log(keycloak);
+
+
+// Router.beforeEach((to, from, next) => {
+//   if (to.matched.some(record => record.meta.forVisitors)) {
+//     if (Vue.auth.isAuthenticated()) {
+//       next({
+//         path: "/home"
+//       });
+//     } else next();
+//   } else if (to.matched.some(record => record.meta.forAuth)) {
+//     if (!Vue.auth.isAuthenticated()) {
+//       next({
+//         path: "/login"
+//       });
+//     } else next();
+//   } else next();
+// });
+
+  Vue.prototype.$keycloak = keycloak;
+keycloak.init({ onLoad: initOptions.onLoad }).then((auth) => {
+  if (!auth) {
+    window.location.reload();
+  } else {
+   new Vue({
   el: "#app",
   render: h => h(App),
   router: Router
 });
+  }
+}).catch(() => {
+  alert("failed");
+});
+
+

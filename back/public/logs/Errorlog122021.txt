@@ -1,0 +1,2 @@
+2021-12-03 09:00:27    |    User: (719) Peter Bismonte    |    ApproverController (store)    |    Error    |    SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '1025' for key 'employee_id' (SQL: insert into `approvers` (`employee_id`, `updated_at`, `created_at`) values (1025, 2021-12-03 09:00:27, 2021-12-03 09:00:27))
+

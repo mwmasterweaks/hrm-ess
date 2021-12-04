@@ -14,17 +14,24 @@
             type="button"
             class="btn btn-labeled pull-right btn-default cml-10 cplr-10 cbg-gray"
             @click="btnAdd('Time Out')"
-          >Time Out</b-button>
+            >Time Out</b-button
+          >
           <b-button
             type="button"
             class="btn btn-labeled pull-right btn-default cplr-10 cbg-gray"
             @click="btnAdd('Time In')"
-          >Time In</b-button>
+            >Time In</b-button
+          >
         </p>
       </div>
 
       <div class="elClr panel-body">
-        <GmapMap :center="marker.position" :zoom="15" map-type-id="terrain" style="height: 600px">
+        <GmapMap
+          :center="marker.position"
+          :zoom="15"
+          map-type-id="terrain"
+          style="height: 600px"
+        >
           <GmapMarker
             :position.sync="marker.position"
             :clickable="true"
@@ -55,7 +62,9 @@
             <td class="my-td">biotype</td>
 
             <td class="my-td">Employee:</td>
-            <td class="my-td">{{ user.employee.first_name }} {{ user.employee.last_name }}</td>
+            <td class="my-td">
+              {{ user.employee.first_name }} {{ user.employee.last_name }}
+            </td>
           </tr>
 
           <tr>
@@ -69,8 +78,15 @@
             <td class="my-td">Location:</td>
             <td class="my-td" colspan="3">
               <a
-                :href="'https://www.google.com/maps/@'+marker.position.lat+','+marker.position.lng+',19z'"
-              >www.google.com/maps</a>
+                :href="
+                  'https://www.google.com/maps/@' +
+                    marker.position.lat +
+                    ',' +
+                    marker.position.lng +
+                    ',19z'
+                "
+                >www.google.com/maps</a
+              >
             </td>
           </tr>
           <tr>
@@ -79,7 +95,7 @@
           </tr>
         </table>
 
-        <a :href="$url_back + '/api/publicApproveRequest/1/8' + '/getbioid/' + user.employee_id">
+        <!-- <a :href="$url_back + '/api/publicApproveRequest/1/8' + '/getbioid/' + user.employee_id">
           <button
             size="sm"
             variant="success"
@@ -94,7 +110,7 @@
             title="Disapprove"
             style="float: left; background: #f44336; color: #ffffff; margin: 10px; margin-left: 5px; border:0; border-radius: 3px; padding: 5px;"
           >Decline</button>
-        </a>
+        </a> -->
       </div>
     </div>
   </div>
@@ -204,10 +220,25 @@ export default {
       console.log(temp);
       this.$http.post("api/BioAttendance", temp).then(response => {
         console.log(response.body);
-        swal({
-          title: type + " recorded and sent for approval!",
-          icon: "success"
-        });
+        var mode = type == "Time In" ? "In" : "Out";
+        if (response.body == 0) {
+          swal({
+            title: "No work schedule!",
+            text:
+              "Your work schedule for this day has not been set. Please contact HR Department.",
+            icon: "info"
+          });
+        } else if (response.body == 1) {
+          swal({
+            title: "Logged " + mode + "!",
+            icon: "success"
+          });
+        } else if (response.body == 2) {
+          swal({
+            title: "Log " + mode + " time has already been recorded!",
+            icon: "info"
+          });
+        }
       });
     }
   }
