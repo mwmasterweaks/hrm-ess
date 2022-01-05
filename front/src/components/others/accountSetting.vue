@@ -11,8 +11,8 @@
             <p class="textLabel">Name:</p>
           </div>
           <div class="col-lg-9">
-            {{ user.employee.first_name }} {{ user.employee.middle_name }}
-            {{ user.employee.last_name }}
+            {{ user.first_name }} {{ user.middle_name }}
+            {{ user.last_name }}
           </div>
         </div>
 
@@ -39,9 +39,10 @@
               v-model.trim="user.elBG"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('bgcolor')"
-              >Background Color is required.</small
-            >
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('bgcolor')"
+            >Background Color is required.</small>
           </div>
         </div>
 
@@ -61,9 +62,10 @@
               v-model.trim="user.elClr"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('txcolor')"
-              >Text Color is required.</small
-            >
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('txcolor')"
+            >Text Color is required.</small>
           </div>
         </div>
 
@@ -87,8 +89,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('password')"
-              >{{ errors.first("password") }}</small
-            >
+            >{{ errors.first("password") }}</small>
           </div>
         </div>
         <div class="rowFields mx-auto row">
@@ -106,9 +107,10 @@
               v-validate="'required|confirmed:password'"
               v-model.trim="user.password2"
             />
-            <small class="text-danger pull-left" v-show="errors.has('retype')"
-              >The password confirmation does not match.</small
-            >
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('retype')"
+            >The password confirmation does not match.</small>
           </div>
         </div>
       </div>
@@ -118,9 +120,7 @@
             type="button"
             class="btn btn-success btn-labeled pull-right"
             v-on:click="updateUser"
-          >
-            Update
-          </button>
+          >Update</button>
         </div>
       </div>
     </div>
@@ -165,9 +165,7 @@ export default {
           }).then(update => {
             if (update) {
               this.user.user_name =
-                this.user.employee.first_name +
-                " " +
-                this.user.employee.last_name;
+                this.user.first_name + " " + this.user.last_name;
               this.$http
                 .put("api/User/" + this.user.id, this.user)
                 .then(response => {

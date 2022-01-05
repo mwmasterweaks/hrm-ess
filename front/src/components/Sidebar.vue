@@ -1,11 +1,6 @@
 <template>
   <div>
-    <sidebar-menu
-      :menu="menu"
-      width="300px"
-      :collapsed="true"
-      :hideToggle="true"
-    />
+    <sidebar-menu :menu="menu" width="300px" :collapsed="true" :hideToggle="true" />
   </div>
 </template>
 
@@ -120,19 +115,18 @@ export default {
   created() {
     this.roles = this.$global.getRoles();
     this.user = this.$global.getUser();
+
     this.load();
   },
   mounted() {
     this.$root.$on("Sidebar", () => {
-      //console.log("CALL1");
       this.load();
     });
   },
   methods: {
     load() {
-      var id = this.user.employee_id;
+      var id = this.user.id;
       this.$http.get("api/getToApprove/" + id).then(function(response) {
-        //console.log(response.body.length);
         //save to global
         if (response.body.length > 0) {
           this.menu[3].child[0].badge.text = response.body.length;
@@ -145,7 +139,6 @@ export default {
 
       if (this.roles.hr) {
         this.$http.get("api/getToPromote/").then(function(response) {
-          console.log(response.body);
           if (response.body > 0) {
             this.menu[5].child[0].badge.text = response.body;
             this.menu[5].child[0].badge.class = "vsm--badge_default";

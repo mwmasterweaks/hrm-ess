@@ -86,8 +86,7 @@
           <small
             class="text-danger pull-left"
             v-show="errors.has('earning_types')"
-            >Earning type is required.</small
-          >
+          >Earning type is required.</small>
         </div>
       </div>
 
@@ -110,8 +109,7 @@
           <small
             class="text-danger pull-left"
             v-show="errors.has('effective_date')"
-            >Effective Date is required.</small
-          >
+          >Effective Date is required.</small>
         </div>
       </div>
 
@@ -148,27 +146,15 @@
             v-model.trim="item.amount"
             autocomplete="off"
           />
-          <small class="text-danger pull-left" v-show="errors.has('amount')"
-            >Input valid number.</small
-          >
+          <small class="text-danger pull-left" v-show="errors.has('amount')">Input valid number.</small>
         </div>
       </div>
 
       <template slot="modal-footer" slot-scope="{}">
-        <b-button
-          size="sm"
-          variant="success"
-          @click="btnAdd()"
-          v-if="item.state == 'create'"
-          >Add</b-button
-        >
+        <b-button size="sm" variant="success" @click="btnAdd()" v-if="item.state == 'create'">Add</b-button>
         <span v-else>
-          <b-button size="sm" variant="success" @click="btnUpdate()"
-            >Update</b-button
-          >
-          <b-button size="sm" variant="danger" @click="btnDelete()"
-            >Delete</b-button
-          >
+          <b-button size="sm" variant="success" @click="btnUpdate()">Update</b-button>
+          <b-button size="sm" variant="danger" @click="btnDelete()">Delete</b-button>
         </span>
       </template>
     </b-modal>
@@ -233,9 +219,9 @@ export default {
           this.$root.$emit("pageLoading");
           this.tblisBusy = true;
           this.item.employee_id = this.data.id;
-          this.item.user_id = this.user.employee_id;
+          this.item.user_id = this.user.id;
           this.item.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+            this.user.first_name + " " + this.user.last_name;
 
           this.$http
             .post("api/Earning", this.item)
@@ -275,11 +261,9 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
-              this.item.user_id = this.user.employee_id;
+              this.item.user_id = this.user.id;
               this.item.user_name =
-                this.user.employee.first_name +
-                " " +
-                this.user.employee.last_name;
+                this.user.first_name + " " + this.user.last_name;
 
               this.$http
                 .put("api/Earning/" + this.item.id, this.item)
@@ -317,9 +301,9 @@ export default {
         if (willDelete) {
           this.tblisBusy = true;
           this.$root.$emit("pageLoading");
-          this.item.user_id = this.user.employee_id;
+          this.item.user_id = this.user.id;
           this.item.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+            this.user.first_name + " " + this.user.last_name;
           this.$http
             .post("api/Earning/destroyItem", this.item)
             .then(response => {

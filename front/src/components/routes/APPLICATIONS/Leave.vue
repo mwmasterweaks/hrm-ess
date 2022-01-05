@@ -8,8 +8,7 @@
             v-b-modal="'ModelApply'"
             type="button"
             class="btn btn-success btn-labeled pull-right margin-right-10"
-            >Apply</b-button
-          >
+          >Apply</b-button>
         </p>
       </div>
 
@@ -19,14 +18,9 @@
             <b-col md="5" class="my-1">
               <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input
-                    v-model="tblFilter"
-                    placeholder="Filter"
-                  ></b-form-input>
+                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
-                      >Clear</b-button
-                    >
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -35,10 +29,7 @@
 
             <b-col md="2 " class="my-1">
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select
-                  v-model="perPage"
-                  :options="pageOptions"
-                ></b-form-select>
+                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -70,23 +61,17 @@
                 class="btn btn-warning"
                 v-if="row.item.status == 'Pending'"
                 @click="openModalApprovers(row.item)"
-              >
-                Pending
-              </button>
+              >Pending</button>
               <button
                 class="btn btn-success"
                 v-if="row.item.status == 'Approved'"
                 @click="openModalApprovers(row.item)"
-              >
-                Approved
-              </button>
+              >Approved</button>
               <button
                 class="btn btn-danger"
                 v-if="row.item.status == 'Disapproved'"
                 @click="openModalApprovers(row.item)"
-              >
-                Disapproved
-              </button>
+              >Disapproved</button>
               <span v-if="row.item.status == 'Canceled'">Canceled</span>
             </template>
           </b-table>
@@ -142,8 +127,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('leave_types')"
-              >Leave type is required.</small
-            >
+            >Leave type is required.</small>
           </div>
         </div>
 
@@ -152,9 +136,7 @@
             <p class="textLabel">Available Balance:</p>
           </div>
           <div class="col-lg-9">
-            <p class="textLabel" v-if="available_balance > 0">
-              {{ available_balance }}
-            </p>
+            <p class="textLabel" v-if="available_balance > 0">{{ available_balance }}</p>
           </div>
         </div>
 
@@ -163,9 +145,7 @@
             <p class="textLabel">Total Days:</p>
           </div>
           <div class="col-lg-9">
-            <p class="textLabel" v-if="available_balance > 0">
-              {{ total_days }}
-            </p>
+            <p class="textLabel" v-if="available_balance > 0">{{ total_days }}</p>
           </div>
         </div>
 
@@ -174,9 +154,7 @@
             <p class="textLabel">Remaining Balance:</p>
           </div>
           <div class="col-lg-9">
-            <p class="textLabel" v-if="available_balance > 0">
-              {{ remain_balance }}
-            </p>
+            <p class="textLabel" v-if="available_balance > 0">{{ remain_balance }}</p>
           </div>
         </div>
         <!-- Hide if zero balance -->
@@ -202,8 +180,7 @@
               <small
                 class="text-danger pull-left"
                 v-show="errors.has('date_from')"
-                >Date from is required.</small
-              >
+              >Date from is required.</small>
             </div>
           </div>
 
@@ -228,8 +205,7 @@
               <small
                 class="text-danger pull-left"
                 v-show="errors.has('date_to')"
-                >Date to is required.</small
-              >
+              >Date to is required.</small>
             </div>
           </div>
 
@@ -248,9 +224,7 @@
                 v-validate="'required'"
                 v-model.trim="leave_apply.reason"
               ></textarea>
-              <small class="text-danger pull-left" v-show="errors.has('reason')"
-                >Reason is required.</small
-              >
+              <small class="text-danger pull-left" v-show="errors.has('reason')">Reason is required.</small>
             </div>
           </div>
 
@@ -294,7 +268,7 @@
               </template>
               <template v-slot:cell(type)="data">
                 <span v-html="data.value"></span>
-              </template> -->
+              </template>-->
               <template v-slot:cell(halfday)="row">
                 <p-check
                   v-if="row.item.is_rest_day == 0"
@@ -321,11 +295,7 @@
               </template>
 
               <template v-slot:cell(action)="row">
-                <b-button
-                  size="sm"
-                  variant="info"
-                  @click="removeLeaveinList(row.item)"
-                >
+                <b-button size="sm" variant="info" @click="removeLeaveinList(row.item)">
                   <i class="fas fa-trash-alt"></i>
                 </b-button>
               </template>
@@ -339,8 +309,7 @@
             size="sm"
             variant="success"
             @click="btnApply()"
-            >Submit</b-button
-          >
+          >Submit</b-button>
         </div>
       </b-modal>
       <!-- End ModelApply -->
@@ -363,16 +332,9 @@
             <b-col md="5" class="my-1">
               <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input
-                    v-model="approv_tblFilter"
-                    placeholder="Filter"
-                  ></b-form-input>
+                  <b-form-input v-model="approv_tblFilter" placeholder="Filter"></b-form-input>
                   <b-input-group-append>
-                    <b-button
-                      :disabled="!approv_tblFilter"
-                      @click="approv_tblFilter = ''"
-                      >Clear</b-button
-                    >
+                    <b-button :disabled="!approv_tblFilter" @click="approv_tblFilter = ''">Clear</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -381,10 +343,7 @@
 
             <b-col md="2 " class="my-1">
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select
-                  v-model="approv_perPage"
-                  :options="pageOptions"
-                ></b-form-select>
+                <b-form-select v-model="approv_perPage" :options="pageOptions"></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -502,7 +461,7 @@
               </template>
               <template v-slot:cell(halfday_type)="data">
                 <span v-html="data.value"></span>
-              </template> -->
+              </template>-->
               <template v-slot:cell(halfday)="row">
                 <i class="fas fa-check" v-show="row.item.halfday == 1" />
                 <i class="fas fa-times" v-show="row.item.halfday == 0" />
@@ -516,12 +475,7 @@
         </center>
 
         <template slot="modal-footer" slot-scope="{}">
-          <b-button
-            size="sm"
-            variant="success"
-            v-b-modal.modalthumbnail
-            title="View Attachment"
-          >
+          <b-button size="sm" variant="success" v-b-modal.modalthumbnail title="View Attachment">
             <i class="fas fa-paperclip"></i>
           </b-button>
 
@@ -531,8 +485,7 @@
             title="Cancel Application"
             v-if="item_edit.status == 'Pending'"
             @click="cancelApplication"
-            >Cancel</b-button
-          >
+          >Cancel</b-button>
         </template>
       </b-modal>
       <!-- End ModalViewDetails -->
@@ -540,12 +493,7 @@
       <b-modal id="modalthumbnail" size="xl" hide-footer hide-header>
         <b-container fluid class="p-4 bg-dark">
           <center>
-            <b-img
-              thumbnail
-              fluid
-              :src="$url_back + item_edit.attachment"
-              alt="Image 1"
-            ></b-img>
+            <b-img thumbnail fluid :src="$url_back + item_edit.attachment" alt="Image 1"></b-img>
           </center>
         </b-container>
       </b-modal>
@@ -690,7 +638,7 @@ export default {
   },
   created() {
     this.user = this.$global.getUser();
-    this.load_leave(this.user.employee_id);
+    this.load_leave(this.user.id);
     this.load_leave_types();
   },
   mounted() {},
@@ -738,8 +686,8 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.leave_apply.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
-          this.leave_apply.employee_id = this.user.employee_id;
+            this.user.first_name + " " + this.user.last_name;
+          this.leave_apply.employee_id = this.user.id;
           this.leave_apply.daysList = this.sched_items;
           this.leave_apply.total_days = this.total_days;
           this.$http
@@ -786,7 +734,7 @@ export default {
       this.$http
         .get(
           "api/getBalance/" +
-            this.user.employee_id +
+            this.user.id +
             "/" +
             this.leave_apply.leave_type_id
         )
@@ -806,7 +754,7 @@ export default {
     openModalApprovers(item) {
       this.approv_tblisBusy = true;
       this.$http
-        .get("api/getApprover/" + this.user.employee_id + "/lv/" + item.id)
+        .get("api/getApprover/" + this.user.id + "/lv/" + item.id)
         .then(function(response) {
           this.approv_items = response.body;
           this.approv_tblisBusy = false;
@@ -817,9 +765,9 @@ export default {
       this.$bvModal.show("ModalApprovers");
     },
     cancelApplication() {
-      this.item_edit.user_id = this.user.employee_id;
+      this.item_edit.user_id = this.user.id;
       this.item_edit.user_name =
-        this.user.employee.first_name + " " + this.user.employee.last_name;
+        this.user.first_name + " " + this.user.last_name;
       console.log(this.item_edit);
       swal({
         title: "Notification",
@@ -852,7 +800,7 @@ export default {
               "/" +
               this.leave_apply.date_to +
               "/" +
-              this.user.employee_id
+              this.user.id
           )
           .then(function(response) {
             this.sched_items = response.body.item;

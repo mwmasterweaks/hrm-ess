@@ -35,14 +35,9 @@
             <b-col md="5" class="my-1">
               <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input
-                    v-model="tblFilter"
-                    placeholder="Filter"
-                  ></b-form-input>
+                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
-                      >Clear</b-button
-                    >
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -52,17 +47,12 @@
                 v-b-modal="'modalEmployeeFilter'"
                 type="button"
                 class="btn btn-success btn-labeled pull-right margin-left-10"
-              >
-                Multiple Filter
-              </button>
+              >Multiple Filter</button>
             </b-col>
 
             <b-col md="2 " class="my-1">
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select
-                  v-model="perPage"
-                  :options="pageOptions"
-                ></b-form-select>
+                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -158,7 +148,8 @@
               >
                 <i class="fas fa-envelope-open-text"></i>
               </button>
-              &nbsp;<i
+              &nbsp;
+              <i
                 class="fas fa-circle fa-xs"
                 v-if="row.item.to_promote == 'yes'"
                 style="color: #cf2d2d;"
@@ -195,8 +186,8 @@
                     class="p-icon p-curve p-jelly"
                     color="primary"
                   >
-                    <i slot="extra" class="icon fas fa-check"></i> </p-check
-                  >Check all
+                    <i slot="extra" class="icon fas fa-check"></i>
+                  </p-check>Check all
                 </div>
               </div>
               <div class="col-md-5" v-if="item_selected.length > 0">
@@ -297,9 +288,10 @@
               v-model.trim="item_edit.id"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('bio_id')"
-              >Biometric ID is required.</small
-            >
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('bio_id')"
+            >Biometric ID is required.</small>
           </div>
         </div>
 
@@ -322,9 +314,10 @@
               autofocus="on"
               @input="changes('first_name')"
             />
-            <small class="text-danger pull-left" v-show="errors.has('fname')"
-              >First Name is required.</small
-            >
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('fname')"
+            >First Name is required.</small>
           </div>
         </div>
 
@@ -366,9 +359,7 @@
               autocomplete="off"
               @input="changes('last_name')"
             />
-            <small class="text-danger pull-left" v-show="errors.has('lname')"
-              >Last Name is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('lname')">Last Name is required.</small>
           </div>
         </div>
 
@@ -387,9 +378,7 @@
               v-validate="'required'"
               @input="changes('gender')"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('genders')"
-              >Gender is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('genders')">Gender is required.</small>
           </div>
         </div>
 
@@ -414,8 +403,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('date_hired')"
-              >Date Hired is required.</small
-            >
+            >Date Hired is required.</small>
           </div>
         </div>
 
@@ -434,9 +422,7 @@
               v-validate="'required'"
               @input="changes('group_id')"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('groups')"
-              >Group is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('groups')">Group is required.</small>
           </div>
         </div>
 
@@ -455,9 +441,7 @@
               v-validate="'required'"
               @input="changes('rate_id')"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('rates')"
-              >Rate is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('rates')">Rate is required.</small>
           </div>
         </div>
 
@@ -479,8 +463,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('positions')"
-              >Position is required.</small
-            >
+            >Position is required.</small>
           </div>
         </div>
 
@@ -499,9 +482,7 @@
               v-validate="'required'"
               @input="changes('branch_id')"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('branches')"
-              >Branch is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('branches')">Branch is required.</small>
           </div>
         </div>
 
@@ -523,8 +504,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('departments')"
-              >Department is required.</small
-            >
+            >Department is required.</small>
           </div>
         </div>
 
@@ -547,8 +527,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('employment_statuses')"
-              >Employment Status is required.</small
-            >
+            >Employment Status is required.</small>
             <div style="display: flex; flex: 2.5">
               <span>&nbsp;From</span>
               <b-form-datepicker
@@ -564,8 +543,7 @@
                   item_edit.employment_status == 'Trainee' ||
                     item_edit.employment_status == 'Probationary'
                 "
-                >&nbsp;To</span
-              >
+              >&nbsp;To</span>
               <b-form-datepicker
                 v-if="
                   item_edit.employment_status == 'Trainee' ||
@@ -585,8 +563,9 @@
               class="px-2"
               title="Status History"
               @click="statusHistory = 1"
-              ><i class="fas fa-history"></i
-            ></b-button>
+            >
+              <i class="fas fa-history"></i>
+            </b-button>
             <b-button
               v-if="statusHistory == 1 && status_histories.length > 0"
               variant="info"
@@ -594,8 +573,9 @@
               class="px-2"
               title="Status History"
               @click="statusHistory = 0"
-              ><i class="fas fa-history"></i
-            ></b-button>
+            >
+              <i class="fas fa-history"></i>
+            </b-button>
           </div>
           <div class="col-lg-3" v-if="statusHistory == 1"></div>
           <div class="col-lg-9 mt-1" v-if="statusHistory == 1">
@@ -619,14 +599,12 @@
                 href="javascript:void(0);"
                 @click="view_other_details = true"
                 v-if="!view_other_details"
-                >Show Other Details (Optional)</a
-              >
+              >Show Other Details (Optional)</a>
               <a
                 href="javascript:void(0);"
                 @click="view_other_details = false"
                 v-if="view_other_details"
-                >Hide Other Details</a
-              >
+              >Hide Other Details</a>
             </center>
           </div>
         </div>
@@ -992,40 +970,35 @@
             variant="warning"
             v-b-modal="'ModalRole'"
             v-if="item_edit.bioID != '' && roles.role"
-            >Role</b-button
-          >
+          >Role</b-button>
 
           <b-button
             size="sm"
             variant="warning"
             v-b-modal="'ModalResetPassword'"
             v-if="item_edit.bioID != '' && roles.update_employee"
-            >Reset Password</b-button
-          >
+          >Reset Password</b-button>
 
           <b-button
             size="sm"
             variant="success"
             v-if="item_edit.bioID != '' && roles.create_approver"
             @click="btnMakeApprover"
-            >Make Approver</b-button
-          >
+          >Make Approver</b-button>
 
           <b-button
             size="sm"
             variant="success"
             v-if="item_edit.bioID != '' && roles.update_employee"
             @click="btnUpdate"
-            >Update</b-button
-          >
+          >Update</b-button>
 
           <b-button
             size="sm"
             variant="danger"
             v-if="item_edit.bioID != '' && roles.delete_employee"
             @click="btnDelete"
-            >Delete</b-button
-          >
+          >Delete</b-button>
         </template>
       </b-modal>
       <!-- End ModelAddEmployee -->
@@ -1071,16 +1044,9 @@
                 <b-col md="5" class="my-1">
                   <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                     <b-input-group>
-                      <b-form-input
-                        v-model="leave_tblFilter"
-                        placeholder="Filter"
-                      ></b-form-input>
+                      <b-form-input v-model="leave_tblFilter" placeholder="Filter"></b-form-input>
                       <b-input-group-append>
-                        <b-button
-                          :disabled="!leave_tblFilter"
-                          @click="leave_tblFilter = ''"
-                          >Clear</b-button
-                        >
+                        <b-button :disabled="!leave_tblFilter" @click="leave_tblFilter = ''">Clear</b-button>
                       </b-input-group-append>
                     </b-input-group>
                   </b-form-group>
@@ -1089,10 +1055,7 @@
 
                 <b-col md="2 " class="my-1">
                   <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                    <b-form-select
-                      v-model="leave_perPage"
-                      :options="pageOptions"
-                    ></b-form-select>
+                    <b-form-select v-model="leave_perPage" :options="pageOptions"></b-form-select>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -1157,9 +1120,10 @@
         size="xl"
         ok-only
       >
-        <template v-slot:modal-title v-if="item_selected.length > 0"
-          >Add/Update Leave Balance to all selected employee</template
-        >
+        <template
+          v-slot:modal-title
+          v-if="item_selected.length > 0"
+        >Add/Update Leave Balance to all selected employee</template>
         <template v-else v-slot:modal-title>
           Add Leave Balance to employee ID:
           {{ item_row_click.user.email }} ({{ item_row_click.last_name }})
@@ -1184,8 +1148,7 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('leave_types')"
-              >Leave type is required.</small
-            >
+            >Leave type is required.</small>
           </div>
         </div>
 
@@ -1209,7 +1172,7 @@
               >Input valid year.</small
             >
           </div>
-        </div> -->
+        </div>-->
 
         <div class="rowFields mx-auto row">
           <div class="col-lg-3">
@@ -1227,9 +1190,7 @@
               v-model.trim="leave_add.balance"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('balance')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('balance')">Input valid number.</small>
           </div>
         </div>
 
@@ -1249,9 +1210,7 @@
               v-model.trim="leave_add.availed"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('availed')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('availed')">Input valid number.</small>
           </div>
         </div>
 
@@ -1271,9 +1230,7 @@
               v-model.trim="leave_add.accrued"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('accrued')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('accrued')">Input valid number.</small>
           </div>
         </div>
         <!-- /form -->
@@ -1352,7 +1309,7 @@
               >Input valid year.</small
             >
           </div>
-        </div> -->
+        </div>-->
 
         <div class="rowFields mx-auto row">
           <div class="col-lg-3">
@@ -1370,9 +1327,7 @@
               v-model.trim="leave_edit.balance"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('balance')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('balance')">Input valid number.</small>
           </div>
         </div>
 
@@ -1392,9 +1347,7 @@
               v-model.trim="leave_edit.availed"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('availed')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('availed')">Input valid number.</small>
           </div>
         </div>
 
@@ -1414,19 +1367,13 @@
               v-model.trim="leave_edit.accrued"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('accrued')"
-              >Input valid number.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('accrued')">Input valid number.</small>
           </div>
         </div>
         <!-- /form -->
         <template slot="modal-footer" slot-scope="{}">
-          <b-button size="sm" variant="success" @click="btnEditLeave()"
-            >Update</b-button
-          >
-          <b-button size="sm" variant="danger" @click="btnDeleteLeave()"
-            >Delete</b-button
-          >
+          <b-button size="sm" variant="success" @click="btnEditLeave()">Update</b-button>
+          <b-button size="sm" variant="danger" @click="btnDeleteLeave()">Delete</b-button>
         </template>
       </b-modal>
       <!-- End ModalEditLeave -->
@@ -1445,7 +1392,7 @@
       >
         <template v-slot:modal-title>
           DTR of employee ID : {{ item_row_click.user.email }} ({{
-            item_row_click.last_name
+          item_row_click.last_name
           }})
         </template>
 
@@ -1487,16 +1434,9 @@
                 <b-col md="5" class="my-1">
                   <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                     <b-input-group>
-                      <b-form-input
-                        v-model="sched_tblFilter"
-                        placeholder="Filter"
-                      ></b-form-input>
+                      <b-form-input v-model="sched_tblFilter" placeholder="Filter"></b-form-input>
                       <b-input-group-append>
-                        <b-button
-                          :disabled="!sched_tblFilter"
-                          @click="sched_tblFilter = ''"
-                          >Clear</b-button
-                        >
+                        <b-button :disabled="!sched_tblFilter" @click="sched_tblFilter = ''">Clear</b-button>
                       </b-input-group-append>
                     </b-input-group>
                   </b-form-group>
@@ -1505,10 +1445,7 @@
 
                 <b-col md="2 " class="my-1">
                   <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                    <b-form-select
-                      v-model="sched_perPage"
-                      :options="pageOptions"
-                    ></b-form-select>
+                    <b-form-select v-model="sched_perPage" :options="pageOptions"></b-form-select>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -1574,12 +1511,13 @@
         size="xl"
         ok-only
       >
-        <template v-slot:modal-title v-if="item_selected.length > 0"
-          >Add Schedule to all selected employee</template
-        >
+        <template
+          v-slot:modal-title
+          v-if="item_selected.length > 0"
+        >Add Schedule to all selected employee</template>
         <template v-slot:modal-title v-else>
           Add Schedule to employee ID: {{ item_row_click.user.email }} ({{
-            item_row_click.last_name
+          item_row_click.last_name
           }})
         </template>
         <!-- form -->
@@ -1607,7 +1545,10 @@
         <div>
           <div class="rowFields mx-auto row">
             <div class="col-lg-3">
-              <p class="textLabel"><b>Work Date</b><br /></p>
+              <p class="textLabel">
+                <b>Work Date</b>
+                <br />
+              </p>
             </div>
             <div class="col-lg-1">
               <p class="textLabel">
@@ -1671,9 +1612,7 @@
             :key="sched_item.work_date"
           >
             <div class="col-lg-3">
-              <p class="textLabel">
-                {{ sched_item.work_date }} ({{ sched_item.day }})
-              </p>
+              <p class="textLabel">{{ sched_item.work_date }} ({{ sched_item.day }})</p>
             </div>
             <div class="col-lg-1">
               <p-check
@@ -1699,7 +1638,7 @@
             <!-- <div style="display: none">
               {{ (sched_item.group_time_in = groupTimeIn) }}
               <b-form-input v-model="sched_item.group_time_in"></b-form-input>
-            </div> -->
+            </div>-->
             <div class="col-lg-3">
               <date-picker
                 v-if="!sched_item.is_rest_day"
@@ -1716,7 +1655,7 @@
             <!-- <div style="display: none">
               {{ (sched_item.group_time_out = groupTimeOut) }}
               <b-form-input v-model="sched_item.group_time_out"></b-form-input>
-            </div> -->
+            </div>-->
           </div>
         </div>
         <!-- /form -->
@@ -1760,8 +1699,7 @@
                 type="button"
                 class="btn btn-success btn-labeled pull-right margin-right-10"
                 v-if="roles.create_approver"
-                >Add Approver</b-button
-              >
+              >Add Approver</b-button>
             </p>
           </div>
           <div class="elClr panel-body">
@@ -1770,16 +1708,12 @@
                 <b-col md="5" class="my-1">
                   <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                     <b-input-group>
-                      <b-form-input
-                        v-model="approve_tblFilter"
-                        placeholder="Filter"
-                      ></b-form-input>
+                      <b-form-input v-model="approve_tblFilter" placeholder="Filter"></b-form-input>
                       <b-input-group-append>
                         <b-button
                           :disabled="!approve_tblFilter"
                           @click="approve_tblFilter = ''"
-                          >Clear</b-button
-                        >
+                        >Clear</b-button>
                       </b-input-group-append>
                     </b-input-group>
                   </b-form-group>
@@ -1788,10 +1722,7 @@
 
                 <b-col md="2 " class="my-1">
                   <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                    <b-form-select
-                      v-model="approve_perPage"
-                      :options="pageOptions"
-                    ></b-form-select>
+                    <b-form-select v-model="approve_perPage" :options="pageOptions"></b-form-select>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -1828,22 +1759,18 @@
                 </template>
                 <template #cell(edit)="data">
                   <div class="text-right">
-                    <b-button
-                      @click="manageApproverRow(data, 'edit')"
-                      class="row-icon"
-                    >
-                      <span v-if="!appLevelRow[data.index]" class="ri-edit"
-                        ><i class="fas fa-pen"></i
-                      ></span>
-                      <span v-else class="done" title="Save changes"
-                        ><i class="fas fa-check"></i
-                      ></span>
+                    <b-button @click="manageApproverRow(data, 'edit')" class="row-icon">
+                      <span v-if="!appLevelRow[data.index]" class="ri-edit">
+                        <i class="fas fa-pen"></i>
+                      </span>
+                      <span v-else class="done" title="Save changes">
+                        <i class="fas fa-check"></i>
+                      </span>
                     </b-button>
-                    <b-button
-                      @click="manageApproverRow(data, 'delete')"
-                      class="row-icon ri-delete"
-                    >
-                      <span><i class="fas fa-trash-alt"></i></span>
+                    <b-button @click="manageApproverRow(data, 'delete')" class="row-icon ri-delete">
+                      <span>
+                        <i class="fas fa-trash-alt"></i>
+                      </span>
                     </b-button>
                   </div>
                 </template>
@@ -1885,12 +1812,13 @@
         size="xl"
         ok-only
       >
-        <template v-slot:modal-title v-if="item_selected.length > 0"
-          >Add Approver to all selected employee</template
-        >
+        <template
+          v-slot:modal-title
+          v-if="item_selected.length > 0"
+        >Add Approver to all selected employee</template>
         <template v-else v-slot:modal-title>
           Add Approver to employee ID: {{ item_row_click.user.email }} ({{
-            item_row_click.last_name
+          item_row_click.last_name
           }})
         </template>
 
@@ -1910,9 +1838,10 @@
               name="approver"
               v-validate="'required'"
             ></model-list-select>
-            <small class="text-danger pull-left" v-show="errors.has('approver')"
-              >Approver name is required.</small
-            >
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('approver')"
+            >Approver name is required.</small>
           </div>
         </div>
         <!-- /form -->
@@ -1926,13 +1855,7 @@
             <i class="fas fa-plus-square"></i>
           </b-button>
 
-          <b-button
-            size="sm"
-            v-else
-            variant="success"
-            @click="btnAddApproverOK()"
-            >Add</b-button
-          >
+          <b-button size="sm" v-else variant="success" @click="btnAddApproverOK()">Add</b-button>
         </template>
       </b-modal>
       <!-- End ModalAddApprover -->
@@ -1951,7 +1874,7 @@
       >
         <template v-slot:modal-title>
           Manage payslip for employee ID : {{ item_row_click.user.email }} ({{
-            item_row_click.last_name
+          item_row_click.last_name
           }})
         </template>
         <!-- form -->
@@ -2244,9 +2167,7 @@
         </div>
         <!-- /form -->
         <template slot="modal-footer" slot-scope="{}">
-          <b-button size="sm" variant="success" @click="btnAddApproverOK()"
-            >Add</b-button
-          >
+          <b-button size="sm" variant="success" @click="btnAddApproverOK()">Add</b-button>
         </template>
       </b-modal>
       <!-- End ModalManagePayslip -->
@@ -2265,7 +2186,7 @@
       >
         <template v-slot:modal-title>
           Reset Password for employee ID : {{ item_edit.user.email }} ({{
-            item_edit.last_name
+          item_edit.last_name
           }})
         </template>
 
@@ -2300,18 +2221,8 @@
         </div>
 
         <template slot="modal-footer" slot-scope="{}">
-          <b-button
-            size="sm"
-            variant="success"
-            @click="btnSubmitResetPassword()"
-            >Update</b-button
-          >
-          <b-button
-            size="sm"
-            variant="danger"
-            @click="$bvModal.hide('ModalResetPassword')"
-            >Cancel</b-button
-          >
+          <b-button size="sm" variant="success" @click="btnSubmitResetPassword()">Update</b-button>
+          <b-button size="sm" variant="danger" @click="$bvModal.hide('ModalResetPassword')">Cancel</b-button>
         </template>
       </b-modal>
       <!-- End ModalResetPassword -->
@@ -2330,7 +2241,7 @@
       >
         <template v-slot:modal-title>
           Manage Role for employee ID : {{ item_edit.user.email }} ({{
-            item_edit.last_name
+          item_edit.last_name
           }})
         </template>
 
@@ -2941,9 +2852,7 @@
         </div>
 
         <template slot="modal-footer" slot-scope="{}">
-          <b-button size="sm" variant="success" @click="btnUpdateRoles()"
-            >Update</b-button
-          >
+          <b-button size="sm" variant="success" @click="btnUpdateRoles()">Update</b-button>
         </template>
       </b-modal>
       <!-- End ModalRole -->
@@ -3474,9 +3383,9 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.$root.$emit("pageLoading");
-          this.item_edit.user_id = this.user.employee_id;
+          this.item_edit.user_id = this.user.id;
           this.item_edit.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+            this.user.first_name + " " + this.user.last_name;
           this.$http
             .post("api/Employee", this.item_edit)
             .then(response => {
@@ -3549,11 +3458,9 @@ export default {
             // this.tblisBusy = true;
             if (update) {
               this.$root.$emit("pageLoading");
-              this.item_edit.user_id = this.user.employee_id;
+              this.item_edit.user_id = this.user.id;
               this.item_edit.user_name =
-                this.user.employee.first_name +
-                " " +
-                this.user.employee.last_name;
+                this.user.first_name + " " + this.user.last_name;
               this.item_edit.edits = this.employeeChanges;
               this.$http
                 .put("api/Employee/" + this.item_edit.bioID, this.item_edit)
@@ -3596,11 +3503,11 @@ export default {
           var temp =
             this.item_edit.bioID +
             "," +
-            this.user.employee_id +
+            this.user.id +
             "," +
-            this.user.employee.first_name +
+            this.user.first_name +
             " " +
-            this.user.employee.last_name;
+            this.user.last_name;
           this.$http
             .delete("api/Employee/" + temp)
             .then(response => {
@@ -3657,9 +3564,9 @@ export default {
         if (result) {
           this.leave_add.multiple = 0;
           this.leave_add.employee_id = this.item_row_click.id;
-          this.leave_add.user_id = this.user.employee_id;
+          this.leave_add.user_id = this.user.id;
           this.leave_add.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+            this.user.first_name + " " + this.user.last_name;
 
           this.$root.$emit("pageLoading");
           this.$http
@@ -3699,9 +3606,9 @@ export default {
           this.leave_add.multiple = 1;
           this.leave_add.action = action;
           this.leave_add.employees = this.item_selected;
-          this.leave_add.user_id = this.user.employee_id;
+          this.leave_add.user_id = this.user.id;
           this.leave_add.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+            this.user.first_name + " " + this.user.last_name;
 
           this.$root.$emit("pageLoading");
           this.$http
@@ -3746,11 +3653,9 @@ export default {
           }).then(update => {
             this.tblisBusy = true;
             if (update) {
-              this.leave_edit.user_id = this.user.employee_id;
+              this.leave_edit.user_id = this.user.id;
               this.leave_edit.user_name =
-                this.user.employee.first_name +
-                " " +
-                this.user.employee.last_name;
+                this.user.first_name + " " + this.user.last_name;
               this.$root.$emit("pageLoading");
               this.$http
                 .put("api/LeaveBalance/" + this.leave_edit.id, this.leave_edit)
@@ -3788,11 +3693,11 @@ export default {
           var temp =
             this.leave_edit.id +
             "," +
-            this.user.employee.id +
+            this.user.id +
             "," +
-            this.user.employee.first_name +
+            this.user.first_name +
             " " +
-            this.user.employee.last_name;
+            this.user.last_name;
           this.$root.$emit("pageLoading");
           this.tblisBusy = true;
           this.$http
@@ -3983,9 +3888,8 @@ export default {
           this.$root.$emit("pageLoading");
           var approver = {
             employee_id: this.item_edit.bioID,
-            user_id: this.user.employee_id,
-            user_name:
-              this.user.employee.first_name + " " + this.user.employee.last_name
+            user_id: this.user.id,
+            user_name: this.user.first_name + " " + this.user.last_name
           };
           this.$http
             .post("api/Approver", approver)
@@ -4048,9 +3952,9 @@ export default {
           this.$root.$emit("pageLoading");
           this.approve_tblisBusy = true;
           this.approve_add.employee_id = this.item_row_click.id;
-          this.approve_add.user_id = this.user.employee_id;
+          this.approve_add.user_id = this.user.id;
           this.approve_add.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+            this.user.first_name + " " + this.user.last_name;
 
           this.$http
             .post("api/EmployeeApprover", this.approve_add)
@@ -4075,13 +3979,16 @@ export default {
       });
     },
     updateLog() {
+      this.$root.$emit("pageLoading");
       this.$http
         .post("api/updateRALog")
         .then(response => {
           //console.log(response.body);
+          this.$root.$emit("pageLoaded");
           swal("Notification", "Updated", "success");
         })
         .catch(response => {
+          this.$root.$emit("pageLoaded");
           swal({
             title: "Error",
             text: response.body.error,
@@ -4128,11 +4035,9 @@ export default {
           this.$bvModal.hide("ModalResetPassword");
           this.$bvModal.hide("ModelAddEmployee");
           if (update) {
-            this.item_edit.user_id = this.user.employee_id;
+            this.item_edit.user_id = this.user.id;
             this.item_edit.user_name =
-              this.user.employee.first_name +
-              " " +
-              this.user.employee.last_name;
+              this.user.first_name + " " + this.user.last_name;
             this.$http
               .post("api/user/ResetPassword", this.item_edit)
               .then(response => {
@@ -4165,9 +4070,9 @@ export default {
       }).then(update => {
         if (update) {
           this.$root.$emit("pageLoading");
-          this.editRoles.user_id = this.user.employee_id;
+          this.editRoles.user_id = this.user.id;
           this.editRoles.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+            this.user.first_name + " " + this.user.last_name;
           this.$http
             .post("api/user/updateRoles", this.editRoles)
             .then(response => {
@@ -4201,9 +4106,8 @@ export default {
     sendCredentials(item) {
       let credentials = {
         user_id: this.user.id,
-        user_name:
-          this.user.employee.first_name + " " + this.user.employee.last_name,
-        user_email: this.user.employee.email1,
+        user_name: this.user.first_name + " " + this.user.last_name,
+        user_email: this.user.email1,
         fullname: item.first_name + " " + item.last_name,
         email: item.user.email,
         sendTo: [
@@ -4214,9 +4118,8 @@ export default {
         ],
         CCto: [
           {
-            email: this.user.employee.email1,
-            name:
-              this.user.employee.first_name + " " + this.user.employee.last_name
+            email: this.user.email1,
+            name: this.user.first_name + " " + this.user.last_name
           }
         ]
       };
@@ -4262,11 +4165,11 @@ export default {
             if (data.item.level != this.prevLev) {
               if (!this.appLevelRow[data.index] == true) {
                 var temp =
-                  this.user.employee_id +
+                  this.user.id +
                   "," +
-                  this.user.employee.first_name +
+                  this.user.first_name +
                   " " +
-                  this.user.employee.last_name;
+                  this.user.last_name;
                 this.$http
                   .put("api/EmployeeApprover/" + temp, data.item)
                   .then(response => {
@@ -4294,11 +4197,11 @@ export default {
           "," +
           data.item.employee_id +
           "," +
-          this.user.employee_id +
+          this.user.id +
           "," +
-          this.user.employee.first_name +
+          this.user.first_name +
           " " +
-          this.user.employee.last_name;
+          this.user.last_name;
         swal({
           title: "Are you sure?",
           text: "Do you really want to delete this item permanently?",

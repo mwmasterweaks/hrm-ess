@@ -37,10 +37,9 @@ Vue.use(VueGoogleMaps, {
 });
 
 var protocol = window.location.protocol;
-console.log("yow");
+console.log(protocol);
+console.log(window.location.host);
 if (window.location.host == "hrmess.dctechmicro.com") {
-  console.log(protocol);
-  console.log("server");
   Vue.prototype.$url_back = protocol + "//hrmess.dctechmicro.com/back/";
   Vue.http.options.root = protocol + "//hrmess.dctechmicro.com/back/";
 } else {
@@ -48,17 +47,21 @@ if (window.location.host == "hrmess.dctechmicro.com") {
   Vue.http.options.root = "http://localhost:8000";
 }
 
-Vue.http.headers.common["Authorization"] = "Bearer " + Vue.auth.getToken();
 
 
 let initOptions = {
-  url: "https://apiauth.dctechmicro.com:8443/auth/", realm: 'DctecH APPS', clientId: 'hrmess', onLoad: 'login-required'
+  url: "https://apiauth.dctechmicro.com:8443/auth/",
+  realm: 'DctecH APPS',
+  clientId: 'PeterTest',
+  onLoad: 'login-required'
 }
 
 let keycloak = Keycloak(initOptions);
 console.log(keycloak);
 
 
+// Vue.http.headers.common["Authorization"] = "Bearer " + Vue.auth.getToken();
+// Vue.http.headers.common["Authorization"] = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImJlNzAwYTA1NTQ3YzI5ZThiZGJlZTNhZDE0MzgwZjVkODViZWJkMDRmYTEwYzcwYzBjYmIyMDFlYWViZmVmNThhOTZlNmQzMTYzMTQzMjkyIn0.eyJhdWQiOiIyIiwianRpIjoiYmU3MDBhMDU1NDdjMjllOGJkYmVlM2FkMTQzODBmNWQ4NWJlYmQwNGZhMTBjNzBjMGNiYjIwMWVhZWJmZWY1OGE5NmU2ZDMxNjMxNDMyOTIiLCJpYXQiOjE2Mzg1OTY4OTMsIm5iZiI6MTYzODU5Njg5MywiZXhwIjoxNjcwMTMyODkzLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.SLbv3qZyCotBC_I-zh3-T6wd25OZ2HX6F9wbm-H6EKJEDoQaivHC515lU4-wG48k4XcAEYbaqGk5t9yd2ifJxqqFT6ciA3LFqi8_JFkUI--BiDe3sANtRDTI7TQp93LdHbmYeWOvfJqb4jAs0f9JZKPVzNtdzTCMBei1sRdvrIPgE7lA_v4E-VCrCYZnbRwFCVOfcOBI6SwWSAjKpY_kr5b-7GiST1B_d8UqAzAJ1q5x7EwDkBupeVVm9vfqGuCnRO2Wwt-p1q5S7MWzcPc3BDLcCUh7et9LoTOJV14wD3MQKRd8W1MbpxiSPfl-l2JL6W7pT6mOQj7FbIRBdtHei4azUP6gEl9oQvPo2yb4SL2Ov3b33QguQYIsDD9Nb0YghdSRFAqG6CrO8k6LKOKpd1tp00UV6jLinoBE7rUqjj_0AQKQe9dgD9DvWXKx21FSfOADZVA9XLYQV5G3SLgucELGicoYp8gGvBmYHZValLw-QcYqG4mKX6jAy_7hXqDR7dR_L5RB3tQFGUDV3TNfetL9MweserozH5udPK0FdKht0fQJYGKXn6Y5-FpxKNXfj004PuhegLzFfgL-NrZAxOZyqx5i-3MO_ouCHaCjZ4Q_NdTKOJCIZ4qS46skYSJPJ3i9eU2lpzD3cDXbY7kMD2Uf0b_UIdluoYRlqPuSkHo";
 // Router.beforeEach((to, from, next) => {
 //   if (to.matched.some(record => record.meta.forVisitors)) {
 //     if (Vue.auth.isAuthenticated()) {
@@ -75,19 +78,20 @@ console.log(keycloak);
 //   } else next();
 // });
 
-  Vue.prototype.$keycloak = keycloak;
+Vue.prototype.$keycloak = keycloak;
 keycloak.init({ onLoad: initOptions.onLoad }).then((auth) => {
   if (!auth) {
     window.location.reload();
   } else {
-   new Vue({
-  el: "#app",
-  render: h => h(App),
-  router: Router
-});
+    Vue.http.headers.common["Authorization"] = "Bearer " + keycloak.token;
+    new Vue({
+      el: "#app",
+      render: h => h(App),
+      router: Router
+    });
   }
 }).catch(() => {
-  alert("failed");
+  alert("Can't connect to keycloak");
 });
 
 

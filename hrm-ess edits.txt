@@ -12,7 +12,7 @@ this.user = this.$global.getUser();
 
 ROUTES ---------------------------------------------------------------------------------
 
-this.user.employee.first_name + " " + this.user.employee.last_name;
+this.user.first_name + " " + this.user.last_name;
 
 employee vue (completed)
  btnAddLeave (c)

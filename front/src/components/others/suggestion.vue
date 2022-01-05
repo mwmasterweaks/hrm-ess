@@ -20,9 +20,7 @@
                 v-model.trim="addsuggest.title"
                 autocomplete="off"
               />
-              <small class="text-danger pull-left" v-show="errors.has('title')"
-                >Title is required.</small
-              >
+              <small class="text-danger pull-left" v-show="errors.has('title')">Title is required.</small>
             </div>
             <b-card-body>
               <textarea
@@ -42,8 +40,7 @@
                 variant="success"
                 @click="btnSubmit()"
                 :disabled="addsuggest.title == '' || addsuggest.message == ''"
-                >Submit</b-button
-              >
+              >Submit</b-button>
             </div>
           </b-card>
         </b-card-group>
@@ -58,14 +55,9 @@
             <b-col md="5" class="my-1">
               <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input
-                    v-model="tblFilter"
-                    placeholder="Filter"
-                  ></b-form-input>
+                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
-                      >Clear</b-button
-                    >
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -74,10 +66,7 @@
 
             <b-col md="2 " class="my-1">
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select
-                  v-model="perPage"
-                  :options="pageOptions"
-                ></b-form-select>
+                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -177,9 +166,7 @@
               placeholder="Write a comment...."
               v-model.trim="comment"
             ></textarea>
-            <b-button size="sm" variant="success" @click="submitComment"
-              >submit comment</b-button
-            >
+            <b-button size="sm" variant="success" @click="submitComment">submit comment</b-button>
           </b-list-group>
           <b-list-group flush>
             <b-list-group-item v-for="comment in comments" :key="comment.id">
@@ -200,8 +187,7 @@
           v-if="editSuggest.user.id == user.id"
           :disabled="editSuggest.title == '' || editSuggest.message == ''"
           @click="btnUpdate()"
-          >Update</b-button
-        >
+        >Update</b-button>
       </div>
     </b-modal>
     <!-- End modalEdit -->
@@ -236,7 +222,7 @@ export default {
         { key: "created_at", label: "Submitted at", sortable: true },
 
         {
-          key: "user.employee.first_name",
+          key: "user.first_name",
           label: "Submitted by",
           sortable: true
         }
@@ -309,9 +295,9 @@ export default {
     btnSubmit() {
       // console.log()
       this.addsuggest.user_id = this.user.id;
-      this.addsuggest.userid = this.user.employee_id;
+      this.addsuggest.userid = this.user.id;
       this.addsuggest.user_name =
-        this.user.employee.first_name + " " + this.user.employee.last_name;
+        this.user.first_name + " " + this.user.last_name;
       swal({
         title: "Confirmation",
         text: "Do you really want to submit this?",
@@ -355,9 +341,9 @@ export default {
       }).then(update => {
         if (update) {
           this.editSuggest.user_id = this.user.id;
-          this.editSuggest.userid = this.user.employee_id;
+          this.editSuggest.userid = this.user.id;
           this.editSuggest.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+            this.user.first_name + " " + this.user.last_name;
 
           this.$http
             .put("api/Suggestion/" + this.editSuggest.id, this.editSuggest)
@@ -395,9 +381,8 @@ export default {
             user_id: this.user.id,
             comment: this.comment,
             status: "new",
-            userid: this.user.employee_id,
-            user_name:
-              this.user.employee.first_name + " " + this.user.employee.last_name
+            userid: this.user.id,
+            user_name: this.user.first_name + " " + this.user.last_name
           };
           this.$http
             .post("api/SuggestionComment", temp)
