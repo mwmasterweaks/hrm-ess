@@ -14,24 +14,17 @@
             type="button"
             class="btn btn-labeled pull-right btn-default cml-10 cplr-10 cbg-gray"
             @click="btnAdd('Time Out')"
-            >Time Out</b-button
-          >
+          >Time Out</b-button>
           <b-button
             type="button"
             class="btn btn-labeled pull-right btn-default cplr-10 cbg-gray"
             @click="btnAdd('Time In')"
-            >Time In</b-button
-          >
+          >Time In</b-button>
         </p>
       </div>
 
       <div class="elClr panel-body">
-        <GmapMap
-          :center="marker.position"
-          :zoom="15"
-          map-type-id="terrain"
-          style="height: 600px"
-        >
+        <GmapMap :center="marker.position" :zoom="15" map-type-id="terrain" style="height: 600px">
           <GmapMarker
             :position.sync="marker.position"
             :clickable="true"
@@ -62,9 +55,7 @@
             <td class="my-td">biotype</td>
 
             <td class="my-td">Employee:</td>
-            <td class="my-td">
-              {{ user.employee.first_name }} {{ user.employee.last_name }}
-            </td>
+            <td class="my-td">{{ user.first_name }} {{ user.last_name }}</td>
           </tr>
 
           <tr>
@@ -85,8 +76,7 @@
                     marker.position.lng +
                     ',19z'
                 "
-                >www.google.com/maps</a
-              >
+              >www.google.com/maps</a>
             </td>
           </tr>
           <tr>
@@ -95,7 +85,7 @@
           </tr>
         </table>
 
-        <!-- <a :href="$url_back + '/api/publicApproveRequest/1/8' + '/getbioid/' + user.employee_id">
+        <!-- <a :href="$url_back + '/api/publicApproveRequest/1/8' + '/getbioid/' + user.id">
           <button
             size="sm"
             variant="success"
@@ -103,14 +93,14 @@
             style="float: left; background: #4CAF50; color: #ffffff; margin: 10px; border:0; border-radius: 3px; padding: 5px;"
           >Approve</button>
         </a>
-        <a :href="$url_back + '/api/publicApproveRequest/0/8' + '/getbioid/' + user.employee_id">
+        <a :href="$url_back + '/api/publicApproveRequest/0/8' + '/getbioid/' + user.id">
           <button
             size="sm"
             variant="danger"
             title="Disapprove"
             style="float: left; background: #f44336; color: #ffffff; margin: 10px; margin-left: 5px; border:0; border-radius: 3px; padding: 5px;"
           >Decline</button>
-        </a> -->
+        </a>-->
       </div>
     </div>
   </div>
@@ -205,15 +195,14 @@ export default {
       //   }
       // ];
       var temp = {
-        employee_id: this.user.employee_id,
+        employee_id: this.user.id,
         punch_time: this.dt.split("/").join("-"),
         type: type,
         latitude: this.marker.position.lat,
         longitude: this.marker.position.lng,
         msg: document.getElementById("to-approve").innerHTML,
-        user_email: this.user.employee.email1,
-        user_name:
-          this.user.employee.first_name + " " + this.user.employee.last_name,
+        user_email: this.user.email1,
+        user_name: this.user.first_name + " " + this.user.last_name,
         sendTo: sendTo,
         CCto: []
       };

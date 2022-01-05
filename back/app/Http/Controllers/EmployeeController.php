@@ -95,7 +95,7 @@ class EmployeeController extends Controller
             'department',
             'payslip.pay_period',
             'employeeStatus',
-            'asApprover'
+            'approver'
         ];
     }
     public function create()

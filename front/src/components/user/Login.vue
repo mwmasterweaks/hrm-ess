@@ -103,12 +103,13 @@ export default {
       this.$http
         .post("oauth/token", data)
         .then(function(response) {
-          this.$auth.setToken(
-            response.body.access_token,
-            response.body.expires_in + Date.now()
-          );
-          this.$global.setEmail(this.email);
-          window.location.href = "/";
+          console.log(response.body);
+          // this.$auth.setToken(
+          //   response.body.access_token,
+          //   response.body.expires_in + Date.now()
+          // );
+          // this.$global.setEmail(this.email);
+          // window.location.href = "/";
         })
         .catch(response => {
           this.$refs.email.focus();

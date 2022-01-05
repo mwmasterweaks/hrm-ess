@@ -5,9 +5,13 @@ use Illuminate\Http\Request;
 
 
 Route::get('publicApproveRequest/{r}/{t}/{id}/{eid}', 'ApproverController@publicApproveRequest');
+Route::post('oauth/token2', 'UserController@token2');
 
 Route::group(['middleware' => 'auth:api'], function () {
+    //Route::get('/protected-endpoint', 'SecretController@index');
     Route::get('/user', function (Request $request) {
+        //Auth::hasRole('testsite', 'role_testsite');
+        //return Auth::token();
         return $request->user();
     });
 
@@ -61,7 +65,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user/getRole/{id}', 'UserController@getRole');
     Route::post('user/ResetPassword', 'UserController@ResetPassword');
 
-    Route::get('user/getUser/{email}', 'UserController@getUser');
+    Route::post('user/getUser', 'UserController@getUser');
     Route::get('getApplication/{type}/{approve_id}', 'UserController@getApplication');
 
 
@@ -106,6 +110,4 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('EmployeeApprover/storeMultiple', 'EmployeeApproverController@storeMultiple');
 
     Route::get('getToPromote', 'EmployeeController@getToPromote');
-
-
 });

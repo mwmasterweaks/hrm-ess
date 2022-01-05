@@ -170,9 +170,7 @@ export default {
     pay_period_onchange() {
       this.tblisBusy = true;
       this.$http
-        .get(
-          "api/getDTR/" + this.pay_period_select + "/" + this.user.employee_id
-        )
+        .get("api/getDTR/" + this.pay_period_select + "/" + this.user.id)
         .then(function(response) {
           this.items = response.body;
           this.tblisBusy = false;

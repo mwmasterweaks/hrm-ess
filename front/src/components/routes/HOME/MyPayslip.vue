@@ -130,14 +130,12 @@ export default {
   methods: {
     load() {
       this.tblisBusy = true;
-      this.$http
-        .get("api/Payslip/" + this.user.employee_id)
-        .then(function(response) {
-          console.log(response.body);
-          this.items = response.body;
-          this.tblisBusy = false;
-          this.totalRows = this.items.length;
-        });
+      this.$http.get("api/Payslip/" + this.user.id).then(function(response) {
+        console.log(response.body);
+        this.items = response.body;
+        this.tblisBusy = false;
+        this.totalRows = this.items.length;
+      });
     },
     tblRowClass(item, type) {
       if (!item) return;

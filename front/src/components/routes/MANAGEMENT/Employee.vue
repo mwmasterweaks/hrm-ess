@@ -158,7 +158,8 @@
               >
                 <i class="fas fa-envelope-open-text"></i>
               </button>
-              &nbsp;<i
+              &nbsp;
+              <i
                 class="fas fa-circle fa-xs"
                 v-if="row.item.to_promote == 'yes'"
                 style="color: #cf2d2d;"
@@ -585,8 +586,9 @@
               class="px-2"
               title="Status History"
               @click="statusHistory = 1"
-              ><i class="fas fa-history"></i
-            ></b-button>
+            >
+              <i class="fas fa-history"></i>
+            </b-button>
             <b-button
               v-if="statusHistory == 1 && status_histories.length > 0"
               variant="info"
@@ -594,8 +596,9 @@
               class="px-2"
               title="Status History"
               @click="statusHistory = 0"
-              ><i class="fas fa-history"></i
-            ></b-button>
+            >
+              <i class="fas fa-history"></i>
+            </b-button>
           </div>
           <div class="col-lg-3" v-if="statusHistory == 1"></div>
           <div class="col-lg-9 mt-1" v-if="statusHistory == 1">
@@ -1220,7 +1223,7 @@
               >Input valid year.</small
             >
           </div>
-        </div> -->
+        </div>-->
 
         <div class="rowFields mx-auto row">
           <div class="col-lg-3">
@@ -1363,7 +1366,7 @@
               >Input valid year.</small
             >
           </div>
-        </div> -->
+        </div>-->
 
         <div class="rowFields mx-auto row">
           <div class="col-lg-3">
@@ -1618,7 +1621,10 @@
         <div>
           <div class="rowFields mx-auto row">
             <div class="col-lg-3">
-              <p class="textLabel"><b>Work Date</b><br /></p>
+              <p class="textLabel">
+                <b>Work Date</b>
+                <br />
+              </p>
             </div>
             <div class="col-lg-1">
               <p class="textLabel">
@@ -1710,7 +1716,7 @@
             <!-- <div style="display: none">
               {{ (sched_item.group_time_in = groupTimeIn) }}
               <b-form-input v-model="sched_item.group_time_in"></b-form-input>
-            </div> -->
+            </div>-->
             <div class="col-lg-3">
               <date-picker
                 v-if="!sched_item.is_rest_day"
@@ -1727,7 +1733,7 @@
             <!-- <div style="display: none">
               {{ (sched_item.group_time_out = groupTimeOut) }}
               <b-form-input v-model="sched_item.group_time_out"></b-form-input>
-            </div> -->
+            </div>-->
           </div>
         </div>
         <!-- /form -->
@@ -1843,18 +1849,20 @@
                       @click="manageApproverRow(data, 'edit')"
                       class="row-icon"
                     >
-                      <span v-if="!appLevelRow[data.index]" class="ri-edit"
-                        ><i class="fas fa-pen"></i
-                      ></span>
-                      <span v-else class="done" title="Save changes"
-                        ><i class="fas fa-check"></i
-                      ></span>
+                      <span v-if="!appLevelRow[data.index]" class="ri-edit">
+                        <i class="fas fa-pen"></i>
+                      </span>
+                      <span v-else class="done" title="Save changes">
+                        <i class="fas fa-check"></i>
+                      </span>
                     </b-button>
                     <b-button
                       @click="manageApproverRow(data, 'delete')"
                       class="row-icon ri-delete"
                     >
-                      <span><i class="fas fa-trash-alt"></i></span>
+                      <span>
+                        <i class="fas fa-trash-alt"></i>
+                      </span>
                     </b-button>
                   </div>
                 </template>
@@ -3485,9 +3493,9 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.$root.$emit("pageLoading");
-          this.item_edit.user_id = this.user.employee_id;
+          this.item_edit.user_id = this.user.id;
           this.item_edit.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+            this.user.first_name + " " + this.user.last_name;
           this.$http
             .post("api/Employee", this.item_edit)
             .then(response => {
@@ -3560,11 +3568,9 @@ export default {
             // this.tblisBusy = true;
             if (update) {
               this.$root.$emit("pageLoading");
-              this.item_edit.user_id = this.user.employee_id;
+              this.item_edit.user_id = this.user.id;
               this.item_edit.user_name =
-                this.user.employee.first_name +
-                " " +
-                this.user.employee.last_name;
+                this.user.first_name + " " + this.user.last_name;
               this.item_edit.edits = this.employeeChanges;
               this.$http
                 .put("api/Employee/" + this.item_edit.bioID, this.item_edit)
@@ -3607,11 +3613,11 @@ export default {
           var temp =
             this.item_edit.bioID +
             "," +
-            this.user.employee_id +
+            this.user.id +
             "," +
-            this.user.employee.first_name +
+            this.user.first_name +
             " " +
-            this.user.employee.last_name;
+            this.user.last_name;
           this.$http
             .delete("api/Employee/" + temp)
             .then(response => {
@@ -3668,9 +3674,9 @@ export default {
         if (result) {
           this.leave_add.multiple = 0;
           this.leave_add.employee_id = this.item_row_click.id;
-          this.leave_add.user_id = this.user.employee_id;
+          this.leave_add.user_id = this.user.id;
           this.leave_add.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+            this.user.first_name + " " + this.user.last_name;
 
           this.$root.$emit("pageLoading");
           this.$http
@@ -3710,9 +3716,9 @@ export default {
           this.leave_add.multiple = 1;
           this.leave_add.action = action;
           this.leave_add.employees = this.item_selected;
-          this.leave_add.user_id = this.user.employee_id;
+          this.leave_add.user_id = this.user.id;
           this.leave_add.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+            this.user.first_name + " " + this.user.last_name;
 
           this.$root.$emit("pageLoading");
           this.$http
@@ -3757,11 +3763,9 @@ export default {
           }).then(update => {
             this.tblisBusy = true;
             if (update) {
-              this.leave_edit.user_id = this.user.employee_id;
+              this.leave_edit.user_id = this.user.id;
               this.leave_edit.user_name =
-                this.user.employee.first_name +
-                " " +
-                this.user.employee.last_name;
+                this.user.first_name + " " + this.user.last_name;
               this.$root.$emit("pageLoading");
               this.$http
                 .put("api/LeaveBalance/" + this.leave_edit.id, this.leave_edit)
@@ -3799,11 +3803,11 @@ export default {
           var temp =
             this.leave_edit.id +
             "," +
-            this.user.employee.id +
+            this.user.id +
             "," +
-            this.user.employee.first_name +
+            this.user.first_name +
             " " +
-            this.user.employee.last_name;
+            this.user.last_name;
           this.$root.$emit("pageLoading");
           this.tblisBusy = true;
           this.$http
@@ -3995,9 +3999,8 @@ export default {
           this.$root.$emit("pageLoading");
           var approver = {
             employee_id: this.item_edit.bioID,
-            user_id: this.user.employee_id,
-            user_name:
-              this.user.employee.first_name + " " + this.user.employee.last_name
+            user_id: this.user.id,
+            user_name: this.user.first_name + " " + this.user.last_name
           };
           this.$http
             .post("api/Approver", approver)
@@ -4099,9 +4102,9 @@ export default {
           this.$root.$emit("pageLoading");
           this.approve_tblisBusy = true;
           this.approve_add.employee_id = this.item_row_click.id;
-          this.approve_add.user_id = this.user.employee_id;
+          this.approve_add.user_id = this.user.id;
           this.approve_add.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+            this.user.first_name + " " + this.user.last_name;
 
           this.$http
             .post("api/EmployeeApprover", this.approve_add)
@@ -4126,13 +4129,16 @@ export default {
       });
     },
     updateLog() {
+      this.$root.$emit("pageLoading");
       this.$http
         .post("api/updateRALog")
         .then(response => {
           //console.log(response.body);
+          this.$root.$emit("pageLoaded");
           swal("Notification", "Updated", "success");
         })
         .catch(response => {
+          this.$root.$emit("pageLoaded");
           swal({
             title: "Error",
             text: response.body.error,
@@ -4179,11 +4185,9 @@ export default {
           this.$bvModal.hide("ModalResetPassword");
           this.$bvModal.hide("ModelAddEmployee");
           if (update) {
-            this.item_edit.user_id = this.user.employee_id;
+            this.item_edit.user_id = this.user.id;
             this.item_edit.user_name =
-              this.user.employee.first_name +
-              " " +
-              this.user.employee.last_name;
+              this.user.first_name + " " + this.user.last_name;
             this.$http
               .post("api/user/ResetPassword", this.item_edit)
               .then(response => {
@@ -4216,9 +4220,9 @@ export default {
       }).then(update => {
         if (update) {
           this.$root.$emit("pageLoading");
-          this.editRoles.user_id = this.user.employee_id;
+          this.editRoles.user_id = this.user.id;
           this.editRoles.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+            this.user.first_name + " " + this.user.last_name;
           this.$http
             .post("api/user/updateRoles", this.editRoles)
             .then(response => {
@@ -4252,9 +4256,8 @@ export default {
     sendCredentials(item) {
       let credentials = {
         user_id: this.user.id,
-        user_name:
-          this.user.employee.first_name + " " + this.user.employee.last_name,
-        user_email: this.user.employee.email1,
+        user_name: this.user.first_name + " " + this.user.last_name,
+        user_email: this.user.email1,
         fullname: item.first_name + " " + item.last_name,
         email: item.user.email,
         sendTo: [
@@ -4265,9 +4268,8 @@ export default {
         ],
         CCto: [
           {
-            email: this.user.employee.email1,
-            name:
-              this.user.employee.first_name + " " + this.user.employee.last_name
+            email: this.user.email1,
+            name: this.user.first_name + " " + this.user.last_name
           }
         ]
       };
@@ -4313,11 +4315,11 @@ export default {
             if (data.item.level != this.prevLev) {
               if (!this.appLevelRow[data.index] == true) {
                 var temp =
-                  this.user.employee_id +
+                  this.user.id +
                   "," +
-                  this.user.employee.first_name +
+                  this.user.first_name +
                   " " +
-                  this.user.employee.last_name;
+                  this.user.last_name;
                 this.$http
                   .put("api/EmployeeApprover/" + temp, data.item)
                   .then(response => {
@@ -4345,11 +4347,11 @@ export default {
           "," +
           data.item.employee_id +
           "," +
-          this.user.employee_id +
+          this.user.id +
           "," +
-          this.user.employee.first_name +
+          this.user.first_name +
           " " +
-          this.user.employee.last_name;
+          this.user.last_name;
         swal({
           title: "Are you sure?",
           text: "Do you really want to delete this item permanently?",

@@ -34,8 +34,8 @@
               aria-expanded="false"
             >
               <span class="textColor" style="color: black;">
-                {{ authenticatedUser.employee.first_name }}
-                {{ authenticatedUser.employee.last_name }}
+                {{ tokenParsed.firstName }}
+                {{ tokenParsed.family_name }}
               </span>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -72,6 +72,7 @@
 export default {
   data() {
     return {
+      tokenParsed: null,
       email: "",
       colorSelect: "",
       authenticatedUser: {},
@@ -82,6 +83,7 @@ export default {
   },
   beforeCreate() {},
   created() {
+    this.tokenParsed = this.$keycloak.tokenParsed;
     this.setAuthenticatedUser();
     this.$global.elBG(this.authenticatedUser.elBG);
     this.$global.elClr(this.authenticatedUser.elClr);
@@ -93,9 +95,7 @@ export default {
   methods: {
     load() {},
     logout() {
-      this.$global.destroyGlobal();
-      this.$auth.destroyToken();
-      window.location.href = "/login";
+      this.$root.$emit("logout");
     },
     setAuthenticatedUser() {
       this.authenticatedUser = this.$global.getUser();

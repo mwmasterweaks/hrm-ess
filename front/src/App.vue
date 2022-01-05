@@ -2,7 +2,7 @@
   <div id="app">
     <login v-if="!isAuth"></login>
 
-    <div v-if="isLoad == 7">
+    <div v-if="isLoad == 6">
       <my-navbar></my-navbar>
       <sidebar ref="load"></sidebar>
       <div class="container">
@@ -10,7 +10,7 @@
       </div>
     </div>
     <transition name="bounce">
-      <div class="elBG divLoaderDiv" v-if="isAuth && isLoad != 7">
+      <div class="elBG divLoaderDiv" v-if="isAuth && isLoad != 6">
         <img src="./img/loading.gif" class="imgLoader" />
       </div>
     </transition>
@@ -36,6 +36,7 @@ export default {
   },
   data() {
     return {
+      tokenParsed: null,
       pageBusy: false,
       isAuth: null,
       isLoad: 0,
@@ -45,22 +46,19 @@ export default {
   },
 
   created() {
-    //this.isAuth = this.$keycloak.authenticated;
-    this.isAuth = this.$auth.isAuthenticated();
+    this.tokenParsed = this.$keycloak.tokenParsed;
+    this.isAuth = this.$keycloak.authenticated;
     this.load();
   },
   mounted() {
-    // this.$root.$on("Sidebar", () => {
-    //   console.log("CALL");
-    //   this.load();
-    // });
     this.$root.$on("pageLoading", () => {
-      //console.log("pageLoading");
       this.pageBusy = true;
     });
     this.$root.$on("pageLoaded", () => {
-      //console.log("pageLoaded");
       this.pageBusy = false;
+    });
+    this.$root.$on("logout", () => {
+      this.logout();
     });
   },
   methods: {
@@ -68,54 +66,74 @@ export default {
       vm.$refs.load.load();
     },
     load() {
-      if (this.isAuth) {
-        this.getUser();
+      this.$http
+        .post("api/user/getUser", this.tokenParsed)
+        .then(response => {
+          this.user = response.body;
 
-        // this.$http.get("api/olt").then(function(response) {
-        //   this.$global.setOLT(response.body);
-        //   this.isLoad += 1;
-        // });
-        this.$http.get("api/Group").then(function(response) {
-          this.$global.setGroup(response.body);
-          this.isLoad += 1; //1
+          this.$global.setUser(response.body);
+          this.isLoad += 1;
+          this.$global.setRoles(this.user.roles);
+          this.roles = this.user.roles;
+          this.getData();
+        })
+        .catch(response => {
+          var res =
+            "KeycloakGuard\\Exceptions\\ResourceAccessNotAllowedException";
+          if (response.body.exception == res) {
+            swal({
+              title: "You are not allowed to access this site.",
+              text: "Contact the administrator to obtain permission.",
+              icon: "error",
+              dangerMode: true
+            }).then(ok => {
+              this.logout();
+            });
+          } else {
+            swal({
+              title: "You are not authenticated.",
+              text: "Please login again",
+              icon: "error",
+              dangerMode: true
+            }).then(ok => {
+              this.logout();
+            });
+          }
         });
-
-        this.$http.get("api/Position").then(function(response) {
-          this.$global.setPosition(response.body);
-          this.isLoad += 1; // 2
-        });
-
-        this.$http.get("api/Branch").then(function(response) {
-          this.$global.setBranch(response.body);
-          this.isLoad += 1; // 3
-        });
-
-        this.$http.get("api/Department").then(function(response) {
-          this.$global.setDepartment(response.body);
-          this.isLoad += 1; //4
-        });
-
-        this.$http.get("api/LeaveType").then(function(response) {
-          this.$global.setLeaveType(response.body);
-          this.isLoad += 1; //5
-        });
-      }
     },
-    getUser() {
-      this.email = this.$global.getEmail();
-      this.$http.get("api/user/getUser/" + this.email).then(response => {
-        this.user = response.body;
-        this.$global.setUser(response.body);
-        this.isLoad += 1; //6
-        this.getUserRoles();
-        console.log(this.user);
+    getData() {
+      this.$global.setEmail(this.tokenParsed.preferred_username);
+
+      this.$http.get("api/Group").then(function(response) {
+        this.$global.setGroup(response.body);
+        this.isLoad += 1; //1
+      });
+
+      this.$http.get("api/Position").then(function(response) {
+        this.$global.setPosition(response.body);
+        this.isLoad += 1; // 2
+      });
+
+      this.$http.get("api/Branch").then(function(response) {
+        this.$global.setBranch(response.body);
+        this.isLoad += 1; // 3
+      });
+
+      this.$http.get("api/Department").then(function(response) {
+        this.$global.setDepartment(response.body);
+        this.isLoad += 1; //4
+      });
+
+      this.$http.get("api/LeaveType").then(function(response) {
+        this.$global.setLeaveType(response.body);
+        this.isLoad += 1; //5
       });
     },
-    getUserRoles() {
-      this.$http.get("api/user/getRole/" + this.user.id).then(response => {
-        this.$global.setRoles(response.body.roles);
-        this.isLoad += 1; // 7
-        this.roles = this.$global.getRoles();
+    logout() {
+      this.$global.destroyGlobal();
+      this.$auth.destroyToken();
+      this.$keycloak.logout({
+        redirectURL: "http://10.254.11.111:3000/"
       });
     }
   }
@@ -293,7 +311,7 @@ input {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 99999999;
+  z-index: 999999;
 }
 .divLoaderDiv {
   position: absolute;
@@ -301,7 +319,7 @@ input {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 99999999;
+  z-index: 10000;
 }
 .scrollmenu {
   overflow: auto;

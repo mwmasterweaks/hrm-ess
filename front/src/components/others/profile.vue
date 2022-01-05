@@ -7,10 +7,10 @@
 
       <div class="elClr panel-body">
         <div class="rowFields mx-auto row">
-          <div class="col-lg-3"> First Name:</div>
+          <div class="col-lg-3">First Name:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{authenticatedUser.employee.first_name}}</span>
+              <span>{{user.first_name}}</span>
             </b>
           </div>
         </div>
@@ -19,7 +19,7 @@
           <div class="col-lg-3">Middle Name:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{authenticatedUser.employee.middle_name}}</span>
+              <span>{{user.middle_name}}</span>
             </b>
           </div>
         </div>
@@ -28,7 +28,7 @@
           <div class="col-lg-3">Last Name:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{authenticatedUser.employee.last_name}}</span>
+              <span>{{user.last_name}}</span>
             </b>
           </div>
         </div>
@@ -37,7 +37,7 @@
           <div class="col-lg-3">Gender:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{authenticatedUser.employee.gender}}</span>
+              <span>{{user.gender}}</span>
             </b>
           </div>
         </div>
@@ -46,7 +46,7 @@
           <div class="col-lg-3">Date Hired:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{authenticatedUser.employee.date_hired}}</span>
+              <span>{{user.date_hired}}</span>
             </b>
           </div>
         </div>
@@ -55,7 +55,7 @@
           <div class="col-lg-3">Group:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{authenticatedUser.employee.group.name}}</span>
+              <span>{{user.group.name}}</span>
             </b>
           </div>
         </div>
@@ -64,7 +64,7 @@
           <div class="col-lg-3">Rate:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{authenticatedUser.employee.rate.name}}</span>
+              <span>{{user.rate.name}}</span>
             </b>
           </div>
         </div>
@@ -73,7 +73,7 @@
           <div class="col-lg-3">Position:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{authenticatedUser.employee.position.name}}</span>
+              <span>{{user.position.name}}</span>
             </b>
           </div>
         </div>
@@ -82,7 +82,7 @@
           <div class="col-lg-3">Branch:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{authenticatedUser.employee.branch.name}}</span>
+              <span>{{user.branch.name}}</span>
             </b>
           </div>
         </div>
@@ -91,7 +91,7 @@
           <div class="col-lg-3">Department:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{authenticatedUser.employee.department.name}}</span>
+              <span>{{user.department.name}}</span>
             </b>
           </div>
         </div>
@@ -100,7 +100,7 @@
           <div class="col-lg-3">Employee Status:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{authenticatedUser.employee.employment_status}}</span>
+              <span>{{user.employment_status}}</span>
             </b>
           </div>
         </div>
@@ -109,7 +109,7 @@
           <div class="col-lg-3">Email:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{authenticatedUser.email}}</span>
+              <span>{{user.email}}</span>
             </b>
           </div>
         </div>
@@ -118,12 +118,11 @@
           <div class="col-lg-3">Created:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{ authenticatedUser.created_at}}</span>
+              <span>{{ user.created_at}}</span>
             </b>
           </div>
         </div>
         <br />
-              
       </div>
       <div class="panel-footer">
         <div class="heading-elements"></div>
@@ -132,22 +131,19 @@
   </div>
 </template>
 <script>
-
-
 import swal from "sweetalert";
 export default {
   data() {
     return {
-      authenticatedUser: {}
+      user: {}
     };
   },
   beforeCreate() {
     this.$global.loadJS();
   },
   created() {
-    this.authenticatedUser = this.$global.getUser();
-    console.log(this.authenticatedUser);
-    
+    this.user = this.$global.getUser();
+    console.log(this.user);
   },
   mounted() {
     this.load();
@@ -157,7 +153,7 @@ export default {
     load() {
       // document.getElementById(
       //   "bgColor"
-      // ).style.color = this.authenticatedUser.elBG;
+      // ).style.color = this.user.elBG;
     }
   }
 };

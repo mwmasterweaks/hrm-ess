@@ -2,11 +2,7 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="panel-body">
-        <Fullcalendar
-          @eventClick="showEvent"
-          :plugins="calendarPlugins"
-          :events="events"
-        />
+        <Fullcalendar @eventClick="showEvent" :plugins="calendarPlugins" :events="events" />
       </div>
     </div>
 
@@ -138,7 +134,7 @@ export default {
             "/" +
             this.formatDate(lastDay) +
             "/" +
-            this.user.employee_id
+            this.user.id
         )
         .then(function(response) {
           response.body.item.forEach(item => {

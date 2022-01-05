@@ -180,7 +180,7 @@ class Logger
         );
 
         //any suggestion about the sender??
-        $mail->setFrom('customeractivation@dctechmicro.com', $senderName . " " . $sender);
+        $mail->setFrom('customeractivation@dctechmicro.com', "DCTECH MAILER");
         if ($sendTo != null)
             foreach ($sendTo as $item) {
                 $item = (object) $item;

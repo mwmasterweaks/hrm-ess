@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Employee;
 use App\Role;
 use App\Leave;
 use Illuminate\Http\Request;
@@ -117,17 +118,17 @@ class UserController extends Controller
 
             if (empty($request->password)) {
                 $logTo = tap(User::where('id', $id))->update([
-                        'elClr' => $request->elClr,
-                        'elBG' => $request->elBG
-                        // 'updated_at' => \Carbon\Carbon::now()
-                    ])->first();;
+                    'elClr' => $request->elClr,
+                    'elBG' => $request->elBG
+                    // 'updated_at' => \Carbon\Carbon::now()
+                ])->first();;
             } else {
                 $logTo = tap(User::where('id', $id))->update([
-                        'elClr' => $request->elClr,
-                        'elBG' => $request->elBG,
-                        'password' => bcrypt($request->password)
-                        // 'updated_at' => \Carbon\Carbon::now()
-                    ])->first();;
+                    'elClr' => $request->elClr,
+                    'elBG' => $request->elBG,
+                    'password' => bcrypt($request->password)
+                    // 'updated_at' => \Carbon\Carbon::now()
+                ])->first();;
             }
 
             if (!empty($request->roles)) {
@@ -170,7 +171,7 @@ class UserController extends Controller
                 ]);
 
             $query = User::where('employee_id', $request->id);
-            $user = tap($query->first(), function($row) use($request) {
+            $user = tap($query->first(), function ($row) use ($request) {
                 $row->password = bcrypt($request->password);
                 $row->updated_at = \Carbon\Carbon::now();
             });
@@ -206,21 +207,41 @@ class UserController extends Controller
         return response()->json($users);
     }
 
-    public function getUser($email)
+    public function getUser(Request $request)
     {
+        try {
+            $user = Employee::with([
+                'group', 'rate', 'position', 'emp_approver.approver.employee',
+                'branch', 'department', 'approver'
+            ])
+                ->where('id', '=', $request->employeeNumber)->first();
 
+            $resource_access = (object) $request->resource_access;
+            $hrmess = (object) $resource_access->hrmess;
 
-        $user = User::with(['employee.group', 'employee.rate', 'employee.position', 'emp_approver.approver.employee',
-        'employee.branch', 'employee.department', 'approver'])
-            ->where('email', '=', $email)->first();
-        return response()->json($user);
+            $user_roles = [];
+            $user_roles = collect($user_roles);
+
+            foreach ($hrmess->roles as $role) {
+                $user_roles->put($role, true);
+            }
+            $user_roles = $user_roles->all();
+
+            $user = collect($user);
+            $user->put('roles', $user_roles);
+            $user = $user->all();
+
+            return response()->json($user);
+        } catch (Exception $ex) {
+            return response()->json(["Exception: " => $ex->getMessage()], 500);
+        }
     }
 
     public function getApplication($type, $approve_id)
     {
     }
 
-    public function getRole($id)
+    public function getRole_($id)
     {
         $user = User::with('roles')->find($id);
         $roles = Role::all();
@@ -251,5 +272,9 @@ class UserController extends Controller
         }
 
         return response()->json(['error' => 'Resource not found!'], 404);
+    }
+
+    public function token2(Request $request)
+    {
     }
 }

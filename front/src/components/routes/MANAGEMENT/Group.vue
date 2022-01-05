@@ -9,8 +9,7 @@
             type="button"
             class="btn btn-success btn-labeled pull-right margin-right-10"
             v-if="roles.create_group"
-            >Add</b-button
-          >
+          >Add</b-button>
         </p>
       </div>
 
@@ -20,14 +19,9 @@
             <b-col md="5" class="my-1">
               <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input
-                    v-model="tblFilter"
-                    placeholder="Filter"
-                  ></b-form-input>
+                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
-                      >Clear</b-button
-                    >
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -36,10 +30,7 @@
 
             <b-col md="2 " class="my-1">
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select
-                  v-model="perPage"
-                  :options="pageOptions"
-                ></b-form-select>
+                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -117,9 +108,7 @@
               autocomplete="off"
               autofocus="on"
             />
-            <small class="text-danger pull-left" v-show="errors.has('name')"
-              >Group Name is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('name')">Group Name is required.</small>
           </div>
         </div>
 
@@ -139,9 +128,10 @@
               v-model.trim="item_add.desc"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('desc')"
-              >Description is required.</small
-            >
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('desc')"
+            >Description is required.</small>
           </div>
         </div>
 
@@ -184,9 +174,7 @@
               autocomplete="off"
               autofocus="on"
             />
-            <small class="text-danger pull-left" v-show="errors.has('name')"
-              >Group Name is required.</small
-            >
+            <small class="text-danger pull-left" v-show="errors.has('name')">Group Name is required.</small>
           </div>
         </div>
 
@@ -206,9 +194,10 @@
               v-model.trim="item_edit.desc"
               autocomplete="off"
             />
-            <small class="text-danger pull-left" v-show="errors.has('desc')"
-              >Description is required.</small
-            >
+            <small
+              class="text-danger pull-left"
+              v-show="errors.has('desc')"
+            >Description is required.</small>
           </div>
         </div>
 
@@ -219,15 +208,8 @@
             variant="success"
             v-if="roles.update_group"
             @click="btnUpdate()"
-            >Update</b-button
-          >
-          <b-button
-            size="sm"
-            variant="danger"
-            v-if="roles.delete_group"
-            @click="btnDelete()"
-            >Delete</b-button
-          >
+          >Update</b-button>
+          <b-button size="sm" variant="danger" v-if="roles.delete_group" @click="btnDelete()">Delete</b-button>
         </template>
       </b-modal>
       <!-- End modalEdit -->
@@ -322,11 +304,9 @@ export default {
             dangerMode: true
           }).then(update => {
             if (update) {
-              this.item_edit.user_id = this.user.employee_id;
+              this.item_edit.user_id = this.user.id;
               this.item_edit.user_name =
-                this.user.employee.first_name +
-                " " +
-                this.user.employee.last_name;
+                this.user.first_name + " " + this.user.last_name;
 
               this.$http
                 .put("api/Group/" + this.item_edit.id, this.item_edit)
@@ -357,9 +337,9 @@ export default {
     btnAdd() {
       this.$validator.validateAll().then(result => {
         if (result) {
-          this.item_add.user_id = this.user.employee_id;
+          this.item_add.user_id = this.user.id;
           this.item_add.user_name =
-            this.user.employee.first_name + " " + this.user.employee.last_name;
+            this.user.first_name + " " + this.user.last_name;
 
           this.$http
             .post("api/Group", this.item_add)
@@ -404,11 +384,11 @@ export default {
           var temp =
             this.item_edit.id +
             "," +
-            this.user.employee_id +
+            this.user.id +
             "," +
-            this.user.employee.first_name +
+            this.user.first_name +
             " " +
-            this.user.employee.last_name;
+            this.user.last_name;
           this.$http
             .delete("api/Group/" + temp)
             .then(response => {

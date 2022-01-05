@@ -18,6 +18,7 @@ use App\Role;
 use App\over_time;
 use App\employee_status_history;
 use App\Approver;
+use App\Employee_approver;
 
 class Employee extends Model
 {
@@ -95,11 +96,15 @@ class Employee extends Model
         return $this->hasMany(employee_status_history::class, 'employee_id', 'id');
     }
 
-    public function asApprover()
+    public function approver()
     {
         return $this->hasOne(Approver::class, 'employee_id', 'id');
     }
 
+    public function emp_approver()
+    {
+        return $this->hasMany(Employee_approver::class, 'employee_id', 'id')->orderBy('level');
+    }
     // public function emp_roles()
     // {
     //     return $this->hasManyThrough(
