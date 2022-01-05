@@ -17,6 +17,7 @@ use App\payslip;
 use App\Role;
 use App\over_time;
 use App\employee_status_history;
+use App\Approver;
 
 class Employee extends Model
 {
@@ -93,6 +94,12 @@ class Employee extends Model
     {
         return $this->hasMany(employee_status_history::class, 'employee_id', 'id');
     }
+
+    public function asApprover()
+    {
+        return $this->hasOne(Approver::class, 'employee_id', 'id');
+    }
+
     // public function emp_roles()
     // {
     //     return $this->hasManyThrough(

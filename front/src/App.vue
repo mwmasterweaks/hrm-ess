@@ -45,7 +45,8 @@ export default {
   },
 
   created() {
-    this.isAuth = this.$keycloak.authenticated;
+    //this.isAuth = this.$keycloak.authenticated;
+    this.isAuth = this.$auth.isAuthenticated();
     this.load();
   },
   mounted() {

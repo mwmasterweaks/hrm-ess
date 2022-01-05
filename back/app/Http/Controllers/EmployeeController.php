@@ -15,7 +15,7 @@ class EmployeeController extends Controller
     public function index()
     {
         try {
-            $tbl = Employee::with(['user', 'deduction.type', 'earning.type', 'group', 'rate', 'position', 'branch', 'department', 'payslip.pay_period'])
+            $tbl = Employee::with($this->empWith())
             ->where('employment_status', 'Trainee')
             ->whereHas('employeeStatus', function($query) {
                 $query
@@ -30,7 +30,7 @@ class EmployeeController extends Controller
                     ->latest()
                     ->where('end_date', '<=', Carbon::today());
             });
-            $others = Employee::with(['user', 'deduction.type', 'earning.type', 'group', 'rate', 'position', 'branch', 'department', 'payslip.pay_period'])
+            $others = Employee::with($this->empWith())
             ->whereNotIn('id', (clone $tbl)->pluck('id'));
             $employees = (clone $tbl)->union($others)->get();
 
@@ -81,6 +81,22 @@ class EmployeeController extends Controller
         //             return $this->convert_from_latin1_to_utf8_recursively($tbl);
 
         return $retVal;
+    }
+    public function empWith()
+    {
+        return [
+            'user',
+            'deduction.type',
+            'earning.type',
+            'group',
+            'rate',
+            'position',
+            'branch',
+            'department',
+            'payslip.pay_period',
+            'employeeStatus',
+            'asApprover'
+        ];
     }
     public function create()
     {
@@ -437,7 +453,7 @@ class EmployeeController extends Controller
         }
     }
     public function getToPromote() {
-        return Employee::with(['user', 'deduction.type', 'earning.type', 'group', 'rate', 'position', 'branch', 'department', 'payslip.pay_period', 'employeeStatus'])
+        return Employee::with($this->empWith())
             ->where('employment_status', 'Trainee')
             ->whereHas('employeeStatus', function($query) {
                 $query

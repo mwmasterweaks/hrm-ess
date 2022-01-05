@@ -10,3 +10,9 @@ Details: {"employee_id":1025,"updated_at":"2021-12-03 09:00:19","created_at":"20
 2021-12-03 09:00:41    |    User: (719) Peter Bismonte    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver with approver ID and employee ID: 3, 861
 Details: {"approver_id":3,"employee_id":861,"level":1,"updated_at":"2021-12-03 09:00:41","created_at":"2021-12-03 09:00:41","id":0}
 
+2021-12-06 09:45:31    |    User: (719) Peter Bismonte    |    ApproverController (store)    |    message    |    Create new approver with ID: 5
+Details: {"employee_id":1025,"updated_at":"2021-12-06 09:45:31","created_at":"2021-12-06 09:45:31","id":5}
+
+2021-12-06 09:46:06    |    User: (719) Peter Bismonte    |    ApproverController (store)    |    message    |    Create new approver with ID: 6
+Details: {"employee_id":1025,"updated_at":"2021-12-06 09:46:06","created_at":"2021-12-06 09:46:06","id":6}
+

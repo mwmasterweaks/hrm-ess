@@ -1003,13 +1003,24 @@
             >Reset Password</b-button
           >
 
-          <b-button
-            size="sm"
-            variant="success"
-            v-if="item_edit.bioID != '' && roles.create_approver"
-            @click="btnMakeApprover"
-            >Make Approver</b-button
-          >
+          <div v-if="item_edit.as_approver == null">
+            <b-button
+              size="sm"
+              variant="success"
+              v-if="item_edit.bioID != '' && roles.create_approver"
+              @click="btnMakeApprover"
+              >Assign as Approver</b-button
+            >
+          </div>
+          <div v-else>
+            <b-button
+              size="sm"
+              variant="danger"
+              v-if="item_edit.bioID != '' && roles.create_approver"
+              @click="btnRemoveAsApprover"
+              >Remove as Approver</b-button
+            >
+          </div>
 
           <b-button
             size="sm"
@@ -3919,6 +3930,7 @@ export default {
             })
             .catch(response => {
               this.$root.$emit("pageLoaded");
+              console.log(response.body);
               swal({
                 title: "Error",
                 text: response.body.error,
@@ -3974,7 +3986,7 @@ export default {
     btnMakeApprover() {
       swal({
         title: "Are you sure?",
-        text: "Do you really want to make this employee to be an approver?",
+        text: "Do you really want to assign this employee as an approver?",
         icon: "warning",
         buttons: true,
         dangerMode: true
@@ -3990,9 +4002,48 @@ export default {
           this.$http
             .post("api/Approver", approver)
             .then(response => {
-              this.$root.$emit("pageLoaded");
               console.log(response.body);
+              this.$root.$emit("pageLoaded");
               swal("Notification", "Approver added successfully", "success");
+              this.item_edit.as_approver = 1;
+              this.reloadApprover();
+            })
+            .catch(response => {
+              this.$root.$emit("pageLoaded");
+              swal({
+                title: "Error",
+                text: response.body.error,
+                icon: "error",
+                dangerMode: true
+              });
+            });
+        }
+      });
+    },
+    btnRemoveAsApprover() {
+      swal({
+        title: "Are you sure?",
+        text: "Do you really want to remove this employee as an approver?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+      }).then(willDelete => {
+        if (willDelete) {
+          var temp =
+            this.item_edit.bioID +
+            "," +
+            this.user.employee_id +
+            "," +
+            this.user.employee.first_name +
+            " " +
+            this.user.employee.last_name;
+          this.$http
+            .delete("api/Approver/" + temp)
+            .then(response => {
+              console.log(response.body);
+              this.$root.$emit("pageLoaded");
+              swal("Removed!", "Employee removed as approver.", "success");
+              this.item_edit.as_approver = null;
               this.reloadApprover();
             })
             .catch(response => {

@@ -45,7 +45,7 @@ class BiometricAttendanceController extends Controller
         $dtr_row = (clone $dtr)->first();
         // return $dtr;
         if ($dtr_count > 0) {
-            if ($dtr_row->time_in == NULL) { // time_out too
+            if ($dtr_row[$type] == NULL) {
                 $bio = biometric_attendance::create($request->all());
                 (clone $dtr)->update([$type => $request->punch_time]);
 

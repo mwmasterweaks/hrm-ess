@@ -52,28 +52,31 @@ Vue.http.headers.common["Authorization"] = "Bearer " + Vue.auth.getToken();
 
 
 let initOptions = {
-  url: "https://apiauth.dctechmicro.com:8443/auth/", realm: 'DctecH APPS', clientId: 'hrmess', onLoad: 'login-required'
+  url: "https://apiauth.dctechmicro.com:8443/auth/",
+  realm: 'DctecH APPS',
+  clientId: 'KateTest',
+  onLoad: 'login-required'
 }
 
 let keycloak = Keycloak(initOptions);
 console.log(keycloak);
 
 
-// Router.beforeEach((to, from, next) => {
-//   if (to.matched.some(record => record.meta.forVisitors)) {
-//     if (Vue.auth.isAuthenticated()) {
-//       next({
-//         path: "/home"
-//       });
-//     } else next();
-//   } else if (to.matched.some(record => record.meta.forAuth)) {
-//     if (!Vue.auth.isAuthenticated()) {
-//       next({
-//         path: "/login"
-//       });
-//     } else next();
-//   } else next();
-// });
+/* Router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.forVisitors)) {
+    if (Vue.auth.isAuthenticated()) {
+      next({
+        path: "/home"
+      });
+    } else next();
+  } else if (to.matched.some(record => record.meta.forAuth)) {
+    if (!Vue.auth.isAuthenticated()) {
+      next({
+        path: "/login"
+      });
+    } else next();
+  } else next();
+}); */
 
   Vue.prototype.$keycloak = keycloak;
 keycloak.init({ onLoad: initOptions.onLoad }).then((auth) => {
@@ -82,7 +85,7 @@ keycloak.init({ onLoad: initOptions.onLoad }).then((auth) => {
   } else {
    new Vue({
   el: "#app",
-  render: h => h(App),
+  render: h => h(App), // (App, router, {props: { keycloak: keycloak }})
   router: Router
 });
   }

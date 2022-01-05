@@ -97,8 +97,13 @@ class ApproverController extends Controller
 
     public function destroy($id)
     {
+        $value = explode(",", $id);
+        $bioID = $value[0];
+        $user_id = $value[1];
+        $user_name = $value[2];
+
         try {
-            Approver::destroy($id);
+            Approver::where('employee_id', $bioID)->delete();
 
             return $this->index();
         } catch (\Exception $ex) {
