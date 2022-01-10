@@ -39,18 +39,20 @@ Vue.use(VueGoogleMaps, {
 var protocol = window.location.protocol;
 console.log(protocol);
 console.log(window.location.host);
-var clientID = "peterTest"
+var clientID = "KateTest"
 if (window.location.host == "hrmess.dctechmicro.com") {
   Vue.prototype.$url_back = protocol + "//hrmess.dctechmicro.com/back/";
+  Vue.prototype.$url_attachments = protocol + "//hrmess.dctechmicro.com/back/public/attachments/";
   Vue.http.options.root = protocol + "//hrmess.dctechmicro.com/back/";
   clientID = "hrmess";
 } else {
   Vue.prototype.$url_back = "http://localhost:8000";
+  Vue.prototype.$url_attachments = "http://localhost:8000";
   Vue.http.options.root = "http://localhost:8000";
 }
 
 
-
+console.log(clientID);
 let initOptions = {
   url: "https://apiauth.dctechmicro.com:8443/auth/",
   realm: 'DctecH APPS',
@@ -59,9 +61,7 @@ let initOptions = {
 }
 
 let keycloak = Keycloak(initOptions);
-console.log(keycloak);
-
-
+// console.log(keycloak);
 
 
 Vue.prototype.$keycloak = keycloak;

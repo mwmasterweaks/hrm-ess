@@ -66,11 +66,15 @@ export default {
       vm.$refs.load.load();
     },
     load() {
+      /*this.$http.post("api/oauth/token2", this.tokenParsed).then(response => {
+        console.log(response);
+      }); */
+
       this.$http
         .post("api/user/getUser", this.tokenParsed)
         .then(response => {
+          console.log(response.body);
           this.user = response.body;
-
           this.$global.setUser(response.body);
           this.isLoad += 1;
           this.$global.setRoles(this.user.roles);
@@ -78,6 +82,7 @@ export default {
           this.getData();
         })
         .catch(response => {
+          console.log(response.body);
           var res =
             "KeycloakGuard\\Exceptions\\ResourceAccessNotAllowedException";
           if (response.body.exception == res) {

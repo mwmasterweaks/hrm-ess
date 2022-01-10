@@ -44,8 +44,8 @@ class DtrController extends Controller
                     ->where("work_date", $item->work_date)
                     ->first();
 
-                $timeIn = null;
-                $timeOut = null;
+                $timeIn = $chk['time_in'];
+                $timeOut = $chk['time_out'];
 
                 $log = RALog::where(DB::raw("DATE(datetime)"), $item->work_date)
                     ->where("employeeID", $item->employee_id)
@@ -361,8 +361,8 @@ class DtrController extends Controller
                         ->where("work_date", $sched->work_date)
                         ->first();
 
-                    $timeIn = null;
-                    $timeOut = null;
+                    $timeIn = $chk['time_in'];
+                    $timeOut = $chk['time_out'];
 
                     $log = RALog::where(DB::raw("DATE(datetime)"), $sched->work_date)
                         ->where("employeeID", $emp->id)

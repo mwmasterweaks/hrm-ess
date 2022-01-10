@@ -191,7 +191,7 @@ class EmployeeApproverController extends Controller
                 ];
                 array_push($data, $temp);
 
-                $logData .= "\n" . $temp;
+                $logData .= "\n" . json_encode($temp); // implode no index
             }
             Employee_approver::insert($data);
 

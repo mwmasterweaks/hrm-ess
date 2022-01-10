@@ -3948,7 +3948,9 @@ export default {
     btnAddApproverMultiple() {
       var temp = {
         approve_add: this.approve_add,
-        employees: this.item_selected
+        employees: this.item_selected,
+        user_id: this.user.id,
+        user_name: this.user.first_name + " " + this.user.last_name
       };
       console.log(temp);
 
@@ -3973,16 +3975,17 @@ export default {
               this.$bvModal.hide("ModalAddApprover");
               this.uncheckAllSelectedEmp();
               swal("Update", "Successfully updated!", "success");
+            })
+            .catch(response => {
+              console.log(response.body);
+              this.$root.$emit("pageLoaded");
+              swal({
+                title: "Error",
+                text: response.body.error,
+                icon: "error",
+                dangerMode: true
+              });
             });
-          // .catch(response => {
-          //   this.$root.$emit("pageLoaded");
-          //   swal({
-          //     title: "Error",
-          //     text: response.body.error,
-          //     icon: "error",
-          //     dangerMode: true
-          //   });
-          // });
         }
       });
     },

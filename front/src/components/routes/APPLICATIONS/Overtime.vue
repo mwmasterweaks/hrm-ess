@@ -8,7 +8,8 @@
             v-b-modal="'ModelApply'"
             type="button"
             class="btn btn-success btn-labeled pull-right margin-right-10"
-          >Apply</b-button>
+            >Apply</b-button
+          >
         </p>
       </div>
 
@@ -18,9 +19,14 @@
             <b-col md="5" class="my-1">
               <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
+                  <b-form-input
+                    v-model="tblFilter"
+                    placeholder="Filter"
+                  ></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
+                      >Clear</b-button
+                    >
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -29,7 +35,10 @@
 
             <b-col md="2 " class="my-1">
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
+                <b-form-select
+                  v-model="perPage"
+                  :options="pageOptions"
+                ></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -61,17 +70,23 @@
                 class="btn btn-warning"
                 v-if="row.item.status == 'Pending'"
                 @click="openModalApprovers(row.item)"
-              >Pending</button>
+              >
+                Pending
+              </button>
               <button
                 class="btn btn-success"
                 v-if="row.item.status == 'Approved'"
                 @click="openModalApprovers(row.item)"
-              >Approved</button>
+              >
+                Approved
+              </button>
               <button
                 class="btn btn-danger"
                 v-if="row.item.status == 'Disapproved'"
                 @click="openModalApprovers(row.item)"
-              >Disapproved</button>
+              >
+                Disapproved
+              </button>
               <span v-if="row.item.status == 'Canceled'">Canceled</span>
             </template>
           </b-table>
@@ -128,7 +143,8 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('work_date')"
-            >Work date is required.</small>
+              >Work date is required.</small
+            >
           </div>
         </div>
 
@@ -153,7 +169,8 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('work_date')"
-            >Work date is required.</small>
+              >Work date is required.</small
+            >
           </div>
         </div>
 
@@ -184,10 +201,9 @@
                 name="time_in"
               ></date-picker>
             </div>
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('time_in')"
-            >Overtime-In is required.</small>
+            <small class="text-danger pull-left" v-show="errors.has('time_in')"
+              >Overtime-In is required.</small
+            >
           </div>
         </div>
 
@@ -209,10 +225,9 @@
                 name="time_out"
               ></date-picker>
             </div>
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('time_out')"
-            >Overtime-Out is required.</small>
+            <small class="text-danger pull-left" v-show="errors.has('time_out')"
+              >Overtime-Out is required.</small
+            >
           </div>
         </div>
 
@@ -234,7 +249,8 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('with_break')"
-            >With Break is required.</small>
+              >With Break is required.</small
+            >
           </div>
         </div>
 
@@ -258,7 +274,8 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('break_hours')"
-            >Break Hours is required.</small>
+              >Break Hours is required.</small
+            >
           </div>
         </div>
 
@@ -286,7 +303,9 @@
               v-validate="'required'"
               v-model.trim="apply.reason"
             ></textarea>
-            <small class="text-danger pull-left" v-show="errors.has('reason')">Reason is required.</small>
+            <small class="text-danger pull-left" v-show="errors.has('reason')"
+              >Reason is required.</small
+            >
           </div>
         </div>
 
@@ -307,7 +326,9 @@
         </div>
         <!-- /form -->
         <template slot="modal-footer" slot-scope="{}">
-          <b-button size="sm" variant="success" @click="btnApply()">Submit</b-button>
+          <b-button size="sm" variant="success" @click="btnApply()"
+            >Submit</b-button
+          >
         </template>
       </b-modal>
       <!-- End ModelApply -->
@@ -330,9 +351,16 @@
             <b-col md="5" class="my-1">
               <b-form-group label-cols-sm="2" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input v-model="approv_tblFilter" placeholder="Filter"></b-form-input>
+                  <b-form-input
+                    v-model="approv_tblFilter"
+                    placeholder="Filter"
+                  ></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!approv_tblFilter" @click="approv_tblFilter = ''">Clear</b-button>
+                    <b-button
+                      :disabled="!approv_tblFilter"
+                      @click="approv_tblFilter = ''"
+                      >Clear</b-button
+                    >
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -341,7 +369,10 @@
 
             <b-col md="2 " class="my-1">
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select v-model="approv_perPage" :options="pageOptions"></b-form-select>
+                <b-form-select
+                  v-model="approv_perPage"
+                  :options="pageOptions"
+                ></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -445,7 +476,12 @@
         </center>
 
         <template slot="modal-footer" slot-scope="{}">
-          <b-button size="sm" variant="success" v-b-modal.modalthumbnail title="View Attachment">
+          <b-button
+            size="sm"
+            variant="success"
+            v-b-modal.modalthumbnail
+            title="View Attachment"
+          >
             <i class="fas fa-paperclip"></i>
           </b-button>
 
@@ -455,7 +491,8 @@
             title="Cancel Application"
             v-if="item_edit.status == 'Pending'"
             @click="cancelApplication"
-          >Cancel</b-button>
+            >Cancel</b-button
+          >
         </template>
       </b-modal>
       <!-- End ModalViewDetails -->
@@ -463,7 +500,12 @@
       <b-modal id="modalthumbnail" size="xl" hide-footer hide-header>
         <b-container fluid class="p-4 bg-dark">
           <center>
-            <b-img thumbnail fluid :src="$url_back + item_edit.attachment" alt="Image 1"></b-img>
+            <b-img
+              thumbnail
+              fluid
+              :src="$url_attachments + item_edit.attachment"
+              alt="Image 1"
+            ></b-img>
           </center>
         </b-container>
       </b-modal>

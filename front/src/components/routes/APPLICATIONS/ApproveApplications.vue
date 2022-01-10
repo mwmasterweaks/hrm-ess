@@ -9,7 +9,11 @@
         <div>
           <b-row style="margin:10px;">
             <b-col md="5" class="my-1">
-              <b-form-group label-cols-sm="4" label="Select App type" class="mb-0">
+              <b-form-group
+                label-cols-sm="4"
+                label="Select App type"
+                class="mb-0"
+              >
                 <model-list-select
                   :list="application_list"
                   v-model="selected_application"
@@ -23,9 +27,14 @@
               <br />
               <b-form-group label-cols-sm="4" label="Filter" class="mb-0">
                 <b-input-group>
-                  <b-form-input v-model="tblFilter" placeholder="Filter"></b-form-input>
+                  <b-form-input
+                    v-model="tblFilter"
+                    placeholder="Filter"
+                  ></b-form-input>
                   <b-input-group-append>
-                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''"
+                      >Clear</b-button
+                    >
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -36,7 +45,10 @@
               <br />
               <br />
               <b-form-group label-cols-sm="4" label="Show" class="mb-0">
-                <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
+                <b-form-select
+                  v-model="perPage"
+                  :options="pageOptions"
+                ></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -217,7 +229,10 @@
             </tr>
           </table>
 
-          <div v-if="chkStr(item.reference_no) == 'LV'" class="rowFields mx-auto row">
+          <div
+            v-if="chkStr(item.reference_no) == 'LV'"
+            class="rowFields mx-auto row"
+          >
             <b-table
               class="elClr"
               striped
@@ -265,10 +280,20 @@
           >
             <i class="fas fa-paperclip"></i>
           </b-button>
-          <b-button size="sm" variant="success" title="Approve" @click="approveRequest(item)">
+          <b-button
+            size="sm"
+            variant="success"
+            title="Approve"
+            @click="approveRequest(item)"
+          >
             <i class="fas fa-thumbs-up"></i>
           </b-button>
-          <b-button size="sm" variant="danger" title="Disapprove" v-b-modal.modalDisapprove>
+          <b-button
+            size="sm"
+            variant="danger"
+            title="Disapprove"
+            v-b-modal.modalDisapprove
+          >
             <i class="fas fa-thumbs-down"></i>
           </b-button>
         </template>
@@ -278,7 +303,12 @@
       <b-modal id="modalthumbnail" size="xl" hide-footer hide-header>
         <b-container fluid class="p-4 bg-dark">
           <center>
-            <b-img thumbnail fluid :src="$url_back + item.attachment" alt="Image 1"></b-img>
+            <b-img
+              thumbnail
+              fluid
+              :src="$url_attachments + item.attachment"
+              alt="Image 1"
+            ></b-img>
           </center>
         </b-container>
       </b-modal>
@@ -307,7 +337,9 @@
               v-validate="'required'"
               v-model.trim="remarks"
             ></textarea>
-            <small class="text-danger pull-left" v-show="errors.has('Remarks')">Remarks is required.</small>
+            <small class="text-danger pull-left" v-show="errors.has('Remarks')"
+              >Remarks is required.</small
+            >
           </div>
         </div>
         <b-button
@@ -315,7 +347,8 @@
           size="sm"
           variant="success"
           @click="disapproveRequest()"
-        >Submit</b-button>
+          >Submit</b-button
+        >
       </b-modal>
     </div>
   </div>

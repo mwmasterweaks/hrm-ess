@@ -23,7 +23,7 @@
           <div class="col-lg-9">{{ user.email }}</div>
         </div>
 
-        <div class="rowFields mx-auto row">
+        <!-- <div class="rowFields mx-auto row">
           <div class="col-lg-3">
             <p class="textLabel">Background Color:</p>
           </div>
@@ -67,9 +67,9 @@
               v-show="errors.has('txcolor')"
             >Text Color is required.</small>
           </div>
-        </div>
+        </div> -->
 
-        <div class="rowFields mx-auto row">
+        <!-- <div class="rowFields mx-auto row">
           <div class="col-lg-3">
             <p class="textLabel">Password:</p>
           </div>
@@ -89,7 +89,8 @@
             <small
               class="text-danger pull-left"
               v-show="errors.has('password')"
-            >{{ errors.first("password") }}</small>
+              >{{ errors.first("password") }}</small
+            >
           </div>
         </div>
         <div class="rowFields mx-auto row">
@@ -107,21 +108,22 @@
               v-validate="'required|confirmed:password'"
               v-model.trim="user.password2"
             />
-            <small
-              class="text-danger pull-left"
-              v-show="errors.has('retype')"
-            >The password confirmation does not match.</small>
+            <small class="text-danger pull-left" v-show="errors.has('retype')"
+              >The password confirmation does not match.</small
+            >
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="panel-footer">
-        <div class="heading-elements">
+        <!-- <div class="heading-elements">
           <button
             type="button"
             class="btn btn-success btn-labeled pull-right"
             v-on:click="updateUser"
-          >Update</button>
-        </div>
+          >
+            Update
+          </button>
+        </div> -->
       </div>
     </div>
   </div>

@@ -276,5 +276,6 @@ class UserController extends Controller
 
     public function token2(Request $request)
     {
+        return "connected!!";
     }
 }

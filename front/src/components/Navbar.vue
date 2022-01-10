@@ -1,8 +1,16 @@
 <template>
   <div class>
-    <nav class="navbar navbar-expand-lg mainnav" style="background-color: #076c2d; z-index:1001;">
+    <nav
+      class="navbar navbar-expand-lg mainnav"
+      style="background-color: #076c2d; z-index:1001;"
+    >
       <router-link class to="/home">
-        <a class href="javascript:void(0);" alt="Dashboard" style="margin-left: 10px;">
+        <a
+          class
+          href="javascript:void(0);"
+          alt="Dashboard"
+          style="margin-left: 10px;"
+        >
           <!-- <span class="textColor systemName">HRM-Employee Self Service</span> -->
           <img src="../img/logo1.png" style="width:350px;" />
           <!-- <img src="../img/logo1.png" style="width:225px;" /> -->
@@ -57,8 +65,16 @@
                 <i style="font-size:18px" class="fas fa-medkit"></i>
                 Help
               </router-link>
-              <a class="dropdown-item" href="javascript:void(0);" @click="logout">
-                <img class="iconSize" src="../img/logout.png" style="font-size:18px" />
+              <a
+                class="dropdown-item"
+                href="javascript:void(0);"
+                @click="logout"
+              >
+                <img
+                  class="iconSize"
+                  src="../img/logout.png"
+                  style="font-size:18px"
+                />
                 Log Out
               </a>
             </div>
@@ -77,18 +93,16 @@ export default {
       colorSelect: "",
       authenticatedUser: {},
       roles: [],
-      bg: "black",
-      cl: "green"
+      bg: "white",
+      cl: "black"
     };
   },
   beforeCreate() {},
   created() {
     this.tokenParsed = this.$keycloak.tokenParsed;
     this.setAuthenticatedUser();
-    this.$global.elBG(this.authenticatedUser.elBG);
-    this.$global.elClr(this.authenticatedUser.elClr);
-    this.bg = this.authenticatedUser.elBG;
-    this.cl = this.authenticatedUser.elClr;
+    this.$global.elBG(this.bg);
+    this.$global.elClr(this.cl);
     this.load();
   },
   mounted() {},
