@@ -13,6 +13,7 @@ use App\over_time;
 use App\official_business;
 use App\change_shift;
 use App\change_rest_day;
+use App\Employee_approver;
 use App\leave_day;
 use App\leave_type;
 use App\missing_time_log;
@@ -103,9 +104,22 @@ class ApproverController extends Controller
         $user_name = $value[2];
 
         try {
-            Approver::where('employee_id', $bioID)->delete();
+            $approver = Approver::where('employee_id', $bioID);
+            $approver_id = (clone $approver)->value('id');
+            $count = Employee_approver::where('approver_id', $approver_id)->count();
 
-            return $this->index();
+            if ($count > 0) {
+                return json_encode([
+                    'approvers' => $this->index(),
+                    'deletable' => 'no'
+                ]);
+            } else {
+                Approver::where('employee_id', $bioID)->delete();
+                return json_encode ([
+                    'approvers' => $this->index(),
+                    'deletable' => 'yes'
+                ]);
+            }
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);
         }
@@ -188,6 +202,32 @@ class ApproverController extends Controller
     {
         try {
             //leaves
+            /* SELECT
+                    l.reference_no ref_num,
+                    lt.name description,
+                    e.first_name first_name,
+                    e.last_name last_name
+                FROM `leaves` l
+                LEFT JOIN `leave_types` lt ON l.leave_type_id = lt.id
+                LEFT JOIN `employees` e ON l.employee_id = e.id
+                LEFT JOIN `employee_approvers` ea ON e.id = ea.employee_id
+                LEFT JOIN `approvers` a ON ea.approver_id = a.id
+                WHERE a.employee_id = 719 */
+            /* $tbl = DB::table('leaves AS l')
+                ->leftJoin('leave_types AS lt', 'l.leave_type_id', 'lt.id')
+                ->leftJoin('employees AS e', 'l.employee_id', 'e.id')
+                ->leftJoin('employee_approvers AS ea', 'e.id', 'ea.employee_id')
+                ->leftJoin('approvers AS a', 'ea.approver_id', 'a.id')
+                ->where('a.employee_id', $emp_id)
+                ->select('l.reference_no AS ref_num', 'lt.name AS description', 'e.first_name AS first_name', 'e.last_name AS last_name')
+                ->get();
+            $ret_val = [];
+            foreach ($tbl as $item) {
+                $tbl = Leave::with(['leave_type', 'leave_days', 'employee'])
+                    ->where('reference_no', $item->ref_num)
+                    ->get();
+                // array_push($ret_val, $tbl);
+            } */
             $tbl = Leave::with(['leave_type', 'leave_days', 'employee'])
                 ->where('status', 'Pending')
                 ->get();
@@ -205,6 +245,9 @@ class ApproverController extends Controller
                 $item->first_name = $item->employee['first_name'];
                 $item->last_name = $item->employee['last_name'];
                 $item->work_date = "-";
+                $item->dbfrom = $item->date_from;
+                $item->dbto = $item->date_to;
+                $item->dbdate_filed = $item->date_filed;
                 $item->from = (new Carbon($item->date_from))->toFormattedDateString();
                 $item->to = (new Carbon($item->date_to))->toFormattedDateString();
                 $item->date_filed = (new Carbon($item->date_filed))->toFormattedDateString();
@@ -229,6 +272,9 @@ class ApproverController extends Controller
                 $item->description = "Overtime";
                 $from = new Carbon($item->time_in);
                 $to = new Carbon($item->time_out);
+                $item->dbfrom = $item->time_in;
+                $item->dbto = $item->time_out;
+                $item->dbdate_filed = $item->date_filed;
                 $item->from = $from->toFormattedDateString() . " " . $from->toTimeString();
                 $item->to = $to->toFormattedDateString() . " " . $to->toTimeString();
                 $item->date_filed = (new Carbon($item->date_filed))->toFormattedDateString();
@@ -253,6 +299,9 @@ class ApproverController extends Controller
                 $item->description = "Official businesses";
                 $from = new Carbon($item->time_in);
                 $to = new Carbon($item->time_out);
+                $item->dbfrom = $item->time_in;
+                $item->dbto = $item->time_out;
+                $item->dbdate_filed = $item->date_filed;
                 $item->from = $from->toFormattedDateString() . " " . $from->toTimeString();
                 $item->to = $to->toFormattedDateString() . " " . $to->toTimeString();
                 $item->date_filed = (new Carbon($item->date_filed))->toFormattedDateString();
@@ -278,6 +327,9 @@ class ApproverController extends Controller
                 $item->description = "Change shift";
                 $from = new Carbon($item->time_in);
                 $to = new Carbon($item->time_out);
+                $item->dbfrom = $item->time_in;
+                $item->dbto = $item->time_out;
+                $item->dbdate_filed = $item->date_filed;
                 $item->from = $from->toFormattedDateString() . " " . $from->toTimeString();
                 $item->to = $to->toFormattedDateString() . " " . $to->toTimeString();
                 $item->date_filed = (new Carbon($item->date_filed))->toFormattedDateString();
@@ -309,8 +361,11 @@ class ApproverController extends Controller
                 } else {
                     $item->from = $from->toFormattedDateString() . " " . $from->toTimeString();
                     $item->to = $to->toFormattedDateString() . " " . $to->toTimeString();
+                    $item->dbfrom = $item->time_in;
+                    $item->dbto = $item->time_out;
                 }
 
+                $item->dbdate_filed = $item->date_filed;
                 $item->date_filed = (new Carbon($item->date_filed))->toFormattedDateString();
                 if ($tbl != null)
                     if ($tbl->employee_id == $emp_id) {
@@ -334,6 +389,9 @@ class ApproverController extends Controller
                 $item->description = "Missing time logs";
                 $from = new Carbon($item->time_in);
                 $to = new Carbon($item->time_out);
+                $item->dbfrom = $item->time_in;
+                $item->dbto = $item->time_out;
+                $item->dbdate_filed = $item->date_filed;
                 $item->from = $from->toFormattedDateString() . " " . $from->toTimeString();
                 $item->to = $to->toFormattedDateString() . " " . $to->toTimeString();
                 $item->date_filed = (new Carbon($item->date_filed))->toFormattedDateString();
@@ -359,6 +417,9 @@ class ApproverController extends Controller
                 $item->description = "Manual attendance";
                 $from = new Carbon($item->time_in);
                 $to = new Carbon($item->time_out);
+                $item->dbfrom = $item->time_in;
+                $item->dbto = $item->time_out;
+                $item->dbdate_filed = $item->date_filed;
                 $item->from = $from->toFormattedDateString() . " " . $from->toTimeString();
                 $item->to = $to->toFormattedDateString() . " " . $to->toTimeString();
                 $item->date_filed = (new Carbon($item->date_filed))->toFormattedDateString();
@@ -369,7 +430,7 @@ class ApproverController extends Controller
             }
 
             // biometric_attendances
-            $tbl = DB::table('biometric_attendances')
+            /* $tbl = DB::table('biometric_attendances')
                 ->join('employees', 'employees.id', 'biometric_attendances.employee_id')
                 ->where('status', 'Pending')
                 ->select('biometric_attendances.id AS bid', 'employees.*', 'biometric_attendances.*')
@@ -394,7 +455,7 @@ class ApproverController extends Controller
                     if ($tbl->employee_id == $emp_id) {
                         array_push($ret_val, $item);
                     }
-            }
+            } */
 
             return response()->json($ret_val);
         } catch (\Exception $ex) {
@@ -414,10 +475,14 @@ class ApproverController extends Controller
             //ok nani
             if ($level <= $request->approve_level) {
                 //check balance
+
                 $balance = DB::table('leave_balances')
                     ->where('employee_id', $emp_id)
                     ->where('leave_type_id', $request->leave_type_id)
                     ->sum('balance');
+                if ($request->leave_type_id == 1) {
+                    $balance = 365;
+                }
                 $total_day = (float) $request->total_days;
                 if ($balance >= $total_day) {
                     DB::table('leaves')
@@ -481,7 +546,11 @@ class ApproverController extends Controller
             if ($level <= $request->approve_level) {
                 DB::table('over_times')
                     ->where('reference_no', $request->reference_no)
-                    ->update(['status' => 'Approved', 'approve_level' => '0']);
+                    ->update([
+                        'status' => 'Approved',
+                        'approve_level' => '0',
+                        'approve_date' => new Carbon()
+                    ]);
             } else {
                 $lvl = $request->approve_level + 1;
                 DB::table('over_times')
@@ -600,6 +669,141 @@ class ApproverController extends Controller
                     ->where('id', $request->bid)
                     ->update(['approve_level' => $lvl]);
             }
+        }
+
+        $email_subject = "";
+        $message = "
+        <html>
+            <head>
+            </head>
+            <body>
+                " . $request->msg . "
+            </body>
+            <style>
+                .my-td {
+                    padding: 10px;
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
+                .my-table {
+                    border-radius: 10px 10px 0 0;
+                    border-bottom: 5px solid #547e6a;
+                }
+                .my-table,
+                .my-table > tr {
+                    background: #e7fff4;
+                    font-family: 'Helvetica';
+                }
+                .head-bg {
+                    color: #ffffff;
+                    background: #098b4f;
+                    border-radius: 10px 10px 0 0;
+                    letter-spacing: 0.1em;
+                    font-weight: bold;
+                    padding: 20px;
+                    padding-left: 40px;
+                    padding-right: 40px;
+                    text-align: center;
+                }
+                .my-table > tr:nth-child(even) {
+                    background-color: #f1fff9;
+                }
+                .name-bg {
+                    color: #ffffff;
+                    background: #3d3d3d;
+                    /* font-weight: bold; */
+                    text-align: left;
+                }
+                .my-table {
+                    border-collapse: collapse;
+                }
+            </style>
+        </html>";
+
+        $message = str_replace("EMPLOYEE", strtoupper($request->first_name . " " . $request->last_name), $message);
+        $message = str_replace("REFNUM", $request->reference_no, $message);
+        $message = str_replace("FROM", $request->dbfrom, $message);
+        $message = str_replace("TO", $request->dbto, $message);
+        $message = str_replace("DATEFILED", $request->dbdate_filed, $message);
+        $message = str_replace("REASON", $request->reason, $message);
+
+        if (strpos($request->description, 'eave')) {
+            $email_subject = "HRMESS - REQUEST FOR LEAVE";
+            $lv_type = DB::table('leave_types')->where('id', $request->leave_type_id)->value('name');
+            $message = str_replace("LEAVETYPE", $lv_type, $message);
+            $message = str_replace("APPLICATIONTYPE", "LEAVE APPLICATION", $message);
+            $message = str_replace("TTLDAYS", $request->total_days, $message);
+        } elseif ($request->description == 'Overtime') {
+            $email_subject = "HRMESS - REQUEST FOR OVERTIME";
+            $message = str_replace("APPLICATIONTYPE", "OVERTIME APPLICATION", $message);
+            $message = str_replace("WORKDATE", $request->work_date, $message);
+            $message = str_replace("WITHBREAK", $request->with_break, $message);
+            $message = str_replace("BREAKHOURS", $request->break_hours, $message);
+            $message = str_replace("TTLHOURS", $request->total_hours, $message);
+        } elseif ($request->description == 'Official businesses') {
+            $email_subject = "HRMESS - REQUEST FOR OFFICIAL BUSINESS";
+            $message = str_replace("APPLICATIONTYPE", "OFFICIAL BUSINESS APPLICATION", $message);
+            $message = str_replace("WORKDATE", $request->work_date, $message);
+        } elseif ($request->description == 'Change shift') {
+            $email_subject = "HRMESS - REQUEST FOR CHANGE OF SHIFT";
+            $message = str_replace("APPLICATIONTYPE", "CHANGE OF SHIFT APPLICATION", $message);
+            $message = str_replace("WORKDATE", $request->work_date, $message);
+        } elseif ($request->description == 'Change rest day') {
+            $email_subject = "HRMESS - REQUEST FOR CHANGE OF REST DAY";
+            $message = str_replace("APPLICATIONTYPE", "CHANGE OF REST DAY APPLICATION", $message);
+            $message = str_replace("WORKDATE", $request->work_date, $message);
+            $message = str_replace("SHIFT", $request->shift, $message);
+            $message = str_replace("TYPE", $request->type, $message);
+        } elseif ($request->description == 'Missing time logs') {
+            $email_subject = "HRMESS - REQUEST FOR MISSING TIME LOGS";
+            $message = str_replace("APPLICATIONTYPE", "MISSING TIME LOGS APPLICATION", $message);
+            $message = str_replace("WORKDATE", $request->work_date, $message);
+        } elseif ($request->description == 'Manual attendance') {
+            $email_subject = "HRMESS - REQUEST FOR MANUAL ATTENDANCE";
+            $message = str_replace("APPLICATIONTYPE", "MANUAL ATTENDANCE APPLICATION", $message);
+            $message = str_replace("WORKDATE", $request->work_date, $message);
+        }
+
+        $apvr = DB::table('employee_approvers')
+            ->join('approvers', 'approvers.id', 'employee_approvers.approver_id')
+            ->join('employees', 'employees.id', 'approvers.employee_id')
+            ->where('employee_approvers.employee_id', $request->employee_id)
+            ->where('employee_approvers.level', $request->approve_level + 1)
+            ->get();
+
+        if (count($apvr) > 0) {
+            $CCto = [];
+            $sendTo = [];
+            $emp_email = "";
+
+            if (!isset($request->email1)) {
+                $employee = (object) $request->employee;
+                $emp_email = $employee->email1;
+            } else $emp_email = $request->email1;
+
+            foreach ($apvr as $item) {
+                $item = (object) $item;
+                $temp = new stdClass();
+                $temp->email = $item->email1;
+                $temp->name = $item->first_name . " " . $item->last_name;
+                array_push($sendTo, $temp);
+            }
+
+            \Logger::instance()->mailerZimbra(
+                $email_subject,
+                $message,
+                $emp_email,
+                $request->first_name . " " . $request->last_name,
+                $sendTo,
+                $CCto
+            );
+
+            /* return $email_subject . " " .
+                $message . " " .
+                $emp_email . " " .
+                $request->first_name . " " . $request->last_name . " " .
+                json_encode($sendTo) . " " .
+                json_encode($CCto); */
         }
 
         return $this->getToApprove($request->userID);
@@ -1141,8 +1345,7 @@ class ApproverController extends Controller
             DB::table('leaves')
                 ->where('reference_no', $request->reference_no)
                 ->update(['remarks' => $request->remarks, 'status' => 'Disapproved']);
-        } else if ($request->description ==  'O
-        vertime') {
+        } else if ($request->description ==  'Overtime') {
             DB::table('over_times')
                 ->where('reference_no', $request->reference_no)
                 ->update(['remarks' => $request->remarks, 'status' => 'Disapproved']);

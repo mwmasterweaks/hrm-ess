@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\Approver;
 use App\employee_status_history;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -64,6 +65,10 @@ class EmployeeController extends Controller
                 $item->end_date = null;
             }
 
+            $app_count = Approver::where('employee_id', $item->id)->count();
+            if ($app_count == 0) $item->as_approver = 0;
+            else $item->as_approver = 1;
+
             $c = collect();
             $c->put("sample", "true");
             foreach ($user_role->roles as $role) {
@@ -95,7 +100,7 @@ class EmployeeController extends Controller
             'department',
             'payslip.pay_period',
             'employeeStatus',
-            'approver'
+            'approver',
         ];
     }
     public function create()

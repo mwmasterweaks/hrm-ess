@@ -469,6 +469,57 @@
         </b-container>
       </b-modal>
     </div>
+    <div id="to-approve">
+      <div>
+        Please check the following application waiting for approval on HRMESS
+        system.<br /><br />
+        <table class="my-table">
+          <tr>
+            <td colspan="2" class="my-td head-bg">
+              CHANGE OF SHIFT APPLICATION
+            </td>
+          </tr>
+          <tr>
+            <td class="my-td name-bg">
+              NAME:
+            </td>
+            <td class="my-td name-bg">
+              {{
+                user.first_name.toUpperCase() +
+                  " " +
+                  user.last_name.toUpperCase()
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td class="my-td tr-even">Reference no:</td>
+            <td class="my-td tr-even">REFNUM</td>
+          </tr>
+          <tr>
+            <td class="my-td">Work date:</td>
+            <td class="my-td">{{ apply.work_date }}</td>
+          </tr>
+          <tr>
+            <td class="my-td tr-even">From:</td>
+            <td class="my-td tr-even">{{ apply.time_in }}</td>
+          </tr>
+          <tr>
+            <td class="my-td">To:</td>
+            <td class="my-td">{{ apply.time_out }}</td>
+          </tr>
+          <tr>
+            <td class="my-td tr-even">Date filed:</td>
+            <td class="my-td tr-even">DATEFILED</td>
+          </tr>
+          <tr>
+            <td class="my-td">Reason:</td>
+            <td class="my-td values">
+              {{ apply.reason }}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -581,6 +632,9 @@ export default {
     this.$global.loadJS();
   },
   created() {
+    if (this.$keycloak.isTokenExpired()) {
+      this.$root.$emit("logout");
+    }
     //this.roles = this.$global.getRoles();
     this.user = this.$global.getUser();
     //console.log(this.user);
@@ -626,43 +680,67 @@ export default {
       if (this.apply.total_hours > 0) {
         this.$validator.validateAll().then(result => {
           if (result) {
-            this.apply.employee_id = this.user.id;
-            this.apply.user_name =
-              this.user.first_name + " " + this.user.last_name;
-            this.$http
-              .post("api/ChangeShift", this.apply)
-              .then(response => {
-                swal("Notification", "Added successfully", "success");
-
-                this.items = response.body;
-                this.totalRows = this.items.length;
-                this.apply = {
-                  employee_id: "",
-                  work_date: "",
-                  reference_no: "tempnumber123",
-                  shift: "",
-                  with_break: "",
-                  break_hours: 0,
-                  total_hours: "",
-                  time_in: "",
-                  time_out: "",
-                  reason: "",
-                  attachment: "",
-                  status: "Pending"
-                };
-                this.$bvModal.hide("ModelApply");
-              })
-              .catch(response => {
-                swal({
-                  title: "Error",
-                  text: response.body.error,
-                  icon: "error",
-                  dangerMode: true
-                }).then(value => {
-                  if (value) {
-                  }
-                });
+            // catch! if employee has no approver - done
+            if (this.user.emp_approver.length > 0) {
+              var sendTo = [];
+              this.user.emp_approver.forEach(item => {
+                if (item.level == 1) {
+                  var emp = item.approver.employee;
+                  var temp = {
+                    email: emp.email1,
+                    name: emp.first_name + " " + emp.last_name
+                  };
+                  sendTo.push(temp);
+                }
               });
+              this.apply.employee_id = this.user.id;
+              this.apply.user_name =
+                this.user.first_name + " " + this.user.last_name;
+              this.apply.user_email = this.user.email1;
+              this.apply.msg = document.getElementById("to-approve").innerHTML;
+              this.apply.sendTo = sendTo;
+              this.apply.CCto = [];
+              this.$http
+                .post("api/ChangeShift", this.apply)
+                .then(response => {
+                  swal("Notification", "Added successfully", "success");
+
+                  this.items = response.body;
+                  this.totalRows = this.items.length;
+                  this.apply = {
+                    employee_id: "",
+                    work_date: "",
+                    reference_no: "tempnumber123",
+                    shift: "",
+                    with_break: "",
+                    break_hours: 0,
+                    total_hours: "",
+                    time_in: "",
+                    time_out: "",
+                    reason: "",
+                    attachment: "",
+                    status: "Pending"
+                  };
+                  this.$bvModal.hide("ModelApply");
+                })
+                .catch(response => {
+                  swal({
+                    title: "Error",
+                    text: response.body.error,
+                    icon: "error",
+                    dangerMode: true
+                  }).then(value => {
+                    if (value) {
+                    }
+                  });
+                });
+            } else {
+              swal(
+                "No Approver!",
+                "Please contact HR Department to update your approvers.",
+                "info"
+              );
+            }
           }
         });
       } else {

@@ -41,7 +41,11 @@ export default {
   beforeCreate() {
     this.$global.loadJS();
   },
-  created() {},
+  created() {
+    if (this.$keycloak.isTokenExpired()) {
+      this.$root.$emit("logout");
+    }
+  },
   mounted() {
     this.load();
   },

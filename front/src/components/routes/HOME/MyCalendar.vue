@@ -22,6 +22,9 @@ export default {
   },
   beforeCreate() {},
   created() {
+    if (this.$keycloak.isTokenExpired()) {
+      this.$root.$emit("logout");
+    }
     this.roles = this.$global.getRoles();
   },
   mounted() {},

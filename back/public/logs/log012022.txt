@@ -10,3 +10,45 @@ Details: {"employee_id":756,"updated_at":"2022-01-07 08:58:18","created_at":"202
 2022-01-07 09:41:26    |    User: (719) Peter Bismonte    |    EmployeeApproverController (storeMulitple)    |    message    |    Create new employee_approvers: 
 {"approver_id":7,"employee_id":1112,"level":1,"created_at":"2022-01-07T01:41:26.364841Z","updated_at":"2022-01-07T01:41:26.364865Z"}
 
+2022-01-12 09:04:31    |    User: (1025) Daryl Kate Good    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver with approver ID and employee ID: 1, 1025
+Details: {"approver_id":1,"employee_id":1025,"level":1,"updated_at":"2022-01-12 09:04:31","created_at":"2022-01-12 09:04:31","id":0}
+
+2022-01-18 11:35:24    |    User: (719) Peter Bismonte    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver with approver ID and employee ID: 1, 861
+Details: {"approver_id":1,"employee_id":861,"level":2,"updated_at":"2022-01-18 11:35:24","created_at":"2022-01-18 11:35:24","id":0}
+
+2022-01-18 12:58:14    |    User: (1025) Daryl Kate Good    |    EmployeeApproverController (destroy)    |    message    |    Delete employee_approver with approver ID and employee ID: 3, 861
+Details: {"approver_id":3,"employee_id":861,"level":1,"created_at":"2021-12-03 09:00:41","updated_at":"2021-12-03 09:00:41"}
+
+2022-01-18 12:59:20    |    User: (1025) Daryl Kate Good    |    EmployeeApproverController (update)    |    message    |    Update employee_approver with ID: 1
+From: {"approver_id":1,"employee_id":861,"level":2,"created_at":"2022-01-18 11:35:24","updated_at":"2022-01-18 11:35:24"}
+To: {"approver_id":1,"employee_id":861,"level":1,"created_at":"2022-01-18 12:59:20","updated_at":"2022-01-18 12:59:20"}
+
+2022-01-18 15:30:09    |    User: (719) Peter Bismonte    |    ApproverController (store)    |    message    |    Create new approver with ID: 8
+Details: {"employee_id":4,"updated_at":"2022-01-18 15:30:09","created_at":"2022-01-18 15:30:09","id":8}
+
+2022-01-18 15:31:54    |    User: (719) Peter Bismonte    |    ApproverController (store)    |    message    |    Create new approver with ID: 9
+Details: {"employee_id":4,"updated_at":"2022-01-18 15:31:54","created_at":"2022-01-18 15:31:54","id":9}
+
+2022-01-21 11:28:01    |    User: (1025) Daryl Kate Good    |    EmployeeApproverController (destroy)    |    message    |    Delete employee_approver with approver ID and employee ID: 1, 1025
+Details: {"approver_id":1,"employee_id":1025,"level":1,"created_at":"2022-01-12 09:04:31","updated_at":"2022-01-12 09:04:31"}
+
+2022-01-24 11:13:11    |    User: (719) Peter Bismonte    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver with approver ID and employee ID: 1, 1025
+Details: {"approver_id":1,"employee_id":1025,"level":1,"updated_at":"2022-01-24 11:13:11","created_at":"2022-01-24 11:13:11","id":0}
+
+2022-01-24 15:37:42    |    User: (719) Peter Bismonte    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver with approver ID and employee ID: 6, 861
+Details: {"approver_id":6,"employee_id":861,"level":2,"updated_at":"2022-01-24 15:37:42","created_at":"2022-01-24 15:37:42","id":0}
+
+2022-01-25 10:08:00    |    User: (719) Peter Bismonte    |    EmployeeApproverController (destroy)    |    message    |    Delete employee_approver with approver ID and employee ID: 2, 719
+Details: {"approver_id":2,"employee_id":719,"level":1,"created_at":"2021-11-09 16:00:15","updated_at":"2021-11-09 16:00:15"}
+
+2022-01-25 10:09:50    |    User: (719) Peter Bismonte    |    EmployeeApproverController (store)    |    message    |    Create new employee_approver with approver ID and employee ID: 2, 719
+Details: {"approver_id":2,"employee_id":719,"level":1,"updated_at":"2022-01-25 10:09:50","created_at":"2022-01-25 10:09:50","id":0}
+
+2022-01-25 10:13:29    |    User: (719) Peter Bismonte    |    EmployeeApproverController (destroy)    |    message    |    Delete employee_approver with approver ID and employee ID: 2, 719
+Details: {"approver_id":2,"employee_id":719,"level":1,"created_at":"2022-01-25 10:09:50","updated_at":"2022-01-25 10:09:50"}
+
+2022-01-25 16:29:52    |    User: () Mice Dianne Morta    |    LeaveController (store)    |    message    |    Create new leave with ID: 24
+Details: {"employee_id":861,"leave_type_id":5,"reference_no":"tempnumber123","date_from":"2021-10-02","date_to":"2021-10-02","reason":"testing","status":"Pending","attachment":"noattachment.png","total_days":1,"date_filed":"2022-01-25T08:29:52.746938Z","approve_level":"1","updated_at":"2022-01-25 16:29:52","created_at":"2022-01-25 16:29:52","id":24}
+Create new leave day/s: 
+{"leave_id":24,"leave_date":"2021-10-02","halfday":false,"halfday_type":0,"updated_at":"2022-01-25 16:29:52","created_at":"2022-01-25 16:29:52","id":0}
+

@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use App\leave_balance;
 use App\leave_day;
+use App\leave_type;
 use LeaveDay;
 
 class LeaveController extends Controller
@@ -28,7 +29,6 @@ class LeaveController extends Controller
 
     public function store(Request $request)
     {
-        // return $request;
         try {
             DB::beginTransaction();
 
@@ -67,12 +67,17 @@ class LeaveController extends Controller
                 file_put_contents($path, $decoded);
             }
 
+            $date_filed = new Carbon();
+
             $tblInserted = Leave::create($request->except('attachment', 'total_days', 'date_filed', 'approve_level') + [
                 "attachment" => $fileName,
                 "total_days" => $request->total_days,
-                "date_filed" => new Carbon(),
+                "date_filed" => $date_filed,
                 "approve_level" => "1"
             ]);
+
+            $leave_type = leave_type::where('id', $tblInserted->leave_type_id)->value('name');
+
             //update leave balance
             Leave::where("id", $tblInserted->id)
                 ->update(['reference_no' => 'LV-' . $tblInserted->id]);
@@ -92,6 +97,69 @@ class LeaveController extends Controller
                     $lds .= "\n" . $ld;
                 }
             }
+
+            if (true) {
+                $message = "
+                <html>
+                    <head>
+                    </head>
+                    <body>
+                        " . $request->msg . "
+                    </body>
+                    <style>
+                        .my-td {
+                            padding: 10px;
+                            padding-left: 20px;
+                            padding-right: 20px;
+                        }
+                        .my-table {
+                            border-radius: 10px 10px 0 0;
+                            border-bottom: 5px solid #547e6a;
+                        }
+                        .my-table,
+                        .my-table > tr {
+                            background: #e7fff4;
+                            font-family: 'Helvetica';
+                        }
+                        .head-bg {
+                            color: #ffffff;
+                            background: #098b4f;
+                            border-radius: 10px 10px 0 0;
+                            letter-spacing: 0.1em;
+                            font-weight: bold;
+                            padding: 20px;
+                            padding-left: 40px;
+                            padding-right: 40px;
+                            text-align: center;
+                        }
+                        .my-table > tr:nth-child(even) {
+                            background: #f1fff9;
+                        }
+                        .name-bg {
+                            color: #ffffff;
+                            background: #3d3d3d;
+                            /* font-weight: bold; */
+                            text-align: left;
+                        }
+                        .my-table {
+                            border-collapse: collapse;
+                        }
+                    </style>
+                </html>";
+                $message = str_replace("REFNUM", "LV-" . $tblInserted->id, $message);
+                $message = str_replace("LEAVETYPE", $leave_type, $message);
+                $message = str_replace("DATEFILED", $date_filed, $message);
+                $message = str_replace("TOTALDAYS", $request->total_days, $message);
+            }
+
+            \Logger::instance()->mailerZimbra(
+                "HRMESS - REQUEST FOR LEAVE OF ABSENCE",
+                $message,
+                $request->user_email,
+                $request->user_name,
+                $request->sendTo,
+                $request->CCto
+            );
 
             \Logger::instance()->log(
                 Carbon::now(),

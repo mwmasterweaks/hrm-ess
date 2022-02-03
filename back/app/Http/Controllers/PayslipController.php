@@ -74,7 +74,9 @@ class PayslipController extends Controller
     }
     public function generatePayslip(Request $request)
     {
+        //------------------------------IMPORTANT DAPAT MA DEDUCT SA SWELDO ANG LEAVE WITHOUT PAY ---------------------------
         $emp = (object) $request->employee;
+        // return json_encode($emp);
         $payperiod = (object) $request->payperiod;
         $c1 = collect();
         $rate = Rate::where('id', $emp->rate_id)->first();

@@ -1,2 +1,14 @@
 2022-01-07 08:58:55    |    User: ()     |    EmployeeApproverController (storeMulitple)    |    Error    |    Array to string conversion
 
+2022-01-14 10:31:43    |    User: (1025) Daryl Kate Good    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-01-14 10:32:05    |    User: (1025) Daryl Kate Good    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-01-14 10:32:26    |    User: (1025) Daryl Kate Good    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-01-14 10:35:58    |    User: (1025) Daryl Kate Good    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-01-14 11:33:48    |    User: (1025) Daryl Kate Good    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-01-25 16:29:04    |    User: (861) Mice Dianne Morta    |    LeaveController (store)    |    Error    |    Undefined property: stdClass::$email
+

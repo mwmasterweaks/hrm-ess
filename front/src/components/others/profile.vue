@@ -10,7 +10,7 @@
           <div class="col-lg-3">First Name:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{user.first_name}}</span>
+              <span>{{ user.first_name }}</span>
             </b>
           </div>
         </div>
@@ -19,7 +19,7 @@
           <div class="col-lg-3">Middle Name:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{user.middle_name}}</span>
+              <span>{{ user.middle_name }}</span>
             </b>
           </div>
         </div>
@@ -28,7 +28,7 @@
           <div class="col-lg-3">Last Name:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{user.last_name}}</span>
+              <span>{{ user.last_name }}</span>
             </b>
           </div>
         </div>
@@ -37,7 +37,7 @@
           <div class="col-lg-3">Gender:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{user.gender}}</span>
+              <span>{{ user.gender }}</span>
             </b>
           </div>
         </div>
@@ -46,7 +46,7 @@
           <div class="col-lg-3">Date Hired:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{user.date_hired}}</span>
+              <span>{{ user.date_hired }}</span>
             </b>
           </div>
         </div>
@@ -55,7 +55,7 @@
           <div class="col-lg-3">Group:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{user.group.name}}</span>
+              <span>{{ user.group.name }}</span>
             </b>
           </div>
         </div>
@@ -64,7 +64,7 @@
           <div class="col-lg-3">Rate:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{user.rate.name}}</span>
+              <span>{{ user.rate.name }}</span>
             </b>
           </div>
         </div>
@@ -73,7 +73,7 @@
           <div class="col-lg-3">Position:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{user.position.name}}</span>
+              <span>{{ user.position.name }}</span>
             </b>
           </div>
         </div>
@@ -82,7 +82,7 @@
           <div class="col-lg-3">Branch:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{user.branch.name}}</span>
+              <span>{{ user.branch.name }}</span>
             </b>
           </div>
         </div>
@@ -91,7 +91,7 @@
           <div class="col-lg-3">Department:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{user.department.name}}</span>
+              <span>{{ user.department.name }}</span>
             </b>
           </div>
         </div>
@@ -100,7 +100,7 @@
           <div class="col-lg-3">Employee Status:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{user.employment_status}}</span>
+              <span>{{ user.employment_status }}</span>
             </b>
           </div>
         </div>
@@ -109,7 +109,7 @@
           <div class="col-lg-3">Email:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{user.email}}</span>
+              <span>{{ user.email }}</span>
             </b>
           </div>
         </div>
@@ -118,7 +118,7 @@
           <div class="col-lg-3">Created:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{ user.created_at}}</span>
+              <span>{{ user.created_at }}</span>
             </b>
           </div>
         </div>
@@ -142,6 +142,9 @@ export default {
     this.$global.loadJS();
   },
   created() {
+    if (this.$keycloak.isTokenExpired()) {
+      this.$root.$emit("logout");
+    }
     this.user = this.$global.getUser();
     console.log(this.user);
   },

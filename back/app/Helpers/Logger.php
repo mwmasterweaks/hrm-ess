@@ -157,6 +157,12 @@ class Logger
 
     public function mailerZimbra($subject, $message, $sender, $senderName, $sendTo, $CCTO)
     {
+        /* return $subject . " " .
+            $message . " " .
+            $sender . " " .
+            $senderName . " " .
+            json_encode($sendTo) . " " .
+            json_encode($CCTO); */
         $mail = new PHPMailer(true);
         // Server settings
         $mail->SMTPDebug = 0;

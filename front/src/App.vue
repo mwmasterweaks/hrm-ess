@@ -76,6 +76,7 @@ export default {
           console.log(response.body);
           this.user = response.body;
           this.$global.setUser(response.body);
+          // this.user = this.$global.getUser();
           this.isLoad += 1;
           this.$global.setRoles(this.user.roles);
           this.roles = this.user.roles;
@@ -95,6 +96,7 @@ export default {
               this.logout();
             });
           } else {
+            console.log(response);
             swal({
               title: "You are not authenticated.",
               text: "Please login again",
@@ -418,7 +420,12 @@ input {
 .v-sidebar-menu {
   background: #0e0e0e;
 }
-
+#to-approve {
+  visibility: hidden;
+}
+#ap-to-approve {
+  visibility: hidden;
+}
 .my-td {
   padding: 5px;
 }

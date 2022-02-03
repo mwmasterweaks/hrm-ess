@@ -46,38 +46,67 @@ class BiometricAttendanceController extends Controller
         // return $dtr;
         if ($dtr_count > 0) {
             if ($dtr_row[$type] == NULL) {
+                date_default_timezone_set('Asia/Manila'); // CDT
+                $punch_time = date('Y-m-d H:i:s');
                 $bio = biometric_attendance::create($request->all());
-                (clone $dtr)->update([$type => $request->punch_time]);
+                (clone $dtr)->update([$type => $punch_time]); // do not use $request->punch_time to avoid ui time recording
 
                 if (true) {
                     $message = "
                     <html>
-                    <head>
-                    </head>
-                    <body>
-                    " . $request->msg . "
-                    </body>
-                    <style>
-                    .my-td {
-                    padding: 5px;
-                    }
-                    .my-table,
-                    .my-td {
-                    border: 1px solid slategrey;
-                    }
-                    .my-table {
-                    border-collapse: collapse;
-                    width: 100%;
-                    }
-                    </style>
+                        <head>
+                        </head>
+                        <body>
+                            " . $request->msg . "
+                        </body>
+                        <style>
+                            .my-td {
+                                padding: 10px;
+                                padding-left: 20px;
+                                padding-right: 20px;
+                            }
+                            .my-table {
+                                border-radius: 10px 10px 0 0;
+                                border-bottom: 5px solid #547e6a;
+                            }
+                            .my-table,
+                            .my-td {
+                                background: #e7fff4;
+                                font-family: 'Helvetica';
+                            }
+                            .head-bg {
+                                color: #ffffff;
+                                background: #098b4f;
+                                border-radius: 10px 10px 0 0;
+                                letter-spacing: 0.1em;
+                                font-weight: bold;
+                                padding: 20px;
+                                padding-left: 40px;
+                                padding-right: 40px;
+                                text-align: center;
+                            }
+                            .name-bg {
+                                color: #ffffff;
+                                background: #3d3d3d;
+                                /* font-weight: bold; */
+                                text-align: left;
+                            }
+                            .tr-even {
+                                background: #f1fff9;
+                            }
+                            .my-table {
+                                border-collapse: collapse;
+                            }
+                        </style>
                     </html>";
-                    $message = str_replace("REFFFFFFFFF", "BA-" . $bio->id, $message);
-                    $message = str_replace("biotype", $request->type, $message);
-                    $message = str_replace("getbioid", $bio->id, $message);
+                    $message = str_replace("REFNUM", "BA-" . $bio->id, $message);
+                    $message = str_replace("BIOTYPE", $request->type, $message);
+                    $message = str_replace("PUNCHTIME", $punch_time, $message);
+                    // $message = str_replace("getbioid", $bio->id, $message);
                 }
 
                 \Logger::instance()->mailerZimbra(
-                    "Biometric Approval",
+                    "HRMESS - BIOMETRIC ATTENDANCE",
                     $message,
                     $request->user_email,
                     $request->user_name,

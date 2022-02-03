@@ -13,18 +13,25 @@
           <b-button
             type="button"
             class="btn btn-labeled pull-right btn-default cml-10 cplr-10 cbg-gray"
-            @click="btnAdd('Time Out')"
-          >Time Out</b-button>
+            @click="btnApply('Time Out')"
+            >Time Out</b-button
+          >
           <b-button
             type="button"
             class="btn btn-labeled pull-right btn-default cplr-10 cbg-gray"
-            @click="btnAdd('Time In')"
-          >Time In</b-button>
+            @click="btnApply('Time In')"
+            >Time In</b-button
+          >
         </p>
       </div>
 
       <div class="elClr panel-body">
-        <GmapMap :center="marker.position" :zoom="15" map-type-id="terrain" style="height: 600px">
+        <GmapMap
+          :center="marker.position"
+          :zoom="15"
+          map-type-id="terrain"
+          style="height: 600px"
+        >
           <GmapMarker
             :position.sync="marker.position"
             :clickable="true"
@@ -38,36 +45,44 @@
     </div>
 
     <div id="to-approve">
-      <!-- hide ni -->
       <div>
-        <!-- container mao ni gamitun pag send -->
         <table class="my-table">
           <tr>
-            <td class="my-td">Reference no:</td>
-            <td class="my-td">REFFFFFFFFF</td>
-
-            <td class="my-td">Description:</td>
-            <td class="my-td">Biometric attendance</td>
+            <td colspan="2" class="my-td head-bg">
+              BIOMETRIC ATTENDANCE
+            </td>
           </tr>
-
           <tr>
-            <td class="my-td">Type</td>
-            <td class="my-td">biotype</td>
-
-            <td class="my-td">Employee:</td>
-            <td class="my-td">{{ user.first_name }} {{ user.last_name }}</td>
+            <td class="my-td name-bg">
+              NAME:
+            </td>
+            <td class="my-td name-bg">
+              {{
+                user.first_name.toUpperCase() +
+                  " " +
+                  user.last_name.toUpperCase()
+              }}
+            </td>
           </tr>
-
           <tr>
-            <td class="my-td">Latitude:</td>
-            <td class="my-td">{{ marker.position.lat }}</td>
-
+            <td class="my-td tr-even">Reference no:</td>
+            <td class="my-td tr-even">REFNUM</td>
+          </tr>
+          <tr>
+            <td class="my-td">Type:</td>
+            <td class="my-td">BIOTYPE</td>
+          </tr>
+          <tr>
+            <td class="my-td tr-even">Latitude:</td>
+            <td class="my-td tr-even">{{ marker.position.lat }}</td>
+          </tr>
+          <tr>
             <td class="my-td">Longitude:</td>
             <td class="my-td">{{ marker.position.lng }}</td>
           </tr>
           <tr>
-            <td class="my-td">Location:</td>
-            <td class="my-td" colspan="3">
+            <td class="my-td tr-even">Location:</td>
+            <td class="my-td tr-even">
               <a
                 :href="
                   'https://www.google.com/maps/@' +
@@ -76,12 +91,14 @@
                     marker.position.lng +
                     ',19z'
                 "
-              >www.google.com/maps</a>
+                >www.google.com/maps</a
+              >
             </td>
           </tr>
           <tr>
             <td class="my-td">Punch Time:</td>
-            <td class="my-td" colspan="3">{{ dt.split("/").join("-") }}</td>
+            <td class="my-td">PUNCHTIME</td>
+            <!-- <td class="my-td">{{ dt.split("/").join("-") }}</td> -->
           </tr>
         </table>
 
@@ -142,6 +159,9 @@ export default {
     this.$global.loadJS();
   },
   created() {
+    if (this.$keycloak.isTokenExpired()) {
+      this.$root.$emit("logout");
+    }
     this.user = this.$global.getUser();
     this.load_clock();
     this.$getLocation({
@@ -178,57 +198,90 @@ export default {
         cd.toLocaleString().substr(0, 9) + " " + cd.toString().substr(16, 8);
        */
     },
-    btnAdd(type) {
-      this.type = type;
-      var emp = this.user.emp_approver[0].approver.employee;
-      var sendTo = [
-        {
-          email: emp.email1,
-          name: emp.first_name + " " + emp.last_name
-        }
-      ];
+    btnApply(type) {
+      console.log(this.marker.position.lat + " " + this.marker.position.lng);
+      if (this.marker.position.lat == 0 && this.marker.position.lng == 0) {
+        /* swal({
+          title:
+            "Please turn on Location Services to allow HRMESS to determine your location.",
+          icon: "info"
+        }); */
+        swal({
+          title:
+            "Please turn on Location Services to allow HRMESS to determine your location.",
+          icon: "info",
+          buttons: {
+            cancel: {
+              text: "Got It!",
+              value: false,
+              visible: true
+            },
+            confirm: {
+              text: "How?",
+              value: true,
+              visible: true
+            }
+          }
+        }).then(value => {
+          if (value == true) {
+            window.open(
+              "https://docs.buddypunch.com/en/articles/919258-how-to-enable-location-services-for-chrome-safari-edge-and-android-ios-devices-gps-setting",
+              "_blank"
+            );
+          }
+        });
+      } else {
+        this.type = type;
+        var emp = this.user.emp_approver[0].approver.employee; // catch! if employee has no approver
+        var sendTo = [
+          {
+            email: emp.email1,
+            name: emp.first_name + " " + emp.last_name
+          }
+        ];
 
-      // var sendTo = [
-      //   {
-      //     email: "mwmasterweaks@gmail.com",
-      //     name: "Peter Gwapo"
-      //   }
-      // ];
-      var temp = {
-        employee_id: this.user.id,
-        punch_time: this.dt.split("/").join("-"),
-        type: type,
-        latitude: this.marker.position.lat,
-        longitude: this.marker.position.lng,
-        msg: document.getElementById("to-approve").innerHTML,
-        user_email: this.user.email1,
-        user_name: this.user.first_name + " " + this.user.last_name,
-        sendTo: sendTo,
-        CCto: []
-      };
-      console.log(temp);
-      this.$http.post("api/BioAttendance", temp).then(response => {
-        console.log(response.body);
-        var mode = type == "Time In" ? "In" : "Out";
-        if (response.body == 0) {
-          swal({
-            title: "No work schedule!",
-            text:
-              "Your work schedule for this day has not been set. Please contact HR Department.",
-            icon: "info"
-          });
-        } else if (response.body == 1) {
-          swal({
-            title: "Logged " + mode + "!",
-            icon: "success"
-          });
-        } else if (response.body == 2) {
-          swal({
-            title: "Log " + mode + " time has already been recorded!",
-            icon: "info"
-          });
-        }
-      });
+        // var sendTo = [
+        //   {
+        //     email: "mwmasterweaks@gmail.com",
+        //     name: "Peter"
+        //   }
+        // ];
+        var temp = {
+          employee_id: this.user.id,
+          punch_time: this.dt.split("/").join("-"),
+          type: type,
+          latitude: this.marker.position.lat,
+          longitude: this.marker.position.lng,
+          msg: document.getElementById("to-approve").innerHTML,
+          user_email: this.user.email1,
+          user_name: this.user.first_name + " " + this.user.last_name,
+          sendTo: sendTo,
+          CCto: []
+        };
+        console.log(temp);
+        this.$http.post("api/BioAttendance", temp).then(response => {
+          console.log(response.body);
+          var mode = type == "Time In" ? "In" : "Out";
+          if (response.body == 0) {
+            swal({
+              title: "No work schedule!",
+              text:
+                "Your work schedule for this day has not been set. Please contact HR Department.",
+              icon: "info"
+            });
+          } else if (response.body == 1) {
+            swal({
+              title: "Logged " + mode + "!",
+              icon: "success"
+            });
+          } else if (response.body == 2) {
+            swal({
+              title: "Log " + mode + " time has already been recorded!",
+              icon: "info"
+            });
+          }
+        });
+      }
     }
   }
 };

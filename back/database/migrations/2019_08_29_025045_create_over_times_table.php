@@ -32,6 +32,7 @@ class CreateOverTimesTable extends Migration
             $table->string('status_paid')->default('no');
             $table->string('remarks')->nullable();
             $table->integer('approve_level');
+            $table->date('approve_date');
             $table->timestamps();
         });
     }

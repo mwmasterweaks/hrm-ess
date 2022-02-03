@@ -303,9 +303,9 @@ class DtrController extends Controller
                 $c1->put('shift_sched_out', $tbl->shift_sched_out);
                 $c1->put('is_rest_day', $tbl->is_rest_day);
             } else {
-                $c1->put('shift_sched_in', $date_from->format('Y-m-d') . " " . "07:31");
+                $c1->put('shift_sched_in', $date_from->format('Y-m-d') . " " . "07:37");
                 if ($day == "Saturday") {
-                    $c1->put('shift_sched_out', $date_from->format('Y-m-d') . " " . "11:00");
+                    $c1->put('shift_sched_out', $date_from->format('Y-m-d') . " " . "10:30");
                 } else {
                     $c1->put('shift_sched_out', $date_from->format('Y-m-d') . " " . "17:00");
                 }
@@ -433,15 +433,16 @@ class DtrController extends Controller
                 $naa = 0;
 
                 $period = DB::table('pay_periods')->where('id', $period_id)->first();
-                $from = date('Y-m-d', strtotime($period->from));
-                $to = date('Y-m-d', strtotime($period->to));
+                // $from = date('Y-m-d', strtotime($period->from));
+                // $to = date('Y-m-d', strtotime($period->to));
 
                 $overtime = DB::table('over_times')
                     ->where('employee_id', $item->id)
-                    ->whereBetween('work_date', [$from, $to])
+                    ->where('approve_date', '>=', $period->from)
+                    ->where('approve_date', '<=', $period->to)
                     ->sum('total_hours');
 
-                if (count($dtrs) > 0)
+                if (count($dtrs) > 0) {
                     foreach ($dtrs as $dtr) {
                         //holiday
                         $checkIfHoliday = false;
@@ -508,16 +509,19 @@ class DtrController extends Controller
                                 } else
                                     $no_in_and_out++;
                     }
+                }
                 $c1 = collect();
                 if (count($dtrs) > 0) {
+                    if ($overtime > 0) {
+                        $c1->put('overtime', $overtime);
+                    } else $c1->put('overtime', '-');
+
                     if ($naa > 0) {
                         $c1->put('late', $late);
                         $c1->put('undertime', $undertime);
-                        $c1->put('overtime', $overtime);
                     } else {
                         $c1->put('late',  '-');
                         $c1->put('undertime',  '-');
-                        $c1->put('overtime', '-');
                     }
 
                     $c1->put('naa', $naa);
@@ -537,6 +541,10 @@ class DtrController extends Controller
                     array_push($retVal, $item);
                 } else {
                     if (count($dtrs) > 0) {
+                        if ($record == 'overtime') {
+                            if ($overtime > 0)
+                                array_push($retVal, $item);
+                        }
                         if ($naa > 0) {
                             if ($record == 'late') {
                                 if ($late > 0)
@@ -546,9 +554,6 @@ class DtrController extends Controller
                                     array_push($retVal, $item);
                             } else if ($record == 'undertime') {
                                 if ($undertime > 0)
-                                    array_push($retVal, $item);
-                            } else if ($record == 'overtime') {
-                                if ($overtime > 0)
                                     array_push($retVal, $item);
                             }
                         }

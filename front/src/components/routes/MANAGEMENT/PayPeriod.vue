@@ -475,6 +475,9 @@ export default {
     this.$global.loadJS();
   },
   created() {
+    if (this.$keycloak.isTokenExpired()) {
+      this.$root.$emit("logout");
+    }
     this.user = this.$global.getUser();
     this.roles = this.$global.getRoles();
     this.get_group();

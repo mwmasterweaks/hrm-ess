@@ -55,13 +55,77 @@ class MissingTimeLogController extends Controller
 
                 file_put_contents($path, $decoded);
             }
+
+            $date_filed = new Carbon();
+
             $tblInserted = missing_time_log::create($request->except('attachment') + [
                 "attachment" => $fileName,
-                "date_filed" => new Carbon(),
+                "date_filed" => $date_filed,
                 "approve_level" => "1"
             ]);
             missing_time_log::where("id", $tblInserted->id)
                 ->update(['reference_no' => 'MTL-' . $tblInserted->id]);
+
+            if (true) {
+                $message = "
+                <html>
+                    <head>
+                    </head>
+                    <body>
+                        " . $request->msg . "
+                    </body>
+                    <style>
+                        .my-td {
+                            padding: 10px;
+                            padding-left: 20px;
+                            padding-right: 20px;
+                        }
+                        .my-table {
+                            border-radius: 10px 10px 0 0;
+                            border-bottom: 5px solid #547e6a;
+                        }
+                        .my-table,
+                        .my-table > tr {
+                            background: #e7fff4;
+                            font-family: 'Helvetica';
+                        }
+                        .head-bg {
+                            color: #ffffff;
+                            background: #098b4f;
+                            border-radius: 10px 10px 0 0;
+                            letter-spacing: 0.1em;
+                            font-weight: bold;
+                            padding: 20px;
+                            padding-left: 40px;
+                            padding-right: 40px;
+                            text-align: center;
+                        }
+                        .my-table > tr:nth-child(even) {
+                            background: #f1fff9;
+                        }
+                        .name-bg {
+                            color: #ffffff;
+                            background: #3d3d3d;
+                            /* font-weight: bold; */
+                            text-align: left;
+                        }
+                        .my-table {
+                            border-collapse: collapse;
+                        }
+                    </style>
+                </html>";
+                $message = str_replace("REFNUM", "MTL-" . $tblInserted->id, $message);
+                $message = str_replace("DATEFILED", $date_filed, $message);
+            }
+
+            \Logger::instance()->mailerZimbra(
+                "HRMESS - REQUEST FOR MISSING TIME LOGS",
+                $message,
+                $request->user_email,
+                $request->user_name,
+                $request->sendTo,
+                $request->CCto
+            );
 
             \Logger::instance()->log(
                 Carbon::now(),

@@ -351,6 +351,81 @@
         >
       </b-modal>
     </div>
+    <div id="ap-to-approve">
+      <div>
+        Please check the following application waiting for approval on HRMESS
+        system.<br /><br />
+        <table class="my-table">
+          <tr>
+            <td colspan="2" class="my-td head-bg">
+              APPLICATIONTYPE
+            </td>
+          </tr>
+          <tr>
+            <td class="my-td name-bg">
+              NAME:
+            </td>
+            <td class="my-td name-bg">
+              EMPLOYEE
+            </td>
+          </tr>
+          <tr>
+            <td class="my-td">Reference no:</td>
+            <td class="my-td">REFNUM</td>
+          </tr>
+          <tr v-show="apptype == 'LV'">
+            <td class="my-td">Description:</td>
+            <td class="my-td">LEAVETYPE</td>
+          </tr>
+          <tr v-show="apptype != 'LV'">
+            <td class="my-td">Work date:</td>
+            <td class="my-td">WORKDATE</td>
+          </tr>
+          <tr>
+            <td class="my-td">From:</td>
+            <td class="my-td">FROM</td>
+          </tr>
+          <tr>
+            <td class="my-td">To:</td>
+            <td class="my-td">TO</td>
+          </tr>
+          <tr v-show="apptype == 'CRD'">
+            <td class="my-td">Shift:</td>
+            <td class="my-td">SHIFT</td>
+          </tr>
+          <tr v-show="apptype == 'CRD'">
+            <td class="my-td">Type:</td>
+            <td class="my-td">TYPE</td>
+          </tr>
+          <tr v-show="apptype == 'OT'">
+            <td class="my-td">With break:</td>
+            <td class="my-td">WITHBREAK</td>
+          </tr>
+          <tr v-show="apptype == 'OT'">
+            <td class="my-td">Break hours:</td>
+            <td class="my-td">BREAKHOURS</td>
+          </tr>
+          <tr v-show="apptype == 'OT'">
+            <td class="my-td">Total no. of hours:</td>
+            <td class="my-td">TTLHOURS</td>
+          </tr>
+          <tr v-show="apptype == 'LV'">
+            <td class="my-td">Total no. of days:</td>
+            <td class="my-td">TTLDAYS</td>
+          </tr>
+          <tr>
+            <td class="my-td">Date filed:</td>
+            <td class="my-td">DATEFILED</td>
+          </tr>
+          <tr>
+            <td class="my-td">Reason:</td>
+            <td class="my-td values">
+              REASON
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -445,10 +520,10 @@ export default {
         },
         {
           name: "Manual Attendance"
-        },
-        {
-          name: "Biometric Attendance"
         }
+        // {
+        //   name: "Biometric Attendance"
+        // }
       ],
       selected_application: "",
       sched_fields_details: [
@@ -458,15 +533,18 @@ export default {
       ],
       sched_items_details: [],
       sched_tblisBusy_details: false,
-      roles: []
+      roles: [],
+      apptype: ""
     };
   },
   beforeCreate() {
     this.$global.loadJS();
   },
   created() {
+    if (this.$keycloak.isTokenExpired()) {
+      this.$root.$emit("logout");
+    }
     //this.roles = this.$global.getRoles();
-
     this.$root.$emit("Sidebar");
     this.user = this.$global.getUser();
     this.load_item(this.user.id);
@@ -566,9 +644,11 @@ export default {
       //   });
     },
     approveRequest(item) {
-      console.log(item);
-      if (item.reference_no.substr(0, 2) == "BA")
-        item.work_date = item.punch_time.substr(0, 10);
+      this.apptype = item.reference_no.substr(
+        0,
+        item.reference_no.indexOf("-")
+      );
+      if (this.apptype == "BA") item.work_date = item.punch_time.substr(0, 10);
       item.userID = this.user.id;
       console.log(item);
       swal({
@@ -579,12 +659,13 @@ export default {
         dangerMode: true
       }).then(approve => {
         if (approve) {
+          item.msg = document.getElementById("ap-to-approve").innerHTML;
+          console.log(item);
           this.tblisBusy = true;
           this.$http
             .put("api/approveRequest/", item)
             .then(response => {
               console.log(response.body);
-
               this.items = response.body;
               this.totalRows = this.items.length;
               this.tblisBusy = false;
@@ -593,6 +674,7 @@ export default {
               this.$bvModal.hide("ModalViewDetails");
             })
             .catch(response => {
+              console.log(response.body);
               swal({
                 title: "Error",
                 text: response.body.error,

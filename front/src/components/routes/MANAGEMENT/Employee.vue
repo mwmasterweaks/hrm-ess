@@ -1006,7 +1006,7 @@
             >Reset Password</b-button
           >
 
-          <div v-if="item_edit.as_approver == null">
+          <div v-if="item_edit.as_approver == 0">
             <b-button
               size="sm"
               variant="success"
@@ -3219,6 +3219,7 @@ export default {
           key: "appname",
           label: "Approver name",
           formatter: (value, key, item) => {
+            // return item;
             return (
               item.app.employee.first_name + " " + item.app.employee.last_name
             );
@@ -3354,6 +3355,9 @@ export default {
     this.$global.loadJS();
   },
   created() {
+    if (this.$keycloak.isTokenExpired()) {
+      this.$root.$emit("logout");
+    }
     this.user = this.$global.getUser();
     this.roles = this.$global.getRoles();
     this.groups = this.$global.getGroup();
@@ -4040,17 +4044,25 @@ export default {
             "," +
             this.user.employee_id +
             "," +
-            this.user.employee.first_name +
+            this.user.first_name +
             " " +
-            this.user.employee.last_name;
+            this.user.last_name;
           this.$http
             .delete("api/Approver/" + temp)
             .then(response => {
-              console.log(response.body);
-              this.$root.$emit("pageLoaded");
-              swal("Removed!", "Employee removed as approver.", "success");
-              this.item_edit.as_approver = null;
-              this.reloadApprover();
+              console.log(response.body.approvers);
+              if (response.body.deletable == "no") {
+                swal(
+                  "Oops!",
+                  "This approver was assigned to some employees.",
+                  "info"
+                );
+              } else {
+                this.$root.$emit("pageLoaded");
+                swal("Removed!", "Employee removed as approver.", "success");
+                this.item_edit.as_approver = 0;
+                this.reloadApprover();
+              }
             })
             .catch(response => {
               this.$root.$emit("pageLoaded");

@@ -550,6 +550,61 @@
         </b-container>
       </b-modal>
     </div>
+    <div id="to-approve">
+      <div>
+        Please check the following application waiting for approval on HRMESS
+        system.<br /><br />
+        <table class="my-table">
+          <tr>
+            <td colspan="2" class="my-td head-bg">
+              LEAVE APPLICATION
+            </td>
+          </tr>
+          <tr>
+            <td class="my-td name-bg">
+              NAME:
+            </td>
+            <td class="my-td name-bg">
+              {{
+                user.first_name.toUpperCase() +
+                  " " +
+                  user.last_name.toUpperCase()
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td class="my-td">Reference no:</td>
+            <td class="my-td">REFNUM</td>
+          </tr>
+          <tr>
+            <td class="my-td">Description:</td>
+            <td class="my-td">LEAVETYPE</td>
+          </tr>
+          <tr>
+            <td class="my-td">From:</td>
+            <td class="my-td">{{ leave_apply.date_from }}</td>
+          </tr>
+          <tr>
+            <td class="my-td">To:</td>
+            <td class="my-td">{{ leave_apply.date_to }}</td>
+          </tr>
+          <tr>
+            <td class="my-td">Total no. of days:</td>
+            <td class="my-td">TOTALDAYS</td>
+          </tr>
+          <tr>
+            <td class="my-td">Date filed:</td>
+            <td class="my-td">DATEFILED</td>
+          </tr>
+          <tr>
+            <td class="my-td">Reason:</td>
+            <td class="my-td values">
+              {{ leave_apply.reason }}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -689,6 +744,9 @@ export default {
     this.$global.loadJS();
   },
   created() {
+    if (this.$keycloak.isTokenExpired()) {
+      this.$root.$emit("logout");
+    }
     this.user = this.$global.getUser();
     this.load_leave(this.user.id);
     this.load_leave_types();
@@ -737,48 +795,76 @@ export default {
     btnApply() {
       this.$validator.validateAll().then(result => {
         if (result) {
-          this.leave_apply.user_name =
-            this.user.first_name + " " + this.user.last_name;
-          this.leave_apply.employee_id = this.user.id;
-          this.leave_apply.daysList = this.sched_items;
-          this.leave_apply.total_days = this.total_days;
-          this.$http
-            .post("api/Leave", this.leave_apply)
-            .then(response => {
-              console.log(response.body);
-              this.available_balance = 0;
-              swal("Notification", "Added successfully", "success");
-              this.items = response.body;
-              this.totalRows = this.items.length;
-              this.leave_apply = {
-                employee_id: "",
-                leave_type_id: "",
-                reference_no: "tempnumber123",
-                total_days: "",
-                reason: "",
-                attachment: "",
-                date_filed: "",
-                status: "",
-                approve_level: ""
-              };
-              this.sched_items = [];
-              this.total_days = 0;
-              this.remain_balance = 0;
-
-              this.$bvModal.hide("ModelAdd");
-            })
-            .catch(response => {
-              swal({
-                title: "Error",
-                text: response.body.error,
-                icon: "error",
-                dangerMode: true
-              }).then(value => {
-                if (value) {
-                  this.$refs.name.focus();
-                }
-              });
+          // catch! if employee has no approver - done
+          if (this.user.emp_approver.length > 0) {
+            var sendTo = [];
+            this.user.emp_approver.forEach(item => {
+              if (item.level == 1) {
+                var emp = item.approver.employee;
+                var temp = {
+                  email: emp.email1,
+                  name: emp.first_name + " " + emp.last_name
+                };
+                sendTo.push(temp);
+              }
             });
+
+            this.leave_apply.user_name =
+              this.user.first_name + " " + this.user.last_name;
+            this.leave_apply.user_email = this.user.email1;
+            this.leave_apply.employee_id = this.user.id;
+            this.leave_apply.daysList = this.sched_items;
+            this.leave_apply.total_days = this.total_days;
+            this.leave_apply.msg = document.getElementById(
+              "to-approve"
+            ).innerHTML;
+            this.leave_apply.sendTo = sendTo;
+            this.leave_apply.CCto = [];
+
+            this.$http
+              .post("api/Leave", this.leave_apply)
+              .then(response => {
+                console.log(response.body);
+                this.available_balance = 0;
+                swal("Notification", "Added successfully", "success");
+                this.items = response.body;
+                this.totalRows = this.items.length;
+                this.leave_apply = {
+                  employee_id: "",
+                  leave_type_id: "",
+                  reference_no: "tempnumber123",
+                  total_days: "",
+                  reason: "",
+                  attachment: "",
+                  date_filed: "",
+                  status: "",
+                  approve_level: ""
+                };
+                this.sched_items = [];
+                this.total_days = 0;
+                this.remain_balance = 0;
+
+                this.$bvModal.hide("ModelAdd");
+              })
+              .catch(response => {
+                swal({
+                  title: "Error",
+                  text: response.body.error,
+                  icon: "error",
+                  dangerMode: true
+                }).then(value => {
+                  if (value) {
+                    this.$refs.name.focus();
+                  }
+                });
+              });
+          } else {
+            swal(
+              "No Approver!",
+              "Please contact HR Department to update your approvers.",
+              "info"
+            );
+          }
         }
       });
     },
