@@ -726,8 +726,8 @@ export default {
       total_days: 0,
       remain_balance: 0,
       rest_day_half_type: [
-        { name: "1st Half", id: "1" },
-        { name: "2nd Half", id: "2" }
+        { name: "1st Half", id: 1 },
+        { name: "2nd Half", id: 2 }
       ],
 
       sched_fields_details: [
@@ -820,6 +820,7 @@ export default {
             ).innerHTML;
             this.leave_apply.sendTo = sendTo;
             this.leave_apply.CCto = [];
+            console.log(this.leave_apply);
 
             this.$http
               .post("api/Leave", this.leave_apply)
@@ -837,7 +838,7 @@ export default {
                   reason: "",
                   attachment: "",
                   date_filed: "",
-                  status: "",
+                  status: "Pending",
                   approve_level: ""
                 };
                 this.sched_items = [];

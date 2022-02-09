@@ -1,0 +1,48 @@
+2022-02-03 20:03:31    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    SQLSTATE[42S22]: Column not found: 1054 Unknown column 'rate' in 'field list' (SQL: select `rate` from `employees` where `id` = 1150 limit 1)
+
+2022-02-03 20:07:30    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    Array to string conversion
+
+2022-02-03 20:07:59    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    Array to string conversion
+
+2022-02-03 20:09:34    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    Array to string conversion
+
+2022-02-03 20:09:45    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    Array to string conversion
+
+2022-02-04 08:21:02    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    Array to string conversion
+
+2022-02-04 08:26:22    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    Array to string conversion
+
+2022-02-04 08:29:27    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    Array to string conversion
+
+2022-02-04 08:30:21    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    Array to string conversion
+
+2022-02-04 08:31:30    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    Array to string conversion
+
+2022-02-04 08:32:14    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    Array to string conversion
+
+2022-02-04 08:56:02    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    Array to string conversion
+
+2022-02-04 08:56:35    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    Array to string conversion
+
+2022-02-04 11:05:17    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    Array to string conversion
+
+2022-02-04 11:22:03    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    Error    |    Wrong parameter count for number_format()
+
+2022-02-04 13:59:48    |    User: (1025) Daryl Kate Good    |    EmployeeController (store)    |    Error    |    SQLSTATE[01000]: Warning: 1265 Data truncated for column 'daily_rate' at row 1 (SQL: insert into `rates` (`name`, `daily_rate`, `sss_deduction`, `phic_deduction`, `hdmf_deduction`, `created_at`, `updated_at`) values (1,000.00, 1,000.00, 500.00, 500.00, 500.00, 2022-02-04 13:59:48, 2022-02-04 13:59:48))
+
+2022-02-04 14:00:55    |    User: (1025) Daryl Kate Good    |    EmployeeController (store)    |    Error    |    SQLSTATE[01000]: Warning: 1265 Data truncated for column 'daily_rate' at row 1 (SQL: insert into `rates` (`name`, `daily_rate`, `sss_deduction`, `phic_deduction`, `hdmf_deduction`, `created_at`, `updated_at`) values (1,000.00, 1,000.00, 500.00, 500.00, 500.00, 2022-02-04 14:00:55, 2022-02-04 14:00:55))
+
+2022-02-09 09:46:13    |    User: (1025) Daryl Kate Good    |    LeaveController (store)    |    Error    |    Object of class Illuminate\Database\Eloquent\Builder could not be converted to string
+
+2022-02-09 09:47:13    |    User: (1025) Daryl Kate Good    |    LeaveController (store)    |    Error    |    Object of class Illuminate\Database\Query\Builder could not be converted to string
+
+2022-02-09 09:49:15    |    User: (1025) Daryl Kate Good    |    LeaveController (store)    |    Error    |    Object of class Illuminate\Database\Eloquent\Builder could not be converted to string
+
+2022-02-09 09:50:49    |    User: (1025) Daryl Kate Good    |    LeaveController (store)    |    Error    |    Object of class Illuminate\Database\Eloquent\Builder could not be converted to string
+
+2022-02-09 13:09:03    |    User: (1025) Daryl Kate Good    |    LeaveController (store)    |    Error    |    Object of class Illuminate\Database\Eloquent\Builder could not be converted to string
+
+2022-02-09 13:10:45    |    User: (1025) Daryl Kate Good    |    LeaveController (store)    |    Error    |    Object of class Illuminate\Database\Eloquent\Builder could not be converted to string
+
+2022-02-09 13:13:19    |    User: (1025) Daryl Kate Good    |    LeaveController (store)    |    Error    |    Object of class Illuminate\Database\Eloquent\Builder could not be converted to string
+

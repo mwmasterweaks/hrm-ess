@@ -11,6 +11,7 @@ use App\leave_balance;
 use App\leave_day;
 use App\leave_type;
 use LeaveDay;
+use stdClass;
 
 class LeaveController extends Controller
 {
@@ -29,6 +30,7 @@ class LeaveController extends Controller
 
     public function store(Request $request)
     {
+        return $request;
         try {
             DB::beginTransaction();
 
@@ -36,7 +38,6 @@ class LeaveController extends Controller
             // $date_to = new Carbon($request->date_to);
             // $daysCount = $date_from->diffInDays($date_to);
             // $daysCount += 1;
-
 
             $fileName = "noattachment.png";
             if ($request->attachment != "") {
@@ -78,20 +79,24 @@ class LeaveController extends Controller
 
             $leave_type = leave_type::where('id', $tblInserted->leave_type_id)->value('name');
 
-            //update leave balance
-            Leave::where("id", $tblInserted->id)
-                ->update(['reference_no' => 'LV-' . $tblInserted->id]);
+            $log = tap(Leave::where("id", $tblInserted->id))
+                ->update(['reference_no' => 'LV-' . $tblInserted->id])
+                ->first();
 
             $lds = "";
+
             foreach ($request->daysList as $item) {
                 $item = (object) $item;
                 if ($item->is_rest_day == 0) {
+                    $halfday = (int) $item->halfday;
+                    $halfday_type = (int) $item->halfday_type;
+                    if ($halfday == 1 && $halfday_type == 0) $halfday_type = 1;
                     $ld = leave_day::create(
                         [
                             'leave_id' => $tblInserted->id,
                             'leave_date' => $item->work_date,
-                            'halfday' => $item->haftday,
-                            'halfday_type' => $item->haftday_type
+                            'halfday' => $halfday,
+                            'halfday_type' => $halfday_type
                         ]
                     );
                     $lds .= "\n" . $ld;
@@ -163,35 +168,15 @@ class LeaveController extends Controller
 
             \Logger::instance()->log(
                 Carbon::now(),
-                $request->user_id,
+                $request->employee_id,
                 $request->user_name,
                 $this->cname,
                 "store",
                 "message",
-                "Create new leave with ID: " . $tblInserted->id . "\nDetails: " .  $tblInserted .
+                "Create new leave with ID: " . $tblInserted->id . "\nDetails: " .  $log .
                 "\nCreate new leave day/s: " . $lds
             );
 
-            //DEDUCT BALANCE NEED TO MOVE IN APPROVE
-            // $tbl = DB::table('leave_balances')
-            //     ->where("employee_id", $request->employee_id)
-            //     ->where("leave_type_id", $request->leave_type_id)
-            //     ->get();
-            // $temp = $daysCount;
-            // foreach ($tbl as $item) {
-            //     if ($temp > $item->balance) {
-            //         leave_balance::where("id", $item->id)
-            //             ->update(['balance' => '0']);
-            //         leave_balance::where("id", $item->id)
-            //             ->increment('availed', $item->balance);
-            //         $temp = $temp - $item->balance;
-            //     } else {
-            //         leave_balance::where("id", $item->id)
-            //             ->decrement('balance', $temp);
-            //         leave_balance::where("id", $item->id)
-            //             ->increment('availed', $temp);
-            //     }
-            // }
             DB::commit();
             return $this->show($request->employee_id);
         } catch (\Exception $ex) {

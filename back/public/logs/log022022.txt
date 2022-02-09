@@ -7,3 +7,206 @@ Details: {"approver_id":62,"employee_id":1025,"level":2,"updated_at":"2022-02-02
 2022-02-02 14:15:11    |    User: (719) Peter Bismonte    |    EmployeeApproverController (destroy)    |    message    |    Delete employee_approver with approver ID and employee ID: 62, 1025
 Details: {"approver_id":62,"employee_id":1025,"level":2,"created_at":"2022-02-02 09:19:20","updated_at":"2022-02-02 09:19:20"}
 
+2022-02-04 08:34:06    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 08:34:40    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 08:35:24    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 08:35:41    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 08:38:36    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1151
+From: {}
+To: {}
+
+2022-02-04 08:39:07    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 08:43:08    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 08:44:35    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 08:45:03    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 08:45:46    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 08:46:21    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 08:47:20    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 09:23:58    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 09:25:45    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 10:55:33    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 11:01:42    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {}
+To: {}
+
+2022-02-04 11:06:19    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2}
+To: {}
+
+2022-02-04 11:09:09    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1}
+To: {daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2}
+
+2022-02-04 11:21:36    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2}
+To: {daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1}
+
+2022-02-04 11:23:25    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1}
+To: {daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32, daily_rate: 32}
+
+2022-02-04 11:27:42    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1, daily_rate: 1}
+To: {daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2}
+
+2022-02-04 11:28:14    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2}
+To: {daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33, daily_rate: 33}
+
+2022-02-04 11:33:40    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2, daily_rate: 2}
+To: {daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34}
+
+2022-02-04 11:35:56    |    User: (719) Peter Bismonte    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34, daily_rate: 34}
+To: {daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35}
+
+2022-02-04 12:58:14    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35, daily_rate: 35}
+To: {daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36, daily_rate: 36}
+
+2022-02-04 13:18:46    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {daily_rate: 36, position_id: 13}
+To: {daily_rate: 1, position_id: 1}
+
+2022-02-04 13:19:32    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {daily_rate: 1, position_id: 1}
+To: {daily_rate: 2, position_id: 13}
+
+2022-02-04 14:03:11    |    User: (1025) Daryl Kate Good    |    EmployeeController (store)    |    message    |    Create new User with ID: 551
+Details: {"id":5000,"group_id":1,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Maka","middle_name":"Albarn","last_name":"Evans","gender":"Female","date_hired":"2022-02-04","permanent_address":null,"tel_no":null,"mobile_no":null,"email1":"mevans@dctechmicro.com","email2":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"rate_id":37,"updated_at":"2022-02-04 14:03:11","created_at":"2022-02-04 14:03:11"}
+Create new employee_status with ID: 217
+Details: {"employee_id":5000,"status":"Regular","start_date":"2022-02-04","end_date":null,"updated_at":"2022-02-04 14:03:11","created_at":"2022-02-04 14:03:11","id":217}
+
+2022-02-04 14:26:50    |    User: (1025) Daryl Kate Good    |    EmployeeController (destroy)    |    message    |    delete Employee with ID: 5000
+Old Employee: {"id":5000,"group_id":1,"rate_id":37,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Maka","middle_name":"Albarn","last_name":"Evans","gender":"Female","date_hired":"2022-02-04","img":null,"permanent_address":null,"tel_no":null,"mobile_no":null,"email1":"mevans@dctechmicro.com","email2":null,"provincial_address":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"pag_ibig":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"created_at":"2022-02-04 14:03:11","updated_at":"2022-02-04 14:03:11"}
+Old User: {"id":551,"employee_id":5000,"email":"202202045000","elClr":"black","elBG":"white","created_at":"2022-02-04 14:03:11","updated_at":"2022-02-04 14:03:11"}
+
+2022-02-04 14:28:30    |    User: (1025) Daryl Kate Good    |    EmployeeController (store)    |    message    |    Create new User with ID: 552
+Details: {"id":5000,"group_id":2,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Maka","middle_name":null,"last_name":"Evans","gender":"Female","date_hired":"2022-02-04","permanent_address":null,"tel_no":null,"mobile_no":null,"email1":"mevans","email2":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"rate_id":38,"updated_at":"2022-02-04 14:28:30","created_at":"2022-02-04 14:28:30"}
+Create new employee_status with ID: 218
+Details: {"employee_id":5000,"status":"Regular","start_date":"2021-02-01","end_date":null,"updated_at":"2022-02-04 14:28:30","created_at":"2022-02-04 14:28:30","id":218}
+
+2022-02-04 14:30:48    |    User: (1025) Daryl Kate Good    |    EmployeeController (destroy)    |    message    |    delete Employee with ID: 5000
+Old Employee: {"id":5000,"group_id":2,"rate_id":38,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Maka","middle_name":null,"last_name":"Evans","gender":"Female","date_hired":"2022-02-04","img":null,"permanent_address":null,"tel_no":null,"mobile_no":null,"email1":"mevans","email2":null,"provincial_address":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"pag_ibig":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"created_at":"2022-02-04 14:28:30","updated_at":"2022-02-04 14:28:30"}
+Old User: {"id":552,"employee_id":5000,"email":"202202045000","elClr":"black","elBG":"white","created_at":"2022-02-04 14:28:30","updated_at":"2022-02-04 14:28:30"}
+
+2022-02-04 14:37:15    |    User: (1025) Daryl Kate Good    |    EmployeeController (store)    |    message    |    Create new User with ID: 553
+Details: {"id":5000,"group_id":1,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Maka","middle_name":"Albarn","last_name":"Evans","gender":"Female","date_hired":"2022-02-04","permanent_address":null,"tel_no":null,"mobile_no":null,"email1":"mevans","email2":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"rate_id":39,"updated_at":"2022-02-04 14:37:15","created_at":"2022-02-04 14:37:15"}
+Create new employee_status with ID: 219
+Details: {"employee_id":5000,"status":"Regular","start_date":"2021-02-04","end_date":null,"updated_at":"2022-02-04 14:37:15","created_at":"2022-02-04 14:37:15","id":219}
+
+2022-02-04 14:43:51    |    User: (1025) Daryl Kate Good    |    EmployeeController (destroy)    |    message    |    delete Employee with ID: 5000
+Old Employee: {"id":5000,"group_id":1,"rate_id":39,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Maka","middle_name":"Albarn","last_name":"Evans","gender":"Female","date_hired":"2022-02-04","img":null,"permanent_address":null,"tel_no":null,"mobile_no":null,"email1":"mevans","email2":null,"provincial_address":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"pag_ibig":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"created_at":"2022-02-04 14:37:15","updated_at":"2022-02-04 14:37:15"}
+Old User: {"id":553,"employee_id":5000,"email":"202202045000","elClr":"black","elBG":"white","created_at":"2022-02-04 14:37:15","updated_at":"2022-02-04 14:37:15"}
+
+2022-02-04 14:45:20    |    User: (1025) Daryl Kate Good    |    EmployeeController (store)    |    message    |    Create new User with ID: 554
+Details: {"id":5000,"group_id":1,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Trainee","first_name":"Maka","middle_name":"Albarn","last_name":"Evans","gender":"Female","date_hired":"2022-02-04","permanent_address":null,"tel_no":null,"mobile_no":null,"email1":"mevans","email2":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"rate_id":40,"updated_at":"2022-02-04 14:45:20","created_at":"2022-02-04 14:45:20"}
+Create new employee_status with ID: 220
+Details: {"employee_id":5000,"status":"Trainee","start_date":"2022-02-04","end_date":"2022-05-04","updated_at":"2022-02-04 14:45:20","created_at":"2022-02-04 14:45:20","id":220}
+
+2022-02-04 14:47:51    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 5000
+From: {employment_status: Trainee}
+To: {employment_status: Probationary}
+
+2022-02-04 14:48:32    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 5000
+From: {employment_status: Probationary}
+To: {employment_status: Regular}
+
+2022-02-04 14:50:46    |    User: (1025) Daryl Kate Good    |    EmployeeController (store)    |    message    |    Create new User with ID: 555
+Details: {"id":5001,"group_id":1,"rate_id":1,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Soul","middle_name":null,"last_name":"Evans","gender":"Male","date_hired":"2022-02-04","permanent_address":null,"tel_no":null,"mobile_no":null,"email1":"sevans","email2":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"updated_at":"2022-02-04 14:50:46","created_at":"2022-02-04 14:50:46"}
+Create new employee_status with ID: 223
+Details: {"employee_id":5001,"status":"Regular","start_date":"2022-02-04","end_date":null,"updated_at":"2022-02-04 14:50:46","created_at":"2022-02-04 14:50:46","id":223}
+
+2022-02-04 14:55:30    |    User: (1025) Daryl Kate Good    |    EmployeeController (destroy)    |    message    |    delete Employee with ID: 5001
+Old Employee: {"id":5001,"group_id":1,"rate_id":1,"position_id":1,"branch_id":1,"department_id":2,"employment_status":"Regular","first_name":"Soul","middle_name":null,"last_name":"Evans","gender":"Male","date_hired":"2022-02-04","img":null,"permanent_address":null,"tel_no":null,"mobile_no":null,"email1":"sevans","email2":null,"provincial_address":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"pag_ibig":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"created_at":"2022-02-04 14:50:46","updated_at":"2022-02-04 14:50:46"}
+Old User: {"id":555,"employee_id":5001,"email":"202202045001","elClr":"black","elBG":"white","created_at":"2022-02-04 14:50:46","updated_at":"2022-02-04 14:50:46"}
+
+2022-02-04 14:56:16    |    User: (1025) Daryl Kate Good    |    EmployeeController (store)    |    message    |    Create new User with ID: 556
+Details: {"id":5001,"group_id":1,"rate_id":1,"position_id":1,"branch_id":1,"department_id":1,"employment_status":"Regular","first_name":"dfads","middle_name":"gdfsgsfg","last_name":"sgfsdfg","gender":"Female","date_hired":"2022-02-02","permanent_address":null,"tel_no":null,"mobile_no":null,"email1":"fgsdfgdsfg","email2":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"updated_at":"2022-02-04 14:56:16","created_at":"2022-02-04 14:56:16"}
+Create new employee_status with ID: 224
+Details: {"employee_id":5001,"status":"Regular","start_date":"2022-02-08","end_date":null,"updated_at":"2022-02-04 14:56:16","created_at":"2022-02-04 14:56:16","id":224}
+
+2022-02-04 14:57:02    |    User: (1025) Daryl Kate Good    |    EmployeeController (destroy)    |    message    |    delete Employee with ID: 5001
+Old Employee: {"id":5001,"group_id":1,"rate_id":1,"position_id":1,"branch_id":1,"department_id":1,"employment_status":"Regular","first_name":"dfads","middle_name":"gdfsgsfg","last_name":"sgfsdfg","gender":"Female","date_hired":"2022-02-02","img":null,"permanent_address":null,"tel_no":null,"mobile_no":null,"email1":"fgsdfgdsfg","email2":null,"provincial_address":null,"provincial_tel_no":null,"birth_date":null,"birth_place":null,"nationality":null,"religion":null,"sss_no":null,"pag_ibig":null,"prc_license":null,"civil_status":null,"height":null,"weight":null,"tin_no":null,"philhealth_no":null,"created_at":"2022-02-04 14:56:16","updated_at":"2022-02-04 14:56:16"}
+Old User: {"id":556,"employee_id":5001,"email":"202202025001","elClr":"black","elBG":"white","created_at":"2022-02-04 14:56:16","updated_at":"2022-02-04 14:56:16"}
+
+2022-02-07 20:34:49    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 680
+From: {daily_rate: 6}
+To: {rate_id: 14}
+
+2022-02-08 10:16:38    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1025
+From: {daily_rate: 1}
+To: {rate_id: 6}
+
+2022-02-08 13:03:26    |    User: (1025) Daryl Kate Good    |    DeductionController (store)    |    message    |    Create new deduction with ID: 18
+Details: {"deduction_type_id":1,"effective_date":"2022-01-16","end_date":"2022-02-01","amount":"245","employee_id":861,"updated_at":"2022-02-08 13:03:26","created_at":"2022-02-08 13:03:26","id":18}
+
+2022-02-08 13:06:21    |    User: (1025) Daryl Kate Good    |    DeductionController (store)    |    message    |    Create new deduction with ID: 19
+Details: {"deduction_type_id":6,"effective_date":"2022-01-01","end_date":"2022-04-30","amount":"625","employee_id":861,"updated_at":"2022-02-08 13:06:21","created_at":"2022-02-08 13:06:21","id":19}
+
+2022-02-08 16:09:33    |    User: () Daryl Kate Good    |    LeaveController (store)    |    message    |    Create new leave with ID: 469
+Details: {"employee_id":1025,"leave_type_id":1,"reference_no":"tempnumber123","date_from":"2022-02-08","date_to":"2022-02-09","reason":"testing","status":"Pending","attachment":"noattachment.png","total_days":1.5,"date_filed":"2022-02-08T08:09:33.298986Z","approve_level":"1","updated_at":"2022-02-08 16:09:33","created_at":"2022-02-08 16:09:33","id":469}
+Create new leave day/s: 
+{"leave_id":469,"leave_date":"2022-02-08","halfday":false,"halfday_type":0,"updated_at":"2022-02-08 16:09:33","created_at":"2022-02-08 16:09:33","id":0}
+{"leave_id":469,"leave_date":"2022-02-09","halfday":true,"halfday_type":"1","updated_at":"2022-02-08 16:09:33","created_at":"2022-02-08 16:09:33","id":0}
+
+2022-02-08 16:11:10    |    User: () Daryl Kate Good    |    LeaveController (store)    |    message    |    Create new leave with ID: 470
+Details: {"employee_id":1025,"leave_type_id":1,"reference_no":"tempnumber123","reason":"testing","status":null,"date_from":"2022-02-10","date_to":"2022-02-11","attachment":"noattachment.png","total_days":1.5,"date_filed":"2022-02-08T08:11:10.150509Z","approve_level":"1","updated_at":"2022-02-08 16:11:10","created_at":"2022-02-08 16:11:10","id":470}
+Create new leave day/s: 
+{"leave_id":470,"leave_date":"2022-02-10","halfday":true,"halfday_type":0,"updated_at":"2022-02-08 16:11:10","created_at":"2022-02-08 16:11:10","id":0}
+{"leave_id":470,"leave_date":"2022-02-11","halfday":false,"halfday_type":0,"updated_at":"2022-02-08 16:11:10","created_at":"2022-02-08 16:11:10","id":0}
+
+2022-02-08 16:11:57    |    User: () Daryl Kate Good    |    LeaveController (store)    |    message    |    Create new leave with ID: 471
+Details: {"employee_id":1025,"leave_type_id":1,"reference_no":"tempnumber123","date_from":"2022-02-01","date_to":"2022-02-02","reason":"gsdfgsdfgsd","status":"Pending","attachment":"noattachment.png","total_days":1.5,"date_filed":"2022-02-08T08:11:57.808550Z","approve_level":"1","updated_at":"2022-02-08 16:11:57","created_at":"2022-02-08 16:11:57","id":471}
+Create new leave day/s: 
+{"leave_id":471,"leave_date":"2022-02-01","halfday":true,"halfday_type":0,"updated_at":"2022-02-08 16:11:57","created_at":"2022-02-08 16:11:57","id":0}
+{"leave_id":471,"leave_date":"2022-02-02","halfday":false,"halfday_type":0,"updated_at":"2022-02-08 16:11:57","created_at":"2022-02-08 16:11:57","id":0}
+
+2022-02-09 13:14:45    |    User: (1025) Daryl Kate Good    |    LeaveController (store)    |    message    |    Create new leave with ID: 479
+Details: {"id":479,"employee_id":1025,"leave_type_id":"1","reference_no":"LV-479","date_from":"2022-02-11","date_to":"2022-02-11","total_days":"0.50","reason":"dfasdfasf","attachment":"noattachment.png","date_filed":"2022-02-09","status":"Pending","remarks":null,"approve_level":1,"created_at":"2022-02-09 13:14:45","updated_at":"2022-02-09 13:14:45"}
+Create new leave day/s: 
+{"leave_id":479,"leave_date":"2022-02-11","halfday":true,"halfday_type":"1","updated_at":"2022-02-09 13:14:45","created_at":"2022-02-09 13:14:45","id":0}
+

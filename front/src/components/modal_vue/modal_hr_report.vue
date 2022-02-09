@@ -60,7 +60,6 @@
         <b-table
           id="HRsummaryTable"
           class="elClr centerText"
-          tbody-tr-class="elClr"
           show-empty
           striped
           hover
@@ -68,20 +67,111 @@
           :fields="rsFields"
           :items="items"
           :busy="tblisBusy"
-          head-variant=" elClr"
+          :tbody-tr-class="tblRowClass"
+          head-variant="elClr"
+          thead-class="cursorPointer-th"
+          style="text-align: left"
+          @row-clicked="rowDetails"
         >
           <div slot="table-busy" class="text-center text-danger my-2">
             <b-spinner class="align-middle"></b-spinner>
             <strong>Loading...</strong>
           </div>
           <template slot="table-caption"></template>
+
+          <template #cell(details)="row">
+            <b-button
+              size="sm"
+              @click="row.toggleDetails"
+              class="toggle-btn"
+              style="padding-top: 0"
+            >
+              {{ row.detailsShowing ? "Hide" : "Show" }}
+            </b-button>
+          </template>
+
+          <template #row-details="row">
+            <b-card v-if="selectedSummary == 'late'" class="perRow-bcard">
+              <b-row class="perRow-brow">
+                <b-col><b>Shift Schedule (In)</b></b-col>
+                <b-col><b>Login Time</b></b-col>
+              </b-row>
+              <b-row
+                v-for="item in row.item.summary.lates"
+                :key="item.sched_in"
+                class="perRow-brow"
+              >
+                <b-col>{{ item.sched_in }}</b-col>
+                <b-col>{{ item.time_in }}</b-col>
+              </b-row>
+            </b-card>
+            <b-card v-if="selectedSummary == 'absent'" class="perRow-bcard">
+              <b-row class="perRow-brow">
+                <b-col><b>Work Date</b></b-col>
+                <b-col><b>Shift Schedule (In)</b></b-col>
+                <b-col><b>Shift Schedule (Out)</b></b-col>
+              </b-row>
+              <b-row
+                v-for="item in row.item.summary.absents"
+                :key="item.sched_in"
+                class="perRow-brow"
+              >
+                <b-col>{{ item.work_date }}</b-col>
+                <b-col>{{ item.sched_in }}</b-col>
+                <b-col>{{ item.sched_out }}</b-col>
+              </b-row>
+            </b-card>
+            <b-card v-if="selectedSummary == 'undertime'" class="perRow-bcard">
+              <b-row class="perRow-brow">
+                <b-col><b>Shift Schedule (out)</b></b-col>
+                <b-col><b>Logout Time</b></b-col>
+              </b-row>
+              <b-row
+                v-for="item in row.item.summary.undertimes"
+                :key="item.sched_in"
+                class="perRow-brow"
+              >
+                <b-col>{{ item.sched_out }}</b-col>
+                <b-col>{{ item.time_out }}</b-col>
+              </b-row>
+            </b-card>
+            <b-card v-if="selectedSummary == 'overtime'" class="perRow-bcard">
+              <b-row class="perRow-brow">
+                <b-col><b>Reference No.</b></b-col>
+                <b-col><b>Work Date</b></b-col>
+                <b-col><b>Shift Schedule</b></b-col>
+                <b-col><b>From</b></b-col>
+                <b-col><b>To</b></b-col>
+                <b-col><b>Break Hours</b></b-col>
+                <b-col><b>Total Hours</b></b-col>
+                <b-col><b>Reason</b></b-col>
+                <b-col><b>Date Filed</b></b-col>
+                <b-col><b>Status</b></b-col>
+              </b-row>
+              <b-row
+                v-for="item in row.item.summary.ots"
+                :key="item.sched_in"
+                class="perRow-brow"
+              >
+                <b-col>{{ item.reference_no }}</b-col>
+                <b-col>{{ item.work_date }}</b-col>
+                <b-col>{{ item.shift }}</b-col>
+                <b-col>{{ item.time_in }}</b-col>
+                <b-col>{{ item.time_out }}</b-col>
+                <b-col>{{ item.break_hours }}</b-col>
+                <b-col>{{ item.total_hours }}</b-col>
+                <b-col>{{ item.reason }}</b-col>
+                <b-col>{{ item.date_files }}</b-col>
+                <b-col>{{ item.status }}</b-col>
+              </b-row>
+            </b-card>
+          </template>
         </b-table>
       </div>
       <div v-if="activeDiv == 'totals'">
         <b-table
           id="HRsummaryTable"
           class="elClr centerText"
-          tbody-tr-class="elClr"
           show-empty
           striped
           hover
@@ -89,7 +179,11 @@
           :fields="fields"
           :items="items"
           :busy="tblisBusy"
+          :tbody-tr-class="tblRowClass"
           head-variant=" elClr"
+          thead-class="cursorPointer-th"
+          style="text-align: left"
+          @row-clicked="rowDetails"
         >
           <div slot="table-busy" class="text-center text-danger my-2">
             <b-spinner class="align-middle"></b-spinner>
@@ -143,7 +237,8 @@ export default {
           label: "Total No IN or OUT",
           sortable: true
         },
-        { key: "summary.no_in_and_out", label: "Total Absent", sortable: true }
+        { key: "summary.no_in_and_out", label: "Total Absent", sortable: true },
+        { key: "details", label: "Details" }
       ],
       rsFields: [
         {
@@ -191,7 +286,8 @@ export default {
             else if (this.selectedSummary == "overtime") return "-";
           },
           sortable: true
-        }
+        },
+        { key: "details", label: "Details" }
       ],
       summaryOptions: [
         { value: "totals", text: "All Records" },
@@ -322,6 +418,13 @@ export default {
         "Dec."
       ];
       return [mstring[month - 1], day, year].join(" ");
+    },
+    rowDetails(item, index, event) {
+      console.log(item);
+    },
+    tblRowClass(item, type) {
+      if (!item) return;
+      else return "elClr cursorPointer";
     }
   }
 };
@@ -342,5 +445,28 @@ export default {
   margin-left: 5px;
   border-radius: 2px;
   height: 100%;
+}
+.perRow-bcard {
+  font-size: 80%;
+}
+.perRow-bcard > div {
+  width: 100%;
+  margin: auto;
+}
+.perRow-bcard2 > div {
+  width: 80%;
+}
+.perRow-bcard > div > .row {
+  padding-left: 15px;
+}
+.perRow-bcard > .card-body {
+  padding: 5px;
+}
+.perRow-brow {
+  padding: 3px;
+  margin: 1px;
+}
+.perRow-brow:hover {
+  background: #eaffec;
 }
 </style>

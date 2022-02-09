@@ -235,7 +235,7 @@
               <td class="my-td">{{ item_edit.total_days }}</td>
             </tr>
 
-            <tr v-if="item_edit.description == 'Overtime'">
+            <tr v-if="chkStr(item_edit.reference_no) == 'OT'">
               <td class="my-td">With Break:</td>
               <td class="my-td">{{ item_edit.with_break }}</td>
 
@@ -243,7 +243,7 @@
               <td class="my-td">{{ item_edit.break_hours }}</td>
             </tr>
 
-            <tr v-if="item_edit.description == 'Overtime'">
+            <tr v-if="chkStr(item_edit.reference_no) == 'OT'">
               <td class="my-td">Date Filed:</td>
               <td class="my-td">{{ item_edit.date_filed }}</td>
 
@@ -486,6 +486,7 @@ export default {
       this.approv_currentPage = 1;
     },
     tblRowClicked(item, index, event) {
+      console.log(item);
       this.$bvModal.show("ModalViewDetails");
       if (item.leave_days != null) this.sched_items_details = item.leave_days;
       this.item_edit = item;

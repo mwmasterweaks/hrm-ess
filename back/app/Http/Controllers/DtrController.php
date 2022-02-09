@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\dtr;
 use App\RALog;
 use App\Employee;
+use App\over_time;
 use App\calendar_event;
+use App\Leave;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
+use stdClass;
 
 class DtrController extends Controller
 {
@@ -333,8 +336,8 @@ class DtrController extends Controller
         foreach ($tbl as $item) {
             if ($item->is_rest_day == 0)
                 $total_days++;
-            $item->haftday = false;
-            $item->haftday_type = 0;
+            $item->halfday = false;
+            $item->halfday_type = 0;
             array_push($temp, $item);
             $item->time_in = $item->shift_sched_in;
             $item->time_out = $item->shift_sched_out;
@@ -431,16 +434,42 @@ class DtrController extends Controller
                 $undertime = 0;
                 $overtime = 0;
                 $naa = 0;
+                $lates = [];
+                $undertimes = [];
+                $absents = [];
+                $ld_count = 0;
 
                 $period = DB::table('pay_periods')->where('id', $period_id)->first();
                 // $from = date('Y-m-d', strtotime($period->from));
                 // $to = date('Y-m-d', strtotime($period->to));
 
-                $overtime = DB::table('over_times')
+                $overtime_query = DB::table('over_times')
                     ->where('employee_id', $item->id)
+                    ->where('status', 'Approved')
                     ->where('approve_date', '>=', $period->from)
-                    ->where('approve_date', '<=', $period->to)
-                    ->sum('total_hours');
+                    ->where('approve_date', '<=', $period->to);
+                $overtime = (clone $overtime_query)->sum('total_hours');
+                $ots = (clone $overtime_query)->get();
+
+                $leaves = Leave::where('employee_id', $item->id)
+                    ->where('date_from', '>=', $period->from)
+                    ->where('date_from', '<=', $period->to)
+                    ->where('status', "Approved")
+                    ->where('leave_type_id', 1)
+                    ->get();
+
+                foreach ($leaves as $item2) {
+                    $leave_days = DB::table('leave_days')
+                        ->where('leave_id', $item2->id)
+                        ->where('leave_date', '<=', $period->to)
+                        ->get();
+
+                    foreach ($leave_days as $item) {
+                        if ($item->halfday == 0)
+                            $ld_count++;
+                        else $ld_count += 0.5;
+                    }
+                }
 
                 if (count($dtrs) > 0) {
                     foreach ($dtrs as $dtr) {
@@ -500,33 +529,50 @@ class DtrController extends Controller
                                         $user_in = new Carbon($dtr->time_in);
                                         $base_out = new Carbon($dtr->shift_sched_out);
                                         $user_out = new Carbon($dtr->time_out);
-                                        if ($base_in < $user_in)
+                                        if ($base_in < $user_in){
+                                            $l = new stdClass();
+                                            $l->sched_in = $dtr->shift_sched_in;
+                                            $l->time_in = $dtr->time_in;
+                                            array_push($lates, $l);
                                             $late += $base_in->diffInMinutes($user_in);
-                                        if ($base_out > $user_out)
+                                        }
+                                        if ($base_out > $user_out) {
+                                            $u = new stdClass();
+                                            $u->sched_out = $dtr->shift_sched_out;
+                                            $u->time_out = $dtr->time_out;
+                                            array_push($undertimes, $u);
                                             $undertime += $user_out->diffInMinutes($base_out);
+                                        }
                                     } else
                                         $no_in_or_out++;
-                                } else
+
+                                } else {
+                                    $a = new stdClass();
+                                    $a->work_date = $dtr->work_date;
+                                    $a->sched_in = $dtr->shift_sched_in;
+                                    $a->sched_out = $dtr->shift_sched_out;
+                                    array_push($absents, $a);
                                     $no_in_and_out++;
+                                }
                     }
                 }
                 $c1 = collect();
                 if (count($dtrs) > 0) {
-                    if ($overtime > 0) {
-                        $c1->put('overtime', $overtime);
-                    } else $c1->put('overtime', '-');
-
-                    if ($naa > 0) {
-                        $c1->put('late', $late);
-                        $c1->put('undertime', $undertime);
-                    } else {
+                    /* if ($overtime > 0) {} else $c1->put('overtime', '-');
+                    if ($naa > 0) {} else {
                         $c1->put('late',  '-');
                         $c1->put('undertime',  '-');
-                    }
-
-                    $c1->put('naa', $naa);
-                    $c1->put('no_in_and_out', $no_in_and_out);
+                    } */
+                    $c1->put('overtime', $overtime);
+                    $c1->put('ots', $ots);
+                    $c1->put('late', $late);
+                    $c1->put('lates', $lates);
+                    $c1->put('undertime', $undertime);
+                    $c1->put('undertimes', $undertimes);
+                    $c1->put('no_in_and_out', $no_in_and_out + $ld_count);
+                    $c1->put('absents', $absents);
                     $c1->put('no_in_or_out', $no_in_or_out);
+                    $c1->put('naa', $naa);
                 } else {
                     $c1->put('naa',  '-');
                     $c1->put('late',  '-');

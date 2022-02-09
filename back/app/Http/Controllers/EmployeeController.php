@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Employee;
 use App\Approver;
+use App\Rate;
 use App\employee_status_history;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\User;
+use Carbon\CarbonPeriod;
+use stdClass;
 
 class EmployeeController extends Controller
 {
@@ -112,8 +115,25 @@ class EmployeeController extends Controller
         try {
             DB::beginTransaction();
             $hired = new Carbon($request->date_hired);
+            $emp = new stdClass();
 
-            $emp = Employee::create($request->all());
+            if (!isset($request->daily_rate)) {
+                $emp = Employee::create($request->all());
+            } else {
+                $rate_id = DB::table('rates')->insertGetId([
+                    'name' => str_replace( ',', '', number_format($request->daily_rate, 2)),
+                    'daily_rate' => $request->daily_rate,
+                    'sss_deduction' => $request->sss,
+                    'phic_deduction' => $request->phic,
+                    'hdmf_deduction' => $request->hdmf,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
+                $emp = Employee::create($request->except('rate_id') + [
+                    'rate_id' => $rate_id
+                ]);
+            }
+
 
             $email = $hired->format('Ymd') . $emp->id;
 
@@ -141,7 +161,10 @@ class EmployeeController extends Controller
                 "\nCreate new employee_status with ID: " . $emp_status->id . "\nDetails: " . $emp_status
             );
             DB::commit();
-            return $this->index();
+            return json_encode([
+                'items' => $this->index(),
+                'rates' => Rate::all()
+            ]);
         } catch (\Exception $ex) {
             DB::rollBack();
             \Logger::instance()->logError(
@@ -168,7 +191,9 @@ class EmployeeController extends Controller
     }
     public function update(Request $request, $id)
     {
+        // return $request;
         try {
+            DB::beginTransaction();
             /* $cmd  = Employee::findOrFail($id);
             $logFrom = $cmd->replicate();
             $input = $request->all();
@@ -179,6 +204,20 @@ class EmployeeController extends Controller
             $logTo = "";
             $emp_update = [];
             $emp_query = Employee::where('id', $id);
+            $rate_id = 0;
+
+            if (isset($request->daily_rate)) {
+                $rate_id = DB::table('rates')->insertGetId([
+                    'name' => number_format($request->daily_rate, 2),
+                    'daily_rate' => number_format($request->daily_rate, 2),
+                    'sss_deduction' => number_format($request->sss, 2),
+                    'phic_deduction' => number_format($request->phic, 2),
+                    'hdmf_deduction' => number_format($request->hdmf, 2),
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
+            }
+
             foreach ($changes as $key => $value) {
                 if ($value == 'employment_status') {
                     if ($request->employment_status != 'Trainee' &&
@@ -193,7 +232,14 @@ class EmployeeController extends Controller
                     ]);
                 }
                 foreach ($request->toArray() as $key2 => $value2) {
-                    if ($value == $key2) {
+                    if ($value == 'daily_rate') {
+                        $logFrom .= $value . ": " . (clone $emp_query)->value('rate_id') . ", ";
+                        if (!isset($request->daily_rate))
+                            $rate_id = $request->rate_id;
+                        $emp_update['rate_id'] = $rate_id;
+                        $logTo .= "rate_id: " . $rate_id . ", ";
+                        break;
+                    } elseif ($value == $key2) {
                         $logFrom .= $value . ": " . (clone $emp_query)->value($value) . ", ";
                         $emp_update[$value] = $value2;
                         $logTo .= $value . ": " . $value2 . ", ";
@@ -213,8 +259,13 @@ class EmployeeController extends Controller
                     substr($logTo, 0, -2) . "}"
             );
 
-            return $this->index();
+            DB::commit();
+            return json_encode([
+                'items' => $this->index(),
+                'rates' => Rate::all()
+            ]);
         } catch (\Exception $ex) {
+            DB::rollBack();
             \Logger::instance()->logError(
                 Carbon::now(),
                 $request->user_id,
@@ -474,5 +525,14 @@ class EmployeeController extends Controller
                     ->where('end_date', '<=', Carbon::today());
             })
             ->count();
+    }
+    public function checkRate($rate) {
+        $rate_count = DB::table('rates')
+            ->where('id', $rate)
+            ->count();
+        return json_encode([
+            'rate_count' => $rate_count,
+            'benefits' => Rate::where('id', $rate)->get()
+        ]);
     }
 }

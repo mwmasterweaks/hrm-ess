@@ -85,3 +85,22 @@ requestor: Director Go
 
 
 dec 3, 2021 - mice login time 7:27:02
+
+// deduction longer query
+$deduction_query = deduction::where('employee_id', $emp_id)
+  ->where('effective_date', '>=', $period_from)
+  ->where('effective_date', '<=', $period_to)
+  ->orWhere('employee_id', $emp_id)
+  ->where('end_date', '>=', $period_from)
+  ->where('end_date', '<=', $period_to)
+  ->orWhere('employee_id', $emp_id)
+  ->where('effective_date', '<=', $period_from)
+  ->where('end_date', '>=', $period_to)
+  ->get();
+
+
+- add dtr, approve/r status sa action
+- another "tab" ang approved applications
+- approve applications tab dli na i hide
+
+- earnings by pay period ang paghatag

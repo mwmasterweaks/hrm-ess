@@ -24,7 +24,9 @@ class RateController extends Controller
     public function store(Request $request)
     {
         try {
-            Rate::create($request->all());
+            Rate::create($request->except('name') + [
+                'name' => str_replace( ',', '', number_format($request->daily_rate, 2))
+            ]);
             return $this->index();
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);

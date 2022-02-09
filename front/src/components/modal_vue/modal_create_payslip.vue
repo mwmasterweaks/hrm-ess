@@ -152,9 +152,9 @@ export default {
       this.$http
         .post("api/Payslip", this.payslip)
         .then(response => {
+          console.log(response.body);
           this.$root.$emit("pageLoaded");
           this.$root.$emit("update_payslip_list", response.body);
-          console.log(response.body);
           swal("Saved!");
           this.$bvModal.hide("ModalCreatePayslip");
         })

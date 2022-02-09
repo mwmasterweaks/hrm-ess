@@ -14,11 +14,12 @@ import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
 import * as VueGoogleMaps from 'vue2-google-maps';
 import VueGeolocation from 'vue-browser-geolocation';
 import Keycloak from 'keycloak-js';
+import { Multiselect } from 'vue-multiselect';
 
 //import excel from "vue-excel-export";
 
 //import DateRangePicker from "vue2-daterange-picker";
-
+Vue.use(Multiselect);
 Vue.use(VueSidebarMenu);
 Vue.use(VueRangedatePicker);
 Vue.use(BootstrapVue);
@@ -77,7 +78,10 @@ keycloak.init({ onLoad: initOptions.onLoad }).then((auth) => {
     });
   }
 }).catch(() => {
-  alert("Can't connect to keycloak");
+   if (window.confirm("Can't connect to keycloak.\nClick 'OK' to test if you can access the keycloak page."))
+  {
+    window.location.href='https://apiauth.dctechmicro.com:8443/auth/realms/DctecH%20APPS/protocol/openid-connect/auth?client_id=hrmess&redirect_uri=https%3A%2F%2Fhrmess.dctechmicro.com%2F&state=7f2181e4-d81c-4d16-bd5a-5d0f7de77253&response_mode=fragment&response_type=code&scope=openid&nonce=ecbfa233-c88f-4db9-8b03-fd55d674c865';
+  };
 });
 
 

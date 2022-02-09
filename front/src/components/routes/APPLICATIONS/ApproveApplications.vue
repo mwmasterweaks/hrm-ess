@@ -697,7 +697,7 @@ export default {
         if (result) {
           swal({
             title: "Notification",
-            text: "Do you really want to approve this application?",
+            text: "Do you really want to disapprove this application?",
             icon: "info",
             buttons: true,
             dangerMode: true

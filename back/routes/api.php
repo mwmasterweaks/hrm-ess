@@ -110,4 +110,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('EmployeeApprover/storeMultiple', 'EmployeeApproverController@storeMultiple');
 
     Route::get('getToPromote', 'EmployeeController@getToPromote');
+    Route::get('checkRate/{rate}', 'EmployeeController@checkRate');
 });

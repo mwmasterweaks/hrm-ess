@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\payslip;
 use App\Rate;
 use App\over_time;
+use App\Leave;
 use App\earning;
 use App\deduction;
 use App\dtr;
@@ -27,6 +28,7 @@ class PayslipController extends Controller
     }
     public function store(Request $request)
     {
+        // return $request;
         try {
             DB::beginTransaction();
             $payroll = payslip::where('employee_id', $request->employee_id)
@@ -87,8 +89,11 @@ class PayslipController extends Controller
         //get OT
         $ot = over_time::where('employee_id', $emp->id)
             ->where('status', "Approved")
+            ->where('approve_date', '>=', $payperiod->from)
+            ->where('approve_date', '<=', $payperiod->to)
             ->where('status_paid', "no")
             ->get();
+
         $totalOTHours = 0;
         $totalROTHours = 0;
         $totalRHOTHours = 0;
@@ -114,6 +119,7 @@ class PayslipController extends Controller
         $ot_pay = $rot_pay + $rhot_pay + $shot_pay + $shrdot_pay;
         // $ot_pay = $totalOTHours * $regularOTRate;
         $grossPay += round($ot_pay, 2);
+        // $grossPay -= round($leave_wo_pay, 2);
 
         //get earnings
         $earns = earning::with('type')->where('employee_id', $emp->id)
@@ -134,7 +140,7 @@ class PayslipController extends Controller
 
 
         //get absent, late. undertime
-        $dtr_deduction = $this->getLateAbsent($emp->id, $payperiod->id, $rate->daily_rate, $emp->branch_id);
+        $dtr_deduction = $this->getLateAbsent($emp->id, $payperiod->id, $rate->daily_rate, $emp->branch_id, $payperiod->from, $payperiod->to);
         //$dtr_deduction = (object) $dtr_deduction;
         $grossPay += $dtr_deduction['night_add'];
         $totalDeduct += $dtr_deduction['late_deduction'];
@@ -148,6 +154,7 @@ class PayslipController extends Controller
             ->where('end_date', ">=", $payperiod->period)
             ->orWhereNull('end_date')
             ->where('effective_date', "<=", $payperiod->period)
+            ->where('employee_id', $emp->id)
             ->get();
         foreach ($deduct as $item) {
             $type = (object) $item->type;
@@ -181,7 +188,7 @@ class PayslipController extends Controller
 
         return $c1;
     }
-    public function getLateAbsent($emp_id, $period_id, $dailyrate, $branch_id)
+    public function getLateAbsent($emp_id, $period_id, $dailyrate, $branch_id, $period_from, $period_to)
     {
         $tbl = dtr::where("employee_id", $emp_id)->where("pay_period_id", $period_id)->get();
 
@@ -192,6 +199,7 @@ class PayslipController extends Controller
         $temp = 0;
         $total_hour_night = 0;
         $rd = 0;
+        $ld_count = 0;
         if (count($tbl) > 0)
             foreach ($tbl as $dtr) {
 
@@ -214,8 +222,6 @@ class PayslipController extends Controller
                     if (count($calendar) > 0)
                         $checkIfHoliday = true;
                 }
-
-
 
                 if ($checkIfHoliday != true) {
                     $dtrCbn = new Carbon($dtr->work_date);
@@ -301,8 +307,50 @@ class PayslipController extends Controller
                 }
             }
 
+        //get allowance
+        $allowance = 0;
+        $allowance_query = earning::where('employee_id', $emp_id)
+            ->where('effective_date', '>=', $period_from)
+            ->where('effective_date', '<=', $period_to)
+            ->where('earning_type_id', 6)
+            ->orWhere('employee_id', $emp_id)
+            ->where('end_date', '>=', $period_from)
+            ->where('end_date', '<=', $period_to)
+            ->where('earning_type_id', 6)
+            ->orWhere('employee_id', $emp_id)
+            ->where('effective_date', '<=', $period_from)
+            ->where('end_date', '>=', $period_to)
+            ->where('earning_type_id', 6);
+        $allowances = (clone $allowance_query)->get();
+        $earning_allowance = (clone $allowance_query)->first();
+        if (count($allowances) > 0)
+            $allowance = $earning_allowance->amount;
 
-        $late_deduct = ($dailyrate / 8 / 60) * $late;
+        //get leave
+        $leaves = Leave::where('employee_id', $emp_id)
+            ->where('date_from', '>=', $period_from)
+            ->where('date_from', '<=', $period_to)
+            ->where('status', "Approved")
+            ->where('leave_type_id', 1)
+            ->get();
+
+        foreach ($leaves as $item) {
+            $leave_days = DB::table('leave_days')
+                ->where('leave_id', $item->id)
+                ->where('leave_date', '<=', $period_to)
+                ->get();
+
+            foreach ($leave_days as $item) {
+                if ($item->halfday == 0)
+                    $ld_count++;
+                else $ld_count += 0.5;
+            }
+        }
+
+        $absent += $ld_count;
+        // $totallate = $late * 0.88; not needed
+
+        $late_deduct = ($dailyrate / 8 / 60) * $late + (($allowance / 13) / 8 / 60) * $late;
         $undertime_deduct = ($dailyrate / 8 / 60) * $undertime;
         $absent_deduct = $dailyrate * $absent;
         $night_add = ($dailyrate / 8 * 0.1) * $total_hour_night;

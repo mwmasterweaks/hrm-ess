@@ -150,7 +150,7 @@
                 <i class="fas fa-money-check"></i>
               </button>
 
-              <button
+              <!-- <button
                 class="btn btn-success btn-labeled"
                 v-b-tooltip.hover
                 title="Send Credentials"
@@ -158,7 +158,7 @@
               >
                 <i class="fas fa-envelope-open-text"></i>
               </button>
-              &nbsp;
+              &nbsp; -->
               <i
                 class="fas fa-circle fa-xs"
                 v-if="row.item.to_promote == 'yes'"
@@ -422,6 +422,32 @@
 
         <div class="rowFields mx-auto row">
           <div class="col-lg-3">
+            <p class="textLabel">Email:</p>
+          </div>
+          <div class="col-lg-9">
+            <div class="input-group">
+              <input
+                type="text"
+                name="zmail"
+                ref="zmail"
+                class="form-control"
+                v-b-tooltip.hover
+                title="Email of the Employee"
+                placeholder="Email"
+                v-validate="'required'"
+                v-model.trim="item_edit.email1"
+                autocomplete="off"
+                @input="changes('email1')"
+              />
+            </div>
+            <small class="text-danger pull-left" v-show="errors.has('zmail')"
+              >Email is required.</small
+            >
+          </div>
+        </div>
+
+        <div class="rowFields mx-auto row">
+          <div class="col-lg-3">
             <p class="textLabel">Group:</p>
           </div>
           <div class="col-lg-9">
@@ -445,8 +471,23 @@
           <div class="col-lg-3">
             <p class="textLabel">Rate:</p>
           </div>
-          <div class="col-lg-9">
+          <div class="col-lg-9" style="display: flex;">
+            <input
+              v-if="rate_count == 0"
+              type="number"
+              name="rate"
+              ref="rate"
+              class="form-control"
+              v-b-tooltip.hover
+              title="Employee daily rate"
+              placeholder="Daily Rate"
+              v-model.trim="item_edit.daily_rate"
+              autocomplete="off"
+              style="height: 100%"
+              @input="changes('daily_rate')"
+            />
             <model-list-select
+              v-else
               :list="rates"
               v-model="item_edit.rate_id"
               option-value="id"
@@ -454,11 +495,85 @@
               placeholder="Select Rate"
               name="rates"
               v-validate="'required'"
-              @input="changes('rate_id')"
+              @input="
+                checkRate();
+                changes('daily_rate');
+              "
             ></model-list-select>
+            <b-button
+              v-if="item_edit.rate_id == ''"
+              style="margin-left: 8px;"
+              class="px-2"
+              v-b-tooltip.hover
+              title="Add new rate"
+              @click="rate_count = 0"
+            >
+              <i class="fas fa-dollar-sign"></i>
+            </b-button>
+          </div>
+          <div class="col-lg-3"></div>
+          <div class="col-lg-9">
             <small class="text-danger pull-left" v-show="errors.has('rates')"
               >Rate is required.</small
             >
+          </div>
+          <div class="col-lg-3"></div>
+          <div
+            v-if="item_edit.rate_id != '' > 0 && rate_count > 0"
+            class="col-lg-9"
+            style="display: flex;"
+          >
+            <b-table
+              :items="benefits"
+              :fields="benefits_fields"
+              striped
+              borderless
+              hover
+              small
+            ></b-table>
+          </div>
+
+          <div
+            v-else-if="rate_count == 0"
+            class="col-lg-9 mt-2"
+            style="display: flex;"
+          >
+            <input
+              type="number"
+              name="sss"
+              ref="sss"
+              class="form-control"
+              v-b-tooltip.hover
+              title="SSS Deduction"
+              placeholder="SSS Deduction"
+              v-model.trim="item_edit.sss"
+              autocomplete="off"
+              style="height: 100%; margin-right: 5px"
+            />
+            <input
+              type="number"
+              name="rate"
+              ref="rate"
+              class="form-control"
+              v-b-tooltip.hover
+              title="PHIC Deduction"
+              placeholder="PHIC Deduction"
+              v-model.trim="item_edit.phic"
+              autocomplete="off"
+              style="height: 100%; margin-right: 5px"
+            />
+            <input
+              type="number"
+              name="rate"
+              ref="rate"
+              class="form-control"
+              v-b-tooltip.hover
+              title="HDMF Deduction"
+              placeholder="HDMF Deduction"
+              v-model.trim="item_edit.hdmf"
+              autocomplete="off"
+              style="height: 100%"
+            />
           </div>
         </div>
 
@@ -702,24 +817,6 @@
                 v-model.trim="item_edit.mobile_no"
                 autocomplete="off"
                 @input="changes('mobile_no')"
-              />
-            </div>
-          </div>
-
-          <div class="rowFields mx-auto row">
-            <div class="col-lg-3">
-              <p class="textLabel">Email 1:</p>
-            </div>
-            <div class="col-lg-9">
-              <input
-                type="text"
-                class="form-control"
-                v-b-tooltip.hover
-                title="Email of the Employee"
-                placeholder="Email"
-                v-model.trim="item_edit.email1"
-                autocomplete="off"
-                @input="changes('email1')"
               />
             </div>
           </div>
@@ -3008,6 +3105,7 @@
 </template>
 <script>
 import { ModelListSelect } from "vue-search-select";
+import { Multiselect } from "vue-multiselect";
 import swal from "sweetalert";
 import PrettyCheck from "pretty-checkbox-vue/check";
 
@@ -3030,7 +3128,8 @@ export default {
     deduction: deduction,
     "date-picker": datePicker,
     "p-check": PrettyCheck,
-    "model-list-select": ModelListSelect
+    "model-list-select": ModelListSelect,
+    multiselect: Multiselect
   },
   data() {
     return {
@@ -3069,6 +3168,7 @@ export default {
         id: null,
         group_id: "",
         rate_id: "",
+        rate: "",
         position_id: "",
         branch_id: "",
         department_id: "",
@@ -3325,6 +3425,8 @@ export default {
       statusHistory: 0,
       status_histories: [],
       balance_histories: [],
+      rate_count: -1,
+      benefits: [],
       status_history_fields: [
         { key: "status", label: "Status" },
         { key: "start_date", label: "Start Date" },
@@ -3348,6 +3450,11 @@ export default {
           }
         },
         { key: "created_at", label: "Updated At" }
+      ],
+      benefits_fields: [
+        { key: "sss_deduction", label: "SSS Deduction" },
+        { key: "phic_deduction", label: "PHIC Deduction" },
+        { key: "hdmf_deduction", label: "HDMF Deduction" }
       ]
     };
   },
@@ -3409,6 +3516,7 @@ export default {
       }
     },
     openModalEmployee() {
+      this.rate_count = -1;
       this.$bvModal.show("ModelAddEmployee");
       if (this.item_edit.bioID != "")
         this.item_edit = {
@@ -3472,6 +3580,7 @@ export default {
       this.item_edit.bioID = item.id;
       this.statusHistory = 0;
       this.status_histories = [];
+      this.rate_count = -1;
       console.log(item);
 
       this.editRoles.id = item.user.id;
@@ -3505,9 +3614,14 @@ export default {
             .then(response => {
               this.$root.$emit("pageLoaded");
               console.log(response.body);
-              swal("Notification", "Added successfully", "success");
+              swal(
+                "Success!",
+                "Employee account has been successfully created.",
+                "success"
+              );
               this.$bvModal.hide("ModelAddEmployee");
-              this.items = response.body;
+              this.items = response.body.items;
+              this.rates = response.body.rates;
               this.totalRows = this.items.length;
               this.item_edit = {
                 bioID: "",
@@ -3582,9 +3696,14 @@ export default {
                   console.log(response.body);
                   this.$root.$emit("pageLoaded");
                   this.$root.$emit("Sidebar");
-                  this.items = response.body;
+                  this.items = response.body.items;
+                  this.rates = response.body.rates;
                   this.totalRows = this.items.length;
-                  swal("Update", "Successfully updated!", "success");
+                  swal(
+                    "Success!",
+                    "Employee account has been successfully updated.",
+                    "success"
+                  );
                   this.$bvModal.hide("ModelAddEmployee");
                   this.tblisBusy = false;
                 })
@@ -3626,14 +3745,17 @@ export default {
             .delete("api/Employee/" + temp)
             .then(response => {
               this.$root.$emit("pageLoaded");
-              this.$bvModal.hide("modalEdit");
-              swal("Deleted!", "Item has been deleted", "success").then(
-                value => {
-                  this.items = response.body;
-                  this.totalRows = this.items.length;
-                  this.tblisBusy = false;
-                }
-              );
+              // this.$bvModal.hide("modalEdit");
+              this.$bvModal.hide("ModelAddEmployee");
+              swal(
+                "Success!",
+                "Employee account has been successfully deleted.",
+                "success"
+              ).then(value => {
+                this.items = response.body;
+                this.totalRows = this.items.length;
+                this.tblisBusy = false;
+              });
             })
             .catch(response => {
               this.$root.$emit("pageLoaded");
@@ -4421,6 +4543,17 @@ export default {
     },
     toggleHistory(flag) {
       this.statusHistory = flag;
+    },
+    checkRate() {
+      if (this.item_edit.rate_id != "") {
+        this.$http
+          .get("api/checkRate/" + this.item_edit.rate_id)
+          .then(function(response) {
+            console.log(response.body);
+            this.rate_count = response.body.rate_count;
+            this.benefits = response.body.benefits;
+          });
+      }
     },
     resetModal(modal) {
       if (modal == "add") {

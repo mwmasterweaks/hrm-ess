@@ -101,7 +101,7 @@
           <span v-else>Manage Rate</span>
         </template>
         <!-- form -->
-        <div class="rowFields mx-auto row">
+        <!-- <div class="rowFields mx-auto row">
           <div class="col-lg-3">
             <p class="textLabel">Rate Name:</p>
           </div>
@@ -123,7 +123,7 @@
               >Rate name is required.</small
             >
           </div>
-        </div>
+        </div> -->
 
         <div class="rowFields mx-auto row">
           <div class="col-lg-3">
@@ -256,7 +256,7 @@ export default {
       user: {},
       tblisBusy: true,
       fields: [
-        { key: "name", sortable: true },
+        // { key: "name", sortable: true },
         { key: "daily_rate", sortable: true },
         { key: "sss_deduction", sortable: true },
         { key: "phic_deduction", sortable: true },
@@ -265,7 +265,7 @@ export default {
       items: [],
       tblFilter: null,
       totalRows: 1,
-      currentPage: 2,
+      currentPage: 1,
       perPage: 10,
       pageOptions: [10, 25, 50, 100],
       item: {
@@ -298,6 +298,7 @@ export default {
     load_items(model) {
       this.$http.get("api/" + model).then(function(response) {
         this.items = response.body;
+        this.totalRows = this.items.length;
         this.tblisBusy = false;
       });
     },
@@ -374,6 +375,7 @@ export default {
           this.item.user_id = this.user.id;
           this.item.user_name = this.user.name;
 
+          console.log(this.item);
           this.$http
             .post("api/Rate", this.item)
             .then(response => {
