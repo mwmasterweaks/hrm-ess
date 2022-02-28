@@ -347,7 +347,7 @@ export default {
       sortDesc: true,
       fields: [
         { key: "reference_no", sortable: true },
-        { key: "desc", sortable: true },
+        { key: "desc", label: "Description", sortable: true },
         { key: "workdate", sortable: true },
         { key: "from", sortable: true },
         { key: "to", sortable: true },
@@ -364,7 +364,7 @@ export default {
       apply: {
         employee_id: "",
         work_date: "",
-        reference_no: "tempnumber123",
+        reference_no: "refnum00",
         shift: "",
         with_break: "",
         break_hours: 0,
@@ -378,7 +378,7 @@ export default {
       item_edit: {
         employee_id: "",
         work_date: "",
-        reference_no: "tempnumber123",
+        reference_no: "refnum00",
         shift: "",
         with_break: "",
         break_hours: 0,
@@ -505,14 +505,14 @@ export default {
             this.$http
               .post("api/OverTime", this.apply)
               .then(response => {
-                swal("Notification", "Added successfully", "success");
+                swal("Success!", "Item added successfully.", "success");
 
                 this.items = response.body;
                 this.totalRows = this.items.length;
                 this.apply = {
                   employee_id: "",
                   work_date: "",
-                  reference_no: "tempnumber123",
+                  reference_no: "refnum00",
                   shift: "",
                   with_break: "",
                   break_hours: 0,

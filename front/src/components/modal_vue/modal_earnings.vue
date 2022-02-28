@@ -86,7 +86,8 @@
           <small
             class="text-danger pull-left"
             v-show="errors.has('earning_types')"
-          >Earning type is required.</small>
+            >Earning type is required.</small
+          >
         </div>
       </div>
 
@@ -109,7 +110,8 @@
           <small
             class="text-danger pull-left"
             v-show="errors.has('effective_date')"
-          >Effective Date is required.</small>
+            >Effective Date is required.</small
+          >
         </div>
       </div>
 
@@ -146,15 +148,27 @@
             v-model.trim="item.amount"
             autocomplete="off"
           />
-          <small class="text-danger pull-left" v-show="errors.has('amount')">Input valid number.</small>
+          <small class="text-danger pull-left" v-show="errors.has('amount')"
+            >Input valid number.</small
+          >
         </div>
       </div>
 
       <template slot="modal-footer" slot-scope="{}">
-        <b-button size="sm" variant="success" @click="btnAdd()" v-if="item.state == 'create'">Add</b-button>
+        <b-button
+          size="sm"
+          variant="success"
+          @click="btnAdd()"
+          v-if="item.state == 'create'"
+          >Add</b-button
+        >
         <span v-else>
-          <b-button size="sm" variant="success" @click="btnUpdate()">Update</b-button>
-          <b-button size="sm" variant="danger" @click="btnDelete()">Delete</b-button>
+          <b-button size="sm" variant="success" @click="btnUpdate()"
+            >Update</b-button
+          >
+          <b-button size="sm" variant="danger" @click="btnDelete()"
+            >Delete</b-button
+          >
         </span>
       </template>
     </b-modal>
@@ -226,7 +240,7 @@ export default {
           this.$http
             .post("api/Earning", this.item)
             .then(response => {
-              swal("Notification", "Added successfully", "success");
+              swal("Success!", "Item added successfully.", "success");
               this.data.earning = response.body;
 
               this.clearData();
@@ -254,8 +268,8 @@ export default {
           this.tblisBusy = true;
           this.$root.$emit("pageLoading");
           swal({
-            title: "Are you sure?",
-            text: "Do you want to Update this item?",
+            title: "Confirmation",
+            text: "Do you want to update this item?",
             icon: "warning",
             buttons: true,
             dangerMode: true
@@ -292,8 +306,8 @@ export default {
     },
     btnDelete() {
       swal({
-        title: "Are you sure?",
-        text: "Do you really want to delete this item permanently",
+        title: "Confirmation",
+        text: "Do you really want to delete this item permanently?",
         icon: "warning",
         buttons: true,
         dangerMode: true

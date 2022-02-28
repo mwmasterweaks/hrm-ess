@@ -317,7 +317,7 @@ export default {
         this.user.first_name + " " + this.user.last_name;
       swal({
         title: "Confirmation",
-        text: "Do you really want to submit this?",
+        text: "Submit suggestion?",
         icon: "info",
         buttons: ["No", "Yes"]
       }).then(yes => {
@@ -350,7 +350,7 @@ export default {
     },
     btnUpdate() {
       swal({
-        title: "Are you sure?",
+        title: "Confirmation",
         text: "Update suggestion/issue?", // temporary
         icon: "warning",
         buttons: true,
@@ -388,7 +388,7 @@ export default {
     submitComment() {
       swal({
         title: "Confirmation",
-        text: "Do you really want to submit this?",
+        text: "Submit comment?",
         icon: "info",
         buttons: ["No", "Yes"]
       }).then(yes => {

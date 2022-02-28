@@ -29,7 +29,9 @@
                 />
               </b-input-group>
 
-              <small class="text-danger pull-left" v-show="errors.has('email')">Email is required.</small>
+              <small class="text-danger pull-left" v-show="errors.has('email')"
+                >Email is required.</small
+              >
             </div>
           </div>
           <br />
@@ -56,7 +58,9 @@
                   v-on:keyup.enter="login"
                 />
               </b-input-group>
-              <small class="text-danger pull-left" v-show="errors.has('pass')">Password is required.</small>
+              <small class="text-danger pull-left" v-show="errors.has('pass')"
+                >Password is required.</small
+              >
             </div>
           </div>
         </div>
@@ -64,10 +68,12 @@
         <div class="elClr panel-footer">
           <p class="pull-left" style="color: black;">Version 1.0.1</p>
           <div class="heading-elements">
-            <button type="button" class="btn btn-success btn-labeled pull-right" v-on:click="login">
-              <b>
-                <i class="glyphicon glyphicon-plus"></i>
-              </b>Log in
+            <button
+              type="button"
+              class="btn btn-success btn-labeled pull-right"
+              v-on:click="login"
+            >
+              <b> <i class="glyphicon glyphicon-plus"></i> </b>Log in
             </button>
           </div>
         </div>
@@ -131,7 +137,7 @@ export default {
       this.$http
         .post("api/user", user)
         .then(response => {
-          swal(this.user.name, "Added successfully", "success");
+          swal(this.user.name, "Item added successfully.", "success");
         })
         .catch(response => {
           swal({

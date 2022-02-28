@@ -99,8 +99,8 @@ $deduction_query = deduction::where('employee_id', $emp_id)
   ->get();
 
 
-- add dtr, approve/r status sa action
+- add dtr, approve/r status sa action - done
 - another "tab" ang approved applications
-- approve applications tab dli na i hide
+- approve applications tab dli na i hide - done
 
 - earnings by pay period ang paghatag

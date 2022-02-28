@@ -211,7 +211,7 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           swal({
-            title: "Are you sure?",
+            title: "Confirmation",
             text: "Do you want to Update this branch?",
             icon: "warning",
             buttons: true,
@@ -248,8 +248,8 @@ export default {
     btnDelete() {
       if (this.roles.delete_branch) {
         swal({
-          title: "Are you sure?",
-          text: "Do you really want to delete this branch permanently",
+          title: "Confirmation",
+          text: "Do you really want to delete this branch permanently?",
           icon: "warning",
           buttons: true,
           dangerMode: true

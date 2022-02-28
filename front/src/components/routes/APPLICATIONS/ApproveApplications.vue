@@ -101,6 +101,15 @@
               >
                 <i class="fas fa-thumbs-down"></i>
               </button>
+              <button
+                class="btn btn-warning"
+                v-if="row.item.status == 'Pending'"
+                v-b-modal.modalDTR
+                @click="viewDTR(row.item)"
+                title="View DTR"
+              >
+                <i class="fas fa-calendar-alt"></i>
+              </button>
             </template>
           </b-table>
         </div>
@@ -300,6 +309,65 @@
       </b-modal>
       <!-- End ModalViewDetails -->
 
+      <!-- ModalDTR ---------------------------------------------------------------------------------------->
+      <b-modal
+        id="modalDTR"
+        :header-bg-variant="' elBG'"
+        :header-text-variant="' elClr'"
+        :body-bg-variant="' elBG'"
+        :body-text-variant="' elClr'"
+        :footer-bg-variant="' elBG'"
+        :footer-text-variant="' elClr'"
+        size="xl"
+        title="Details"
+      >
+        <b-row style="margin:10px;">
+          <b-col md="5" class="my-1">
+            <b-form-group label-cols-sm="2" label="Period" class="mb-0">
+              <b-input-group>
+                <model-list-select
+                  :list="pay_period_list"
+                  v-model="pay_period_select"
+                  option-value="id"
+                  option-text="period"
+                  placeholder="Select pay period"
+                  name="pay_period_list"
+                  @input="pay_period_onchange"
+                  v-validate="'required'"
+                ></model-list-select>
+                <!-- <b-input-group-append>
+                    <b-button :disabled="!tblFilter" @click="tblFilter = ''">Clear</b-button>
+                  </b-input-group-append>-->
+              </b-input-group>
+            </b-form-group>
+          </b-col>
+          <b-col md="5 " class="my-1"></b-col>
+        </b-row>
+        <b-table
+          class="elClr"
+          show-empty
+          striped
+          hover
+          outlined
+          :fields="dtrfields"
+          :items="dtritems"
+          :busy="dtrtblisBusy"
+          head-variant=" elClr"
+        >
+          <div slot="table-busy" class="text-center text-danger my-2">
+            <b-spinner class="align-middle"></b-spinner>
+            <strong>Loading...</strong>
+          </div>
+
+          <template v-slot:cell(shift_sched)="data">
+            <span v-html="data.value"></span>
+          </template>
+          <template slot="table-caption"></template>
+        </b-table>
+      </b-modal>
+
+      <!-- End ModalDTR -->
+
       <b-modal id="modalthumbnail" size="xl" hide-footer hide-header>
         <b-container fluid class="p-4 bg-dark">
           <center>
@@ -445,6 +513,7 @@ export default {
   data() {
     return {
       tblisBusy: true,
+      dtrtblisBusy: true,
       fields: [
         { key: "reference_no", sortable: true },
         { key: "description", sortable: true },
@@ -461,6 +530,26 @@ export default {
         { key: "date_filed", sortable: true },
         { key: "action", sortable: true }
       ],
+      dtrfields: [
+        { key: "work_date", sortable: true },
+        { key: "day", sortable: true },
+        {
+          key: "shift_sched",
+          label: "Shift Sched",
+          formatter: (value, key, item) => {
+            if (item.is_rest_day == 1)
+              return "<p class='text-danger'>Rest Day</p>";
+            else if (item.is_rest_day == 2)
+              return "<p class='text-danger'>Leave</p>";
+            else if (item.is_rest_day == 3)
+              return "<p class='text-danger'>Holiday</p>";
+            else return item.shift_sched_in + " - " + item.shift_sched_out;
+          },
+          sortable: true
+        },
+        { key: "time_in", sortable: true },
+        { key: "time_out", sortable: true }
+      ],
       items: [],
       item: {},
       remarks: "",
@@ -473,7 +562,7 @@ export default {
       apply: {
         employee_id: "",
         work_date: "",
-        reference_no: "tempnumber123",
+        reference_no: "refnum00",
         shift: "",
         with_break: "",
         break_hours: 0,
@@ -534,7 +623,11 @@ export default {
       sched_items_details: [],
       sched_tblisBusy_details: false,
       roles: [],
-      apptype: ""
+      apptype: "",
+      pay_period_list: [],
+      pay_period_select: "",
+      dtritems: [],
+      emp_id: 0
     };
   },
   beforeCreate() {
@@ -652,7 +745,7 @@ export default {
       item.userID = this.user.id;
       console.log(item);
       swal({
-        title: "Notification",
+        title: "Confirmation",
         text: "Do you really want to approve this application?",
         icon: "info",
         buttons: true,
@@ -696,7 +789,7 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           swal({
-            title: "Notification",
+            title: "Confirmation",
             text: "Do you really want to disapprove this application?",
             icon: "info",
             buttons: true,
@@ -726,7 +819,24 @@ export default {
         return str.substring(0, 2);
       }
     },
-    btnViewAttachment(img) {}
+    btnViewAttachment(img) {},
+    viewDTR(item) {
+      console.log(item);
+      this.emp_id = item.employee_id;
+      this.dtrtblisBusy = false;
+      this.$http.get("api/PayPeriod").then(function(response) {
+        this.pay_period_list = response.body;
+      });
+    },
+    pay_period_onchange() {
+      this.dtrtblisBusy = true;
+      this.$http
+        .get("api/getDTR/" + this.pay_period_select + "/" + this.emp_id)
+        .then(function(response) {
+          this.dtritems = response.body;
+          this.dtrtblisBusy = false;
+        });
+    }
   }
 };
 </script>

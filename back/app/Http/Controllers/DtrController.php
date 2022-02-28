@@ -422,12 +422,31 @@ class DtrController extends Controller
     public function HRSummaryReport($period_id, $record)
     {
         try {
-            $tbl = Employee::with(['user', 'department', 'branch', 'dtr' => function ($query) use ($period_id) {
-                $query->where('pay_period_id', $period_id);
-            }])->get();
+            $tbl = [];
+            if ($record == 'toplates') {
+                $tbl = Employee::with(['user', 'department', 'branch', 'dtr' => function ($query) use ($period_id) {
+                        $query->where('work_date', 'LIKE', '%' . $period_id . '%');
+                    }])->get();
+            } else {
+                $tbl = Employee::with(['user', 'department', 'branch', 'dtr' => function ($query) use ($period_id) {
+                        $query->where('pay_period_id', $period_id);
+                    }])->get();
+            }
+
             $retVal = [];
-            foreach ($tbl as $item) {
+            $countt = 0;
+            foreach ($tbl as $key => $item) {
+                $emp_id = isset($item->id) ? $item->id : 0;
+                $branch_id = isset($item->branch_id) ? $item->branch_id : 0;
+
                 $dtrs = (object) $item->dtr;
+                $branches = (object) $item->branch;
+                $depts = (object) $item->department;
+                $branch_name = $branches->name;
+                $dept_name = $depts->name;
+                $firstName = $item->first_name;
+                $middleName = $item->middle_name;
+                $lastName = $item->last_name;
                 $no_in_and_out = 0;
                 $no_in_or_out = 0;
                 $late = 0;
@@ -437,37 +456,41 @@ class DtrController extends Controller
                 $lates = [];
                 $undertimes = [];
                 $absents = [];
+                $missinglogs = [];
                 $ld_count = 0;
 
-                $period = DB::table('pay_periods')->where('id', $period_id)->first();
-                // $from = date('Y-m-d', strtotime($period->from));
-                // $to = date('Y-m-d', strtotime($period->to));
+                if ($record != 'toplates') {
+                    $period = DB::table('pay_periods')->where('id', $period_id)->first();
+                    // $from = date('Y-m-d', strtotime($period->from));
+                    // $to = date('Y-m-d', strtotime($period->to));
 
-                $overtime_query = DB::table('over_times')
-                    ->where('employee_id', $item->id)
-                    ->where('status', 'Approved')
-                    ->where('approve_date', '>=', $period->from)
-                    ->where('approve_date', '<=', $period->to);
-                $overtime = (clone $overtime_query)->sum('total_hours');
-                $ots = (clone $overtime_query)->get();
+                    $overtime_query = DB::table('over_times')
+                        ->where('employee_id', $emp_id)
+                        ->where('status', 'Approved')
+                        ->where('approve_date', '>=', $period->from)
+                        ->where('approve_date', '<=', $period->to);
+                    $overtime = (clone $overtime_query)->sum('total_hours');
+                    $ots = (clone $overtime_query)->get();
 
-                $leaves = Leave::where('employee_id', $item->id)
-                    ->where('date_from', '>=', $period->from)
-                    ->where('date_from', '<=', $period->to)
-                    ->where('status', "Approved")
-                    ->where('leave_type_id', 1)
-                    ->get();
-
-                foreach ($leaves as $item2) {
-                    $leave_days = DB::table('leave_days')
-                        ->where('leave_id', $item2->id)
-                        ->where('leave_date', '<=', $period->to)
+                    $leaves = DB::table('leaves')
+                        ->where('employee_id', $emp_id)
+                        ->where('date_from', '>=', $period->from)
+                        ->where('date_from', '<=', $period->to)
+                        ->where('leave_type_id', 1)
+                        ->where('status', "Approved")
                         ->get();
 
-                    foreach ($leave_days as $item) {
-                        if ($item->halfday == 0)
-                            $ld_count++;
-                        else $ld_count += 0.5;
+                    foreach ($leaves as $item2) {
+                        $leave_days = DB::table('leave_days')
+                            ->where('leave_id', $item2->id)
+                            ->where('leave_date', '<=', $period->to)
+                            ->get();
+
+                        foreach ($leave_days as $item) {
+                            if ($item->halfday == 0)
+                                $ld_count++;
+                            else $ld_count += 0.5;
+                        }
                     }
                 }
 
@@ -483,7 +506,7 @@ class DtrController extends Controller
                                 ->where('calendar_events.from', '<=', $dtr->work_date)
                                 ->where('calendar_events.to', '>=', $dtr->work_date)
                                 ->where('branch_id', '0')
-                                ->orWhere('branch_id', $item->branch_id)
+                                ->orWhere('branch_id', $branch_id)
                                 ->where('type', 'holiday')
                                 ->where('frequency', 'This year only')
                                 ->where('calendar_events.from', '<=', $dtr->work_date)
@@ -507,7 +530,7 @@ class DtrController extends Controller
                                     ->where(DB::raw('DAY(calendar_events.from)'), '<=', $dtrCbn->day)
                                     ->where(DB::raw('DAY(calendar_events.to)'), '>=',  $dtrCbn->day)
                                     ->where('branch_id', '0')
-                                    ->orWhere('branch_id', $item->branch_id)
+                                    ->orWhere('branch_id', $branch_id)
                                     ->where('type', 'holiday')
                                     ->where('frequency', 'Yearly')
                                     ->where(DB::raw('MONTH(calendar_events.from)'), '<=', $dtrCbn->month)
@@ -543,8 +566,10 @@ class DtrController extends Controller
                                             array_push($undertimes, $u);
                                             $undertime += $user_out->diffInMinutes($base_out);
                                         }
-                                    } else
+                                    } else {
+                                        array_push($missinglogs, $dtr);
                                         $no_in_or_out++;
+                                    }
 
                                 } else {
                                     $a = new stdClass();
@@ -556,21 +581,27 @@ class DtrController extends Controller
                                 }
                     }
                 }
+
                 $c1 = collect();
+                $c1->put('absents', $absents);
+                $c1->put('missinglogs', $missinglogs);
+                $record != 'toplates' ? $c1->put('leaves', $leaves) : '';
                 if (count($dtrs) > 0) {
                     /* if ($overtime > 0) {} else $c1->put('overtime', '-');
                     if ($naa > 0) {} else {
                         $c1->put('late',  '-');
                         $c1->put('undertime',  '-');
                     } */
+                    $record != 'toplates' ? $c1->put('ots', $ots) : '';
                     $c1->put('overtime', $overtime);
-                    $c1->put('ots', $ots);
                     $c1->put('late', $late);
                     $c1->put('lates', $lates);
+                    $c1->put('lateCount', count($lates));
                     $c1->put('undertime', $undertime);
                     $c1->put('undertimes', $undertimes);
+                    $c1->put('utCount', count($undertimes));
+                    // $c1->put('no_in_and_out', $no_in_and_out);
                     $c1->put('no_in_and_out', $no_in_and_out + $ld_count);
-                    $c1->put('absents', $absents);
                     $c1->put('no_in_or_out', $no_in_or_out);
                     $c1->put('naa', $naa);
                 } else {
@@ -583,6 +614,7 @@ class DtrController extends Controller
                 }
                 $item->summary = $c1;
                 //$c1->put('work_date', $date_from->format('Y-m-d'));
+
                 if ($record == 'totals') {
                     array_push($retVal, $item);
                 } else {
@@ -591,12 +623,16 @@ class DtrController extends Controller
                             if ($overtime > 0)
                                 array_push($retVal, $item);
                         }
+                        // if ($record == 'absent') {
+                        //     if ($no_in_and_out > 0)
+                        //         array_push($retVal, $item);
+                        // }
                         if ($naa > 0) {
-                            if ($record == 'late') {
+                            if ($record == 'late' || $record == 'toplates') {
                                 if ($late > 0)
                                     array_push($retVal, $item);
                             } else if ($record == 'absent') {
-                                if ($no_in_and_out > 0)
+                                if ($no_in_and_out > 0 || $ld_count > 0)
                                     array_push($retVal, $item);
                             } else if ($record == 'undertime') {
                                 if ($undertime > 0)
@@ -605,6 +641,13 @@ class DtrController extends Controller
                         }
                     }
                 }
+
+                $item->b = $branch_id;
+                $item->branch_name = $branch_name;
+                $item->dept_name = $dept_name;
+                $item->firstName = $firstName;
+                $item->middleName = $middleName;
+                $item->lastName = $lastName;
             }
             return $retVal;
         } catch (\Exception $ex) {

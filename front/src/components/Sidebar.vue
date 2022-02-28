@@ -1,6 +1,11 @@
 <template>
   <div>
-    <sidebar-menu :menu="menu" width="300px" :collapsed="true" :hideToggle="true" />
+    <sidebar-menu
+      :menu="menu"
+      width="300px"
+      :collapsed="true"
+      :hideToggle="true"
+    />
   </div>
 </template>
 
@@ -128,11 +133,12 @@ export default {
       var id = this.user.id;
       this.$http.get("api/getToApprove/" + id).then(function(response) {
         //save to global
-        if (response.body.length > 0) {
+        this.menu[3].child[0].badge.text = response.body.length;
+        /* if (response.body.length > 0) {
           this.menu[3].child[0].badge.text = response.body.length;
         } else {
           this.menu[3].child.shift();
-        }
+        } */
         //this.items = response.body;
         //this.tblisBusy = false;
       });

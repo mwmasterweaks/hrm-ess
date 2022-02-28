@@ -30,7 +30,7 @@ class LeaveController extends Controller
 
     public function store(Request $request)
     {
-        return $request;
+        // return $request;
         try {
             DB::beginTransaction();
 

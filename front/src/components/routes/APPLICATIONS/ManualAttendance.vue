@@ -632,7 +632,7 @@ export default {
       apply: {
         employee_id: "",
         work_date: "",
-        reference_no: "tempnumber123",
+        reference_no: "refnum00",
         shift: "No Shift",
         with_break: "",
         break_hours: 0,
@@ -649,7 +649,7 @@ export default {
       item_edit: {
         employee_id: "",
         work_date: "",
-        reference_no: "tempnumber123",
+        reference_no: "refnum00",
         shift: "",
         with_break: "",
         break_hours: 0,
@@ -812,14 +812,14 @@ export default {
             .then(response => {
               // console.log(response.body);
 
-              swal("Notification", "Added successfully", "success");
+              swal("Success", "Item added successfully.", "success");
 
               this.items = response.body;
               this.totalRows = this.items.length;
               this.apply = {
                 employee_id: "",
                 work_date: "",
-                reference_no: "tempnumber123",
+                reference_no: "refnum00",
                 shift: "",
                 with_break: "No",
                 break_hours: 0,
@@ -918,7 +918,7 @@ export default {
     },
     cancelApplication() {
       swal({
-        title: "Notification",
+        title: "Confirmation",
         text: "Do you really want to cancel this application?",
         icon: "info",
         buttons: true,

@@ -48,6 +48,7 @@ export default {
   created() {
     this.tokenParsed = this.$keycloak.tokenParsed;
     this.isAuth = this.$keycloak.authenticated;
+    console.log(this.$keycloak);
     this.load();
   },
   mounted() {

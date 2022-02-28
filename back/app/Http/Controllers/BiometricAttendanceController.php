@@ -43,13 +43,23 @@ class BiometricAttendanceController extends Controller
             ->where('work_date', $work_date);
         $dtr_count = (clone $dtr)->count();
         $dtr_row = (clone $dtr)->first();
+        date_default_timezone_set('Asia/Manila'); // CDT
+        $punch_time = date('Y-m-d H:i:s');
         // return $dtr;
         if ($dtr_count > 0) {
-            if ($dtr_row[$type] == NULL) {
-                date_default_timezone_set('Asia/Manila'); // CDT
-                $punch_time = date('Y-m-d H:i:s');
-                $bio = biometric_attendance::create($request->all());
+            if ($dtr_row[$type] == NULL || $type == 'time_out') {
                 (clone $dtr)->update([$type => $punch_time]); // do not use $request->punch_time to avoid ui time recording
+                // for time_out (if)
+                if ($dtr_row[$type] != NULL) {
+                    $bio = tap(
+                        biometric_attendance::where('employee_id', $request->employee_id)
+                            ->where('punch_time', 'LIKE', '%'.$work_date.'%')
+                            ->where('type', $request->type)
+                        )
+                        ->update(['punch_time' => $request->punch_time])
+                        ->first();
+
+                } else $bio = biometric_attendance::create($request->all());
 
                 if (true) {
                     $message = "

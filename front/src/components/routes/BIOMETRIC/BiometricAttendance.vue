@@ -14,19 +14,36 @@
             type="button"
             class="btn btn-labeled pull-right btn-default cml-10 cplr-10 cbg-gray"
             @click="btnApply('Time Out')"
-            >Time Out</b-button
+            >Punch Out</b-button
           >
           <b-button
             type="button"
             class="btn btn-labeled pull-right btn-default cplr-10 cbg-gray"
             @click="btnApply('Time In')"
-            >Time In</b-button
+            >Punch In</b-button
           >
         </p>
       </div>
 
-      <div class="elClr panel-body">
-        <GmapMap
+      <div id="map-parent-div" class="elClr panel-body">
+        <div id="location-div">
+          <i class="fas fa-street-view fa-5x" id="cl-icon"></i
+          ><br /><br /><br />
+          <span id="location-span">LOCATION:</span>
+          <a
+            :href="
+              'https://www.google.com/maps/@' +
+                marker.position.lat +
+                ',' +
+                marker.position.lng +
+                ',19z'
+            "
+            target="_blank"
+            id="location-link"
+            >{{ marker.position.lat + ", " + marker.position.lng }}
+          </a>
+        </div>
+        <!-- <GmapMap
           :center="marker.position"
           :zoom="15"
           map-type-id="terrain"
@@ -38,7 +55,7 @@
             :animation="2"
             :label="{ text: 'YOUR LOCATION', color: 'white', fontSize: '15px' }"
           />
-        </GmapMap>
+        </GmapMap> -->
       </div>
 
       <div class="elClr panel-footer"></div>
@@ -177,6 +194,30 @@ export default {
       })
       .catch(error => {
         console.log("no coor");
+        swal({
+          title:
+            "Please turn on Location Services to allow HRMESS determine your location.",
+          icon: "info",
+          buttons: {
+            cancel: {
+              text: "Got It!",
+              value: false,
+              visible: true
+            },
+            confirm: {
+              text: "How?",
+              value: true,
+              visible: true
+            }
+          }
+        }).then(value => {
+          if (value == true) {
+            window.open(
+              "https://docs.buddypunch.com/en/articles/919258-how-to-enable-location-services-for-chrome-safari-edge-and-android-ios-devices-gps-setting",
+              "_blank"
+            );
+          }
+        });
       });
   },
   mounted() {},
@@ -201,14 +242,9 @@ export default {
     btnApply(type) {
       console.log(this.marker.position.lat + " " + this.marker.position.lng);
       if (this.marker.position.lat == 0 && this.marker.position.lng == 0) {
-        /* swal({
-          title:
-            "Please turn on Location Services to allow HRMESS to determine your location.",
-          icon: "info"
-        }); */
         swal({
           title:
-            "Please turn on Location Services to allow HRMESS to determine your location.",
+            "Please turn on Location Services to allow HRMESS determine your location.",
           icon: "info",
           buttons: {
             cancel: {
@@ -231,56 +267,64 @@ export default {
           }
         });
       } else {
-        this.type = type;
-        var emp = this.user.emp_approver[0].approver.employee; // catch! if employee has no approver
-        var sendTo = [
-          {
-            email: emp.email1,
-            name: emp.first_name + " " + emp.last_name
-          }
-        ];
+        if (this.user.emp_approver.length > 0) {
+          this.type = type;
+          var emp = this.user.emp_approver[0].approver.employee; // catch! if employee has no approver
+          var sendTo = [
+            {
+              email: emp.email1,
+              name: emp.first_name + " " + emp.last_name
+            }
+          ];
 
-        // var sendTo = [
-        //   {
-        //     email: "mwmasterweaks@gmail.com",
-        //     name: "Peter"
-        //   }
-        // ];
-        var temp = {
-          employee_id: this.user.id,
-          punch_time: this.dt.split("/").join("-"),
-          type: type,
-          latitude: this.marker.position.lat,
-          longitude: this.marker.position.lng,
-          msg: document.getElementById("to-approve").innerHTML,
-          user_email: this.user.email1,
-          user_name: this.user.first_name + " " + this.user.last_name,
-          sendTo: sendTo,
-          CCto: []
-        };
-        console.log(temp);
-        this.$http.post("api/BioAttendance", temp).then(response => {
-          console.log(response.body);
-          var mode = type == "Time In" ? "In" : "Out";
-          if (response.body == 0) {
-            swal({
-              title: "No work schedule!",
-              text:
-                "Your work schedule for this day has not been set. Please contact HR Department.",
-              icon: "info"
-            });
-          } else if (response.body == 1) {
-            swal({
-              title: "Logged " + mode + "!",
-              icon: "success"
-            });
-          } else if (response.body == 2) {
-            swal({
-              title: "Log " + mode + " time has already been recorded!",
-              icon: "info"
-            });
-          }
-        });
+          // var sendTo = [
+          //   {
+          //     email: "mwmasterweaks@gmail.com",
+          //     name: "Peter"
+          //   }
+          // ];
+          var temp = {
+            employee_id: this.user.id,
+            punch_time: this.dt.split("/").join("-"),
+            type: type,
+            latitude: this.marker.position.lat,
+            longitude: this.marker.position.lng,
+            msg: document.getElementById("to-approve").innerHTML,
+            user_email: this.user.email1,
+            user_name: this.user.first_name + " " + this.user.last_name,
+            sendTo: sendTo,
+            CCto: []
+          };
+          console.log(temp);
+          this.$http.post("api/BioAttendance", temp).then(response => {
+            console.log(response.body);
+            var mode = type == "Time In" ? "In" : "Out";
+            if (response.body == 0) {
+              swal({
+                title: "No work schedule!",
+                text:
+                  "Your work schedule for this day has not been set. Please contact HR Department.",
+                icon: "info"
+              });
+            } else if (response.body == 1) {
+              swal({
+                title: "Logged " + mode + "!",
+                icon: "success"
+              });
+            } else if (response.body == 2) {
+              swal({
+                title: "Log " + mode + " time has already been recorded!",
+                icon: "info"
+              });
+            }
+          });
+        } else {
+          swal(
+            "No Approver!",
+            "Please contact HR Department to update your approvers.",
+            "info"
+          );
+        }
       }
     }
   }
@@ -300,5 +344,34 @@ modal-header {
 }
 #to-approve {
   visibility: hidden;
+}
+#map-parent-div {
+  text-align: center;
+  width: 100%;
+}
+#location-div {
+  background: #f0fff0;
+  padding: 30px;
+  padding-left: 50px;
+  padding-right: 50px;
+  border-radius: 10px;
+  width: fit-content;
+  display: inline-block;
+}
+#location-link {
+  font-size: large;
+  color: #009600;
+  font-weight: bold;
+}
+#location-link:hover {
+  color: #007500;
+  text-decoration: none;
+}
+#location-span {
+  color: #444444;
+  font-weight: bold;
+}
+#cl-icon {
+  color: #444444;
 }
 </style>

@@ -48,7 +48,7 @@ Details: {"approver_id":2,"employee_id":719,"level":1,"updated_at":"2022-01-25 1
 Details: {"approver_id":2,"employee_id":719,"level":1,"created_at":"2022-01-25 10:09:50","updated_at":"2022-01-25 10:09:50"}
 
 2022-01-25 16:29:52    |    User: () Mice Dianne Morta    |    LeaveController (store)    |    message    |    Create new leave with ID: 24
-Details: {"employee_id":861,"leave_type_id":5,"reference_no":"tempnumber123","date_from":"2021-10-02","date_to":"2021-10-02","reason":"testing","status":"Pending","attachment":"noattachment.png","total_days":1,"date_filed":"2022-01-25T08:29:52.746938Z","approve_level":"1","updated_at":"2022-01-25 16:29:52","created_at":"2022-01-25 16:29:52","id":24}
+Details: {"employee_id":861,"leave_type_id":5,"reference_no":"refnum00","date_from":"2021-10-02","date_to":"2021-10-02","reason":"testing","status":"Pending","attachment":"noattachment.png","total_days":1,"date_filed":"2022-01-25T08:29:52.746938Z","approve_level":"1","updated_at":"2022-01-25 16:29:52","created_at":"2022-01-25 16:29:52","id":24}
 Create new leave day/s: 
 {"leave_id":24,"leave_date":"2021-10-02","halfday":false,"halfday_type":0,"updated_at":"2022-01-25 16:29:52","created_at":"2022-01-25 16:29:52","id":0}
 

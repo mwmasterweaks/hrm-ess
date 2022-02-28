@@ -531,7 +531,7 @@ export default {
         if (result) {
           this.tblisBusy = true;
           swal({
-            title: "Are you sure?",
+            title: "Confirmation",
             text: "Do you want to Update this item?",
             icon: "warning",
             buttons: true,
@@ -574,7 +574,7 @@ export default {
           };
           this.$http.post("api/PayPeriod", valueToSend).then(response => {
             console.log(response.body);
-            swal("Notification", "Added successfully", "success");
+            swal("Success!", "Item added successfully.", "success");
             this.items = response.body;
             this.totalRows = this.items.length;
             this.generatedPeriod = null;
@@ -595,8 +595,8 @@ export default {
     },
     btnDelete() {
       swal({
-        title: "Are you sure?",
-        text: "Do you really want to delete this item permanently",
+        title: "Confirmation",
+        text: "Do you really want to delete this item permanently?",
         icon: "warning",
         buttons: true,
         dangerMode: true

@@ -50,7 +50,7 @@
             :busy="tblisBusy"
             :current-page="currentPage"
             :per-page="perPage"
-            head-variant=" elClr"
+            head-variant="elClr"
             @filtered="onFiltered"
           >
             <div slot="table-busy" class="text-center text-danger my-2">
@@ -178,6 +178,7 @@ export default {
       this.$http
         .get("api/getDTR/" + this.pay_period_select + "/" + this.user.id)
         .then(function(response) {
+          console.log(response.body);
           this.items = response.body;
           this.tblisBusy = false;
           this.totalRows = this.items.length;

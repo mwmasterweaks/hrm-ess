@@ -162,7 +162,7 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           swal({
-            title: "Are you sure?",
+            title: "Confirmation",
             text: "Do you want to update your account details?",
             icon: "warning",
             buttons: true,

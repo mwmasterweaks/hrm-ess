@@ -33,7 +33,17 @@
           <p class="elClr" style="margin-top:9px;">Period:</p>
         </div>
         <div class="col-lg-5">
+          <date-picker
+            v-if="selectedSummary == 'toplates'"
+            v-model="late_period_select"
+            placeholder="Select month and year"
+            :config="AppliedDateoptions"
+            autocomplete="off"
+            style="height: 100%"
+            @input="on_summary_change"
+          ></date-picker>
           <model-list-select
+            v-else
             :list="pay_period_list"
             v-model="pay_period_select"
             option-value="id"
@@ -41,6 +51,7 @@
             placeholder="Select pay period"
             name="pay_period_list"
             v-validate="'required'"
+            @input="on_summary_change"
           ></model-list-select>
         </div>
         <div class="col-lg-5">
@@ -91,7 +102,10 @@
           </template>
 
           <template #row-details="row">
-            <b-card v-if="selectedSummary == 'late'" class="perRow-bcard">
+            <b-card
+              v-if="selectedSummary == 'late' || selectedSummary == 'toplates'"
+              class="perRow-bcard"
+            >
               <b-row class="perRow-brow">
                 <b-col><b>Shift Schedule (In)</b></b-col>
                 <b-col><b>Login Time</b></b-col>
@@ -106,7 +120,10 @@
               </b-row>
             </b-card>
             <b-card v-if="selectedSummary == 'absent'" class="perRow-bcard">
-              <b-row class="perRow-brow">
+              <b-row
+                class="perRow-brow"
+                v-if="row.item.summary.absents.length > 0"
+              >
                 <b-col><b>Work Date</b></b-col>
                 <b-col><b>Shift Schedule (In)</b></b-col>
                 <b-col><b>Shift Schedule (Out)</b></b-col>
@@ -119,6 +136,40 @@
                 <b-col>{{ item.work_date }}</b-col>
                 <b-col>{{ item.sched_in }}</b-col>
                 <b-col>{{ item.sched_out }}</b-col>
+              </b-row>
+              <b-row
+                class="perRow-brow"
+                v-if="row.item.summary.missinglogs.length > 0"
+              >
+                <b-col><b>Work Date</b></b-col>
+                <b-col><b>Login Time</b></b-col>
+                <b-col><b>Logout Time</b></b-col>
+              </b-row>
+              <b-row
+                v-for="item in row.item.summary.missinglogs"
+                :key="item.sched_in"
+                class="perRow-brow"
+              >
+                <b-col>{{ item.work_date }}</b-col>
+                <b-col>{{ item.time_in }}</b-col>
+                <b-col>{{ item.time_out }}</b-col>
+              </b-row>
+              <b-row
+                class="perRow-brow"
+                v-if="row.item.summary.leaves.length > 0"
+              >
+                <b-col><b>Work Date</b></b-col>
+                <b-col><b>Reason</b></b-col>
+                <b-col><b>No. of Days</b></b-col>
+              </b-row>
+              <b-row
+                v-for="item in row.item.summary.leaves"
+                :key="item.sched_in"
+                class="perRow-brow"
+              >
+                <b-col>{{ item.date_from + " - " + item.date_to }}</b-col>
+                <b-col>{{ item.reason }}</b-col>
+                <b-col>{{ item.total_days }}</b-col>
               </b-row>
             </b-card>
             <b-card v-if="selectedSummary == 'undertime'" class="perRow-bcard">
@@ -161,7 +212,7 @@
                 <b-col>{{ item.break_hours }}</b-col>
                 <b-col>{{ item.total_hours }}</b-col>
                 <b-col>{{ item.reason }}</b-col>
-                <b-col>{{ item.date_files }}</b-col>
+                <b-col>{{ item.date_filed }}</b-col>
                 <b-col>{{ item.status }}</b-col>
               </b-row>
             </b-card>
@@ -208,9 +259,11 @@ import { ModelListSelect } from "vue-search-select";
 import swal from "sweetalert";
 
 import VueRangedatePicker from "vue-rangedate-picker";
+import datePicker from "vue-bootstrap-datetimepicker";
 
 export default {
   components: {
+    "date-picker": datePicker,
     "model-list-select": ModelListSelect,
     "rangedate-picker": VueRangedatePicker
   },
@@ -223,9 +276,10 @@ export default {
           key: "Name",
           label: "Full Name",
           formatter: (value, key, item) => {
-            if (item.middle_name == null) item.middle_name = "";
+            if (item.middleName == null) item.middleName = "";
             return (
-              item.first_name + " " + item.middle_name + " " + item.last_name
+              // item.last_name + ", " + item.first_name + " " + item.middle_name
+              item.lastName + ", " + item.firstName + " " + item.middleName
             );
           },
           sortable: true
@@ -237,17 +291,17 @@ export default {
           label: "Total No IN or OUT",
           sortable: true
         },
-        { key: "summary.no_in_and_out", label: "Total Absent", sortable: true },
-        { key: "details", label: "Details" }
+        { key: "summary.no_in_and_out", label: "Total Absent", sortable: true }
       ],
       rsFields: [
         {
           key: "Name",
           label: "Full Name",
           formatter: (value, key, item) => {
-            if (item.middle_name == null) item.middle_name = "";
+            if (item.middleName == null) item.middleName = "";
             return (
-              item.last_name + ", " + item.first_name + " " + item.middle_name
+              // item.last_name + ", " + item.first_name + " " + item.middle_name
+              item.lastName + ", " + item.firstName + " " + item.middleName
             );
           },
           sortable: true
@@ -256,7 +310,8 @@ export default {
           key: "Class",
           label: "Class",
           formatter: (value, key, item) => {
-            return item.department.name + " / " + item.branch.name;
+            return item.dept_name + " / " + item.branch_name;
+            // return item.department.name + " / " + item.branch.name;
           },
           sortable: true
         },
@@ -264,7 +319,11 @@ export default {
           key: "Qty",
           label: "Qty",
           formatter: (value, key, item) => {
-            if (this.selectedSummary == "late") return item.summary.late;
+            if (
+              this.selectedSummary == "late" ||
+              this.selectedSummary == "toplates"
+            )
+              return item.summary.late;
             else if (this.selectedSummary == "absent")
               return item.summary.no_in_and_out;
             else if (this.selectedSummary == "undertime")
@@ -278,11 +337,31 @@ export default {
           key: "Amount",
           label: "Amount",
           formatter: (value, key, item) => {
-            if (this.selectedSummary == "late") return item.summary.late * 0.88;
+            if (
+              this.selectedSummary == "late" ||
+              this.selectedSummary == "toplates"
+            )
+              return item.summary.late * 0.88;
             else if (this.selectedSummary == "absent")
               return item.summary.no_in_and_out;
             else if (this.selectedSummary == "undertime")
               return item.summary.undertime * 0.66;
+            else if (this.selectedSummary == "overtime") return "-";
+          },
+          sortable: true
+        },
+        {
+          key: "Frequency",
+          label: "Frequency",
+          formatter: (value, key, item) => {
+            if (
+              this.selectedSummary == "late" ||
+              this.selectedSummary == "toplates"
+            )
+              return item.summary.lateCount;
+            else if (this.selectedSummary == "absent") return "-";
+            else if (this.selectedSummary == "undertime")
+              return item.summary.utCount;
             else if (this.selectedSummary == "overtime") return "-";
           },
           sortable: true
@@ -294,8 +373,13 @@ export default {
         { value: "late", text: "Late" },
         { value: "absent", text: "Absent" },
         { value: "undertime", text: "Undertime" },
-        { value: "overtime", text: "Overtime" }
+        { value: "overtime", text: "Overtime" },
+        { value: "toplates", text: "Top Lates" }
       ],
+      AppliedDateoptions: {
+        format: "YYYY-MM",
+        useCurrent: false
+      },
       items: [],
       tblFilter: null,
       totalRows: 1,
@@ -304,6 +388,7 @@ export default {
       pageOptions: [20, 50, 100, 200, 500],
       pay_period_list: [],
       pay_period_select: "",
+      late_period_select: "",
       roles: [],
       selectedSummary: "totals",
       activeDiv: "totals"
@@ -322,18 +407,27 @@ export default {
     pay_period_onchange() {
       console.log(this.pay_period_select);
       console.log(this.selectedSummary);
+      let selectedPeriod =
+        this.selectedSummary == "toplates"
+          ? this.late_period_select
+          : this.pay_period_select;
 
       this.tblisBusy = true;
       this.$http
         .put(
-          "api/HRSummaryReport/" +
-            this.pay_period_select +
-            "/" +
-            this.selectedSummary
+          "api/HRSummaryReport/" + selectedPeriod + "/" + this.selectedSummary
         )
         .then(function(response) {
           console.log(response.body);
-          this.items = response.body;
+          if (
+            this.selectedSummary == "toplates" ||
+            this.selectedSummary == "late"
+          ) {
+            this.items = response.body.sort((a, b) =>
+              a.summary.lateCount > b.summary.lateCount ? -1 : 1
+            );
+          } else this.items = response.body;
+
           this.activeDiv = this.selectedSummary;
           this.tblisBusy = false;
           // this.totalRows = this.sched_items.length;
@@ -425,6 +519,13 @@ export default {
     tblRowClass(item, type) {
       if (!item) return;
       else return "elClr cursorPointer";
+    },
+    on_summary_change() {
+      let selectedPeriod =
+        this.selectedSummary == "toplates"
+          ? this.late_period_select
+          : this.pay_period_select;
+      console.log(selectedPeriod);
     }
   }
 };

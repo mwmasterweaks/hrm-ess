@@ -69,7 +69,7 @@ class ManualAttendanceController extends Controller
                                 'shift' => 'From: ' . $item->shift_sched_in . 'To: ' . $item->shift_sched_out,
                                 'time_in' => $item->time_in,
                                 'time_out' => $item->time_out,
-                                'reference_no' => 'tempnumber123',
+                                'reference_no' => 'refnum00',
                                 'reason' => $request->reason,
                                 'attachment' => $fileName,
                                 'date_filed' => $date_filed,

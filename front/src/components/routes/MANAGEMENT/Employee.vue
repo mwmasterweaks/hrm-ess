@@ -3137,7 +3137,7 @@ export default {
       tblisBusy: true,
       fields: [
         { key: "chkbox", label: "", sortable: true },
-        { key: "user.email", label: "ID", sortable: true },
+        { key: "id", label: "ID", sortable: true },
         {
           key: "Name",
           label: "Full Name",
@@ -3677,7 +3677,7 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           swal({
-            title: "Are you sure?",
+            title: "Confirmation",
             text: "Do you want to Update this?",
             icon: "warning",
             buttons: true,
@@ -3723,7 +3723,7 @@ export default {
     },
     btnDelete() {
       swal({
-        title: "Are you sure?",
+        title: "Confirmation",
         text: "Do you really want to delete this item permanently?",
         icon: "warning",
         buttons: true,
@@ -3810,7 +3810,7 @@ export default {
             .then(response => {
               console.log(response.body);
               this.$root.$emit("pageLoaded");
-              swal("Notification", "Added successfully", "success");
+              swal("Success!", "Item added successfully.", "success");
               this.leave_items = response.body;
               this.leave_totalRows = this.leave_items.length;
               this.leave_add = {
@@ -3853,7 +3853,7 @@ export default {
               this.$root.$emit("pageLoaded");
               console.log(response.body);
 
-              swal("Notification", "Added successfully", "success");
+              swal("Success!", "Item added successfully.", "success");
               /* this.leave_add = {
                 employee_id: "",
                 leave_type_id: "",
@@ -3881,7 +3881,7 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           swal({
-            title: "Are you sure?",
+            title: "Confirmation",
             text: "Do you want to Update this item?",
             icon: "warning",
             buttons: true,
@@ -3919,7 +3919,7 @@ export default {
     },
     btnDeleteLeave() {
       swal({
-        title: "Are you sure?",
+        title: "Confirmation",
         text: "Do you really want to delete this item permanently?",
         icon: "warning",
         buttons: true,
@@ -3999,8 +3999,8 @@ export default {
     },
     btnAddSched() {
       swal({
-        title: "Are you sure?",
-        text: "Do you really want to submit this schedule?",
+        title: "Confirmation",
+        text: "Submit schedule?",
         icon: "warning",
         buttons: true,
         dangerMode: true
@@ -4012,7 +4012,7 @@ export default {
             .then(response => {
               console.log(response.body);
               this.$root.$emit("pageLoaded");
-              swal("Notification", "Added successfully", "success");
+              swal("Success!", "Item added successfully.", "success");
               //set new val
               this.sched_items_add = [];
               this.groupTimeIn = null;
@@ -4034,8 +4034,8 @@ export default {
     btnAddSchedMultiple() {
       console.log(this.item_selected);
       swal({
-        title: "Are you sure?",
-        text: "Do you really want to submit this schedule?",
+        title: "Confirmation",
+        text: "Submit schedule?",
         icon: "warning",
         buttons: true,
         dangerMode: true
@@ -4050,7 +4050,7 @@ export default {
             .post("api/Dtr/storeMultiple", temp)
             .then(response => {
               this.$root.$emit("pageLoaded");
-              swal("Notification", "Added successfully", "success");
+              swal("Success!", "Item added successfully.", "success");
               //set new val
               this.sched_items_add = [];
               this.groupTimeIn = null;
@@ -4081,8 +4081,9 @@ export default {
       console.log(temp);
 
       swal({
-        title: "Are you sure?",
-        text: "Do you really want to add this approver?",
+        title: "Confirmation",
+        text:
+          "Do you really want to assign this approver to selected employees?",
         icon: "warning",
         buttons: true,
         dangerMode: true
@@ -4118,7 +4119,7 @@ export default {
     //approver
     btnMakeApprover() {
       swal({
-        title: "Are you sure?",
+        title: "Confirmation",
         text: "Do you really want to assign this employee as an approver?",
         icon: "warning",
         buttons: true,
@@ -4136,7 +4137,7 @@ export default {
             .then(response => {
               console.log(response.body);
               this.$root.$emit("pageLoaded");
-              swal("Notification", "Approver added successfully", "success");
+              swal("Notification", "Approver added successfully.", "success");
               this.item_edit.as_approver = 1;
               this.reloadApprover();
             })
@@ -4154,7 +4155,7 @@ export default {
     },
     btnRemoveAsApprover() {
       swal({
-        title: "Are you sure?",
+        title: "Confirmation",
         text: "Do you really want to remove this employee as an approver?",
         icon: "warning",
         buttons: true,
@@ -4229,8 +4230,8 @@ export default {
     },
     btnAddApproverOK() {
       swal({
-        title: "Are you sure?",
-        text: "Do you really want to add this approver to this employee?",
+        title: "Confirmation",
+        text: "Do you really want to assign this approver to this employee?",
         icon: "warning",
         buttons: true,
         dangerMode: true
@@ -4251,7 +4252,7 @@ export default {
               this.approve_items = response.body;
               this.approve_tblisBusy = false;
               this.approve_totalRows = this.approve_items.length;
-              swal("Notification", "Approver added successfully", "success");
+              swal("Notification", "Approver added successfully.", "success");
             })
             .catch(response => {
               this.$root.$emit("pageLoaded");
@@ -4272,7 +4273,7 @@ export default {
         .then(response => {
           //console.log(response.body);
           this.$root.$emit("pageLoaded");
-          swal("Notification", "Updated", "success");
+          swal("Success!", "Updated", "success");
         })
         .catch(response => {
           this.$root.$emit("pageLoaded");
@@ -4310,8 +4311,8 @@ export default {
     btnSubmitResetPassword() {
       if (this.item_edit.password == this.item_edit.repassword) {
         swal({
-          title: "Are you sure?",
-          text: "Do you really want to reset this password?",
+          title: "Confirmation",
+          text: "Do you really want to reset the password?",
           icon: "warning",
           buttons: true,
           dangerMode: true
@@ -4349,7 +4350,7 @@ export default {
     },
     btnUpdateRoles() {
       swal({
-        title: "Are you sure?",
+        title: "Confirmation",
         text: "",
         icon: "warning",
         buttons: ["No", "Yes"],
@@ -4412,8 +4413,8 @@ export default {
       };
       console.log(credentials);
       swal({
-        title: "Are you sure?",
-        text: "Do you really want to send email credential?",
+        title: "Confirmation",
+        text: "Send credentials via email?",
         icon: "warning",
         buttons: true,
         dangerMode: true
@@ -4490,7 +4491,7 @@ export default {
           " " +
           this.user.last_name;
         swal({
-          title: "Are you sure?",
+          title: "Confirmation",
           text: "Do you really want to delete this item permanently?",
           icon: "warning",
           buttons: true,

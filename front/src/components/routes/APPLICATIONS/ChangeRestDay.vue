@@ -590,7 +590,7 @@ export default {
       apply: {
         employee_id: "",
         work_date: "",
-        reference_no: "tempnumber123",
+        reference_no: "refnum00",
         shift: "",
         type: "",
         with_break: "No",
@@ -605,7 +605,7 @@ export default {
       item_edit: {
         employee_id: "",
         work_date: "",
-        reference_no: "tempnumber123",
+        reference_no: "refnum00",
         shift: "",
         with_break: "",
         break_hours: 0,
@@ -748,14 +748,14 @@ export default {
             this.$http
               .post("api/ChangeRestDay", this.apply)
               .then(response => {
-                swal("Notification", "Added successfully", "success");
+                swal("Success!", "Item added successfully.", "success");
 
                 this.items = response.body;
                 this.totalRows = this.items.length;
                 this.apply = {
                   employee_id: "",
                   work_date: "",
-                  reference_no: "tempnumber123",
+                  reference_no: "refnum00",
                   shift: "",
                   type: "",
                   with_break: "",
@@ -879,7 +879,7 @@ export default {
       this.item_edit.user_name =
         this.user.id.first_name + " " + this.user.last_name;
       swal({
-        title: "Notification",
+        title: "Confirmation",
         text: "Do you really want to cancel this application?",
         icon: "info",
         buttons: true,

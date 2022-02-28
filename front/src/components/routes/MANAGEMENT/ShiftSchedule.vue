@@ -458,7 +458,7 @@ export default {
         if (result) {
           this.tblisBusy = true;
           swal({
-            title: "Are you sure?",
+            title: "Confirmation",
             text: "Do you want to Update this item?",
             icon: "warning",
             buttons: true,
@@ -499,7 +499,7 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           swal({
-            title: "Are you sure?",
+            title: "Confirmation",
             text: "",
             icon: "info",
             buttons: true
@@ -530,8 +530,8 @@ export default {
     },
     btnDelete() {
       swal({
-        title: "Are you sure?",
-        text: "Do you really want to delete this item permanently",
+        title: "Confirmation",
+        text: "Do you really want to delete this item permanently?",
         icon: "warning",
         buttons: true,
         dangerMode: true

@@ -336,6 +336,7 @@
         <div slot="modal-footer">
           <b-button
             v-if="available_balance > 0 && remain_balance >= 0"
+            :disabled="total_days < 0.5"
             size="sm"
             variant="success"
             @click="btnApply()"
@@ -648,7 +649,7 @@ export default {
       leave_apply: {
         employee_id: "",
         leave_type_id: "",
-        reference_no: "tempnumber123",
+        reference_no: "refnum00",
         date_from: "",
         date_to: "",
         reason: "",
@@ -659,7 +660,7 @@ export default {
       item_edit: {
         employee_id: "",
         leave_type_id: "",
-        reference_no: "tempnumber123",
+        reference_no: "refnum00",
         leave_type: {
           name: ""
         },
@@ -827,13 +828,13 @@ export default {
               .then(response => {
                 console.log(response.body);
                 this.available_balance = 0;
-                swal("Notification", "Added successfully", "success");
+                swal("Success!", "Item added successfully.", "success");
                 this.items = response.body;
                 this.totalRows = this.items.length;
                 this.leave_apply = {
                   employee_id: "",
                   leave_type_id: "",
-                  reference_no: "tempnumber123",
+                  reference_no: "refnum00",
                   total_days: "",
                   reason: "",
                   attachment: "",
@@ -909,7 +910,7 @@ export default {
         this.user.first_name + " " + this.user.last_name;
       console.log(this.item_edit);
       swal({
-        title: "Notification",
+        title: "Confirmation",
         text: "Do you really want to cancel this application?",
         icon: "info",
         buttons: true,
