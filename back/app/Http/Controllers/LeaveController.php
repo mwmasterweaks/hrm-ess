@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\attachment;
 use App\Leave;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -10,6 +11,7 @@ use Carbon\Carbon;
 use App\leave_balance;
 use App\leave_day;
 use App\leave_type;
+use Attribute;
 use LeaveDay;
 use stdClass;
 
@@ -40,7 +42,7 @@ class LeaveController extends Controller
             // $daysCount += 1;
 
             $fileName = "noattachment.png";
-            if ($request->attachment != "") {
+            if ($request->filename != "") {
 
                 $exploded = explode(',', $request->attachment);
 
@@ -71,7 +73,7 @@ class LeaveController extends Controller
             $date_filed = new Carbon();
 
             $tblInserted = Leave::create($request->except('attachment', 'total_days', 'date_filed', 'approve_level') + [
-                "attachment" => $fileName,
+                "filename" => $fileName,
                 "total_days" => $request->total_days,
                 "date_filed" => $date_filed,
                 "approve_level" => "1"
