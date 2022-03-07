@@ -37,19 +37,14 @@ class Logger
 
     public function mailer($subject, $message, $sender, $senderName, $sendTo, $CCTO)
     {
-
         $mail = new PHPMailer(true);
-        // Server settings
         $mail->SMTPDebug = 0;
-        //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
         $mail->isSMTP();
 
-        $mail->Host = 'mail.dctechmicro.com'; //'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'customeractivation@dctechmicro.com';
-        // $mail->Password = 'pyzhet-cyxSo2-kokpec';
-        $mail->Password = 'dctech123';
-        $mail->SMTPSecure = 'tls';
+        $mail->Host = 'appmta.dctechmicro.com'; //'smtp.gmail.com';
+        $mail->SMTPAuth = false;
+        $mail->SMTPAutoTLS = false;
+        $mail->SMTPSecure = false;
         $mail->Port = 25;
         $mail->CharSet = 'utf-8';
         $mail->SMTPOptions = array(
@@ -59,10 +54,7 @@ class Logger
                 'allow_self_signed' => true
             )
         );
-
-
-        //any suggestion about the sender??
-        $mail->setFrom('customeractivation@dctechmicro.com',  "DCTECH MAILER");
+        $mail->setfrom('customeractivation@dctechmicro.com', "DCTECH Mailer");
         if ($sendTo != null)
             foreach ($sendTo as $item) {
                 $item = (object) $item;
@@ -73,15 +65,6 @@ class Logger
                 $item = (object) $item;
                 $mail->addCC($item->email, $item->name);
             }
-
-        //$mail->addReplyTo($request->email, 'Mailer');
-        //$mail->addCC('pbismonte@dctechmicro.com');
-        //$mail->addBCC('his-her-email@gmail.com');
-
-        //Attachments (optional)
-        // $mail->addAttachment('/var/tmp/file.tar.gz');			// Add attachments
-        // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');	// Optional name
-
         $mail->isHTML(true);                                                                     // Set email format to HTML
         $mail->Subject = $subject;
         $mail->Body    = $message;
@@ -157,24 +140,15 @@ class Logger
 
     public function mailerZimbra($subject, $message, $sender, $senderName, $sendTo, $CCTO)
     {
-        /* return $subject . " " .
-            $message . " " .
-            $sender . " " .
-            $senderName . " " .
-            json_encode($sendTo) . " " .
-            json_encode($CCTO); */
+        return "ok";
         $mail = new PHPMailer(true);
-        // Server settings
         $mail->SMTPDebug = 0;
-        //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
         $mail->isSMTP();
 
-        $mail->Host = 'mail.dctechmicro.com'; //'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        //$mail->SMTPKeepAlive = true;
-        $mail->Username = 'customeractivation@dctechmicro.com';
-        $mail->Password = 'dctech123';
-        $mail->SMTPSecure = 'tls';
+        $mail->Host = 'appmta.dctechmicro.com'; //'smtp.gmail.com';
+        $mail->SMTPAuth = false;
+        $mail->SMTPAutoTLS = false;
+        $mail->SMTPSecure = false;
         $mail->Port = 25;
         $mail->CharSet = 'utf-8';
         $mail->SMTPOptions = array(
@@ -184,9 +158,7 @@ class Logger
                 'allow_self_signed' => true
             )
         );
-
-        //any suggestion about the sender??
-        $mail->setFrom('customeractivation@dctechmicro.com', "DCTECH MAILER");
+        $mail->setfrom('customeractivation@dctechmicro.com', "DCTECH Mailer");
         if ($sendTo != null)
             foreach ($sendTo as $item) {
                 $item = (object) $item;
@@ -197,19 +169,15 @@ class Logger
                 $item = (object) $item;
                 $mail->addCC($item->email, $item->name);
             }
-
-        //$mail->addReplyTo($request->email, 'Mailer');
-        //$mail->addCC('pbismonte@dctechmicro.com');
-        //$mail->addBCC('his-her-email@gmail.com');
-
-        //Attachments (optional)
-        // $mail->addAttachment('/var/tmp/file.tar.gz');			// Add attachments
-        // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');	// Optional name
-
         $mail->isHTML(true);                                                                     // Set email format to HTML
         $mail->Subject = $subject;
         $mail->Body    = $message;
-        $mail->send();
+
+        if (!$mail->send()) {
+            return 'Mailer Error: ' . $mail->ErrorInfo;
+        } else {
+            return 'ok';
+        }
     }
 
     public function send_text($number, $msg)

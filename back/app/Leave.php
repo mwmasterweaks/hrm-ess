@@ -7,6 +7,7 @@ use App\leave_type;
 use App\Employee_approver;
 use App\Employee;
 use App\leave_day;
+use App\attachment;
 
 class Leave extends Model
 {
@@ -33,5 +34,10 @@ class Leave extends Model
     public function leave_days()
     {
         return $this->hasMany(leave_day::class, 'leave_id', 'id');
+    }
+
+    public function attachment(){
+
+        return $this->hasMany(attachment::class,'reference_no', 'reference_no');
     }
 }

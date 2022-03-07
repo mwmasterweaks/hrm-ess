@@ -1,0 +1,40 @@
+2022-03-04 16:26:19    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 16:26:41    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 16:27:03    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 16:28:11    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 16:30:21    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 16:34:48    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 16:37:13    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 16:38:30    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 16:43:37    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 16:43:58    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 16:45:09    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 16:47:06    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 16:47:58    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 16:49:04    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 20:28:23    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-04 20:34:35    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-05 08:04:28    |    User: () Wilma Hinlog    |    OverTimeController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-05 08:06:22    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-05 08:10:22    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+
+2022-03-05 08:20:51    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    Error    |    SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+

@@ -119,7 +119,7 @@ export default {
         })
         .catch(response => {
           this.$refs.email.focus();
-          swal("Error", "You have entered incorrect credentials.", "error");
+          swal("Error", "You have entered incorrect credentials.", "An error has occured. Please contact admin rnd@dctechmicro.com");
         });
     },
     test() {

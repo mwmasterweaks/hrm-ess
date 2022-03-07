@@ -788,7 +788,7 @@ export default {
                 .catch(response => {
                   swal({
                     title: "Error",
-                    text: response.body.error,
+                    text: "An error has occured. Please contact admin rnd@dctechmicro.com",
                     icon: "error",
                     dangerMode: true
                   });

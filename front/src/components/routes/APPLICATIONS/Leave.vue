@@ -653,7 +653,7 @@ export default {
         date_from: "",
         date_to: "",
         reason: "",
-        attachment: "",
+        // attachment: "",
         status: "Pending",
         available_balance: "0"
       },
@@ -667,7 +667,7 @@ export default {
         date_from: "",
         date_to: "",
         reason: "",
-        attachment: "",
+        // attachment: "",
         status: "Pending",
         available_balance: "0"
       },
