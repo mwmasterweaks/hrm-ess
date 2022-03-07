@@ -1,4 +1,5 @@
 <template>
+<!-- lalala -->
   <div class="mx-auto col-md-12 modified-continer">
     <div class="elBG panel">
       <div class="panel-heading">
@@ -653,7 +654,7 @@ export default {
         date_from: "",
         date_to: "",
         reason: "",
-        attachment: "",
+        // attachment: "",
         status: "Pending",
         available_balance: "0"
       },
@@ -667,7 +668,7 @@ export default {
         date_from: "",
         date_to: "",
         reason: "",
-        attachment: "",
+        // attachment: "",
         status: "Pending",
         available_balance: "0"
       },

@@ -20,4 +20,10 @@ class payslip extends Model
     {
         return $this->hasOne(Pay_period::class, 'id', 'pay_period_id');
     }
+
+    //para sa relationship (payslip)
+    public function employee()
+    {
+        return $this->hasOne(Employee::class, 'id', 'employee_id');
+    }
 }

@@ -1,0 +1,5 @@
+2022-03-05 08:25:56    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    message    |    Create new leave with ID: 775
+Details: {"id":775,"employee_id":878,"leave_type_id":"6","reference_no":"LV-775","date_from":"2022-03-01","date_to":"2022-03-01","total_days":"1.00","reason":"test\ntest","attachment":"F2zzzrOkN6vzQvC0621681.jpeg","date_filed":"2022-03-05","status":"Pending","remarks":null,"approve_level":1,"created_at":"2022-03-05 08:25:56","updated_at":"2022-03-05 08:25:56"}
+Create new leave day/s: 
+{"leave_id":775,"leave_date":"2022-03-01","halfday":0,"halfday_type":0,"updated_at":"2022-03-05 08:25:56","created_at":"2022-03-05 08:25:56","id":0}
+
