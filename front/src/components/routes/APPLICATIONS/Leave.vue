@@ -475,8 +475,8 @@
             </tr>
 
             <tr>
-              <td class="my-td">Reason:</td>
-              <td class="my-td" colspan="3">{{ item_edit.reason }}</td>
+                <td class="my-td">Reason</td>
+              <td class="my-td" colspan="3"><pre>{{ item_edit.reason }}</pre></td>
             </tr>
           </table>
 
