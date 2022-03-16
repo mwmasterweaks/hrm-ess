@@ -16,16 +16,16 @@ class attachment extends Model
 
     public function Leave()
     {
-        return $this->hasOne(leave::class,'reference_no');
+        return $this->hasMany(leave::class,'reference_no');
     }
 
     public function missing_time_log()
     {
-        return $this->hasOne(missing_time_log::class,'reference_no');
+        return $this->hasMany(missing_time_log::class,'reference_no');
     }
 
     public function over_time()
     {
-        return $this->hasOne(over_time::class,'reference_no');
+        return $this->hasMany(over_time::class,'reference_no');
     }
 }
