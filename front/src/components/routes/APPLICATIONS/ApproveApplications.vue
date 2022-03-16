@@ -234,7 +234,7 @@
 
             <tr>
               <td class="my-td">Reason:</td>
-              <td class="my-td" colspan="3">{{ item.reason }}</td>
+              <td class="my-td" colspan="3"><pre>{{ item.reason }}</pre></td>
             </tr>
           </table>
 

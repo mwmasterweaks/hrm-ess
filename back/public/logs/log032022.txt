@@ -3,3 +3,11 @@ Details: {"id":775,"employee_id":878,"leave_type_id":"6","reference_no":"LV-775"
 Create new leave day/s: 
 {"leave_id":775,"leave_date":"2022-03-01","halfday":0,"halfday_type":0,"updated_at":"2022-03-05 08:25:56","created_at":"2022-03-05 08:25:56","id":0}
 
+2022-03-14 10:14:18    |    User: (878) Wilma Hinlog    |    LeaveController (store)    |    message    |    Create new leave with ID: 855
+Details: {"id":855,"employee_id":878,"leave_type_id":"6","reference_no":"LV-855","date_from":"2022-03-12","date_to":"2022-03-12","total_days":"1.00","reason":"1\n2\n3\n4\n5","attachment":"noattachment.png","date_filed":"2022-03-14","status":"Pending","remarks":null,"approve_level":1,"created_at":"2022-03-14 10:14:18","updated_at":"2022-03-14 10:14:18"}
+Create new leave day/s: 
+{"leave_id":855,"leave_date":"2022-03-12","halfday":0,"halfday_type":0,"updated_at":"2022-03-14 10:14:18","created_at":"2022-03-14 10:14:18","id":0}
+
+2022-03-14 10:31:21    |    User: (878) Wilma Hinlog    |    OverTimeController (store)    |    message    |    Create new overtime with ID: 2574
+Details: {"employee_id":878,"work_date":"2022-03-13","reference_no":"refnum00","shift":"Rest day","with_break":"No","break_hours":0,"total_hours":8,"time_in":"2022-03-13 08:00","time_out":"2022-03-13 16:00","reason":"1\n2\n3\n4\n5\n6\n7\n8\n9\n10","status":"Pending","type":"Regular Overtime","attachment":"7OXYT7ZY3DVa2nco780502.jpeg","date_filed":"2022-03-14T02:31:21.408638Z","approve_level":"1","updated_at":"2022-03-14 10:31:21","created_at":"2022-03-14 10:31:21","id":2574}
+

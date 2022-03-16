@@ -36,6 +36,8 @@ class Leave extends Model
         return $this->hasMany(leave_day::class, 'leave_id', 'id');
     }
 
+
+        //For multiple attachment - Wilma
     public function attachment(){
 
         return $this->hasMany(attachment::class,'reference_no', 'reference_no');
