@@ -7,6 +7,8 @@ use App\leave;
 use App\missing_time_log;
 use App\over_time;
 
+
+//For multiple attachment (for missing time logs and leave application) - Wilma
 class attachment extends Model
 {
     protected $fillable = [
