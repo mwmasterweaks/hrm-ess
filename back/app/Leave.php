@@ -13,7 +13,7 @@ class Leave extends Model
 {
     protected $fillable = [
         'employee_id', 'leave_type_id', 'reference_no', 'date_from', 'date_to', 'total_days',
-        'reason', 'attachment', 'date_filed', 'status', 'approve_level', 'created_at', 'updated_at'
+        'reason',  'date_filed', 'status', 'approve_level', 'created_at', 'updated_at'
     ];
 
     public function leave_type()
