@@ -422,6 +422,7 @@ class DtrController extends Controller
     public function HRSummaryReport($period_id, $record)
     {
         try {
+            set_time_limit(0);
             $tbl = [];
             if ($record == 'toplates') {
                 $tbl = Employee::with(['user', 'department', 'branch', 'dtr' => function ($query) use ($period_id) {

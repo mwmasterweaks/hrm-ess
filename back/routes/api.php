@@ -111,4 +111,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('getToPromote', 'EmployeeController@getToPromote');
     Route::get('checkRate/{rate}', 'EmployeeController@checkRate');
+
+
+    // testing
+    Route::get('testfunc/{cmd}', 'TestController@testfunc');
 });

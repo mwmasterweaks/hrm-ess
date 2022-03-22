@@ -229,6 +229,7 @@ class UserController extends Controller
 
             $user = collect($user);
             $user->put('roles', $user_roles);
+            $user->put('position', $request->title);
             $user = $user->all();
 
             return response()->json($user);

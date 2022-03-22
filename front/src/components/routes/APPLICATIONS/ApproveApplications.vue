@@ -319,7 +319,7 @@
         :footer-bg-variant="' elBG'"
         :footer-text-variant="' elClr'"
         size="xl"
-        title="Details"
+        :title="emp_name"
       >
         <b-row style="margin:10px;">
           <b-col md="5" class="my-1">
@@ -627,7 +627,8 @@ export default {
       pay_period_list: [],
       pay_period_select: "",
       dtritems: [],
-      emp_id: 0
+      emp_id: 0,
+      emp_name: ""
     };
   },
   beforeCreate() {
@@ -648,7 +649,9 @@ export default {
     load_item(id) {
       this.$http.get("api/getToApprove/" + id).then(function(response) {
         console.log(response.body);
-        this.items = response.body;
+        this.items = response.body.sort((a, b) =>
+          a.dbdate_filed > b.dbdate_filed ? -1 : 1
+        );
         this.totalRows = this.items.length;
         this.tblisBusy = false;
       });
@@ -822,11 +825,26 @@ export default {
     btnViewAttachment(img) {},
     viewDTR(item) {
       console.log(item);
+      var mid_i = item.middle_name == null ? "" : item.middle_name;
+      this.emp_name =
+        "DTR of " +
+        item.first_name +
+        " " +
+        mid_i +
+        " " +
+        item.last_name +
+        " (" +
+        item.id +
+        ")";
       this.emp_id = item.employee_id;
-      this.dtrtblisBusy = false;
-      this.$http.get("api/PayPeriod").then(function(response) {
-        this.pay_period_list = response.body;
-      });
+
+      if (this.pay_period_select != "") this.pay_period_onchange();
+      else {
+        this.dtrtblisBusy = false;
+        this.$http.get("api/PayPeriod").then(function(response) {
+          this.pay_period_list = response.body;
+        });
+      }
     },
     pay_period_onchange() {
       this.dtrtblisBusy = true;
