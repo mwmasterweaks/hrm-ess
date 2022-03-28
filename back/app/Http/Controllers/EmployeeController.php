@@ -21,6 +21,7 @@ class EmployeeController extends Controller
         try {
             $tbl = Employee::with($this->empWith())
             ->where('employment_status', 'Trainee')
+            ->where('account_status', 'Active')
             ->whereHas('employeeStatus', function($query) {
                 $query
                     ->where('status', 'Trainee')
@@ -28,6 +29,7 @@ class EmployeeController extends Controller
                     ->where('end_date', '<=', Carbon::today());
             })
             ->orWhere('employment_status', 'Probationary')
+            ->where('account_status', 'Active')
             ->whereHas('employeeStatus', function($query) {
                 $query
                     ->where('status', 'Probationary')
@@ -445,7 +447,9 @@ class EmployeeController extends Controller
                 $tbl->where("middle_name", 'like', '%' . $data->middle_name . '%');
             if ($request->gender)
                 $tbl->where("gender", $data->gender);
-            else if (!$request->group && !$request->rate && !$request->position && !$request->branch && !$request->department &&
+            if ($request->account_status)
+                $tbl->whereRaw($data->account_status);
+            else if (!$request->group && !$request->rate && !$request->position && !$request->branch && !$request->department && !$request->employment_status &&
                 !$request->employment_status && !$request->first_name && !$request->last_name && !$request->middle_name && !$request->gender)
                 return $this->index();
 

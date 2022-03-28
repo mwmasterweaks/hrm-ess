@@ -54,6 +54,8 @@
             :busy="tblisBusy"
             :current-page="currentPage"
             :per-page="perPage"
+            :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
             head-variant=" elClr"
             @filtered="onFiltered"
             :tbody-tr-class="tblRowClass"
@@ -625,6 +627,8 @@ export default {
   data() {
     return {
       tblisBusy: true,
+      sortBy: "date_filed",
+      sortDesc: true,
       fields: [
         { key: "leave_type.name", label: "Leave type", sortable: true },
         {

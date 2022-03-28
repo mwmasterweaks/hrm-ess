@@ -104,3 +104,5 @@ $deduction_query = deduction::where('employee_id', $emp_id)
 - approve applications tab dli na i hide - done
 
 - earnings by pay period ang paghatag
+
+10.254.11.157 // previous ip

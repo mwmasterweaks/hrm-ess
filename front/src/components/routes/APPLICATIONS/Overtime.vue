@@ -54,6 +54,8 @@
             :busy="tblisBusy"
             :current-page="currentPage"
             :per-page="perPage"
+            :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
             head-variant=" elClr"
             @filtered="onFiltered"
             :tbody-tr-class="tblRowClass"
@@ -590,6 +592,8 @@ export default {
   data() {
     return {
       tblisBusy: true,
+      sortBy: "date_filed",
+      sortDesc: true,
       fields: [
         { key: "work_date", sortable: true },
         { key: "time_in", sortable: true },

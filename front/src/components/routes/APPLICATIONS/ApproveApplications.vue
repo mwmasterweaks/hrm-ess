@@ -527,6 +527,7 @@ export default {
         },
         { key: "from", sortable: true },
         { key: "to", sortable: true },
+        { key: "work_date", sortable: true },
         { key: "date_filed", sortable: true },
         { key: "action", sortable: true }
       ],
@@ -649,9 +650,7 @@ export default {
     load_item(id) {
       this.$http.get("api/getToApprove/" + id).then(function(response) {
         console.log(response.body);
-        this.items = response.body.sort((a, b) =>
-          a.dbdate_filed > b.dbdate_filed ? -1 : 1
-        );
+        this.items = response.body;
         this.totalRows = this.items.length;
         this.tblisBusy = false;
       });

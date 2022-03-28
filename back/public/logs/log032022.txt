@@ -1,0 +1,32 @@
+2022-03-25 19:09:33    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {branch_id: 4}
+To: {branch_id: 4}
+
+2022-03-25 19:11:34    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {account_status: Active}
+To: {account_status: Inactive}
+
+2022-03-25 20:12:33    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
+From: {account_status: Inactive}
+To: {account_status: Active}
+
+2022-03-25 20:23:18    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1
+From: {account_status: Active}
+To: {account_status: Inactive}
+
+2022-03-25 20:23:40    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 5
+From: {account_status: Active}
+To: {account_status: Inactive}
+
+2022-03-25 20:24:07    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 6
+From: {account_status: Active}
+To: {account_status: Inactive}
+
+2022-03-25 20:24:35    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 83
+From: {account_status: Active}
+To: {account_status: Inactive}
+
+2022-03-25 20:25:04    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 659
+From: {account_status: Active}
+To: {account_status: Inactive}
+
