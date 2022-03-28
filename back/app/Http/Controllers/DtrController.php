@@ -424,14 +424,16 @@ class DtrController extends Controller
         try {
             set_time_limit(0);
             $tbl = [];
-            //ADD STATUS ACTIVE UG NOT ACTIVE KATO LANG MGA ACTIVE ANG E GENERATE UG REPORT PARA DILI MAG LAG
-            //KATONG MGA EMPLOYEE LANG NA E LABOT SA REPORT AYAW NA E LABOT ANG MGA EXECUTIVE
+            //ADD STATUS ACTIVE UG NOT ACTIVE KATO LANG MGA ACTIVE ANG E GENERATE UG REPORT PARA DILI MAG LAG - done
+            //KATONG MGA EMPLOYEE LANG NA E LABOT SA REPORT AYAW NA E LABOT ANG MGA EXECUTIVE - mark executives as inactive
             $period = DB::table('pay_periods')->where('id', $period_id)->first();
 
             if ($record == 'toplates') {
                 $tbl = Employee::with(['user', 'department', 'branch', 'dtr' => function ($query) use ($period_id) {
                     $query->where('work_date', 'LIKE', '%' . $period_id . '%');
-                }])->get();
+                }])
+                ->where('account_status', 'Active')
+                ->get();
             } else {
                 $tbl = Employee::with([
                     'user', 'department', 'branch', 'dtr' => function ($query) use ($period_id) {
@@ -453,11 +455,12 @@ class DtrController extends Controller
                             ->where('date_from', '<=', $period->to)
                             ->where('leave_type_id', 1);
                     }
-                ])->get();
+                ])
+                ->where('account_status', 'Active')
+                ->get();
             }
-            return $tbl;
+            // return $tbl;
             $retVal = [];
-            $countt = 0;
             foreach ($tbl as $item) {
                 $emp_id = isset($item->id) ? $item->id : 0;
                 $branch_id = isset($item->branch_id) ? $item->branch_id : 0;
@@ -482,7 +485,7 @@ class DtrController extends Controller
                 $missinglogs = [];
 
                 if ($record != 'toplates') {
-                    $overtime =  $item->overtime_sum[0]->total_hours;
+                    $overtime =  isset($item->overtimeSum[0]->total_hours) ? $item->overtimeSum[0]->total_hours : 0;
                     $ots = $item->overtime;
                     $leaves = $item->leave;
                 }

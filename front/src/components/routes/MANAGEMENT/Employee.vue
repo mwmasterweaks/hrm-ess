@@ -678,14 +678,14 @@
               <span
                 v-if="
                   item_edit.employment_status == 'Trainee' ||
-                  item_edit.employment_status == 'Probationary'
+                    item_edit.employment_status == 'Probationary'
                 "
                 >&nbsp;To</span
               >
               <b-form-datepicker
                 v-if="
                   item_edit.employment_status == 'Trainee' ||
-                  item_edit.employment_status == 'Probationary'
+                    item_edit.employment_status == 'Probationary'
                 "
                 v-model="item_edit.end_date"
                 style="flex: 1; margin-left: 8px"
@@ -725,6 +725,27 @@
               hover
               small
             ></b-table>
+          </div>
+        </div>
+
+        <div class="rowFields mx-auto row">
+          <div class="col-lg-3">
+            <p class="textLabel">Account Status:</p>
+          </div>
+          <div class="col-lg-9">
+            <model-list-select
+              :list="account_statuses"
+              v-model="item_edit.account_status"
+              option-value="name"
+              option-text="name"
+              placeholder="Select Account Status"
+              name="account_statuses"
+              v-validate="'required'"
+              @input="changes('account_status')"
+            ></model-list-select>
+            <small class="text-danger pull-left" v-show="errors.has('branches')"
+              >Account status is required.</small
+            >
           </div>
         </div>
 
@@ -3127,7 +3148,7 @@ export default {
     deduction: deduction,
     "date-picker": datePicker,
     "p-check": PrettyCheck,
-    "model-list-select": ModelListSelect,
+    "model-list-select": ModelListSelect
   },
   data() {
     return {
@@ -3145,13 +3166,13 @@ export default {
               item.first_name + " " + item.middle_name + " " + item.last_name
             );
           },
-          sortable: true,
+          sortable: true
         },
         { key: "group.name", label: "Group", sortable: true },
         { key: "position.name", label: "Position", sortable: true },
         { key: "branch.name", label: "Branch", sortable: true },
         { key: "department.name", label: "Department", sortable: true },
-        { key: "actions", sortable: true },
+        { key: "actions", sortable: true }
       ],
       items: [],
       item_selected: [],
@@ -3196,43 +3217,43 @@ export default {
         tin_no: "",
         philhealth_no: "",
         password: "",
-        repassword: "",
+        repassword: ""
       },
       genders: [
         {
-          name: "Male",
+          name: "Male"
         },
         {
-          name: "Female",
-        },
+          name: "Female"
+        }
       ],
       employment_statuses: [
         {
-          name: "Trainee",
+          name: "Trainee"
         },
         {
-          name: "Probationary",
+          name: "Probationary"
         },
         {
-          name: "Regular",
+          name: "Regular"
         },
         {
-          name: "Resigned",
+          name: "Resigned"
         },
         {
-          name: "Terminated",
-        },
+          name: "Terminated"
+        }
       ],
       Dateoptions: {
         format: "YYYY-MM-DD",
-        useCurrent: false,
+        useCurrent: false
       },
       DateTimeOptions: {
         // https://momentjs.com/docs/#/displaying/ YYYY-MM-DD h:mm
         format: "YYYY-MM-DD HH:mm",
         useCurrent: false,
         showClear: true,
-        showClose: true,
+        showClose: true
       },
       groups: [],
       departments: [],
@@ -3242,8 +3263,8 @@ export default {
 
       item_row_click: {
         user: {
-          email: "",
-        },
+          email: ""
+        }
       },
       leave_tblisBusy: true,
       leave_fields: [
@@ -3251,7 +3272,7 @@ export default {
         // { key: "enroll_year", sortable: true },
         { key: "balance", sortable: true },
         { key: "availed", sortable: true },
-        { key: "accrued", sortable: true },
+        { key: "accrued", sortable: true }
       ],
       leave_items: [],
       leave_tblFilter: null,
@@ -3264,18 +3285,18 @@ export default {
         enroll_year: "",
         balance: "0",
         availed: "0",
-        accrued: "0",
+        accrued: "0"
       },
       leave_edit: {
         leave_type: {
-          name: "",
+          name: ""
         },
         employee_id: "",
         leave_type_id: "",
         enroll_year: "",
         balance: "0",
         availed: "0",
-        accrued: "0",
+        accrued: "0"
       },
       leave_types: [],
       pay_period_list: [],
@@ -3297,12 +3318,12 @@ export default {
               return "<p class='text-danger'>Holiday</p>";
             else return item.shift_sched_in + " - " + item.shift_sched_out;
           },
-          sortable: true,
+          sortable: true
         },
         { key: "time_in", sortable: true },
         { key: "time_out", sortable: true },
         { key: "summary.late", label: "Late", sortable: true },
-        { key: "summary.undertime", label: "Undertime", sortable: true },
+        { key: "summary.undertime", label: "Undertime", sortable: true }
       ],
       sched_items: [],
       sched_tblFilter: null,
@@ -3321,10 +3342,10 @@ export default {
             return (
               item.app.employee.first_name + " " + item.app.employee.last_name
             );
-          },
+          }
         },
         { key: "level", sortable: true },
-        { key: "edit", label: "" },
+        { key: "edit", label: "" }
       ],
       approve_items: [],
       approve_tblFilter: null,
@@ -3333,7 +3354,7 @@ export default {
       approve_perPage: 5,
       approve_add: {
         approver_id: "",
-        employee_id: "",
+        employee_id: ""
       },
       approvers: [],
       payslip: {
@@ -3351,7 +3372,7 @@ export default {
         hdmf_loan: "",
         cp_charge: "",
         cash_advance: "",
-        other_deduction: "",
+        other_deduction: ""
       },
       checked_count: 0,
       editRoles: {
@@ -3409,8 +3430,8 @@ export default {
 
           manage_leave: false,
           earnings: false,
-          deduction: false,
-        },
+          deduction: false
+        }
       },
       user: {},
       roles: [],
@@ -3428,12 +3449,12 @@ export default {
       status_history_fields: [
         { key: "status", label: "Status" },
         { key: "start_date", label: "Start Date" },
-        { key: "end_date", label: "End Date" },
+        { key: "end_date", label: "End Date" }
       ],
       balance_history_fields: [
         {
           key: "old_details",
-          label: "Old Details",
+          label: "Old Details"
           /* formatter: (value, key, item) => {
             let data = item.old_details.split(", ").map(item => item.trim());
             return data.join(" | ");
@@ -3445,15 +3466,16 @@ export default {
           label: "Updated By",
           formatter: (value, key, item) => {
             return item.user.first_name + " " + item.user.last_name;
-          },
+          }
         },
-        { key: "created_at", label: "Updated At" },
+        { key: "created_at", label: "Updated At" }
       ],
       benefits_fields: [
         { key: "sss_deduction", label: "SSS Deduction" },
         { key: "phic_deduction", label: "PHIC Deduction" },
-        { key: "hdmf_deduction", label: "HDMF Deduction" },
+        { key: "hdmf_deduction", label: "HDMF Deduction" }
       ],
+      account_statuses: [{ name: "Active" }, { name: "Inactive" }]
     };
   },
   beforeCreate() {
@@ -3478,7 +3500,7 @@ export default {
   mounted() {
     //this.totalRows = this.items.length;
 
-    this.$root.$on("update_item", (item) => {
+    this.$root.$on("update_item", item => {
       this.items = item;
       this.totalRows = this.items.length;
     });
@@ -3486,7 +3508,7 @@ export default {
   updated() {},
   methods: {
     load_items(model) {
-      this.$http.get("api/" + model).then(function (response) {
+      this.$http.get("api/" + model).then(function(response) {
         console.log(response.body);
         this.items = response.body;
         this.totalRows = this.items.length;
@@ -3494,12 +3516,12 @@ export default {
       });
     },
     load_rates() {
-      this.$http.get("api/Rate").then(function (response) {
+      this.$http.get("api/Rate").then(function(response) {
         this.rates = response.body;
       });
     },
     load_pay_period() {
-      this.$http.get("api/PayPeriod").then(function (response) {
+      this.$http.get("api/PayPeriod").then(function(response) {
         this.pay_period_list = response.body;
       });
     },
@@ -3551,7 +3573,7 @@ export default {
           tin_no: "",
           philhealth_no: "",
           start_date: null,
-          end_date: null,
+          end_date: null
         };
       this.status_histories = [];
       this.statusHistory = 0;
@@ -3585,7 +3607,7 @@ export default {
       this.editRoles.roles = item.roleList;
       this.editRoles.roless = item.roles;
 
-      this.$http.get("api/EmpStatHistory/" + item.id).then(function (response) {
+      this.$http.get("api/EmpStatHistory/" + item.id).then(function(response) {
         console.log(response.body);
         this.status_histories = response.body;
       });
@@ -3601,7 +3623,7 @@ export default {
     btnAdd() {
       console.log(this.item_edit);
 
-      this.$validator.validateAll().then((result) => {
+      this.$validator.validateAll().then(result => {
         if (result) {
           this.$root.$emit("pageLoading");
           this.item_edit.user_id = this.user.id;
@@ -3609,7 +3631,7 @@ export default {
             this.user.first_name + " " + this.user.last_name;
           this.$http
             .post("api/Employee", this.item_edit)
-            .then((response) => {
+            .then(response => {
               this.$root.$emit("pageLoaded");
               console.log(response.body);
               swal(
@@ -3655,16 +3677,16 @@ export default {
                 tin_no: "",
                 philhealth_no: "",
                 start_date: null,
-                end_date: null,
+                end_date: null
               };
             })
-            .catch((response) => {
+            .catch(response => {
               this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
-                dangerMode: true,
+                dangerMode: true
               });
             });
         }
@@ -3672,15 +3694,15 @@ export default {
     },
     btnUpdate() {
       console.log(this.item_edit);
-      this.$validator.validateAll().then((result) => {
+      this.$validator.validateAll().then(result => {
         if (result) {
           swal({
             title: "Confirmation",
             text: "Do you want to Update this?",
             icon: "warning",
             buttons: true,
-            dangerMode: true,
-          }).then((update) => {
+            dangerMode: true
+          }).then(update => {
             // this.tblisBusy = true;
             if (update) {
               this.$root.$emit("pageLoading");
@@ -3690,7 +3712,7 @@ export default {
               this.item_edit.edits = this.employeeChanges;
               this.$http
                 .put("api/Employee/" + this.item_edit.bioID, this.item_edit)
-                .then((response) => {
+                .then(response => {
                   console.log(response.body);
                   this.$root.$emit("pageLoaded");
                   this.$root.$emit("Sidebar");
@@ -3705,13 +3727,13 @@ export default {
                   this.$bvModal.hide("ModelAddEmployee");
                   this.tblisBusy = false;
                 })
-                .catch((response) => {
+                .catch(response => {
                   this.$root.$emit("pageLoaded");
                   swal({
                     title: "Error",
                     text: response.body.error,
                     icon: "error",
-                    dangerMode: true,
+                    dangerMode: true
                   });
                 });
             }
@@ -3725,8 +3747,8 @@ export default {
         text: "Do you really want to delete this item permanently?",
         icon: "warning",
         buttons: true,
-        dangerMode: true,
-      }).then((willDelete) => {
+        dangerMode: true
+      }).then(willDelete => {
         if (willDelete) {
           this.$root.$emit("pageLoading");
           this.items = [];
@@ -3741,7 +3763,7 @@ export default {
             this.user.last_name;
           this.$http
             .delete("api/Employee/" + temp)
-            .then((response) => {
+            .then(response => {
               this.$root.$emit("pageLoaded");
               // this.$bvModal.hide("modalEdit");
               this.$bvModal.hide("ModelAddEmployee");
@@ -3749,19 +3771,19 @@ export default {
                 "Success!",
                 "Employee account has been successfully deleted.",
                 "success"
-              ).then((value) => {
+              ).then(value => {
                 this.items = response.body;
                 this.totalRows = this.items.length;
                 this.tblisBusy = false;
               });
             })
-            .catch((response) => {
+            .catch(response => {
               this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
-                dangerMode: true,
+                dangerMode: true
               });
             });
         }
@@ -3778,14 +3800,14 @@ export default {
     },
     load_leave_balance(id) {
       this.leave_tblisBusy = true;
-      this.$http.get("api/LeaveBalance/" + id).then(function (response) {
+      this.$http.get("api/LeaveBalance/" + id).then(function(response) {
         this.leave_items = response.body;
         this.leave_totalRows = this.leave_items.length;
         this.leave_tblisBusy = false;
       });
     },
     load_balance_history(id) {
-      this.$http.get("api/LeaveUpdateHistory/" + id).then(function (response) {
+      this.$http.get("api/LeaveUpdateHistory/" + id).then(function(response) {
         console.log(response.body);
         this.balance_histories = response.body;
       });
@@ -3794,7 +3816,7 @@ export default {
       this.$bvModal.show("ModalAddLeave");
     },
     btnAddLeave() {
-      this.$validator.validateAll().then((result) => {
+      this.$validator.validateAll().then(result => {
         if (result) {
           this.leave_add.multiple = 0;
           this.leave_add.employee_id = this.item_row_click.id;
@@ -3805,7 +3827,7 @@ export default {
           this.$root.$emit("pageLoading");
           this.$http
             .post("api/LeaveBalance", this.leave_add)
-            .then((response) => {
+            .then(response => {
               console.log(response.body);
               this.$root.$emit("pageLoaded");
               swal("Success!", "Item added successfully.", "success");
@@ -3817,17 +3839,17 @@ export default {
                 enroll_year: "",
                 balance: "0",
                 availed: "0",
-                accrued: "0",
+                accrued: "0"
               };
               this.$bvModal.hide("ModalAddLeave");
             })
-            .catch((response) => {
+            .catch(response => {
               this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
-                dangerMode: true,
+                dangerMode: true
               });
             });
         }
@@ -3835,7 +3857,7 @@ export default {
     },
     btnAddLeaveMultiple(action) {
       console.log(this.item_selected);
-      this.$validator.validateAll().then((result) => {
+      this.$validator.validateAll().then(result => {
         if (result) {
           this.leave_add.multiple = 1;
           this.leave_add.action = action;
@@ -3847,7 +3869,7 @@ export default {
           this.$root.$emit("pageLoading");
           this.$http
             .post("api/LeaveBalance", this.leave_add)
-            .then((response) => {
+            .then(response => {
               this.$root.$emit("pageLoaded");
               console.log(response.body);
 
@@ -3863,28 +3885,28 @@ export default {
               // this.$bvModal.hide("ModalAddLeave");
               // this.uncheckAllSelectedEmp();
             })
-            .catch((response) => {
+            .catch(response => {
               this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
-                dangerMode: true,
+                dangerMode: true
               });
             });
         }
       });
     },
     btnEditLeave() {
-      this.$validator.validateAll().then((result) => {
+      this.$validator.validateAll().then(result => {
         if (result) {
           swal({
             title: "Confirmation",
             text: "Do you want to Update this item?",
             icon: "warning",
             buttons: true,
-            dangerMode: true,
-          }).then((update) => {
+            dangerMode: true
+          }).then(update => {
             this.tblisBusy = true;
             if (update) {
               this.leave_edit.user_id = this.user.id;
@@ -3893,7 +3915,7 @@ export default {
               this.$root.$emit("pageLoading");
               this.$http
                 .put("api/LeaveBalance/" + this.leave_edit.id, this.leave_edit)
-                .then((response) => {
+                .then(response => {
                   console.log(response.body);
                   this.$root.$emit("pageLoaded");
                   this.leave_items = response.body;
@@ -3901,13 +3923,13 @@ export default {
                   this.$bvModal.hide("ModalEditLeave");
                   this.tblisBusy = false;
                 })
-                .catch((response) => {
+                .catch(response => {
                   this.$root.$emit("pageLoaded");
                   swal({
                     title: "Error",
                     text: response.body.error,
                     icon: "error",
-                    dangerMode: true,
+                    dangerMode: true
                   });
                 });
             }
@@ -3921,8 +3943,8 @@ export default {
         text: "Do you really want to delete this item permanently?",
         icon: "warning",
         buttons: true,
-        dangerMode: true,
-      }).then((willDelete) => {
+        dangerMode: true
+      }).then(willDelete => {
         if (willDelete) {
           var temp =
             this.leave_edit.id +
@@ -3936,7 +3958,7 @@ export default {
           this.tblisBusy = true;
           this.$http
             .delete("api/LeaveBalance/" + temp)
-            .then((response) => {
+            .then(response => {
               console.log(response.body);
               this.$root.$emit("pageLoaded");
               this.leave_items = response.body;
@@ -3944,13 +3966,13 @@ export default {
               this.$bvModal.hide("ModalEditLeave");
               this.tblisBusy = false;
             })
-            .catch((response) => {
+            .catch(response => {
               this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
-                dangerMode: true,
+                dangerMode: true
               });
             });
         }
@@ -3972,7 +3994,7 @@ export default {
         .get(
           "api/getDTR/" + this.pay_period_select + "/" + this.item_row_click.id
         )
-        .then(function (response) {
+        .then(function(response) {
           console.log(response.body);
 
           this.$root.$emit("pageLoaded");
@@ -3989,7 +4011,7 @@ export default {
           "api/getDTR_add/" + this.item_row_click.id,
           this.pay_period_select_add
         )
-        .then(function (response) {
+        .then(function(response) {
           this.$root.$emit("pageLoaded");
           console.log(response.body);
           this.sched_items_add = response.body;
@@ -4001,13 +4023,13 @@ export default {
         text: "Submit schedule?",
         icon: "warning",
         buttons: true,
-        dangerMode: true,
-      }).then((add) => {
+        dangerMode: true
+      }).then(add => {
         if (add) {
           this.$root.$emit("pageLoading");
           this.$http
             .post("api/Dtr", this.sched_items_add)
-            .then((response) => {
+            .then(response => {
               console.log(response.body);
               this.$root.$emit("pageLoaded");
               swal("Success!", "Item added successfully.", "success");
@@ -4017,13 +4039,13 @@ export default {
               this.groupTimeOut = null;
               this.$bvModal.hide("ModalAddSched");
             })
-            .catch((response) => {
+            .catch(response => {
               this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
-                dangerMode: true,
+                dangerMode: true
               });
             });
         }
@@ -4036,17 +4058,17 @@ export default {
         text: "Submit schedule?",
         icon: "warning",
         buttons: true,
-        dangerMode: true,
-      }).then((add) => {
+        dangerMode: true
+      }).then(add => {
         if (add) {
           this.$root.$emit("pageLoading");
           var temp = {
             scheds: this.sched_items_add,
-            employees: this.item_selected,
+            employees: this.item_selected
           };
           this.$http
             .post("api/Dtr/storeMultiple", temp)
-            .then((response) => {
+            .then(response => {
               this.$root.$emit("pageLoaded");
               swal("Success!", "Item added successfully.", "success");
               //set new val
@@ -4056,14 +4078,14 @@ export default {
               this.$bvModal.hide("ModalAddSched");
               this.uncheckAllSelectedEmp();
             })
-            .catch((response) => {
+            .catch(response => {
               this.$root.$emit("pageLoaded");
               console.log(response.body);
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
-                dangerMode: true,
+                dangerMode: true
               });
             });
         }
@@ -4074,23 +4096,24 @@ export default {
         approve_add: this.approve_add,
         employees: this.item_selected,
         user_id: this.user.id,
-        user_name: this.user.first_name + " " + this.user.last_name,
+        user_name: this.user.first_name + " " + this.user.last_name
       };
       console.log(temp);
 
       swal({
         title: "Confirmation",
-        text: "Do you really want to assign this approver to selected employees?",
+        text:
+          "Do you really want to assign this approver to selected employees?",
         icon: "warning",
         buttons: true,
-        dangerMode: true,
-      }).then((add) => {
+        dangerMode: true
+      }).then(add => {
         if (add) {
           this.$root.$emit("pageLoading");
 
           this.$http
             .post("api/EmployeeApprover/storeMultiple", temp)
-            .then((response) => {
+            .then(response => {
               console.log(response.body);
               this.$root.$emit("pageLoaded");
               this.items = response.body;
@@ -4100,14 +4123,14 @@ export default {
               this.uncheckAllSelectedEmp();
               swal("Update", "Successfully updated!", "success");
             })
-            .catch((response) => {
+            .catch(response => {
               console.log(response.body);
               this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
-                dangerMode: true,
+                dangerMode: true
               });
             });
         }
@@ -4120,31 +4143,31 @@ export default {
         text: "Do you really want to assign this employee as an approver?",
         icon: "warning",
         buttons: true,
-        dangerMode: true,
-      }).then((add) => {
+        dangerMode: true
+      }).then(add => {
         if (add) {
           this.$root.$emit("pageLoading");
           var approver = {
             employee_id: this.item_edit.bioID,
             user_id: this.user.id,
-            user_name: this.user.first_name + " " + this.user.last_name,
+            user_name: this.user.first_name + " " + this.user.last_name
           };
           this.$http
             .post("api/Approver", approver)
-            .then((response) => {
+            .then(response => {
               console.log(response.body);
               this.$root.$emit("pageLoaded");
               swal("Notification", "Approver added successfully.", "success");
               this.item_edit.as_approver = 1;
               this.reloadApprover();
             })
-            .catch((response) => {
+            .catch(response => {
               this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
-                dangerMode: true,
+                dangerMode: true
               });
             });
         }
@@ -4156,8 +4179,8 @@ export default {
         text: "Do you really want to remove this employee as an approver?",
         icon: "warning",
         buttons: true,
-        dangerMode: true,
-      }).then((willDelete) => {
+        dangerMode: true
+      }).then(willDelete => {
         if (willDelete) {
           var temp =
             this.item_edit.bioID +
@@ -4169,7 +4192,7 @@ export default {
             this.user.last_name;
           this.$http
             .delete("api/Approver/" + temp)
-            .then((response) => {
+            .then(response => {
               console.log(response.body.approvers);
               if (response.body.deletable == "no") {
                 swal(
@@ -4184,13 +4207,13 @@ export default {
                 this.reloadApprover();
               }
             })
-            .catch((response) => {
+            .catch(response => {
               this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
-                dangerMode: true,
+                dangerMode: true
               });
             });
         }
@@ -4200,7 +4223,7 @@ export default {
       this.approve_tblisBusy = true;
       this.$http
         .get("api/EmployeeApprover/" + item.id)
-        .then(function (response) {
+        .then(function(response) {
           //console.log(response.body);
           this.approve_items = response.body;
           this.approve_tblisBusy = false;
@@ -4212,7 +4235,7 @@ export default {
       this.reloadApprover();
     },
     reloadApprover() {
-      this.$http.get("api/Approver").then(function (response) {
+      this.$http.get("api/Approver").then(function(response) {
         this.approvers = response.body;
       });
     },
@@ -4231,8 +4254,8 @@ export default {
         text: "Do you really want to assign this approver to this employee?",
         icon: "warning",
         buttons: true,
-        dangerMode: true,
-      }).then((add) => {
+        dangerMode: true
+      }).then(add => {
         if (add) {
           this.$root.$emit("pageLoading");
           this.approve_tblisBusy = true;
@@ -4243,7 +4266,7 @@ export default {
 
           this.$http
             .post("api/EmployeeApprover", this.approve_add)
-            .then((response) => {
+            .then(response => {
               this.$root.$emit("pageLoaded");
               console.log(response.body);
               this.approve_items = response.body;
@@ -4251,13 +4274,13 @@ export default {
               this.approve_totalRows = this.approve_items.length;
               swal("Notification", "Approver added successfully.", "success");
             })
-            .catch((response) => {
+            .catch(response => {
               this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
-                dangerMode: true,
+                dangerMode: true
               });
             });
         }
@@ -4267,18 +4290,18 @@ export default {
       this.$root.$emit("pageLoading");
       this.$http
         .post("api/updateRALog")
-        .then((response) => {
+        .then(response => {
           //console.log(response.body);
           this.$root.$emit("pageLoaded");
           swal("Success!", "Updated", "success");
         })
-        .catch((response) => {
+        .catch(response => {
           this.$root.$emit("pageLoaded");
           swal({
             title: "Error",
             text: response.body.error,
             icon: "error",
-            dangerMode: true,
+            dangerMode: true
           });
         });
     },
@@ -4312,8 +4335,8 @@ export default {
           text: "Do you really want to reset the password?",
           icon: "warning",
           buttons: true,
-          dangerMode: true,
-        }).then((update) => {
+          dangerMode: true
+        }).then(update => {
           this.$root.$emit("pageLoading");
           this.tblisBusy = true;
           ModalResetPassword;
@@ -4325,18 +4348,18 @@ export default {
               this.user.first_name + " " + this.user.last_name;
             this.$http
               .post("api/user/ResetPassword", this.item_edit)
-              .then((response) => {
+              .then(response => {
                 this.$root.$emit("pageLoaded");
                 swal("Update", "Successfully updated!", "success");
                 this.tblisBusy = false;
               })
-              .catch((response) => {
+              .catch(response => {
                 this.$root.$emit("pageLoaded");
                 swal({
                   title: "Error",
                   text: response.body.error,
                   icon: "error",
-                  dangerMode: true,
+                  dangerMode: true
                 });
               });
           }
@@ -4351,8 +4374,8 @@ export default {
         text: "",
         icon: "warning",
         buttons: ["No", "Yes"],
-        dangerMode: true,
-      }).then((update) => {
+        dangerMode: true
+      }).then(update => {
         if (update) {
           this.$root.$emit("pageLoading");
           this.editRoles.user_id = this.user.id;
@@ -4360,19 +4383,19 @@ export default {
             this.user.first_name + " " + this.user.last_name;
           this.$http
             .post("api/user/updateRoles", this.editRoles)
-            .then((response) => {
+            .then(response => {
               this.$root.$emit("pageLoaded");
               this.items = response.body;
               swal("Updated", "", "success");
               this.$bvModal.hide("modalRoles");
             })
-            .catch((response) => {
+            .catch(response => {
               this.$root.$emit("pageLoaded");
               swal({
                 title: "Error",
                 text: response.body.error,
                 icon: "error",
-                dangerMode: true,
+                dangerMode: true
               });
             });
         }
@@ -4398,15 +4421,15 @@ export default {
         sendTo: [
           {
             email: item.email1,
-            name: item.first_name + " " + item.last_name,
-          },
+            name: item.first_name + " " + item.last_name
+          }
         ],
         CCto: [
           {
             email: this.user.email1,
-            name: this.user.first_name + " " + this.user.last_name,
-          },
-        ],
+            name: this.user.first_name + " " + this.user.last_name
+          }
+        ]
       };
       console.log(credentials);
       swal({
@@ -4414,23 +4437,23 @@ export default {
         text: "Send credentials via email?",
         icon: "warning",
         buttons: true,
-        dangerMode: true,
-      }).then((send) => {
+        dangerMode: true
+      }).then(send => {
         if (send) {
           this.$http
             .post("api/Employee/sendCredentials", credentials)
-            .then(function (response) {
+            .then(function(response) {
               console.log(response.body);
               if (response.body.includes("ok")) {
                 swal("Email Sent!", {
-                  icon: "success",
+                  icon: "success"
                 });
               } else
                 swal({
                   title: "Error",
                   text: response.body,
                   icon: "error",
-                  dangerMode: true,
+                  dangerMode: true
                 });
             });
         }
@@ -4441,7 +4464,7 @@ export default {
         console.log(data.item);
         console.log(this.prevLev);
         this.appLevelRow = {
-          [data.index]: !this.appLevelRow[data.index], // assign [data.index] with value opposite of current value
+          [data.index]: !this.appLevelRow[data.index] // assign [data.index] with value opposite of current value
         };
 
         // no updates in db if there are no edits
@@ -4457,14 +4480,14 @@ export default {
                   this.user.last_name;
                 this.$http
                   .put("api/EmployeeApprover/" + temp, data.item)
-                  .then((response) => {
+                  .then(response => {
                     console.log(response.body);
                     this.approve_items = response.body;
                     this.approve_tblisBusy = false;
                     this.approve_totalRows = this.approve_items.length;
                     swal("Approver level has been updated!", {
                       icon: "success",
-                      buttons: false,
+                      buttons: false
                     });
                   });
               }
@@ -4492,27 +4515,27 @@ export default {
           text: "Do you really want to delete this item permanently?",
           icon: "warning",
           buttons: true,
-          dangerMode: true,
-        }).then((willDelete) => {
+          dangerMode: true
+        }).then(willDelete => {
           if (willDelete) {
             this.$http
               .delete("api/EmployeeApprover/" + approverId)
-              .then((response) => {
+              .then(response => {
                 console.log(response.body);
                 swal("Deleted!", "Approver has been deleted", "success").then(
-                  (value) => {
+                  value => {
                     this.approve_items = response.body;
                     this.approve_tblisBusy = false;
                     this.approve_totalRows = this.approve_items.length;
                   }
                 );
               })
-              .catch((response) => {
+              .catch(response => {
                 swal({
                   title: "Error",
                   text: response.body.error,
                   icon: "error",
-                  dangerMode: true,
+                  dangerMode: true
                 });
               });
           }
@@ -4520,14 +4543,14 @@ export default {
       }
     },
     gti_change(time) {
-      this.sched_items_add.forEach((element) => {
+      this.sched_items_add.forEach(element => {
         var cdate = element.shift_sched_in.substring(0, 11);
         var new_sched = cdate + time;
         element.shift_sched_in = new_sched;
       });
     },
     gto_change(time) {
-      this.sched_items_add.forEach((element) => {
+      this.sched_items_add.forEach(element => {
         var cdate = element.shift_sched_out.substring(0, 11);
         var new_sched = cdate + time;
         element.shift_sched_out = new_sched;
@@ -4546,7 +4569,7 @@ export default {
       if (this.item_edit.rate_id != "") {
         this.$http
           .get("api/checkRate/" + this.item_edit.rate_id)
-          .then(function (response) {
+          .then(function(response) {
             console.log(response.body);
             this.rate_count = response.body.rate_count;
             this.benefits = response.body.benefits;
@@ -4562,11 +4585,11 @@ export default {
           enroll_year: "",
           balance: "0",
           availed: "0",
-          accrued: "0",
+          accrued: "0"
         };
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

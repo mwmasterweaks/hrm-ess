@@ -38,7 +38,7 @@ Vue.use(VueGoogleMaps, {
 var protocol = window.location.protocol;
 console.log(protocol);
 console.log(window.location.host);
-var clientID = "PeterTest";
+var clientID = "KateTest";
 if (window.location.host == "hrmess.dctechmicro.com") {
   Vue.prototype.$url_back = protocol + "//hrmess.dctechmicro.com/back/";
   Vue.prototype.$url_attachments =

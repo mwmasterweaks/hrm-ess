@@ -126,6 +126,30 @@
         </div>
       </div>
 
+      <!-- account_status -->
+      <div class="cont-wrap">
+        <p-check
+          class="checkboxStyle p-switch p-fill"
+          color="success"
+          v-model="cbFilter.account_status"
+        ></p-check
+        >Account Status
+        <div class="rowFields mx-auto row" v-if="cbFilter.account_status">
+          <div class="col-lg-3">
+            <p class="textLabel">
+              Select Account Status:<br />
+              Default: ACTIVE
+            </p>
+          </div>
+          <div class="col-lg-9">
+            <b-form-select
+              v-model.trim="cbFilter.data.account_status"
+              :options="account_statuses"
+            ></b-form-select>
+          </div>
+        </div>
+      </div>
+
       <!-- employment_status -->
       <div class="cont-wrap">
         <p-check
@@ -136,7 +160,7 @@
         >Employment Status
         <div class="rowFields mx-auto row" v-if="cbFilter.employment_status">
           <div class="col-lg-3">
-            <p class="textLabel">Type Employment Status:</p>
+            <p class="textLabel">Select Employment Status:</p>
           </div>
           <div class="col-lg-9">
             <!-- <input
@@ -228,7 +252,7 @@
         >Gender
         <div class="rowFields mx-auto row" v-if="cbFilter.gender">
           <div class="col-lg-3">
-            <p class="textLabel">Type Gender:</p>
+            <p class="textLabel">Select Gender:</p>
           </div>
           <div class="col-lg-9">
             <!-- <input
@@ -320,6 +344,13 @@ export default {
         { value: "Resigned", text: "Resigned" },
         { value: "Terminated", text: "Terminated" }
       ],
+      account_statuses: [
+        { value: "account_status = 'Inactive'", text: "Inactive" },
+        {
+          value: "account_status = 'Active' OR account_status = 'Inactive'",
+          text: "Active and Inactive"
+        }
+      ],
       groups: [],
       positions: [],
       departments: [],
@@ -346,6 +377,7 @@ export default {
       });
     },
     filter_ok() {
+      console.log(this.cbFilter);
       this.$root.$emit("pageLoading");
       this.$http
         .post("api/user/multipleFilter", this.cbFilter)
