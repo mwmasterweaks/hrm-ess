@@ -70,7 +70,6 @@ export default {
       /*this.$http.post("api/oauth/token2", this.tokenParsed).then(response => {
         console.log(response);
       }); */
-
       this.$http
         .post("api/user/getUser", this.tokenParsed)
         .then(response => {

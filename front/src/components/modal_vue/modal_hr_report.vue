@@ -9,7 +9,7 @@
     <b-button
       v-b-modal="'modalhrreport'"
       type="button"
-      style="margin-top:-17px;"
+      style="margin-top: -17px"
       v-b-tooltip.hover
       title="Reports"
       class="btn btn-success btn-labeled pull-right margin-right-10"
@@ -30,7 +30,7 @@
     >
       <div class="rowFields mx-auto row">
         <div class="col-lg-1">
-          <p class="elClr" style="margin-top:9px;">Period:</p>
+          <p class="elClr" style="margin-top: 9px">Period:</p>
         </div>
         <div class="col-lg-5">
           <date-picker
@@ -265,7 +265,7 @@ export default {
   components: {
     "date-picker": datePicker,
     "model-list-select": ModelListSelect,
-    "rangedate-picker": VueRangedatePicker
+    "rangedate-picker": VueRangedatePicker,
   },
   data() {
     return {
@@ -282,16 +282,16 @@ export default {
               item.lastName + ", " + item.firstName + " " + item.middleName
             );
           },
-          sortable: true
+          sortable: true,
         },
         { key: "summary.late", label: "Total Late", sortable: true },
         { key: "summary.undertime", label: "Total Undertime", sortable: true },
         {
           key: "summary.no_in_or_out",
           label: "Total No IN or OUT",
-          sortable: true
+          sortable: true,
         },
-        { key: "summary.no_in_and_out", label: "Total Absent", sortable: true }
+        { key: "summary.no_in_and_out", label: "Total Absent", sortable: true },
       ],
       rsFields: [
         {
@@ -304,7 +304,7 @@ export default {
               item.lastName + ", " + item.firstName + " " + item.middleName
             );
           },
-          sortable: true
+          sortable: true,
         },
         {
           key: "Class",
@@ -313,7 +313,7 @@ export default {
             return item.dept_name + " / " + item.branch_name;
             // return item.department.name + " / " + item.branch.name;
           },
-          sortable: true
+          sortable: true,
         },
         {
           key: "Qty",
@@ -331,7 +331,7 @@ export default {
             else if (this.selectedSummary == "overtime")
               return item.summary.overtime;
           },
-          sortable: true
+          sortable: true,
         },
         {
           key: "Amount",
@@ -348,7 +348,7 @@ export default {
               return item.summary.undertime * 0.66;
             else if (this.selectedSummary == "overtime") return "-";
           },
-          sortable: true
+          sortable: true,
         },
         {
           key: "Frequency",
@@ -364,9 +364,9 @@ export default {
               return item.summary.utCount;
             else if (this.selectedSummary == "overtime") return "-";
           },
-          sortable: true
+          sortable: true,
         },
-        { key: "details", label: "Details" }
+        { key: "details", label: "Details" },
       ],
       summaryOptions: [
         { value: "totals", text: "All Records" },
@@ -374,11 +374,11 @@ export default {
         { value: "absent", text: "Absent" },
         { value: "undertime", text: "Undertime" },
         { value: "overtime", text: "Overtime" },
-        { value: "toplates", text: "Top Lates" }
+        { value: "toplates", text: "Top Lates" },
       ],
       AppliedDateoptions: {
         format: "YYYY-MM",
-        useCurrent: false
+        useCurrent: false,
       },
       items: [],
       tblFilter: null,
@@ -391,7 +391,7 @@ export default {
       late_period_select: "",
       roles: [],
       selectedSummary: "totals",
-      activeDiv: "totals"
+      activeDiv: "totals",
     };
   },
   created() {
@@ -400,13 +400,13 @@ export default {
   },
   methods: {
     load_pay_period() {
-      this.$http.get("api/PayPeriod").then(function(response) {
+      this.$http.get("api/PayPeriod").then(function (response) {
         this.pay_period_list = response.body;
       });
     },
     pay_period_onchange() {
-      console.log(this.pay_period_select);
-      console.log(this.selectedSummary);
+      // console.log(this.pay_period_select);
+      // console.log(this.selectedSummary);
       let selectedPeriod =
         this.selectedSummary == "toplates"
           ? this.late_period_select
@@ -417,19 +417,19 @@ export default {
         .put(
           "api/HRSummaryReport/" + selectedPeriod + "/" + this.selectedSummary
         )
-        .then(function(response) {
+        .then(function (response) {
           console.log(response.body);
-          if (
-            this.selectedSummary == "toplates" ||
-            this.selectedSummary == "late"
-          ) {
-            this.items = response.body.sort((a, b) =>
-              a.summary.lateCount > b.summary.lateCount ? -1 : 1
-            );
-          } else this.items = response.body;
+          // if (
+          //   this.selectedSummary == "toplates" ||
+          //   this.selectedSummary == "late"
+          // ) {
+          //   this.items = response.body.sort((a, b) =>
+          //     a.summary.lateCount > b.summary.lateCount ? -1 : 1
+          //   );
+          // } else this.items = response.body;
 
-          this.activeDiv = this.selectedSummary;
-          this.tblisBusy = false;
+          // this.activeDiv = this.selectedSummary;
+          // this.tblisBusy = false;
           // this.totalRows = this.sched_items.length;
           // this.currentPage = 1;
         });
@@ -446,9 +446,9 @@ export default {
       return [year, month, day].join("-");
     },
     fnExcelReport(tbl) {
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         setTimeout(
-          function() {
+          function () {
             var tab_text = "<table border='2px'><tr>";
             var textRange;
             var j = 0;
@@ -509,7 +509,7 @@ export default {
         "Sept.",
         "Oct.",
         "Nov.",
-        "Dec."
+        "Dec.",
       ];
       return [mstring[month - 1], day, year].join(" ");
     },
@@ -526,8 +526,8 @@ export default {
           ? this.late_period_select
           : this.pay_period_select;
       console.log(selectedPeriod);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

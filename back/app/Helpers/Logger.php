@@ -140,7 +140,6 @@ class Logger
 
     public function mailerZimbra($subject, $message, $sender, $senderName, $sendTo, $CCTO)
     {
-        return "ok";
         $mail = new PHPMailer(true);
         $mail->SMTPDebug = 0;
         $mail->isSMTP();
@@ -169,7 +168,7 @@ class Logger
                 $item = (object) $item;
                 $mail->addCC($item->email, $item->name);
             }
-        $mail->isHTML(true);                                                                     // Set email format to HTML
+        $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body    = $message;
 

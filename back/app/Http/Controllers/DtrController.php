@@ -73,7 +73,7 @@ class DtrController extends Controller
                             'work_date' => $item->work_date,
                             'day' => $item->day,
                             'shift_sched_in' => $item->shift_sched_in,
-                            'shift_sched_out' =>$item->shift_sched_out,
+                            'shift_sched_out' => $item->shift_sched_out,
                             'is_rest_day' => $item->is_rest_day,
                             'time_in' => $timeIn,
                             'time_out' => $timeOut
@@ -422,20 +422,43 @@ class DtrController extends Controller
     public function HRSummaryReport($period_id, $record)
     {
         try {
+            set_time_limit(0);
             $tbl = [];
+            //ADD STATUS ACTIVE UG NOT ACTIVE KATO LANG MGA ACTIVE ANG E GENERATE UG REPORT PARA DILI MAG LAG
+            //KATONG MGA EMPLOYEE LANG NA E LABOT SA REPORT AYAW NA E LABOT ANG MGA EXECUTIVE
+            $period = DB::table('pay_periods')->where('id', $period_id)->first();
+
             if ($record == 'toplates') {
                 $tbl = Employee::with(['user', 'department', 'branch', 'dtr' => function ($query) use ($period_id) {
-                        $query->where('work_date', 'LIKE', '%' . $period_id . '%');
-                    }])->get();
+                    $query->where('work_date', 'LIKE', '%' . $period_id . '%');
+                }])->get();
             } else {
-                $tbl = Employee::with(['user', 'department', 'branch', 'dtr' => function ($query) use ($period_id) {
+                $tbl = Employee::with([
+                    'user', 'department', 'branch', 'dtr' => function ($query) use ($period_id) {
                         $query->where('pay_period_id', $period_id);
-                    }])->get();
+                    },
+                    'overtimeSum' => function ($query) use ($period) {
+                        $query->where('status', 'Approved')
+                            ->where('approve_date', '>=', $period->from)
+                            ->where('approve_date', '<=', $period->to);
+                    },
+                    'overtime' => function ($query) use ($period) {
+                        $query->where('status', 'Approved')
+                            ->where('approve_date', '>=', $period->from)
+                            ->where('approve_date', '<=', $period->to);
+                    },
+                    'leave' => function ($query) use ($period) { // COUNT SA LEAVE WITHOUT PAY
+                        $query->where('status', 'Approved')
+                            ->where('date_from', '>=', $period->from)
+                            ->where('date_from', '<=', $period->to)
+                            ->where('leave_type_id', 1);
+                    }
+                ])->get();
             }
-
+            return $tbl;
             $retVal = [];
             $countt = 0;
-            foreach ($tbl as $key => $item) {
+            foreach ($tbl as $item) {
                 $emp_id = isset($item->id) ? $item->id : 0;
                 $branch_id = isset($item->branch_id) ? $item->branch_id : 0;
 
@@ -457,41 +480,11 @@ class DtrController extends Controller
                 $undertimes = [];
                 $absents = [];
                 $missinglogs = [];
-                $ld_count = 0;
 
                 if ($record != 'toplates') {
-                    $period = DB::table('pay_periods')->where('id', $period_id)->first();
-                    // $from = date('Y-m-d', strtotime($period->from));
-                    // $to = date('Y-m-d', strtotime($period->to));
-
-                    $overtime_query = DB::table('over_times')
-                        ->where('employee_id', $emp_id)
-                        ->where('status', 'Approved')
-                        ->where('approve_date', '>=', $period->from)
-                        ->where('approve_date', '<=', $period->to);
-                    $overtime = (clone $overtime_query)->sum('total_hours');
-                    $ots = (clone $overtime_query)->get();
-
-                    $leaves = DB::table('leaves')
-                        ->where('employee_id', $emp_id)
-                        ->where('date_from', '>=', $period->from)
-                        ->where('date_from', '<=', $period->to)
-                        ->where('leave_type_id', 1)
-                        ->where('status', "Approved")
-                        ->get();
-
-                    foreach ($leaves as $item2) {
-                        $leave_days = DB::table('leave_days')
-                            ->where('leave_id', $item2->id)
-                            ->where('leave_date', '<=', $period->to)
-                            ->get();
-
-                        foreach ($leave_days as $item) {
-                            if ($item->halfday == 0)
-                                $ld_count++;
-                            else $ld_count += 0.5;
-                        }
-                    }
+                    $overtime =  $item->overtime_sum[0]->total_hours;
+                    $ots = $item->overtime;
+                    $leaves = $item->leave;
                 }
 
                 if (count($dtrs) > 0) {
@@ -552,7 +545,7 @@ class DtrController extends Controller
                                         $user_in = new Carbon($dtr->time_in);
                                         $base_out = new Carbon($dtr->shift_sched_out);
                                         $user_out = new Carbon($dtr->time_out);
-                                        if ($base_in < $user_in){
+                                        if ($base_in < $user_in) {
                                             $l = new stdClass();
                                             $l->sched_in = $dtr->shift_sched_in;
                                             $l->time_in = $dtr->time_in;
@@ -570,7 +563,6 @@ class DtrController extends Controller
                                         array_push($missinglogs, $dtr);
                                         $no_in_or_out++;
                                     }
-
                                 } else {
                                     $a = new stdClass();
                                     $a->work_date = $dtr->work_date;
@@ -601,7 +593,7 @@ class DtrController extends Controller
                     $c1->put('undertimes', $undertimes);
                     $c1->put('utCount', count($undertimes));
                     // $c1->put('no_in_and_out', $no_in_and_out);
-                    $c1->put('no_in_and_out', $no_in_and_out + $ld_count);
+                    $c1->put('no_in_and_out', $no_in_and_out);
                     $c1->put('no_in_or_out', $no_in_or_out);
                     $c1->put('naa', $naa);
                 } else {
@@ -632,7 +624,7 @@ class DtrController extends Controller
                                 if ($late > 0)
                                     array_push($retVal, $item);
                             } else if ($record == 'absent') {
-                                if ($no_in_and_out > 0 || $ld_count > 0)
+                                if ($no_in_and_out > 0)
                                     array_push($retVal, $item);
                             } else if ($record == 'undertime') {
                                 if ($undertime > 0)

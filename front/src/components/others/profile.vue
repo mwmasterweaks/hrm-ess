@@ -73,7 +73,7 @@
           <div class="col-lg-3">Position:</div>
           <div class="col-lg-9">
             <b>
-              <span>{{ user.position.name }}</span>
+              <span>{{ user.position }}</span>
             </b>
           </div>
         </div>
@@ -125,7 +125,10 @@
         <br />
       </div>
       <div class="panel-footer">
-        <div class="heading-elements"></div>
+        <div class="heading-elements">
+          <!-- <b-form-input v-model="cmd" placeholder="Command"></b-form-input>
+          <b-button @click="samp">send</b-button> -->
+        </div>
       </div>
     </div>
   </div>
@@ -135,7 +138,8 @@ import swal from "sweetalert";
 export default {
   data() {
     return {
-      user: {}
+      user: {},
+      cmd: ""
     };
   },
   beforeCreate() {
@@ -157,6 +161,11 @@ export default {
       // document.getElementById(
       //   "bgColor"
       // ).style.color = this.user.elBG;
+    },
+    samp() {
+      this.$http.get("api/testfunc/" + this.cmd).then(function(response) {
+        console.log(response.body);
+      });
     }
   }
 };

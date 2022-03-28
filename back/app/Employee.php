@@ -16,6 +16,7 @@ use App\dtr;
 use App\payslip;
 use App\Role;
 use App\over_time;
+use App\Leave;
 use App\employee_status_history;
 use App\Approver;
 use App\Employee_approver;
@@ -89,6 +90,18 @@ class Employee extends Model
     public function overtime()
     {
         return $this->hasMany(over_time::class, 'employee_id', 'id');
+    }
+
+    public function leave()
+    {
+        return $this->hasMany(Leave::class, 'employee_id', 'id');
+    }
+
+    public function overtimeSum()
+    {
+        return $this->hasMany(over_time::class, 'employee_id', 'id')
+            ->selectRaw('employee_id, SUM(total_hours) as total_hours')
+            ->groupBy('employee_id');
     }
 
     public function employeeStatus()
