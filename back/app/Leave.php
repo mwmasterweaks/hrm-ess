@@ -7,12 +7,13 @@ use App\leave_type;
 use App\Employee_approver;
 use App\Employee;
 use App\leave_day;
+use App\attachment;
 
 class Leave extends Model
 {
     protected $fillable = [
         'employee_id', 'leave_type_id', 'reference_no', 'date_from', 'date_to', 'total_days',
-        'reason', 'attachment', 'date_filed', 'status', 'approve_level', 'created_at', 'updated_at'
+        'reason',  'date_filed', 'status', 'approve_level', 'created_at', 'updated_at'
     ];
 
     public function leave_type()
@@ -33,5 +34,12 @@ class Leave extends Model
     public function leave_days()
     {
         return $this->hasMany(leave_day::class, 'leave_id', 'id');
+    }
+
+
+        //For multiple attachment - Wilma
+    public function attachment(){
+
+        return $this->hasMany(attachment::class,'reference_no', 'reference_no');
     }
 }

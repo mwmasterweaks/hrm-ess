@@ -8,7 +8,7 @@
         </tr>
         <tr>
           <td>BASIC</td>
-          <td>{{ payslip.basic_pay }}</td>
+          <td>{{ numberFormat(payslip.basic_pay) }}</td>
         </tr>
         <tr>
           <td>Allowance</td>
@@ -113,7 +113,7 @@
           <td>TOTAL GROSS PAY</td>
           <td>
             <span v-if="payslip.total_gross_pay > 0">{{
-              payslip.total_gross_pay
+              numberFormat(payslip.total_gross_pay)
             }}</span>
             <span v-else>-</span>
           </td>
@@ -143,7 +143,7 @@
           <td>Absent Deduction</td>
           <td>
             <span v-if="payslip.absent_deduction > 0">{{
-              payslip.absent_deduction
+              numberFormat(payslip.absent_deduction)
             }}</span>
             <span v-else>-</span>
           </td>
@@ -246,7 +246,7 @@
           <td>Other Deductions</td>
           <td>
             <span v-if="payslip.other_deduction > 0">{{
-              payslip.other_deduction
+              numberFormat(payslip.other_deduction)
             }}</span>
             <span v-else>-</span>
           </td>
@@ -259,7 +259,7 @@
           <td>TOTAL DEDUCTION</td>
           <td>
             <span v-if="payslip.total_deduction > 0">{{
-              payslip.total_deduction
+              numberFormat(payslip.total_deduction)
             }}</span>
             <span v-else>-</span>
           </td>
@@ -269,14 +269,16 @@
             <b>NET PAY</b>
           </td>
           <td>
-            <span v-if="payslip.net_pay > 0">{{ payslip.net_pay }}</span>
+            <span v-if="payslip.net_pay > 0">{{ numberFormat(payslip.net_pay) }}</span>
             <span v-else>-</span>
           </td>
         </tr>
       </table>
     </div>
+
   </div>
 </template>
+
 <script>
 export default {
   props: ["payslip"],
@@ -287,7 +289,12 @@ export default {
   created() {},
   mounted() {},
   updated() {},
-  methods: {}
+  methods: {
+
+    numberFormat(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+  }
 };
 </script>
 <style scoped>

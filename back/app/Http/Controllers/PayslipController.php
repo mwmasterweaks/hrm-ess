@@ -56,7 +56,7 @@ class PayslipController extends Controller
     }
     public function show($id)
     {
-        $tbl = payslip::with(['pay_period'])->where("employee_id", $id)
+        $tbl = payslip::with(['pay_period','employee.branch', 'employee.department', 'employee.position'])->where("employee_id", $id)
             ->orderBy('created_at', 'desc')
             ->get();
 

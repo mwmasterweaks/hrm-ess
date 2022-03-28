@@ -1,3 +1,4 @@
+
 2022-03-25 19:09:33    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 1150
 From: {branch_id: 4}
 To: {branch_id: 4}
@@ -29,4 +30,5 @@ To: {account_status: Inactive}
 2022-03-25 20:25:04    |    User: (1025) Daryl Kate Good    |    EmployeeController (update)    |    message    |    Update Employee with ID: 659
 From: {account_status: Active}
 To: {account_status: Inactive}
+
 

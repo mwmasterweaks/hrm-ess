@@ -234,7 +234,7 @@
 
             <tr>
               <td class="my-td">Reason:</td>
-              <td class="my-td" colspan="3">{{ item.reason }}</td>
+              <td class="my-td" colspan="3"><pre>{{ item.reason }}</pre></td>
             </tr>
           </table>
 
@@ -772,7 +772,7 @@ export default {
               console.log(response.body);
               swal({
                 title: "Error",
-                text: response.body.error,
+                text: "An error has occured. Please contact admin rnd@dctechmicro.com",
                 icon: "error",
                 dangerMode: true
               }).then(value => {

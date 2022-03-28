@@ -431,7 +431,7 @@
 
             <tr>
               <td class="my-td">Reason:</td>
-              <td class="my-td" colspan="3">{{ item_edit.reason }}</td>
+              <td class="my-td" colspan="3"><pre>{{ item_edit.reason }}</pre></td>
             </tr>
           </table>
         </center>
@@ -730,7 +730,7 @@ export default {
                 .catch(response => {
                   swal({
                     title: "Error",
-                    text: response.body.error,
+                    text: "An error has occured. Please contact admin rnd@dctechmicro.com",
                     icon: "error",
                     dangerMode: true
                   }).then(value => {

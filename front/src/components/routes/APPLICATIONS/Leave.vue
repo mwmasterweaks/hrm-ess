@@ -1,4 +1,5 @@
 <template>
+<!-- lalala -->
   <div class="mx-auto col-md-12 modified-continer">
     <div class="elBG panel">
       <div class="panel-heading">
@@ -476,8 +477,8 @@
             </tr>
 
             <tr>
-              <td class="my-td">Reason:</td>
-              <td class="my-td" colspan="3">{{ item_edit.reason }}</td>
+                <td class="my-td">Reason</td>
+              <td class="my-td" colspan="3"><pre>{{ item_edit.reason }}</pre></td>
             </tr>
           </table>
 
@@ -657,7 +658,7 @@ export default {
         date_from: "",
         date_to: "",
         reason: "",
-        attachment: "",
+        // attachment: "",
         status: "Pending",
         available_balance: "0"
       },
@@ -671,7 +672,7 @@ export default {
         date_from: "",
         date_to: "",
         reason: "",
-        attachment: "",
+        // attachment: "",
         status: "Pending",
         available_balance: "0"
       },
